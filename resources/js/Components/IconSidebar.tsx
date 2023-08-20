@@ -64,9 +64,27 @@ function IconSidebar({ mobileMenuOpen, setMobileMenuOpen, setActiveItem }) {
           </div>
         </div>
         <div className="w-full border-b-2 border-gray-400" />
+        <div className="left-0 bottom-10 mt-1">
+          <UserAvatar />
+        </div>
+        <div className="border rounded p-2 m-2 cursor-pointer bg-[#4c88c4] text-white hover:bg-[#f6cc33 shadow-2xl">
+          <UserNavLinks />
+        </div>
       </div>
     </>
   );
 }
 
 export default IconSidebar;
+
+const UserNavLinks = () => (
+  <div className="mt-0">
+    <ul className="flex flex-col  justify-start text-sm font-medium ">
+      {user_links.map(item => (
+        <Link className={`flex`} href={item.href}>
+          <item.icon className="w-5 h-5" />
+        </Link>
+      ))}
+    </ul>
+  </div>
+);

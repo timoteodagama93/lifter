@@ -18,13 +18,28 @@ import MusicPlayer from '@/Components/MusicPlayer';
 import { useSelector } from 'react-redux';
 import IconSidebar from '@/Components/IconSidebar';
 import { artists, generos } from '../../data/dummy';
-import { BiMessage } from 'react-icons/bi';
+import {
+  BiLike,
+  BiMessage,
+  BiSearch,
+  BiSmile,
+  BiUser,
+  BiUserCircle,
+  BiUserPlus,
+} from 'react-icons/bi';
 import { GrNotification } from 'react-icons/gr';
-import { HiOutlineMenu } from 'react-icons/hi';
+import { HiEmojiHappy, HiOutlineMenu } from 'react-icons/hi';
 import { user_links } from '../../assets/constants';
 import { MdClose } from 'react-icons/md';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import { useStateContext } from '@/contexts/PaginaActualContext';
+
+//Style for swiper
+import './style.css';
+import { FaMusic, FaVoteYea } from 'react-icons/fa';
+import { BsEmojiSmile, BsFillCameraVideoFill, BsTrophy } from 'react-icons/bs';
+import { Logo } from '../../img';
+import { current } from '@reduxjs/toolkit';
 interface Props {
   title: string;
   renderHeader?(): JSX.Element;
@@ -71,87 +86,210 @@ export default function AppLayout({
 
   const [pageName, setPageName] = useState('index');
   const { hideSider, setHideSider } = useStateContext();
-
+  const [openSearch, setOpenSearch] = useState(false);
   return (
-    <div className=" bg-gradient-to-br from-[#f6cc33] to-[#f6cc33] w-screen h-auto fixed top-0 left-0 right-0 ">
+    <div className=" bg-gradient-to-br from-[#282728] to-[#2e2525] w-screen h-screen fixed top-0 left-0 right-0 ">
+      {openSearch && <Search close={setOpenSearch} />}
       <div className="w-screen h-screen flex">
         <Head title={title} />
         <Banner />
-        <IconSidebar
+        {/*} 
+       <IconSidebar
           setActiveItem={setActiveItem}
           mobileMenuOpen={mobileMenuOpen}
           setMobileMenuOpen={setMobileMenuOpen}
         />
-        <div className="px-1 mt-0 h-screen w-full flex flex-col ">
-          <header className="w-full flex flex-row justify-between items-center h-16">
-            <div className="w-2/12 h-16 object-contain ">
-              <ApplicationLogo className="w-full" />
+{*/}
+        <Sidebar
+          mobileMenuOpen={mobileMenuOpen}
+          setMobileMenuOpen={setMobileMenuOpen}
+          activeLink={activeLink}
+          setActiveItem={setActiveItem}
+          classNames="w-2/12"
+        />
+        <div className="p-0 mt-0 h-screen w-screen md:w-10/12 flex flex-col">
+          <header className="w-full h-32 flex flex-col justify-center items-center  shadow-2xl mb-2">
+            <div className="w-full h-16 flex p-0 m-0">
+              <div className="md:w-2/12 object-contain ">
+                <img className="w-full h-full " src={Logo} />
+              </div>
+              <div className="w-10/12 mx-1 h-16 justify-end  items-center  flex flex-row  rounded-lg">
+                {}
+                <div className="mx-auto mb-1 sm:px-1 lg:px-2 object-contain hidden md:flex flex-row b-[#997f2362]">
+                  <div className="w-full h-16 hidden md:flex flex-row justify-center items-center p-0 ">
+                    <div
+                      className={`${
+                        route().current()?.includes('avaliar')
+                          ? 'border-b-2'
+                          : ''
+                      }  rounded p-2 m-2 cursor-pointer hover:bg-[#f6cc33 shadow-2xl shadow-[#2e2c2e] b-[#4c88c4] text-white`}
+                    >
+                      <Link
+                        href="avaliar"
+                        className="flex flex-col justify-center items-center"
+                      >
+                        <HiEmojiHappy className="text-xl" />
+                        <span className="text-xs">Avaliar</span>
+                      </Link>
+                    </div>
+                    <div
+                      className={`${
+                        route().current()?.includes('musicas')
+                          ? 'border-b-2'
+                          : ''
+                      }  rounded p-2 m-2 cursor-pointer hover:bg-[#f6cc33 shadow-2xl shadow-[#2e2c2e] b-[#4c88c4] text-white`}
+                    >
+                      <Link
+                        href="musicas"
+                        className="flex flex-col justify-center items-center"
+                      >
+                        <FaMusic className="text-xl" />
+                        <span className="text-xs">Músicas</span>
+                      </Link>
+                    </div>
+                    <div
+                      className={`${
+                        route().current()?.includes('videos')
+                          ? 'border-b-2'
+                          : ''
+                      }  rounded p-2 m-2 cursor-pointer hover:bg-[#f6cc33 shadow-2xl shadow-[#2e2c2e] b-[#4c88c4] text-white`}
+                    >
+                      <Link
+                        href="videos"
+                        className="flex flex-col justify-center items-center"
+                      >
+                        <BsFillCameraVideoFill className="text-xl" />
+                        <span className="text-xs">Vídeos</span>
+                      </Link>
+                    </div>
+                    <div
+                      className={`${
+                        route().current()?.includes('ascensao')
+                          ? 'border-b-2 border-[#4c88c4] bg-[#000] text-[#4c88c4]  '
+                          : ''
+                      }  rounded p-2 m-2 cursor-pointer hover:bg-[#f6cc33 shadow-2xl shadow-[#2e2c2e] b-[#4c88c4] text-white`}
+                    >
+                      <Link
+                        href="ascensao"
+                        className="flex flex-col justify-center items-center"
+                      >
+                        <BsTrophy className="text-xl" />
+                        <span className="text-xs  ">Ascensão</span>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+                {}
+                <div className="hidden md:flex flex-row items-center ">
+                  <div className="flex flex-row">
+                    <div className="flex flex-row space-x-1  items-center justify-center">
+                      <button
+                        className="border rounded p-2 m-4 cursor-pointer hover:bg-[#f6cc33 shadow-2xl bg-[#4c88c4] text-white"
+                        onClick={() => setOpenSearch(true)}
+                      >
+                        <BiSearch />
+                      </button>
+
+                      <div className="border rounded p-2 m-4 cursor-pointer hover:bg-[#f6cc33 shadow-2xl bg-[#4c88c4] text-white">
+                        <Link href="notificacoes">
+                          <span className="absolute shadow-lg bg-slate-100 w-5 h-5 flex justify-center items-center rounded-full text-red-500 top-1">
+                            2
+                          </span>
+                          <GrNotification />
+                        </Link>
+                      </div>
+                      <div className="border rounded p-2 m-4 cursor-pointer hover:bg-[#f6cc33 shadow-2xl bg-[#4c88c4] text-white">
+                        <Link href="chats">
+                          <span className="absolute shadow-lg bg-slate-100 w-5 h-5 flex justify-center items-center rounded-full text-red-500 top-1">
+                            5
+                          </span>
+                          <BiMessage />
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="md:hidden flex cursor-pointer items-center justify-center hover:bg-[#f6cc33 shadow-2xl ">
+                  <div className="w-full object-contain p-2 m-1 border  bg-[#997f2362]">
+                    <div className=" justify-center items-center cursor-pointer">
+                      {hideSider ? (
+                        <MdClose
+                          className="w-8 h-8 text-[#4c88c4] "
+                          onClick={() => setHideSider(false)}
+                        />
+                      ) : (
+                        <HiOutlineMenu
+                          className="w-8 h-8 text-[#4c88c4] "
+                          onClick={() => setHideSider(true)}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>{' '}
+              </div>
             </div>
-            <div className="w-10/12 mx-1 h-12 justify-between items-center flex flex-row  rounded-lg">
-              <div className="mx-auto mb-1 sm:px-1 lg:px-2 object-contain md:block hidden bg-[#997f2362]">
-                <form className="w-full">
-                  <input
-                    type="search"
-                    className="border-b-4 w-full focus:border-[#6ba976] mt-1 border-[#d17734] rounded-lg"
-                    placeholder="Pesquisar"
-                  />
-                </form>
+            <div className="flex  w-full h-16 md:hidden flex-row justify-center items-center p-0 ">
+              <div
+                className={`${
+                  route().current()?.includes('avaliar') ? 'border-b-2' : ''
+                }  rounded p-2 m-2 cursor-pointer hover:bg-[#f6cc33 shadow-2xl shadow-[#2e2c2e] b-[#4c88c4] text-white`}
+              >
+                <Link
+                  href="avaliar"
+                  className="flex flex-col justify-center items-center"
+                >
+                  <HiEmojiHappy className="text-xl" />
+                  <span className="text-xs">Avaliar</span>
+                </Link>
               </div>
-              <div className="flex flex-col items-center">
-                <div className="flex flex-row">
-                  <div className="border rounded p-2 m-2 cursor-pointer hover:bg-[#f6cc33 shadow-2xl bg-[#4c88c4] text-white">
-                    <Link href="chats">
-                      <span className="absolute shadow-lg bg-slate-100 w-5 h-5 flex justify-center items-center rounded-full text-red-500 top-2">
-                        2
-                      </span>
-                      <GrNotification />
-                    </Link>
-                  </div>
-                  <div className="border rounded p-2 m-2 cursor-pointer hover:bg-[#f6cc33 shadow-2xl bg-[#4c88c4] text-white">
-                    <Link href="chats">
-                      <span className="absolute shadow-lg bg-slate-100 w-5 h-5 flex justify-center items-center rounded-full text-red-500 top-2">
-                        5
-                      </span>
-                      <BiMessage />
-                    </Link>
-                  </div>
-                  <div className="border rounded p-2 m-2 cursor-pointer bg-[#4c88c4] text-white hover:bg-[#f6cc33 shadow-2xl">
-                    <UserNavLinks />
-                  </div>
-                </div>
+              <div
+                className={`${
+                  route().current()?.includes('musicas') ? 'border-b-2' : ''
+                }  rounded p-2 m-2 cursor-pointer hover:bg-[#f6cc33 shadow-2xl shadow-[#2e2c2e] b-[#4c88c4] text-white`}
+              >
+                <Link
+                  href="musicas"
+                  className="flex flex-col justify-center items-center"
+                >
+                  <FaMusic className="text-xl" />
+                  <span className="text-xs">Músicas</span>
+                </Link>
               </div>
-              <div className="md:hidden flex cursor-pointer items-center justify-center hover:bg-[#f6cc33 shadow-2xl ">
-                <div className="w-full object-contain p-2">
-                  <div className=" right-3 cursor-pointer">
-                    {hideSider ? (
-                      <HiOutlineMenu
-                        className="w-8 h-8 text-white mt-2 bg-[#4c88c4] "
-                        onClick={() => setHideSider(false)}
-                      />
-                    ) : (
-                      <MdClose
-                        className="w-8 h-8 text-white mt-2 bg-[#4c88c4] "
-                        onClick={() => setHideSider(true)}
-                      />
-                    )}
-                  </div>
-                </div>
-              </div>{' '}
+              <div
+                className={`${
+                  route().current()?.includes('videos') ? 'border-b-2' : ''
+                }  rounded p-2 m-2 cursor-pointer hover:bg-[#f6cc33 shadow-2xl shadow-[#2e2c2e] b-[#4c88c4] text-white`}
+              >
+                <Link
+                  href="videos"
+                  className="flex flex-col justify-center items-center"
+                >
+                  <BsFillCameraVideoFill className="text-xl" />
+                  <span className="text-xs">Vídeos</span>
+                </Link>
+              </div>
+              <div
+                className={`${
+                  route().current()?.includes('ascensao')
+                    ? 'border-b-2 border-[#4c88c4] bg-[#000] text-[#4c88c4]  '
+                    : ''
+                }  rounded p-2 m-2 cursor-pointer hover:bg-[#f6cc33 shadow-2xl shadow-[#2e2c2e] b-[#4c88c4] text-white`}
+              >
+                <Link
+                  href="ascensao"
+                  className="flex flex-col justify-center items-center"
+                >
+                  <BsTrophy className="text-xl" />
+                  <span className="text-xs  ">Ascensão</span>
+                </Link>
+              </div>
             </div>
           </header>
           {/* <!-- Page Content --> */}
           <main className="w-full flex flex-row">
             {}
-            <Sidebar
-              mobileMenuOpen={mobileMenuOpen}
-              setMobileMenuOpen={setMobileMenuOpen}
-              activeLink={activeLink}
-              setActiveItem={setActiveItem}
-              hideSider={hideSider}
-              setHideSider={setHideSider}
-              classNames="w-[300px]"
-            />
-            <div className="max-w-full h-full mx-auto overflow-y-auto px-2 shadow-lg ">
+
+            <div className="max-w-full h-full mx-auto overflow-y-auto px-0 shadow-lg ">
               {children}
             </div>
           </main>
@@ -167,14 +305,29 @@ export default function AppLayout({
   );
 }
 
-const UserNavLinks = () => (
-  <div className="mt-0">
-    <ul className="flex flex-col  justify-start text-sm font-medium ">
-      {user_links.map(item => (
-        <Link className={`flex`} href={item.href}>
-          <item.icon className="w-5 h-5" />
-        </Link>
-      ))}
-    </ul>
-  </div>
-);
+function Search({ close }) {
+  return (
+    <div className="z-50 absolute flex flex-col justify-center items-center w-screen h-screen bg-[#000000a2]">
+      <div className="w-10/12 p-1 bg-white rounded">
+        <button
+          onClick={() => close(false)}
+          className="justify-center items-center float-right bg-red-500 p-5 flex flex-col"
+        >
+          <MdClose />
+        </button>
+        <div className="w-full h-full ">
+          <div className="w-full h-full ">
+            <form className="w-full justify-center items-center px-40">
+              <input
+                type="search"
+                className="border-b-4 w-full focus:border-[#6ba976] mt-1 border-[#d17734] rounded-lg"
+                placeholder="Pesquisar"
+              />
+            </form>
+          </div>
+          <div className="w-full h-96 "></div>
+        </div>
+      </div>
+    </div>
+  );
+}

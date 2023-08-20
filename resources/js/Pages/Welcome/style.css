@@ -13,11 +13,13 @@ body {
   margin: 0;
   padding: 0;
 }
-
+/*
+SWIPER
+*/
 .swiper {
   width: 100%;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .swiper-slide {
@@ -38,6 +40,17 @@ body {
 }
 
 .append-buttons button {
+  display: inline-block;
+  cursor: pointer;
+  border: 1px solid #007aff;
+  color: #007aff;
+  text-decoration: none;
+  padding: 2px 5px;
+  border-radius: 4px;
+  margin: 0 5px;
+  font-size: 13px;
+}
+.append-buttons div button {
   display: inline-block;
   cursor: pointer;
   border: 1px solid #007aff;

@@ -16,7 +16,7 @@ function Descobrir() {
     <AppLayout title="Descobrir">
       <div className="flex flex-col bg-gray-200 rounded-lg p-2">
         <div className="w-full flex justify-between items-center sm:flex-row flex-col mt-4 mb-1">
-          <h2 className="flex font-bold text-3xl  text-çeft">Descobrir</h2>
+          <h2 className="flex font-bold text-xl  text-çeft">Descobrir</h2>
           <form className="w-full hidden md:flex ">
             <input
               className="w-3/4 mx-5 rounded-lg"
@@ -24,38 +24,38 @@ function Descobrir() {
               placeholder="Descobrir música"
             />
           </form>
-          <button className="md:hidden flex text-bold text-2xl  justify-center items-center bg-gray-400 p-2 rounded-lg">
-            <BiSearch className="mr-2 text-3xl" />
-          </button>
-          <select
-            onChange={() => {}}
-            value=""
-            className="p-1 text-sm rounded-lg outline-none "
-          >
-            {generos.map(genero => (
-              <option key={genero.value} value={genero.value}>
-                {genero.title}
-              </option>
-            ))}
-          </select>
+          <div className="w-full flex flex-row justify-center items-center">
+            <button className="md:hidden flex  text-bold text-2xl  justify-center items-center bg-gray-400 p-2 rounded-lg">
+              <BiSearch className="mr-2 text-3xl" />
+            </button>
+            <select
+              onChange={() => {}}
+              value=""
+              className="p-1 text-xs md:text-sm rounded-lg outline-none "
+            >
+              {generos.map(genero => (
+                <option key={genero.value} value={genero.value}>
+                  {genero.title}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
         <div className="w-full max-h-screen pb-36 overflow-auto mx-auto px-2  dark:bg-gray-800 shadow-xl sm:rounded-lg">
-            <div className="flex">
-              <div className="flex flex-wrap justify-start md:justify-center">
-                {songs.map((song, i) => (
-                  <SongCard
-                    song={song}
-                    i={i}
-                    key={i}
-                    activeSong={activeSong}
-                    isPlaying={isPlaying}
-                    songs={songs}
-                  />
-                ))}
-              </div>
-              <TopPlay />
+          <div className="flex">
+            <div className="flex flex-wrap justify-start md:justify-center">
+              {songs.map((song, i) => (
+                <SongCard
+                  song={song}
+                  i={i}
+                  key={i}
+                  activeSong={activeSong}
+                  isPlaying={isPlaying}
+                  songs={songs}
+                />
+              ))}
             </div>
-  
+          </div>
         </div>
       </div>
     </AppLayout>

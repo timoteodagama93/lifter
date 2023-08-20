@@ -11,21 +11,70 @@ import {
   HiFire,
   HiArrowUp,
   HiArrowDown,
+  HiOutlineUpload,
 } from 'react-icons/hi';
-import { FaCcDiscover, FaHandshake, FaUserCircle, FaUserCog, FaUserSecret, FaVoteYea } from 'react-icons/fa';
-import { MdContacts, MdEmojiEvents, MdExplore, MdLibraryMusic, MdNotifications, MdOutlineExplore } from 'react-icons/md';
-import { GiClassicalKnowledge, GiIcePop, GiRank1, GiRank2, GiTeacher } from 'react-icons/gi';
-import { BsEmojiHeartEyes, BsFacebook, BsInfoCircle, BsInstagram, BsStars, BsTiktok, BsTrophy, BsTwitter, BsYoutube } from 'react-icons/bs';
-import { BiArrowFromBottom, BiArrowFromTop, BiCamera, BiLibrary, BiLike, BiMicrophone, BiMusic, BiTrendingUp, BiVideo } from 'react-icons/bi';
-import { RiCompassDiscoverFill, RiContactsBook2Fill, RiProfileLine, RiStarSLine } from 'react-icons/ri';
-import { GrGrow, GrIntegration, GrMoney, GrWaypoint } from 'react-icons/gr';
+import {
+  FaCcDiscover,
+  FaCog,
+  FaCoins,
+  FaHandshake,
+  FaUserCircle,
+  FaUserCog,
+  FaUserSecret,
+  FaVoteYea,
+} from 'react-icons/fa';
+import {
+  MdContacts,
+  MdEmojiEvents,
+  MdExplore,
+  MdLibraryMusic,
+  MdNotifications,
+  MdOutlineExplore,
+} from 'react-icons/md';
+import {
+  GiClassicalKnowledge,
+  GiIcePop,
+  GiRank1,
+  GiRank2,
+  GiTeacher,
+} from 'react-icons/gi';
+import {
+  BsEmojiHeartEyes,
+  BsFacebook,
+  BsInfoCircle,
+  BsInstagram,
+  BsIntersect,
+  BsStars,
+  BsTiktok,
+  BsTrophy,
+  BsTwitter,
+  BsYoutube,
+} from 'react-icons/bs';
+import {
+  BiArrowFromBottom,
+  BiArrowFromTop,
+  BiCamera,
+  BiLibrary,
+  BiLike,
+  BiMicrophone,
+  BiMusic,
+  BiTrendingUp,
+  BiVideo,
+} from 'react-icons/bi';
+import {
+  RiCompassDiscoverFill,
+  RiContactsBook2Fill,
+  RiProfileLine,
+  RiStarSLine,
+} from 'react-icons/ri';
+import { GrGrow, GrIntegration, GrLike, GrMoney, GrWaypoint } from 'react-icons/gr';
 import React from 'react';
 
 export const upper_links = [
   { name: 'Inicio', href: route('inicio'), icon: HiOutlineHome },
   { name: 'Músicas', href: route('musicas'), icon: BiMusic },
   { name: 'Ascensão', href: route('ascensao'), icon: MdEmojiEvents },
- // { name: 'Bibliotecas', href: route('bibliotecas'), icon: MdLibraryMusic },
+  // { name: 'Bibliotecas', href: route('bibliotecas'), icon: MdLibraryMusic },
   //{ name: 'Notícias', href: route('noticias'), icon: HiOutlineNewspaper },
   { name: 'Explorar', href: route('explorar'), icon: MdOutlineExplore },
 ];
@@ -37,36 +86,36 @@ export const ascensao_links = [
   { name: 'Termos & Condições', href: 'termos_condicoes', icon: FaHandshake },
 ];
 
-const RankingIcon = ()=>{
-  return(
+const RankingIcon = () => {
+  return (
     <>
-    <div className='flex flex-row -space-x-1 mr-2'>
-      <HiArrowUp className='m-0 text-[#4c88c4] '  />
-      <HiArrowDown className='m-0 text-red-600' />
-    </div>
+      <div className="flex flex-row -space-x-1 mr-2">
+        <HiArrowUp className="m-0 text-[#4c88c4] " />
+        <HiArrowDown className="m-0 text-red-600" />
+      </div>
     </>
-  )
-  }
+  );
+};
 
 /**
  * Home Links for Beta version
  */
 export const home_links = [
   { name: 'Destaques', href: 'destaques', icon: HiFire },
-  { name: 'Famosos', href: 'famosos', icon: FaUserSecret },
+  { name: 'Avaliar', href: 'famosos', icon: GrLike },
+  /*
   { name: 'Dicas', href: 'dicas', icon:  GiTeacher},
-  ];
+*/
+];
 
 /**
  * Home Links for Beta version
  */
 export const music_links = [
   { name: 'Avaliar', href: 'avaliar', icon: FaVoteYea },
-  { name: 'Ranking', href: 'ranking', icon:  RankingIcon},
+  { name: 'Ranking', href: 'ranking', icon: RankingIcon },
   { name: 'Descobrir', href: 'descobrir', icon: MdExplore },
 ];
-
-
 
 /*
 REAL HOME ITENS
@@ -100,14 +149,6 @@ export const explore_links = [
   { name: 'Instagram', href: 'instagram', icon: BsInstagram },
 ];
 
-export const account_links = [
-  { name: 'Perfil', href: 'twitter', icon: RiProfileLine },
-  { name: 'Contactos', href: 'youtube', icon: RiContactsBook2Fill },
-  { name: 'Integrações', href: 'tiktok', icon: GrIntegration },
-  { name: 'Crédito Lifter', href: 'facebook', icon: GrMoney },
-  { name: 'Sugestões', href: 'instagram', icon: BsInstagram },
-  { name: 'Biblioteca pessoal', href: 'instagram', icon: BiLibrary },
-];
 
 export const links = [
   { name: 'Descobrir', href: route('inicio'), icon: HiOutlineHome },
@@ -128,6 +169,17 @@ export const links = [
  */
 export const user_links = [
   { name: 'Conta', href: route('conta'), icon: FaUserCircle },
+  { name: 'Definições', href: route('settings'), icon: FaCog },
+  { name: 'Carregamentos', href: route('uploads'), icon: HiOutlineUpload },
+];
+
+export const account_links = [
+  { name: 'Perfil', href: 'twitter', icon: RiProfileLine },
+  { name: 'Contactos', href: 'youtube', icon: RiContactsBook2Fill },
+  { name: 'Integrações', href: 'tiktok', icon: BsIntersect },
+  { name: 'Crédito Lifter', href: 'facebook', icon: FaCoins },
+  { name: 'Sugestões', href: 'instagram', icon: BsInstagram },
+  { name: 'Biblioteca pessoal', href: 'instagram', icon: BiLibrary },
 ];
 
 /**

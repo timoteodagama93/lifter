@@ -13,11 +13,14 @@ body {
   margin: 0;
   padding: 0;
 }
-
+.mySwiper {
+}
 .swiper {
+  display: flex;
+  position: sticky;
   width: 100%;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .swiper-slide {
@@ -25,16 +28,23 @@ body {
   background-size: cover;
   width: 300px;
   height: 300px;
+  padding-bottom: 0;
 }
 
 .swiper-slide img {
+  position: relative;
   display: block;
-  width: 100%;
+  width: 300px;
+  max-height: 300px;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1px;
 }
 
 .append-buttons {
   text-align: center;
-  margin-top: 10px;
+  margin-top: 1px;
 }
 
 .append-buttons button {

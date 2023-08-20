@@ -8,7 +8,7 @@ import Modal from '@/Components/Modal';
 import { Fones, Musica, PlayMusica } from '../../../img';
 import WelcomeToLifter from '@/Components/Welcome';
 
-import {Swiper, SwiperSlide} from 'swiper/react'
+import { Swiper, SwiperSlide } from 'swiper/react';
 // import Swiper core and required modules
 import {
   Navigation,
@@ -29,9 +29,15 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 
 import './style.css';
-import { BsEmojiExpressionless, BsEmojiHeartEyes, BsEmojiLaughing, BsEmojiSmile } from 'react-icons/bs';
+import {
+  BsEmojiExpressionless,
+  BsEmojiHeartEyes,
+  BsEmojiLaughing,
+  BsEmojiSmile,
+} from 'react-icons/bs';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { GiVote } from 'react-icons/gi';
+import { FaHandshake, FaVoteYea } from 'react-icons/fa';
 
 interface Props {
   canLogin: boolean;
@@ -54,49 +60,51 @@ export default function Welcome({
     <>
       <Head title="Welcome" />
 
-      <div className="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white bg-gradient-to-br from-[#f6cc33] to-[#f6cc33] z-20">
+      <div className="relative sm:flex flex-col sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white bg-gradient-to-br from-[#f6cc33] to-[#f6cc33] z-20">
         {canLogin ? (
-          <div className="sm:fixed sm:top-0 sm:right-0 p-6 text-right">
-            {page.props.auth.user ? (
-              <Link
-                href={route('inicio')}
-                className="font-semibold text-gray-600  dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500 border p-2 rounded-lg bg-[#997f2362] hover:bg-[#4c88c4] hover:text-white  "
-              >
-                Continuar a explorar
-              </Link>
-            ) : (
-              <>
+          <div className="sm:fixed flex flex-row justify-between sm:top-0 sm:right-10   z-10 md:text-right">
+            <div className="w-1/3 md:w-2/12">
+              <ApplicationLogo className="" />
+            </div>
+            <div className="w-2/3 md:w-9/12 p-6">
+              {page.props.auth.user ? (
                 <Link
-                  href={route('login')}
-                  className="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+                  href={route('inicio')}
+                  className="font-semibold dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500 border p-2 rounded-lg  bg-[#4c88c4] text-white  "
                 >
-                  Entrar
+                  Continuar exploração
                 </Link>
-
-                {canRegister ? (
+              ) : (
+                <>
                   <Link
-                    href={route('register')}
-                    className="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+                    href={route('login')}
+                    className="font-semibold  first-letter hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500 border p-2 rounded-lg  bg-[#4c88c4] text-white"
                   >
-                    Criar conta
+                    Entrar
                   </Link>
-                ) : null}
-              </>
-            )}
+
+                  {canRegister ? (
+                    <Link
+                      href={route('register')}
+                      className="ml-4 font-semibold  hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500 border p-2 rounded-lg  bg-[#4c88c4] text-white"
+                    >
+                      Criar conta
+                    </Link>
+                  ) : null}
+                </>
+              )}
+            </div>
           </div>
         ) : null}
 
-
-        <div className="max-w-7xl mx-auto p-6 lg:p-8">
-          <Index   estilo='Bem vindo' />
-     
-
+        <div className="max-w-7xl mx-auto p-6 lg:p-8 border">
+          <Index estilo="Bem vindo" />
 
           <div className="flex justify-center mt-16 px-6 sm:items-center sm:justify-between">
             <div className="text-center text-sm text-gray-500 dark:text-gray-400 sm:text-left">
               <div className="flex items-center gap-4">
                 <a
-                  href="https://github.com/sponsors/taylorotwell"
+                  href="lifter.com/patrocinar"
                   className="group inline-flex items-center hover:text-gray-700 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
                 >
                   <svg
@@ -112,7 +120,18 @@ export default function Welcome({
                       d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                     />
                   </svg>
-                  Patrocinadores
+                  Patrocinar uma iniciativa Lifter
+                </a>
+              </div>
+            </div>
+            <div className="text-center text-sm text-gray-500 dark:text-gray-400 sm:text-left">
+              <div className="flex items-center gap-4">
+                <a
+                  href="lifter.com/patrocinar"
+                  className="group inline-flex items-center hover:text-gray-700 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500 space-x-2"
+                >
+                  <FaHandshake />
+                  <span>Políticas & Termos</span>
                 </a>
               </div>
             </div>
@@ -159,16 +178,19 @@ export default function Welcome({
 const Index = ({ estilo }) => {
   const [activar, setActivar] = useState('tudo');
 
+  const [notificarLogin, setNotificarLogin] = useState(false);
   const [sendFeedback, setSendFeedback] = useState(false);
   return (
-    <div>
+    <div className="">
       <Swiper
         effect={'coverflow'}
-        grabCursor={true}
+        grabCursor={false}
         centeredSlides={true}
         slidesPerView={3}
+        navigation={true}
         spaceBetween={0}
         loop={true}
+        autoplay={true}
         coverflowEffect={{
           rotate: 50,
           stretch: 0,
@@ -180,7 +202,7 @@ const Index = ({ estilo }) => {
         modules={[EffectCoverflow, Pagination]}
         className="mySwiper"
       >
-        <div className="w-full absolute z-10 top-0 left-0  flex justify-center items-center sm:flex-row flex-col text-">
+        <div className="hidden w-full absolute z-20 top-0 left-0  flex justify-center items-center sm:flex-row flex-col">
           <div className="bg-[#997f2362] justify-center items-center space-x-1 md:space-x-5">
             <button
               className="text-xl text-bold p-1 hover:text-white hover:bg-[#4c88c4] rounded-lg"
@@ -347,85 +369,64 @@ const Index = ({ estilo }) => {
 
       <div className="flex flex-row justify-center items-center  space-x-5">
         <p className="append-buttons">
-          <h1 className="text-xs ">Avaliação do conteúdo</h1>
-          <button onClick={() => {}} className="prepend-2-slides">
-            1 -3
-          </button>
-          <button onClick={() => {}} className="prepend-2-slides">
-            4-7
-          </button>
-          <button onClick={() => {}} className="prepend-2-slides">
-            8-10
-          </button>
+          <h1 className="text-xs ">Dê uma avaliação!</h1>
+          <input type="range" defaultValue={0} onChange={() => setNotificarLogin(true)} />
         </p>
         <p className="append-buttons">
-          <div className="flex flex-row">
-            <PrimaryButton>
-              <GiVote />
-              <span>Votar</span>
-            </PrimaryButton>
+          <div className="flex flex-row justify-center items-center">
+            <button className="" onClick={() => setNotificarLogin(true)}>
+              <div className="flex flex-col items-center">
+                <FaVoteYea className="text-3xl" />
+                <span className="text-xs">Votar </span>
+              </div>
+            </button>
           </div>
         </p>
         <p className="append-buttons">
-          <h1 className="text-xs ">Emoções</h1>
-          <button onClick={() => {}} className="prepend-2-slides">
-            <BsEmojiHeartEyes />
-          </button>
-          <button onClick={() => {}} className="prepend-slide">
-            <BsEmojiSmile />
-          </button>
-          <button onClick={() => {}} className="append-slide">
-            <BsEmojiExpressionless />
-          </button>
-          <button onClick={() => {}} className="append-2-slides">
-            <BsEmojiLaughing />
-          </button>
+          <h1 className="text-xs ">Como se sentiu?</h1>
+          <div className="append-buttons flex flex-row space-x-2 text-2xl">
+            <span className="flex space-x-1">
+              <BsEmojiHeartEyes />
+            </span>
+            <span className="flex space-x-1">
+              <BsEmojiSmile />
+            </span>
+            <span className="flex space-x-1">
+              <BsEmojiExpressionless />
+            </span>
+            <span className="flex space-x-1">
+              <BsEmojiLaughing />
+            </span>
+          </div>
         </p>
       </div>
 
       <div className="flex flex-row justify-center items-center  space-x-5">
         <p className="append-buttons">
-          <h1 className="text-xs">Partilhas</h1>
-          <button onClick={() => {}} className="prepend-2-slides">
-            Facebook
+          <button onClick={() => setNotificarLogin(true)} className="prepend-2-slides">
+            Partilhar
           </button>
-          <button onClick={() => {}} className="prepend-2-slides">
-            Instagram
+          <button onClick={() => setNotificarLogin(true)} className="prepend-2-slides">
+            Recomendar
           </button>
-          {/*}
-          <button onClick={() => {}} className="prepend-slide">
-            Youtube
-          </button>
-          <button onClick={() => {}} className="append-slide">
-            Twitter
-          </button>
-          {*/}
-          <button onClick={() => {}} className="append-2-slides">
-            TikTok
-          </button>
-        </p>
-        <p className="append-buttons">
-          <h1 className="text-xs">Julgamento</h1>
+
           <button
-            onClick={() => setSendFeedback(true)}
+            onClick={() => setNotificarLogin(true)}
             className="prepend-2-slides"
           >
-            Positivo
-          </button>
-          <button
-            onClick={() => setSendFeedback(true)}
-            className="prepend-2-slides"
-          >
-            Neutro
-          </button>
-          <button
-            onClick={() => setSendFeedback(true)}
-            className="prepend-slide"
-          >
-            Negativo
+            Feedback
           </button>
         </p>
       </div>
+
+      <Modal isOpen={notificarLogin} onClose={() => setNotificarLogin(false)}>
+        <div className="w-[400px] h-[200px] flex flex-col">
+          <h1 className="text-2xl text-center">
+            Para interagir você precisa ter sessão iniciada, entre com a sua
+            conta ou registre-se{' '}
+          </h1>
+        </div>
+      </Modal>
 
       <Modal isOpen={sendFeedback} onClose={() => setSendFeedback(false)}>
         <div className="w-[400px] h-[200px] flex flex-col">

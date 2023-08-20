@@ -1,5 +1,6 @@
 import React from 'react';
-import { Swiper } from 'swiper/types';
+import './SwiperMenu.css'
+import { Swiper } from 'swiper';
 var menuButton = document.querySelector('.menu-button');
 var openMenu = function () {
   swiper.slidePrev();
