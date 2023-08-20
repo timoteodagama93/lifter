@@ -100,7 +100,7 @@ export default function AppLayout({
           setMobileMenuOpen={setMobileMenuOpen}
         />
 {*/}
-        <Sidebar
+        <Sidebar 
           mobileMenuOpen={mobileMenuOpen}
           setMobileMenuOpen={setMobileMenuOpen}
           activeLink={activeLink}
