@@ -107,8 +107,8 @@ export default function AppLayout({
           setActiveItem={setActiveItem}
           classNames="w-2/12"
         />
-        <div className="p-0 mt-0 h-screen w-screen md:w-10/12 flex flex-col">
-          <header className="w-full h-32 flex flex-col justify-center items-center  shadow-2xl mb-2">
+        <div className="p-1 mt-0 h-screen w-screen md:w-10/12 flex flex-col">
+          <header className="w-full h-32 flex flex-col justify-center items-center  shadow-2xl mb-4 pb-2">
             <div className="w-full h-16 flex p-0 m-0">
               <div className="md:w-2/12 object-contain ">
                 <img className="w-full h-full " src={Logo} />
