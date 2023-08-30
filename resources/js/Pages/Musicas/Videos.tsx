@@ -1,16 +1,17 @@
 import AppLayout from '@/Layouts/AppLayout';
 import React, { useState } from 'react';
-import { generos, songs } from '../../data/dummy';
+import { generos, songs } from '../../../data/dummy';
 import SelectGenre from '@/Components/SelectGenre';
 import { FaRandom } from 'react-icons/fa';
-import CardVideo from '../Components/CardVideo.tsx';
-function VideosLibrary() {
+import CardVideo from '../../Components/CardVideo';
+import Galeria from '../../Components/Galeria';
+function Videos() {
   const [activar, setActivar] = useState('todos');
   return (
     <AppLayout title="Biblioteca de videos">
-      <div className="pb-12">
+      <div className="pb-1">
         <div className="flex flex-col">
-          <div className="w-full flex justify-between items-center sm:flex-row flex-col mt-1 mb-10">
+          <div className="w-full hidden md:flex justify-between items-center sm:flex-row flex-col mt-0">
             <h2 className="font-bold text-3xl text-white text-left">
               Biblioteca de vídeos
             </h2>
@@ -56,8 +57,8 @@ function VideosLibrary() {
             </div>
           </div>
 
-          <div className="w-full h-16 flex flex-row justify-between items-center">
-            <button className="items-center flex shadow-sm rounded-sm bg-black text-white p-3">
+          <div className="w-full h-10 hidden md:flex flex-row justify-between items-center text-white">
+            <button className="items-center flex shadow-sm rounded-sm bg-[#2e2c2e] text-white p-2">
               <FaRandom />
               <span className="ml-5">Ordem aleatória e reproduzir</span>
             </button>
@@ -73,12 +74,8 @@ function VideosLibrary() {
           </div>
 
           <div className="w-full mx-auto sm:px-6 lg:px-8">
-            <div className="w-full flex flex-wrap m-2 dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
-              {songs?.map((song, id) => (
-                <div className="md:w-1/3 sm:w-1/2 h-60">
-                  <CardVideo video={song} />
-                </div>
-              ))}
+            <div className="w-full h-screen pb-32 flex flex-wrap m-2 dark:bg-gray-800 overflow-auto shadow-xl sm:rounded-lg ">
+              <Galeria nome_colecao='Vídeos' />
             </div>
           </div>
         </div>
@@ -87,4 +84,4 @@ function VideosLibrary() {
   );
 }
 
-export default VideosLibrary;
+export default Videos;

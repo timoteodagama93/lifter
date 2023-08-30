@@ -20,14 +20,14 @@ function UserAvatar() {
         {page.props.jetstream.hasTeamFeatures ? (
           <Dropdown
             align="right"
-            width="0"
+            width="48"
             renderTrigger={() => (
               <span className="inline-flex rounded-md">
                 <button
                   type="button"
                   className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150"
                 >
-                 Timóteo  {page.props.auth.user?.current_team?.name}
+                  {page.props.auth.user?.current_team?.name}
 
                   <svg
                     className="ml-2 -mr-0.5 h-4 w-4"
@@ -107,13 +107,13 @@ function UserAvatar() {
       {/* <!-- Settings Dropdown --> */}
       <div className="ml-3 relative">
         <Dropdown
-          align="right"
+          align="left"
           width="48"
           renderTrigger={() =>
             page.props.jetstream.managesProfilePhotos ? (
               <button className="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
                 <img
-                  className="h-8 w-8 rounded-full object-cover"
+                  className="h-12 w-12 rounded-full object-cover"
                   src={page.props.auth.user?.profile_photo_url}
                   alt={page.props.auth.user?.name}
                 />
@@ -148,7 +148,8 @@ function UserAvatar() {
             Manage Account
           </div>
 
-          <DropdownLink href={route('profile.show')}>Profile</DropdownLink>
+          <DropdownLink href={route('conta')}>Perfil</DropdownLink>
+          <DropdownLink href={route('profile.show')}>Definições</DropdownLink>
 
           {page.props.jetstream.hasApiFeatures ? (
             <DropdownLink href={route('api-tokens.index')}>
@@ -160,7 +161,7 @@ function UserAvatar() {
 
           {/* <!-- Authentication --> */}
           <form onSubmit={logout}>
-            <DropdownLink as="button">Log Out</DropdownLink>
+            <DropdownLink as="button">Terminar sessão</DropdownLink>
           </form>
         </Dropdown>
       </div>

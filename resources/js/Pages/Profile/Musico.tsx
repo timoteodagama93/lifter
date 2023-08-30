@@ -6,10 +6,14 @@ import { TiMessages } from 'react-icons/ti';
 import Modal from '@/Components/Modal';
 import { MdClose } from 'react-icons/md';
 import UserAvatar from '@/Components/UserAvatar';
+import { Link } from '@inertiajs/react';
+import useTypedPage from '@/Hooks/useTypedPage';
+import { router } from '@inertiajs/core';
 
 function Musico() {
   const [registroArtistico, setRegistroArtistico] = useState(false);
   const [upLoadingSong, setUpLoadingSong] = useState(false);
+  const page = useTypedPage()
   return (
     <AppLayout title="Perfil">
       <div className="w-full flex flex-col">
@@ -17,13 +21,13 @@ function Musico() {
           <div className="w-full flex">
             <div className="w-20 m-2">
               <img
-                src={songs[0].images?.artistImage}
+                src={page.props.auth.user?.profile_photo_url}
                 className=" rounded-full w-20 border border-black"
               />
             </div>
             <div className="w-2/3 flex flex-col">
               <h2 className="text-4xl text-bold">
-                Artístico: {songs[1].subtitle}{' '}
+                Artístico: {page.props.auth.user?.name}
               </h2>
               <div className="w-full flex flex-row">
                 <span className="mr-2"> Albuns: 5 </span>
@@ -46,12 +50,12 @@ function Musico() {
               <BiMusic className="mr-3" />
               Criar perfil artístico
             </button>
-            <button className="m-1 border border-b-4 hover:bg-gray-200 border-orange-500 rounded-lg items-center flex p-1"
+            <Link href='/upload' className="m-1 border border-b-4 hover:bg-gray-200 border-orange-500 rounded-lg items-center flex p-1"
             onClick={ ()=> setUpLoadingSong(true)}
             >
               <BiUpload className="mr-3" />
               Carregar música
-            </button>
+            </Link>
             <button className="m-1 border border-b-4 hover:bg-gray-200 border-orange-500 rounded-lg items-center flex p-1">
               <BiStats className="mr-3" />
               Relatórios
@@ -169,8 +173,8 @@ function Musico() {
               <MdClose />
             </span>
             <form className="m-0">
-              <div className="border m-0 p-5 w-full flex flex-row mx-5 justify-start items-center">
-                <label htmlFor="artistico" className=" mr-5 justify-end">
+              <div className="border p-5 w-full flex flex-row mx-1 justify-start items-center">
+                <label htmlFor="artistico" className=" mx-1 justify-end">
                   Nome Completo
                 </label>
                 <input
@@ -179,8 +183,8 @@ function Musico() {
                   type="text"
                 />
               </div>
-              <div className="border shadow-sm m-5 p-5 w-full flex flex-row mx-5 justify-start items-center">
-                <label htmlFor="artistico" className=" mr-5 justify-end">
+              <div className="border shadow-sm p-5 w-full flex flex-row mx-1 justify-start items-center">
+                <label htmlFor="artistico" className=" mx-1 justify-end">
                   Nome artístico
                 </label>
                 <input
@@ -189,8 +193,8 @@ function Musico() {
                   type="text"
                 />
               </div>
-              <div className="border m-5 p-5 w-full flex flex-row mx-5 justify-start items-center">
-                <label htmlFor="artistico" className=" mr-5 justify-end">
+              <div className="border p-5 w-full flex flex-row mx-1 justify-start items-center">
+                <label htmlFor="artistico" className=" mx-1 justify-end">
                   Estilo Musical
                 </label>
                 <input

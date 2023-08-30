@@ -33,17 +33,22 @@ import {
 } from 'react-icons/md';
 import {
   GiClassicalKnowledge,
+  GiDiscussion,
+  GiEmptyChessboard,
   GiIcePop,
   GiRank1,
   GiRank2,
   GiTeacher,
 } from 'react-icons/gi';
 import {
+  BsCameraVideo,
   BsEmojiHeartEyes,
   BsFacebook,
   BsInfoCircle,
   BsInstagram,
   BsIntersect,
+  BsListCheck,
+  BsMusicNote,
   BsStars,
   BsTiktok,
   BsTrophy,
@@ -54,11 +59,14 @@ import {
   BiArrowFromBottom,
   BiArrowFromTop,
   BiCamera,
+  BiHome,
   BiLibrary,
   BiLike,
   BiMicrophone,
   BiMusic,
+  BiQuestionMark,
   BiTrendingUp,
+  BiUserVoice,
   BiVideo,
 } from 'react-icons/bi';
 import {
@@ -66,21 +74,20 @@ import {
   RiContactsBook2Fill,
   RiProfileLine,
   RiStarSLine,
+  RiTeamLine,
 } from 'react-icons/ri';
-import { GrGrow, GrIntegration, GrLike, GrMoney, GrWaypoint } from 'react-icons/gr';
+import {
+  GrGrow,
+  GrIntegration,
+  GrLike,
+  GrMoney,
+  GrWaypoint,
+} from 'react-icons/gr';
 import React from 'react';
 
-export const upper_links = [
-  { name: 'Inicio', href: route('inicio'), icon: HiOutlineHome },
-  { name: 'Músicas', href: route('musicas'), icon: BiMusic },
-  { name: 'Ascensão', href: route('ascensao'), icon: MdEmojiEvents },
-  // { name: 'Bibliotecas', href: route('bibliotecas'), icon: MdLibraryMusic },
-  //{ name: 'Notícias', href: route('noticias'), icon: HiOutlineNewspaper },
-  { name: 'Explorar', href: route('explorar'), icon: MdOutlineExplore },
-];
 export const ascensao_links = [
   { name: 'Sobre', href: 'sobre', icon: BsInfoCircle },
-  { name: 'Artistas', href: 'artistas', icon: BiArrowFromBottom },
+  { name: 'Inscritos', href: 'artistas', icon: BiUserVoice },
   { name: 'Inscrições', href: 'inscricoes', icon: BiMicrophone },
   { name: 'Benefícios', href: 'beneficios', icon: BsTrophy },
   { name: 'Termos & Condições', href: 'termos_condicoes', icon: FaHandshake },
@@ -100,86 +107,44 @@ const RankingIcon = () => {
 /**
  * Home Links for Beta version
  */
-export const home_links = [
+export const jurados_links = [
   { name: 'Destaques', href: 'destaques', icon: HiFire },
-  { name: 'Avaliar', href: 'famosos', icon: GrLike },
-  /*
-  { name: 'Dicas', href: 'dicas', icon:  GiTeacher},
-*/
+  { name: 'Avaliar', href: 'avaliar', icon: RankingIcon },
+  { name: 'Opinar', href: 'opinar', icon: GiDiscussion },
+  /**
+   * Vídeos Links for Beta version
+   */
 ];
+
 
 /**
  * Home Links for Beta version
  */
+
+export const home_links = [
+  { name: 'Início', href: 'inicio', icon: BiHome },
+  { name: 'Destaques', href: 'destaques', icon: HiFire },
+  { name: 'Tendências', href: 'tendencias', icon: BiTrendingUp }, //Colocado em descobrir
+  { name: 'Equipa Lifter', href: 'sobre', icon: RiTeamLine },
+  ];
+
 export const music_links = [
-  { name: 'Avaliar', href: 'avaliar', icon: FaVoteYea },
+  { name: 'Avaliar', href: 'avaliar', icon: BiLike },
   { name: 'Ranking', href: 'ranking', icon: RankingIcon },
   { name: 'Descobrir', href: 'descobrir', icon: MdExplore },
-];
-
-/*
-REAL HOME ITENS
-export const home_links = [
-  { name: 'Avaliar', href: 'avaliar', icon: HiOutlineEmojiHappy },
-  { name: 'Ranking', href: 'rank', icon: HiFire },
-  { name: 'Descobrir', href: 'descobrir', icon: MdExplore },
-  { name: 'Tendências', href: 'tendencias', icon: BiTrendingUp },//Colocado em descobrir
-  { name: 'Sugestões', href: 'sugestoes', icon: GrWaypoint }, //Colocado em descobrir
-];
-*/
-export const bibliotecas_links = [
-  { name: 'Músicas', href: 'musicas', icon: HiOutlineEmojiHappy },
-  { name: 'Vídeos', href: 'videos', icon: BiVideo },
-  { name: 'Talentos', href: 'talentos', icon: BiMicrophone },
-  { name: 'Ascensão', href: 'ascensao', icon: BsStars },
-];
-
-export const news_links = [
-  { name: 'Famosos', href: 'rank', icon: RiStarSLine },
-  { name: 'Destaques', href: 'avaliar', icon: HiOutlineEmojiHappy },
-  { name: 'Lançamentos', href: 'talentos', icon: BiMicrophone },
-  { name: 'Inspirações', href: 'estrelas', icon: BsStars },
-];
-
-export const explore_links = [
-  { name: 'Twitter', href: 'twitter', icon: BsTwitter },
-  { name: 'Youtube', href: 'youtube', icon: BsYoutube },
-  { name: 'Tik Tok', href: 'tiktok', icon: BsTiktok },
-  { name: 'Facebook', href: 'facebook', icon: BsFacebook },
-  { name: 'Instagram', href: 'instagram', icon: BsInstagram },
-];
-
-
-export const links = [
-  { name: 'Descobrir', href: route('inicio'), icon: HiOutlineHome },
-  { name: 'Ascensão', href: route('conta'), icon: MdEmojiEvents },
-  { name: 'Avaliar', href: route('ascensao'), icon: HiOutlineEmojiHappy },
-  { name: 'Artistas', href: route('conta'), icon: HiOutlineMicrophone },
-  { name: 'Estrelas', href: route('conta'), icon: BsStars },
-];
-
-/**
- *
- *
- * { name: 'Descobrir', href: route('descobrir'), icon: HiOutlineHashtag },
- * { name: 'Músicas', href: route('musicas'), icon: HiOutlineMusicNote },
- * { name: 'Vídeos', href: route('videos'), icon: HiOutlineVideoCamera },
- * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- *
- */
-export const user_links = [
-  { name: 'Conta', href: route('conta'), icon: FaUserCircle },
-  { name: 'Definições', href: route('settings'), icon: FaCog },
-  { name: 'Carregamentos', href: route('uploads'), icon: HiOutlineUpload },
+  { name: 'Músicas', href: 'musicas', icon: BsMusicNote },
+  { name: 'Vídeos', href: 'videos', icon: BsCameraVideo },
+  { name: 'Artistas', href: 'artistas', icon: BiUserVoice },
 ];
 
 export const account_links = [
-  { name: 'Perfil', href: 'twitter', icon: RiProfileLine },
-  { name: 'Contactos', href: 'youtube', icon: RiContactsBook2Fill },
-  { name: 'Integrações', href: 'tiktok', icon: BsIntersect },
-  { name: 'Crédito Lifter', href: 'facebook', icon: FaCoins },
-  { name: 'Sugestões', href: 'instagram', icon: BsInstagram },
-  { name: 'Biblioteca pessoal', href: 'instagram', icon: BiLibrary },
+  { name: 'Perfil', href: 'perfil', icon: RiProfileLine },
+  { name: 'Contactos', href: 'contactos', icon: RiContactsBook2Fill },
+  { name: 'Integrações', href: 'integracoes', icon: BsIntersect },
+  { name: 'Carteira Lifter', href: 'carteira', icon: FaCoins },
+  { name: 'Sugestões', href: 'sugestoes', icon: BsInstagram },
+  { name: 'Carregamentos', href: route('uploads'), icon: HiOutlineUpload },
+  { name: 'Biblioteca pessoal', href: 'biblioteca_pessoal', icon: BiLibrary },
 ];
 
 /**

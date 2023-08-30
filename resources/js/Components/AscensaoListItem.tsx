@@ -10,14 +10,17 @@ function AscensaoListItem({ song, i }) {
   const [playVideo, setPlayVideo] = useState(false);
   return (
     <>
-      <div className="flex flex-row  items-center border hover:bg-[#0b494d] hover:text-[#fff] py-2 p-4 rounded-lg cursor-pointer mb-2">
+      <div className="flex flex-row  items-center border hover:bg-[#2e2c2e] hover:text-[#fff] py-2 md:p-4 rounded-lg cursor-pointer mb-2 ">
         <div className="w-3/5 flex items-center">
-          <h3 className="font-bold text-base mr-3"> {i + 1}. </h3>
+          <h3 className="hidden md:flex font-bold text-base mr-2">
+            {' '}
+            {i + 1}.{' '}
+          </h3>
           <div className="flex-1 flex flex-row justify-between items-center">
             <img
               src={song?.images?.coverart}
               alt=""
-              className="w-10 h-10 rounded-lg"
+              className="hidden md:flex w-10 h-10 rounded-lg"
             />
             <div className="flex-1 flex flex-col justify-center mx-3">
               <Link href={`song-details/${song.id}`} className="">
@@ -41,7 +44,9 @@ function AscensaoListItem({ song, i }) {
             </div>
           </div>
         </div>
-        <div className="w-1/5 h-20 flex mx-2 ">
+
+        {/** VIDEO PLAY COVER */}
+        <div className="hidden w-1/5 h-20 md:flex mx-1 ">
           <img
             onClick={() => setPlayVideo(true)}
             src={song?.images?.coverart}
@@ -52,7 +57,7 @@ function AscensaoListItem({ song, i }) {
         <div className="w-1/5 flex">
           <PlayPause song={song} />
         </div>
-        <div className="w-1/5 flex">
+        <div className="w-1/5 flex text-[#2e2c2e] ">
           <FeedbackOnSong song={song} />
         </div>
         <div className="w-1/5">
@@ -70,9 +75,7 @@ function AscensaoListItem({ song, i }) {
             />
           </div>
           <div className="w-full">
-            <audio 
-            className='w-full h-56'
-            controls>
+            <audio className="w-full h-56" controls>
               <source type="video/mp3" src={song.link} />
             </audio>
           </div>

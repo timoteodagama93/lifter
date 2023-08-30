@@ -55,7 +55,7 @@ export default function Login({ canResetPassword, status }: Props) {
         </div>
 
         <div className="mt-4">
-          <InputLabel htmlFor="password">Password</InputLabel>
+          <InputLabel htmlFor="password">Palavra passe</InputLabel>
           <TextInput
             id="password"
             type="password"
@@ -78,7 +78,7 @@ export default function Login({ canResetPassword, status }: Props) {
               }
             />
             <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
-              Remember me
+              Lembrar-me
             </span>
           </label>
         </div>
@@ -90,7 +90,7 @@ export default function Login({ canResetPassword, status }: Props) {
                 href={route('password.request')}
                 className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
               >
-                Forgot your password?
+                Esqueceu sua senha?
               </Link>
             </div>
           )}
@@ -100,14 +100,14 @@ export default function Login({ canResetPassword, status }: Props) {
               href={route('register')}
               className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
             >
-              Need an account?
+              Criar uma conta?
             </Link>
 
             <PrimaryButton
               className={classNames('ml-4', { 'opacity-25': form.processing })}
               disabled={form.processing}
             >
-              Log in
+              Entrar
             </PrimaryButton>
           </div>
         </div>

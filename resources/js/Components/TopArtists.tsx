@@ -1,31 +1,68 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PlayPause from './PlayPause';
 import { Link } from '@inertiajs/react';
 import { artists } from '../../data/dummy';
 import TopArtistCard from './TopArtistCard';
 
-function TopArtist() {
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
+import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
+import { useStateContext } from '@/contexts/PaginaActualContext';
+import ArtistCard from './ArtistCard';
+
+function TopArtists({  }) {
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+
   return (
-    <div className="xl:ml-1 ml-0 xl:mb-0 mb-6 max-w-full flex flex-col bg-[#997f2362]">
-      <div className="w-full flex flex-col">
-        <div
-          className="flex flex-row justify-between
-             items-center"
-        >
-          <h2 className="text-white font-bold text-2xl">Top 10 Lifter </h2>
+    <div className="w-full md:w-[83vw] flex flex-col justify-center items-center">
+      <div
+        className="w-full flex flex-row justify-between
+             items-center "
+      >
+        <h2 className="font-bold text-2xl">Top artistas </h2>
+        <div className="flex space-x-4">
           <Link href="top-charts">
-            <p className="text-gray-300 text-base cursor-pointer">Ver mais</p>
+            <p className="text-base cursor-pointer">Em ascensão</p>
+          </Link>
+          <Link href="top-charts">
+            <p className="text-base cursor-pointer flex"><span className='hidden md:flex'>Ver</span> Todos</p>
           </Link>
         </div>
-        <div className="mt-4 flex flex-col gap-1">
+      </div>
+      <div className="w-full h-full mt-4 flex flex-co">
+        <Swiper
+          style={{
+            '--swiper-navigation-color': '#fff',
+            '--swiper-pagination-color': '#fff',
+            marginBottom: 0,
+            paddingTop: 0
+          }}
+          autoplay={true}
+          loop={true}
+          spaceBetween={10}
+          slidesPerView={'auto'}
+          navigation={true}
+          thumbs={{ swiper: thumbsSwiper }}
+          modules={[FreeMode, Navigation, Thumbs]}
+          className="mySwiper2 pt-0"
+          onActiveIndexChange={e => {
+            e.activeIndex;
+          }}
+        >
           {artists?.map((artist, id) => (
-            <TopArtistCard artist={artist} i={id} key={artist.id} />
+            <SwiperSlide className='h-screen'>
+              <ArtistCard artist={artist} i={id} key={artist.id} />
+            </SwiperSlide>
           ))}
-        </div>
-        <PlayPause />
+        </Swiper>
       </div>
     </div>
   );
 }
 
-export default TopArtist;
+export default TopArtists;

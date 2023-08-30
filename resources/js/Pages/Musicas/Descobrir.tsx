@@ -15,7 +15,7 @@ function Descobrir() {
   return (
     <AppLayout title="Descobrir">
       <div className="flex flex-col bg-gray-200 rounded-lg p-2">
-        <div className="w-full flex justify-between items-center sm:flex-row flex-col mt-4 mb-1">
+        <div className="w-full flex justify-between items-center flex-row shadow-lg mb-5 pb-1">
           <h2 className="flex font-bold text-3xl  text-çeft">Descobrir</h2>
           <form className="w-full hidden md:flex ">
             <input
@@ -25,7 +25,7 @@ function Descobrir() {
             />
           </form>
           <button className="md:hidden flex text-bold text-2xl  justify-center items-center bg-gray-400 p-2 rounded-lg">
-            <BiSearch className="mr-2 text-3xl" />
+            <BiSearch className="mr-2 text-3xl text-center" />
           </button>
           <select
             onChange={() => {}}
@@ -39,7 +39,7 @@ function Descobrir() {
             ))}
           </select>
         </div>
-        <div className="w-full max-h-screen pb-36 overflow-auto mx-auto px-2  dark:bg-gray-800 shadow-xl sm:rounded-lg">
+        <div className="w-full max-h-screen pb-56 overflow-auto mx-auto px-2  dark:bg-gray-800 shadow-xl sm:rounded-lg">
             <div className="flex">
               <div className="flex flex-wrap justify-start md:justify-center">
                 {songs.map((song, i) => (
@@ -53,7 +53,7 @@ function Descobrir() {
                   />
                 ))}
               </div>
-              <TopPlay />
+              {/*} <TopPlay />{*/}
             </div>
   
         </div>

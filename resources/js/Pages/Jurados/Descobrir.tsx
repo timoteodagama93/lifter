@@ -7,16 +7,16 @@ import TopPlay from '@/Components/TopPlay';
 import Player from '@/Components/Player/Player';
 import { BiSearch } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
+import TopArtists from '@/Components/TopArtists';
 
 function Descobrir() {
   const dispatch = useDispatch();
   const { activeSong, isPlaying } = useSelector(state => state.player);
 
   return (
-    <AppLayout title="Descobrir">
-      <div className="flex flex-col bg-gray-200 rounded-lg p-2">
-        <div className="w-full flex justify-between items-center sm:flex-row flex-col mt-4 mb-1">
-          <h2 className="flex font-bold text-xl  text-çeft">Descobrir</h2>
+    <div className="flex flex-col rounded-lg p-2">
+        <div className="w-full  justify-between items-center flex-row md:flex-col ">
+          <h2 className="flex font-bold text-sm md:text-xl  text-left">Descobrir</h2>
           <form className="w-full hidden md:flex ">
             <input
               className="w-3/4 mx-5 rounded-lg"
@@ -26,7 +26,7 @@ function Descobrir() {
           </form>
           <div className="w-full flex flex-row justify-center items-center">
             <button className="md:hidden flex  text-bold text-2xl  justify-center items-center bg-gray-400 p-2 rounded-lg">
-              <BiSearch className="mr-2 text-3xl" />
+              <BiSearch className="mr-2 text-xl" />
             </button>
             <select
               onChange={() => {}}
@@ -41,24 +41,21 @@ function Descobrir() {
             </select>
           </div>
         </div>
-        <div className="w-full max-h-screen pb-36 overflow-auto mx-auto px-2  dark:bg-gray-800 shadow-xl sm:rounded-lg">
-          <div className="flex">
-            <div className="flex flex-wrap justify-start md:justify-center">
-              {songs.map((song, i) => (
-                <SongCard
-                  song={song}
-                  i={i}
-                  key={i}
-                  activeSong={activeSong}
-                  isPlaying={isPlaying}
-                  songs={songs}
-                />
-              ))}
-            </div>
+        <div className="w-full max-h-screen flex pb-36 overflow-auto mx-auto px-2  dark:bg-gray-800 shadow-xl sm:rounded-lg">
+          <div className="flex flex-wrap justify-start md:justify-center">
+            {songs.map((song, i) => (
+              <SongCard
+                song={song}
+                i={i}
+                key={i}
+                activeSong={activeSong}
+                isPlaying={isPlaying}
+                songs={songs}
+              />
+            ))}
           </div>
         </div>
       </div>
-    </AppLayout>
   );
 }
 

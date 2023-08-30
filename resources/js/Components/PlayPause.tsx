@@ -12,13 +12,13 @@ function PlayPause({
   return isPlaying && activeSong?.title === song.title ? (
     <FaPauseCircle
       size={35}
-      className={`text-gray-300 ${classNames}`}
+      className={`text-gray-300 cursor-pointer ${classNames}`}
       onClick={handlePause}
     />
   ) : (
     <FaPlayCircle
       size={35}
-      className={`text-gray-300 ${classNames}`}
+      className={`text-gray-300 cursor-pointer ${classNames}`}
       onClick={handlePlay}
     />
   );

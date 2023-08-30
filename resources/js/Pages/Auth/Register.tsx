@@ -34,7 +34,7 @@ export default function Register() {
 
       <form onSubmit={onSubmit}>
         <div>
-          <InputLabel htmlFor="name">Name</InputLabel>
+          <InputLabel htmlFor="name">Nome</InputLabel>
           <TextInput
             id="name"
             type="text"
@@ -62,7 +62,7 @@ export default function Register() {
         </div>
 
         <div className="mt-4">
-          <InputLabel htmlFor="password">Password</InputLabel>
+          <InputLabel htmlFor="password">Senha</InputLabel>
           <TextInput
             id="password"
             type="password"
@@ -77,7 +77,7 @@ export default function Register() {
 
         <div className="mt-4">
           <InputLabel htmlFor="password_confirmation">
-            Confirm Password
+            Confirmar Senha
           </InputLabel>
           <TextInput
             id="password_confirmation"
@@ -109,21 +109,21 @@ export default function Register() {
                 />
 
                 <div className="ml-2">
-                  I agree to the
+                  Concordo com os {' '}
                   <a
                     target="_blank"
                     href={route('terms.show')}
                     className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                   >
-                    Terms of Service
+                    Termos de serviços 
                   </a>
-                  and
+                  {' '} e {' '}
                   <a
                     target="_blank"
                     href={route('policy.show')}
                     className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                   >
-                    Privacy Policy
+                    Politicas de privacidade
                   </a>
                 </div>
               </div>
@@ -137,14 +137,14 @@ export default function Register() {
             href={route('login')}
             className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
           >
-            Already registered?
+            Já tem uma conta?
           </Link>
 
           <PrimaryButton
             className={classNames('ml-4', { 'opacity-25': form.processing })}
             disabled={form.processing}
           >
-            Register
+            Continuar
           </PrimaryButton>
         </div>
       </form>

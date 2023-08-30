@@ -15,7 +15,8 @@ import { ContextPageProvider } from './contexts/PaginaActualContext';
 createInertiaApp({
   title: title => `${title} - ${appName}`,
   progress: {
-    color: '#4c88c4',
+    color: '#f6cc33',
+    
   },
   resolve: name =>
     resolvePageComponent(

@@ -80,8 +80,8 @@ export default function UpdateProfileInformationForm({ user }: Props) {
   return (
     <FormSection
       onSubmit={updateProfileInformation}
-      title={'Profile Information'}
-      description={`Update your account's profile information and email address.`}
+      title={'Informação de Perfil'}
+      description={`Actualize as tuas informações de conta e endereço de e-mail.`}
       renderActions={() => (
         <>
           <ActionMessage on={form.recentlySuccessful} className="mr-3">

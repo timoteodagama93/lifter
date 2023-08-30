@@ -30,7 +30,7 @@ export default function Show({
       )}
     >
       <div>
-        <div className="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+        <div className="h-[75vh] md:h-[90vh]  overflow-y-auto max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
           {page.props.jetstream.canUpdateProfileInformation ? (
             <div>
               <UpdateProfileInformationForm user={page.props.auth.user!} />

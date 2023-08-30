@@ -18,8 +18,8 @@ function SongCard({ song, i, activeSong, isPlaying, songs }) {
     dispatch(playPause(true));
   };
   return (
-    <div className="flex flex-col w-[200px] p-4 bg-white/5 ng-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer shadow-lg border">
-      <div className=" relative w-full h-50 group">
+    <div className="flex flex-col w-full md:w-1/3 lg:w-1/4 p-4 bg-white/5 ng-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer shadow-lg border">
+      <div className=" relative w-full h-full group">
         <div
           className={`absolute inset-0 justify-center items-center bg-black bg-opacity-50 group-hover:flex ${
             activeSong?.title === song.title
@@ -36,10 +36,14 @@ function SongCard({ song, i, activeSong, isPlaying, songs }) {
             handlePlay={handlePlayClick}
           />
         </div>
-        <img alt="song_img" src={song.images?.coverart} />
+        <img
+          className="w-full h-full"
+          alt="song_img"
+          src={song.images?.coverart}
+        />
       </div>
 
-      <div className="mt-4 flex flex-col">
+      <div className="flex flex-col">
         <p className="font-semibold text-lg  truncate">
           <Link href={`/song-details/${song?.id}`}>{song.title}</Link>
         </p>
@@ -53,16 +57,6 @@ function SongCard({ song, i, activeSong, isPlaying, songs }) {
           </Link>
         </p>
       </div>
-      {/*}
-      <Modal isOpen={isPlaying} onClose={() => setIsPlaying(false)}</div>>
-        <div className="">
-          <audio controls>
-            <source src={song.link} type="audio/ogg" />
-            <source src='songs/remember.mp3' type="audio/mpeg" />
-          </audio>
-        </div>
-      </Modal>
-        {*/}
     </div>
   );
 }

@@ -6,6 +6,7 @@ import React, {
   useContext,
   useState,
 } from 'react';
+import route from 'ziggy-js';
 
 interface InitialState {
   currentPage: string;
@@ -13,7 +14,7 @@ interface InitialState {
   setCurrentPage: Dispatch<SetStateAction<String>>;
 }
 const initialState = {
-  currentPage: 'index',
+  currentPage: '',
   setCurrentPage: page => {},
   hideSider: false,
   setHideSider: bool => {},
@@ -22,7 +23,9 @@ const StateContextPage = createContext(initialState);
 
 export const ContextPageProvider = ({ children }) => {
   const [currentPage, setCurrentPage] = useState(initialState.currentPage);
+
   const [hideSider, setHideSider] = useState(false);
+
   return (
     <StateContextPage.Provider
       value={{

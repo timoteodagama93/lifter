@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BiComment } from 'react-icons/bi';
 import { BsArrowDown, BsArrowUp } from 'react-icons/bs';
 import Modal from './Modal';
-import { MdClose } from 'react-icons/md';
+import { MdClose, MdFeedback, MdMessage } from 'react-icons/md';
 import PrimaryButton from './PrimaryButton';
 
 function FeedbackOnSong({ song }) {
@@ -11,11 +11,11 @@ function FeedbackOnSong({ song }) {
     <>
       <div className="flex flex-row ">
         <div
-          className="rounded-lg flex flex-row justify-center items-center bg-slate-100 shadow-xl mr-2 p-2"
+          className="rounded-lg flex md:flex-col justify-center items-center bg-slate-100 shadow-xl mr-2 p-2"
           onClick={() => setIsOpen(true)}
         >
-          <BiComment size={35} className="text-gray-300 shadow-2xl" />
-          <span className="ml-2">Comentar</span>
+          <MdMessage size={15} className="text-gray-300 shadow-2xl" />
+          <span className="hidden md:flex ml-2">Comentar</span>
         </div>
       </div>
 

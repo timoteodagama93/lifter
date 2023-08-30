@@ -78,8 +78,15 @@ export const generos = [
   { title: 'Afro-House', value: 'AFRO_HOUSE' },
 ];
 import SongTest from '../../public/songs/remember.mp3';
-import artist1 from '../img/artists/artist1.jpg';
-import artist2 from '../img/artists/artist2.png';
+import artist1 from './avatar.jpg';
+import artist2 from './avatar2.jpg';
+import artist3 from './avatar3.png';
+import artist4 from './avatar4.jpg';
+import artist5 from '../img/artists/artist1.jpg';
+import artist6 from '../img/artists/artist2.png';
+import artist7 from '../../public/img/artists/artista1.jpeg';
+import artist8 from '../../public/img/artists/artista2.jpeg';
+import smal_logo from '../img/z00.png';
 import lifter_smal_logo from '../img/z00.png';
 export const artists = [
   {
@@ -104,7 +111,7 @@ export const artists = [
     name: 'Os Defaya',
     style: 'Kuduro',
     about: '',
-    images: { coverart: Musica, artistImage: artist1 },
+    images: { coverart: Musica, artistImage: artist3 },
   },
   {
     id: 4,
@@ -112,7 +119,7 @@ export const artists = [
     style: 'Kuduro',
     about: '',
     songs: [SongTest, SongTest, SongTest],
-    images: { coverart: PlayMusica, artistImage: artist2 },
+    images: { coverart: PlayMusica, artistImage: artist4 },
   },
   {
     id: 5,
@@ -136,7 +143,7 @@ export const artists = [
     style: 'RnB',
     about: '',
     songs: [SongTest, SongTest, SongTest],
-    images: { coverart: Fones, artistImage: artist1 },
+    images: { coverart: Fones, artistImage: artist3 },
   },
   {
     id: 8,
@@ -144,7 +151,7 @@ export const artists = [
     style: 'Kizomba',
     about: '',
     songs: [SongTest, SongTest, SongTest],
-    images: { coverart: Musica, artistImage: artist2 },
+    images: { coverart: Musica, artistImage: artist4 },
   },
   {
     id: 9,
@@ -160,7 +167,86 @@ export const artists = [
     style: 'Zouk',
     about: '',
     songs: [SongTest, SongTest, SongTest],
-    images: { coverart: Musica, artistImage: artist2 },
+    images: { coverart: Musica, artistImage: artist3 },
+  },
+];
+
+export const destaques = [
+  {
+    id: 1,
+    name: 'Moise',
+    style: 'Gospel',
+    title: 'Mússico Gospel congoles',
+    song: SongTest,
+    images: { coverart: product1, artistImage: artist1 },
+  },
+  {
+    id: 2,
+    name: 'Bruno M',
+    style: 'Kuduro',
+    title: 'Kudurista que empulsiona',
+    song: SongTest,
+    images: { coverart: product2, artistImage: artist2 },
+    link: '',
+  },
+  {
+    id: 1,
+    name: 'Moise',
+    style: 'Gospel',
+    title: 'Mússico Gospel congoles',
+    song: SongTest,
+    images: { coverart: product1, artistImage: artist1 },
+  },
+  {
+    id: 2,
+    name: 'Bruno M',
+    style: 'Kuduro',
+    title: 'Kudurista que empulsiona',
+    song: SongTest,
+    images: { coverart: product2, artistImage: artist2 },
+    link: '',
+  },
+  {
+    id: 1,
+    name: 'Moise',
+    style: 'Gospel',
+    title: 'Ye Oyo',
+    song: SongTest,
+    images: { coverart: product1, artistImage: artist1 },
+  },
+  {
+    id: 2,
+    name: 'Bruno M',
+    style: 'Kuduro',
+    title: 'Cambio',
+    song: SongTest,
+    images: { coverart: product2, artistImage: artist2 },
+    link: '',
+  },
+  {
+    id: 3,
+    name: 'Jhonson Mbutani',
+    style: 'RnB',
+    title: 'Song Name',
+    song: SongTest,
+    images: { coverart: product3, artistImage: artist3 },
+  },
+  {
+    id: 4,
+    name: 'Joshua Mantuala',
+    style: 'Hip Hop',
+    title: 'Mama Africa yame',
+    song: SongTest,
+    images: { coverart: product2, artistImage: artist2 },
+    link: '',
+  },
+  {
+    id: 5,
+    name: 'Chris Brown',
+    style: 'RnB',
+    title: 'With you',
+    song: SongTest,
+    images: { coverart: product1, artistImage: artist1 },
   },
 ];
 
@@ -178,7 +264,7 @@ export const songs = [
     title: 'Ewe',
     subtitle: 'Bruno M',
     genero: 'Kuduro',
-    images: { coverart: PlayMusica, artistImage: artist2 },
+    images: { coverart: product1, artistImage: artist2 },
     link: '',
   },
   {
@@ -187,7 +273,7 @@ export const songs = [
     subtitle: 'Os Defaya',
     link: '',
     genero: 'Kuduro',
-    images: { coverart: Musica, artistImage: artist1 },
+    images: { coverart: product2, artistImage: artist3 },
   },
   {
     id: 4,
@@ -195,7 +281,7 @@ export const songs = [
     subtitle: 'Babilson',
     link: '',
     genero: 'Kuduro',
-    images: { coverart: PlayMusica, artistImage: artist2 },
+    images: { coverart: product3, artistImage: artist4 },
   },
   {
     id: 5,
@@ -203,7 +289,7 @@ export const songs = [
     subtitle: 'Os Cossantes',
     link: '',
     genero: 'RnB',
-    images: { coverart: Fones, artistImage: artist1 },
+    images: { coverart: product4, artistImage: artist5 },
   },
   {
     id: 6,
@@ -211,7 +297,7 @@ export const songs = [
     subtitle: 'Dj Lolo',
     link: '',
     genero: 'Afro House',
-    images: { coverart: PlayMusica, artistImage: artist2 },
+    images: { coverart: product5, artistImage: artist6 },
   },
   {
     id: 7,
@@ -219,7 +305,7 @@ export const songs = [
     subtitle: 'ANselmo Ralph',
     link: '',
     genero: 'RnB',
-    images: { coverart: Fones, artistImage: artist1 },
+    images: { coverart: product6, artistImage: artist7 },
   },
   {
     id: 8,
@@ -227,7 +313,7 @@ export const songs = [
     subtitle: 'Matias Damasio',
     link: '',
     genero: 'Semba',
-    images: { coverart: Musica, artistImage: artist2 },
+    images: { coverart: product7, artistImage: artist8 },
   },
   {
     id: 9,
@@ -235,7 +321,7 @@ export const songs = [
     subtitle: 'Calema',
     link: '',
     genero: 'RnB',
-    images: { coverart: Fones, artistImage: artist1 },
+    images: { coverart: product8, artistImage: artist1 },
   },
   {
     id: 10,
@@ -243,7 +329,15 @@ export const songs = [
     subtitle: 'Os Laranjinha',
     link: '',
     genero: '',
-    images: { coverart: Musica, artistImage: artist2 },
+    images: { coverart: product1, artistImage: artist2 },
+  },
+  {
+    id: 11,
+    title: 'Tipo Mosquito',
+    subtitle: 'Os Laranjinha',
+    link: '',
+    genero: '',
+    images: { coverart: Musica, artistImage: artist3 },
   },
 ];
 
