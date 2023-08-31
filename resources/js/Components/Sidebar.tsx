@@ -89,7 +89,7 @@ function Sidebar({ classNames }) {
           </button>
         </div>
 
-        {/**USER INFO */}
+
         <div
           className="w-full flex flex-col  py-2 px-0 my-2 justify-start items-center space-x-1 text-white hover:bg-[#2e2c2e] rounded"
           onClick={() => setHideSider(false)}
@@ -116,6 +116,7 @@ function Sidebar({ classNames }) {
                 <BiMessage />
               </Link>
             </div>
+
           </div>
         </div>
 

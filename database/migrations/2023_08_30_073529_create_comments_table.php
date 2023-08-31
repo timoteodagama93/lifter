@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('artists', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('genres');
-            $table->string('contact');
-            $table->string('country');
-            $table->string('city');
-            $table->string('url_cover');
-            $table->string('path_cover');
+            $table->string('comment');
+            $table->boolean('public')->default(true);
+            $table->boolean('status_saw')->default(false);
+            $table->integer('likes')->default(0);
+            $table->integer('dislikes')->default(0);
+            $table->integer('answers')->default(0);
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('artists');
+        Schema::dropIfExists('comments');
     }
 };

@@ -6,22 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Feedback extends Model
+class VoteSongsContest extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'message',
-        'public',
-        'status_read',
-        'likes',
-        'dislikes',
+        'positive',
+        'contest_id',
     ];
+
     /**
-     * Um feedback pertence a uma música.
+     * Um voto pertence a um concurso
      */
-    public function song(): BelongsTo
-    {
-        return $this->belongsTo(Song::class);
+    public function artist():BelongsTo{
+        return $this->belongsTo(Artist::class);
     }
 }

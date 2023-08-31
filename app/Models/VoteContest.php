@@ -6,24 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Wallet extends Model
+class VoteContest extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'saldo',
-        'total_ganho',
-        'total_recebido',
-        'total_transferido',
-        'total_investido',
-        'total_doado',
+        'positive',
+        'contest_id',
     ];
 
     /**
-     * Usuário dono da carteira
+     * Um voto pertence a um concurso
      */
-    public function user(): BelongsTo
-    {
+    public function user():BelongsTo{
         return $this->belongsTo(User::class);
     }
 }

@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('valuations', function (Blueprint $table) {
             $table->id();
-            $table->integer('pontuacao');
-            $table->integer('emoji');
+            $table->boolean('positive')->default(true);
+            $table->integer('points')->default(0);
+            $table->string('emotion')->nullable();
             $table->timestamps();
         });
     }

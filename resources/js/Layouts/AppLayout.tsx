@@ -41,6 +41,7 @@ import { FaMusic, FaVoteYea } from 'react-icons/fa';
 import { BsEmojiSmile, BsFillCameraVideoFill, BsTrophy } from 'react-icons/bs';
 import { Logo } from '../../img';
 import { current } from '@reduxjs/toolkit';
+import UserAvatar from '@/Components/UserAvatar';
 interface Props {
   title: string;
   renderHeader?(): JSX.Element;

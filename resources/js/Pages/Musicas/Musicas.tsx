@@ -71,7 +71,8 @@ export default function Musicas({ start_page }) {
   return (
     <AppLayout title="Músicas">
       <div className="w-[100%] h-full">
-        {start_page === 'avaliar' && currentPage === '' && <Avaliar />}
+        {currentPage === '' && <Avaliar />}
+        {currentPage === 'avaliar' && <Avaliar />}
         {currentPage === 'ranking' && <Ranking />}
         {currentPage === 'musicas' && (
           <div className="w-full h-[100vh] pb-36 md:h-[82vh] p-5 overflow-y-auto">
@@ -87,24 +88,22 @@ export default function Musicas({ start_page }) {
             ))}
           </div>
         )}
-        {currentPage === 'artistas' && <TopArtists />}
 
         {/*<Ranking />{*/}
         {currentPage === 'descobrir' && (
           <div className="w-full">
-            <Descobrir />{' '}
+            <Descobrir />
           </div>
         )}
-        {currentPage === 'tendencias' && (
-          <div className="w-full">
-            <TopArtists />{' '}
-          </div>
-        )}
+        {currentPage === 'artistas' && <TopArtists />}
+
+        {/*}
         {currentPage === 'sugestoes' && (
           <div className="max-w-full max-h-full">
             <EffectsCards />{' '}
           </div>
         )}
+        {*/}
       </div>
     </AppLayout>
   );

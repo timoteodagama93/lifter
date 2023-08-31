@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('artist');
             $table->string('cover');
             $table->string('link');
+            $table->integer('downloads')->default(0);
+            $table->integer('shares')->default(0);
             $table->timestamps();
         }); 
     }

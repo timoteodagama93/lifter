@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('artists', function (Blueprint $table) {
+        Schema::create('contests', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('genres');
-            $table->string('contact');
-            $table->string('country');
-            $table->string('city');
-            $table->string('url_cover');
-            $table->string('path_cover');
+            $table->string('contest_name');
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->string('url_cover')->nullable();
+            $table->string('url_terms')->nullable();
+            $table->string('url_conditions')->nullable();
+
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('artists');
+        Schema::dropIfExists('contests');
     }
 };

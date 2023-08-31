@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('message');
             $table->boolean('statud_read')->default(false);
+            $table->string('urls_atachments')->nullable();
             $table->timestamps();
         });
     }

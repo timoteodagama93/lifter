@@ -5,33 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Playlist extends Model
+class Notification extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'public',
-        'likes',
-        'dislikes',
+        'summary',
+        'title',
+        'status_read',
         'description',
+        'url_image',
+        'url_atachments',
     ];
 
     /**
-     * Usuário dono da playlist
+     * Uma notificação pertence a um usuário
      */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    /**
-     * Playlist vai ter muitas canções
-     */
-    public function songs(): BelongsToMany
-    {
-        return $this->belongsToMany(Song::class)->withTimestamps();
     }
 }

@@ -6,6 +6,8 @@ import PrimaryButton from './PrimaryButton';
 import { BsEmojiAngry } from 'react-icons/bs';
 import { HiOutlineEmojiHappy, HiOutlineEmojiSad } from 'react-icons/hi';
 import Modal from './Modal';
+import Checkbox from './Checkbox';
+import InputLabel from './InputLabel';
 
 function InteracoesMusical({ song, orientation = 'flex-col' }) {
   function colecionar() {}
@@ -126,6 +128,14 @@ function Avaliar({ song }) {
           <button onClick={() => setEmotionalValuation('happy')}>
             <BsEmojiAngry className="w-14 h-14" />
           </button>
+        </div>
+        <div>
+          <InputLabel>
+            <Checkbox /> Avaliar como positiva
+          </InputLabel>
+          <InputLabel>
+            <Checkbox /> Avalia como negativa
+          </InputLabel>
         </div>
         <PrimaryButton>Avaliar música</PrimaryButton>
       </form>

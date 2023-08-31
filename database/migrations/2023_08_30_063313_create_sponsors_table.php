@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('artists', function (Blueprint $table) {
+        Schema::create('sponsors', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('genres');
-            $table->string('contact');
-            $table->string('country');
-            $table->string('city');
-            $table->string('url_cover');
-            $table->string('path_cover');
+            $table->string('name')->nullable(false);
+            $table->string('about')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('address')->nullable();
+            $table->string('url_logo')->default('');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('artists');
+        Schema::dropIfExists('sponsors');
     }
 };

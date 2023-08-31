@@ -39,6 +39,7 @@ import {
   GiRank1,
   GiRank2,
   GiTeacher,
+  GiTrophyCup,
 } from 'react-icons/gi';
 import {
   BsCameraVideo,
@@ -125,6 +126,7 @@ export const home_links = [
   { name: 'Início', href: 'inicio', icon: BiHome },
   { name: 'Destaques', href: 'destaques', icon: HiFire },
   { name: 'Tendências', href: 'tendencias', icon: BiTrendingUp }, //Colocado em descobrir
+  { name: 'Concursos', href: 'concursos', icon: GiTrophyCup }, //Colocado em descobrir
   { name: 'Equipa Lifter', href: 'sobre', icon: RiTeamLine },
   ];
 
@@ -132,9 +134,9 @@ export const music_links = [
   { name: 'Avaliar', href: 'avaliar', icon: BiLike },
   { name: 'Ranking', href: 'ranking', icon: RankingIcon },
   { name: 'Descobrir', href: 'descobrir', icon: MdExplore },
-  { name: 'Músicas', href: 'musicas', icon: BsMusicNote },
+  /*{ name: 'Músicas', href: 'musicas', icon: BsMusicNote },
   { name: 'Vídeos', href: 'videos', icon: BsCameraVideo },
-  { name: 'Artistas', href: 'artistas', icon: BiUserVoice },
+  */{ name: 'Artistas', href: 'artistas', icon: BiUserVoice },
 ];
 
 export const account_links = [
