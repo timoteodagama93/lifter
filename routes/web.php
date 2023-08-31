@@ -2,13 +2,9 @@
 
 use App\Http\Controllers\ArtistaController;
 use App\Http\Controllers\SongsController;
-use App\Models\Song;
 use App\Models\User;
 use Illuminate\Foundation\Application;
-use Illuminate\Http\Client\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -28,15 +24,22 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+
+
     Route::get('/', function (User $user) {
         return Inertia::render('Home/Home', [
             'pagina' => 'destaques',
+            'user' => $user
         ]);
     })->name('/');
 
     Route::get('/patrocinar', function (User $user) {
         return Inertia::render('Patrocinar', []);
     })->name('patrocinar');
+
+    Route::get('/parceiros', function (User $user) {
+        return Inertia::render('parceiros', []);
+    })->name('parceiros');
 
     Route::post('/', function (User $user) {
         DB::update('update users set verify_if_artist = 0');
@@ -126,10 +129,4 @@ Route::middleware([
         return Inertia::render('SongDetails');
     })->name('song-details');
     Route::get('artistas/{pagina}/{id}', [ArtistaController::class, 'index'])->name('index');
-    /*
-    Route::group('/artistas', function () {
-        Route::get('/detalhes', [ArtistaController::class, 'index'])->name('index');
-        Route::get('/detalhes/{id}', [ArtistaController::class, 'detalhes'])->name('detalhes');
-    })->name('artistas');
-*/
 });

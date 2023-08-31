@@ -13,7 +13,6 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
-use Symfony\Component\Uid\Ulid;
 
 class User extends Authenticatable //implements MustVerifyEmail
 {
@@ -22,7 +21,7 @@ class User extends Authenticatable //implements MustVerifyEmail
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
-    use HasUlids;
+
 
     /**
      * The attributes that are mass assignable.
@@ -36,7 +35,7 @@ class User extends Authenticatable //implements MustVerifyEmail
         'verify_if_artist',
         'is_artist',
     ];
-    
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -67,20 +66,7 @@ class User extends Authenticatable //implements MustVerifyEmail
         'profile_photo_url',
     ];
 
-    /**
-     * Gera uma nova ULID para o modelo
-     */
-    public function newUniqueId(): string
-    {
-        return (string) Ulid::generate();
-    }
-    /**
-     * Obtem as colunas que devem ter identificadores unicos
-     */
-    public function uniqueIds(): array
-    {
-        return ['id'];
-    }
+    /** */
 
     /**
      * Relacionamento com o Modelo de artista. User->hasMany->Artist

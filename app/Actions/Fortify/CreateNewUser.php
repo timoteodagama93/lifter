@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
+use Symfony\Component\Uid\Ulid;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -19,7 +20,7 @@ class CreateNewUser implements CreatesNewUsers
      *
      * @param  array<string, string>  $input
      */
-    public function create(array $input)//: User
+    public function create(array $input): User
     {
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
@@ -27,7 +28,7 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
-
+        
         $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
