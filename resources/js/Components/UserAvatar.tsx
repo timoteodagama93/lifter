@@ -13,7 +13,7 @@ function UserAvatar() {
     router.post(route('logout'));
   } 
   return (
-    <div className="right-full hidden mb-10 sm:flex sm:items-center sm:ml-6">
+    <div className="right-full m-1 sm:flex sm:items-center sm:ml-6  rounded-full">
       <div className="ml-3 relative">
         
         {/* <!-- Teams Dropdown --> */}
@@ -111,7 +111,7 @@ function UserAvatar() {
           width="48"
           renderTrigger={() =>
             page.props.jetstream.managesProfilePhotos ? (
-              <button className="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+              <button className="flex text-sm border-2 border-transparent rounded-full shadow-sm shadow-white focus:outline-none focus:border-gray-300 transition">
                 <img
                   className="h-12 w-12 rounded-full object-cover"
                   src={page.props.auth.user?.profile_photo_url}

@@ -9,7 +9,7 @@ import { Link } from '@inertiajs/react';
 import { MdCall } from 'react-icons/md';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 
-function ChatsNotificacoes() {
+function Chats() {
   const [activar, setActivar] = useState('musicas');
   const { setHideSider } = useStateContext();
   //TODO: How to hide and show the sider -> setHideSider(true);
@@ -132,7 +132,7 @@ function ChatsNotificacoes() {
   );
 }
 
-export default ChatsNotificacoes;
+export default Chats;
 
 const ChatItem = ({ chatItem }) => {
   return (

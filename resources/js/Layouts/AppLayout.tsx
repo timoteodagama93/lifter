@@ -39,7 +39,7 @@ import { useStateContext } from '@/contexts/PaginaActualContext';
 import './style.css';
 import { FaMusic, FaVoteYea } from 'react-icons/fa';
 import { BsEmojiSmile, BsFillCameraVideoFill, BsTrophy } from 'react-icons/bs';
-import { Logo } from '../../img';
+import { Logo, Musica } from '../../img';
 import { current } from '@reduxjs/toolkit';
 import UserAvatar from '@/Components/UserAvatar';
 interface Props {
@@ -90,38 +90,40 @@ export default function AppLayout({
 
   const { hideSider, setHideSider } = useStateContext();
   const [openSearch, setOpenSearch] = useState(false);
+  const [openSongRandom, setOpenSongRandom] = useState(false);
+
   return (
-    <div className="w-screen flex bg-gradient-to-br __from-[#e8e8e8] __to-[#e3e3e3] from-[#282728] to-[#2e2525] fixed top-0 left-0 right-0 p-1 ">
+    <div className="w-screen flex bg-gradient-to-br _from-[#e8e8e8] _to-[#e3e3e3] dark:from-[#282728] dark:to-[#2e2525w] fixed top-0 left-0 right-0 p-1 bg-white ">
       {openSearch && <Search close={setOpenSearch} />}
+      {openSongRandom && <SongRandom close={setOpenSongRandom} />}
       <Head title={title} />
       <Banner />
-      <Sidebar classNames="w-2/12" />
       <div className="w-full flex flex-col">
-        <header className="w-full h-32 md:h-16 flex flex-col justify-center items-center  shadow-2xl mb-2">
+        <header className="w-full h-32 md:h-16 flex flex-col justify-center items-center  shadow-xl  rounded shadow-black mb-5 pb-1">
           <div className="w-full h-16 flex p-0 m-0">
             <Link href="/" className="md:w-2/12 object-contain ">
               <img className="w-full h-full " src={Logo} />
             </Link>
-            <div className="w-10/12 mx-1 h-16 justify-end  items-center  flex flex-row  rounded-lg">
+            <div className="w-10/12 gap-1 h-16 justify-end  items-center  flex flex-row  rounded-lg">
               {}
               <div className="mx-auto mb-1 sm:px-1 lg:px-2 object-contain hidden md:flex flex-row b-[#997f2362]">
                 <div className="w-full h-16 hidden md:flex flex-row justify-center items-center p-0 ">
                   <div
                     className={`${
-                      route().current()?.includes('/')
-                        ? 'border-b-2  border-[#4c88c4] bg-[#2e2c2e] text-[#4c88c4]'
+                      route().current() == '/'
+                        ? 'border-b-2  border-[#4c88c4] dark:bg-[#2e2c2e] text-[#4c88c4]'
                         : ''
-                    }  rounded p-2 m-2 cursor-pointer hover:bg-[#f6cc33 shadow-2xl shadow-[#2e2c2e] b-[#4c88c4] text-white hover:bg-[#2e2c2e]`}
+                    }  p-2 mx-1 cursor-pointer shadow-sm b-[#4c88c4] hover:bg-[#eaeaea] dark:bg-[#2e2c2e]  text-black dark:text-white hover:bg-[#fcfcf] dark:hover:bg-[#2e2c2e]`}
                   >
                     <Link
                       href={route('/')}
-                      className="flex flex-col lg:flex-row justify-center items-center gap-1"
+                      className="flex flex-col lg:flex-row justify-center items-center gap-1 text-[#1a1a1a]"
                     >
                       <BiHome className="text-3xl" />
 
                       <div className="flex flex-col text-start">
                         <span className="text-base">Início</span>
-                        <span className="text-xs text-gray-400 hidden xl:flex">
+                        <span className="text-xs dark:text-gray-400 hidden xl:flex">
                           Comece a explorar
                         </span>
                       </div>
@@ -130,9 +132,10 @@ export default function AppLayout({
                   <div
                     className={`${
                       route().current()?.includes('musicas')
-                        ? 'border-b-2  border-[#4c88c4] bg-[#2e2c2e] text-[#4c88c4]'
+                        ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
                         : ''
-                    }   p-2 m-2 cursor-pointer hover:bg-[#f6cc33 shadow-2xl shadow-[#2e2c2e] b-[#4c88c4] text-white hover:bg-[#2e2c2e] `}
+                    } shadow-sm rounded 
+                       p-2 mx-1 cursor-pointer hover:bg-[#f6cc33   b-[#4c88c4] text-black dark:text-white hover:bg-[#eaeaea] dark:hover:bg-[#2e2c2e] `}
                   >
                     <Link
                       href={route('musicas')}
@@ -147,34 +150,12 @@ export default function AppLayout({
                       </div>
                     </Link>
                   </div>
-                  {/*}
-                    <div
-                      className={`${
-                        route().current()?.includes('som_emocao')
-                          ? 'border-b-2  border-[#4c88c4] bg-[#0000004d] text-[#4c88c4]'
-                          : ''
-                      }  rounded p-2 m-2 cursor-pointer hover:bg-[#f6cc33 shadow-2xl shadow-[#2e2c2e] b-[#4c88c4] text-white hover:bg-[#2e2c2e]`}
-                    >
-                      <Link
-                        href="som_emocao"
-                        className="flex flex-col lg:flex-row justify-center items-center gap-1"
-                      >
-                        <HiEmojiHappy className="text-3xl" />
-                        <div className="flex flex-col text-start">
-                          <span className="text-base">Som-emoção</span>
-                          <span className="text-xs text-gray-400 hidden xl:flex">
-                            Sons, sensações e emoções
-                          </span>
-                        </div>
-                      </Link>
-                    </div>
-                    {*/}
                   <div
                     className={`${
                       route().current()?.includes('ascensao')
-                        ? 'border-b-2 border-[#4c88c4] bg-[#2e2c2e] text-[#4c88c4]  '
-                        : ''
-                    }  p-2 m-2 cursor-pointer hover:bg-[#f6cc33 shadow-2xl shadow-[#2e2c2e] b-[#4c88c4] text-white hover:bg-[#2e2c2e]`}
+                        ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
+                        : ' '
+                    } bg-[#] shadow-sm rounded p-2 mx-1 cursor-pointer hover:bg-[#f6cc33  b-[#4c88c4] dark:text-white dark:hover:bg-[#2e2c2e] hover:bg-[#eaeaea]`}
                   >
                     <Link
                       href={route('ascensao')}
@@ -192,36 +173,36 @@ export default function AppLayout({
                 </div>
               </div>
               {/*** Search buttom, Messages Link and Notification Link */}
-              <div className="hidden md:flex flex-row items-center ">
+              <div className="flex md:flex flex-row items-center mr-2">
                 <div className="flex flex-row space-x-1  items-center justify-center">
+                  <span></span>
                   <button
-                    className="border rounded p-2 m-4 cursor-pointer hover:bg-[#f6cc33 shadow-xl bg-[#2e2c2e] text-white flex flex-row justify-center items-center"
+                    className="rounded-sm p-2 m-0 md:m-4 cursor-pointer hover:bg-[#f6cc33 shadow-xl shadow-black bg-[#2e2c2e] text-white flex flex-row justify-center items-center"
                     onClick={() => setOpenSearch(true)}
                   >
                     <BiSearch />
-                    <span className="hidden">Pesquisar</span>
+                    <span className="hidden">Músicas</span>
+                  </button>
+                  <button
+                    className="rounded-sm p-2 m-0 md:m-4 cursor-pointer hover:bg-[#f6cc33 shadow-xl shadow-black bg-[#2e2c2e] text-white flex flex-row justify-center items-center"
+                    onClick={() => setOpenSongRandom(true)}
+                  >
+                    <FaMusic />
+                    <span className="hidden">Músicas</span>
                   </button>
 
-                  <div className="border rounded-lg p-2 m-4 cursor-pointer hover:bg-[#f6cc33 shadow-2xl bg-[#2e2c2e] text-white">
-                    <Link href="notificacoes">
+                  <div className="md:flex rounded-sm md:rounded-sm p-1 px-2 md:px-2 m-4 cursor-pointer hover:bg-[#f6cc33 shadow-xl shadow-black bg-[#2e2c2e] text-white">
+                    <Link href={route('comunicar')}>
                       <span className="sticky top-1 p-2  shadow-lg bg-[#000] w-4 h-4 flex justify-center items-center rounded-full text-red-500 text-xs">
                         2
                       </span>
                       <MdNotifications />
                     </Link>
                   </div>
-                  <div className="border rounded-lg p-2 m-4 cursor-pointer hover:bg-[#f6cc33 shadow-2xl bg-[#2e2c2e] text-white">
-                    <Link href="chats">
-                      <span className="sticky top-1 p-2  shadow-lg bg-[#000] w-4 h-4 flex justify-center items-center rounded-full text-red-500 text-xs">
-                        5
-                      </span>
-                      <BiMessage />
-                    </Link>
-                  </div>
                 </div>
               </div>
               <div className="md:hidden flex cursor-pointer items-center justify-center hover:bg-[#f6cc33 shadow-2xl ">
-                <div className="w-full object-contain p-2 m-1 border  bg-[#2e2c2e]">
+                <div className="w-full object-contain p-2 m-1 rounded-lg bg-[#eaeaea] dark:bg-[#2e2c2e]">
                   <div className=" justify-center items-center cursor-pointer">
                     {hideSider ? (
                       <MdClose
@@ -244,9 +225,10 @@ export default function AppLayout({
             <div
               className={` ${
                 route().current()?.includes('/')
-                  ? 'border-b-2  border-[#4c88c4] bg-[#2e2c2e] text-[#4c88c4]'
-                  : ''
-              }  rounded p-2 m-2 cursor-pointer hover:bg-[#f6cc33 shadow-2xl shadow-[#2e2c2e] b-[#4c88c4] text-white hover:bg-[#2e2c2e]`}
+                ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
+                : ' '
+            } bg-[#] shadow-sm rounded p-2 mx-1 cursor-pointer hover:bg-[#f6cc33  b-[#4c88c4] dark:text-white dark:hover:bg-[#2e2c2e] hover:bg-[#eaeaea]`
+          }
             >
               <Link
                 href={route('/')}
@@ -254,9 +236,9 @@ export default function AppLayout({
               >
                 <HiHome className="text-3xl" />
                 <div className="mt-0 flex flex-col text-start">
-                  <span className="text-base">Jurados</span>
+                  <span className="text-base">Início</span>
                   <span className="text-xs text-gray-400 hidden xl:flex">
-                    Avaliação musical
+                    Comece a explorar
                   </span>
                 </div>
               </Link>
@@ -264,9 +246,10 @@ export default function AppLayout({
             <div
               className={`${
                 route().current()?.includes('musicas')
-                  ? 'border-b-2  border-[#4c88c4] bg-[#2e2c2e] text-[#4c88c4]'
-                  : ''
-              }   p-2 m-2 cursor-pointer hover:bg-[#f6cc33 shadow-2xl shadow-[#2e2c2e] b-[#4c88c4] text-white hover:bg-[#2e2c2e] `}
+                ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
+                : ' '
+            } bg-[#] shadow-sm rounded p-2 mx-1 cursor-pointer hover:bg-[#f6cc33  b-[#4c88c4] dark:text-white dark:hover:bg-[#2e2c2e] hover:bg-[#eaeaea]`
+            }
             >
               <Link
                 href={route('musicas')}
@@ -281,34 +264,13 @@ export default function AppLayout({
                 </div>
               </Link>
             </div>
-            {/*}
-                    <div
-                      className={`${
-                        route().current()?.includes('som_emocao')
-                          ? 'border-b-2  border-[#4c88c4] bg-[#0000004d] text-[#4c88c4]'
-                          : ''
-                      }  rounded p-2 m-2 cursor-pointer hover:bg-[#f6cc33 shadow-2xl shadow-[#2e2c2e] b-[#4c88c4] text-white hover:bg-[#2e2c2e]`}
-                    >
-                      <Link
-                        href="som_emocao"
-                        className="flex flex-col lg:flex-row justify-center items-center gap-1"
-                      >
-                        <HiEmojiHappy className="text-3xl" />
-                        <div className="flex flex-col text-start">
-                          <span className="text-base">Som-emoção</span>
-                          <span className="text-xs text-gray-400 hidden xl:flex">
-                            Sons, sensações e emoções
-                          </span>
-                        </div>
-                      </Link>
-                    </div>
-                    {*/}
             <div
               className={`${
                 route().current()?.includes('ascensao')
-                  ? 'border-b-2 border-[#4c88c4] bg-[#2e2c2e] text-[#4c88c4]  '
-                  : ''
-              }  p-2 m-2 cursor-pointer hover:bg-[#f6cc33 shadow-2xl shadow-[#2e2c2e] b-[#4c88c4] text-white hover:bg-[#2e2c2e]`}
+                ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
+                : ' '
+            } bg-[#] shadow-sm rounded p-2 mx-1 cursor-pointer hover:bg-[#f6cc33  b-[#4c88c4] dark:text-white dark:hover:bg-[#2e2c2e] hover:bg-[#eaeaea]`
+            }
             >
               <Link
                 href={route('ascensao')}
@@ -325,10 +287,14 @@ export default function AppLayout({
             </div>
           </div>
         </header>
-        {/* <!-- Page Content --> */}
-        <main className="w-full flex mx-auto justify-center items-center bg-[#e3e3e3] p-1 rounded ">
-          {children}
-        </main>
+        <div className="w-full flex flex-row bg-[#f2f3f3] shadow-lg shadow-black dark:bg-[#2e2c2e] px-2">
+          <Sidebar classNames="w-2/12 lg:w-3/12 rounded" />
+
+          {/* <!-- Page Content --> */}
+          <main className="w-full md:w-10/12 flex mx-auto justify-center items-center dark:bg-[#2e2c2e] p-1 rounded ">
+            {children}
+          </main>
+        </div>
       </div>
 
       {activeSong?.title && (
@@ -361,6 +327,34 @@ function Search({ close }) {
             </form>
           </div>
           <div className="w-full h-96 "></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+function SongRandom({ close }) {
+  return (
+    <div className="z-50 absolute flex flex-col justify-center items-center w-screen h-full bg-[#000000a2]">
+      <div className="w-11/12 p-2 flex flex-col bg-white rounded justify-center items-center">
+        <div className="w-full mb-1 flex flex-row justify-center items-center bg-white rounded">
+          <div className="w-full h-full ">
+            <form className="w-full justify-center items-center px-8 md:px-40">
+              <input
+                type="search"
+                className="text-center border-b-4 w-full focus:border-[#6ba976] border-[#2e2c2e] rounded-lg"
+                placeholder="Buscar músicas..."
+              />
+            </form>
+          </div>
+          <button
+            onClick={() => close(false)}
+            className="justify-center items-center float-right bg-red-500 p-3 flex rounded flex-col"
+          >
+            <MdClose />
+          </button>
+        </div>
+        <div className="w-full xl:w-10/12 h-56 md:h-96 lg:h-[85vh] xl:h-[85vh] bg-black">
+          <div className=""></div>
         </div>
       </div>
     </div>

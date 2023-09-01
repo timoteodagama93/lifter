@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->string('message');
+            $table->string('id_sender');
+            $table->string('id_receiver');
             $table->boolean('statud_read')->default(false);
-            $table->string('urls_atachments')->nullable();
+            $table->string('urls_attachments')->nullable();
             $table->timestamps();
         });
     }

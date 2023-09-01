@@ -46,7 +46,7 @@ function Ranking() {
           {songs?.map((song, id) => (
             <TopChartCard song={song} i={id} key={song.id} />
           ))}
-        </div>
+        </div> 
       </div>
       <div className="w-1/4  bg-red-500d flex flex-col mt-0">
         <div
@@ -67,7 +67,7 @@ function Ranking() {
               <>
                 <Link href="">
                   <img
-                  key={song.id}
+                  key={i}
                     src={song.images.artistImage}
                     alt="name artist"
                     className="px-1 rounded-sm md:rounded-lg w-full object-cover"

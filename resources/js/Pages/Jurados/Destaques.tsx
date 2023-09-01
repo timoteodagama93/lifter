@@ -46,12 +46,14 @@ function Destaques() {
         {songs.map((song, i) => (
           <>
               <img
+              key={i+1}
                 onClick={() => setSelectedPosition(i)}
                 className="flex md:hidden w-1/4 h-2/6 cursor-pointer"
                 src={song.images.coverart}
               />
             <div className="hidden w-1/4 md:flex flex-row h-[10vh] md:w-full md:h-full cursor-pointer p-1">
               <img
+              key={i}
                 onClick={() => setSelectedPosition(i)}
                 className="w-full h-full cursor-pointer"
                 src={song.images.coverart}

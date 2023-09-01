@@ -25,13 +25,13 @@ function Descobrir() {
             />
           </form>
           <div className="w-full flex flex-row justify-center items-center">
-            <button className="md:hidden flex  text-bold text-2xl  justify-center items-center bg-gray-400 p-2 rounded-lg">
-              <BiSearch className="mr-2 text-xl" />
+            <button className="md:hidden flex  text-bold text-xl  justify-center items-center bg-[#2e2c2e] dark:bg-gray-400  p-1 md:p-2 rounded-sm">
+              <BiSearch className="text-xl" />
             </button>
             <select
               onChange={() => {}}
               value=""
-              className="p-1 text-xs md:text-sm rounded-lg outline-none "
+              className="p-1 text-xs md:text-sm rounded-md outline-none "
             >
               {generos.map(genero => (
                 <option key={genero.value} value={genero.value}>

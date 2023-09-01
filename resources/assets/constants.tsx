@@ -28,6 +28,7 @@ import {
   MdEmojiEvents,
   MdExplore,
   MdLibraryMusic,
+  MdMessage,
   MdNotifications,
   MdOutlineExplore,
 } from 'react-icons/md';
@@ -104,6 +105,14 @@ const RankingIcon = () => {
     </>
   );
 };
+
+/**
+ * Home Links for Beta version
+ */
+export const comunicaoes_links = [
+  { name: 'Notificações', href: 'notificacoes', icon: MdNotifications },
+  { name: 'Mensagens', href: 'mensagens', icon: MdMessage },
+];
 
 /**
  * Home Links for Beta version

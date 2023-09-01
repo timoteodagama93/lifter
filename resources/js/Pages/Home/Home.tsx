@@ -65,7 +65,7 @@ export default function Home({ pagina, ruid }: Props) {
 
       <div className="relative sm:flex flex-col sm:justify-center sm:items-center  bg-dots-darker bg-center dark:bg-dots-lighter  selection:bg-red-500 selection:text-white">
        
-        <div className="w-full h-[85vh] overflow-y-auto mx-auto p-2 lg:p-4 border">
+        <div className="w-full h-[85vh] overflow-y-auto mx-auto p-2 lg:p-4">
           {currentPage === '' && <Postagens />}
           {currentPage === 'inicio' && <Postagens />}
           {currentPage === 'destaques' && <Destaques />}

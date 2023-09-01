@@ -117,6 +117,10 @@ Route::middleware([
         return Inertia::render('ChatsNotificacoes');
     })->name('chats');
 
+    Route::get('/comunicar', function () {
+        return Inertia::render('Comunicar');
+    })->name('comunicar');
+
     Route::get('/notifaicacoes', function () {
         return Inertia::render('ChatsNotificacoes');
     })->name('notificacoes');

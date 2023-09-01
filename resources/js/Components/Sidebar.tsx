@@ -3,6 +3,7 @@ import ApplicationLogo from './ApplicationLogo';
 import {
   account_links,
   ascensao_links,
+  comunicaoes_links,
   home_links,
   jurados_links,
   music_links,
@@ -37,6 +38,8 @@ function Sidebar({ classNames }) {
     innerLinks = jurados_links;
   } else if (route().current()?.includes('conta')) {
     innerLinks = account_links;
+  } else if (route().current()?.includes('comunicar')) {
+    innerLinks = comunicaoes_links;
   } else if (route().current()?.includes('uploads')) {
   }
 
@@ -45,11 +48,11 @@ function Sidebar({ classNames }) {
   return (
     <>
       <div
-        className={` hidden md:flex
-         opacity-95  h-screen sticky flex-col ${classNames} py-2 px-2 bg-gradient-to-br __from-[#a1a1a1] __to-[#d8d8d8] from-[#231e21] to-[#241e20] backdrop-blur-lg  `}
+        className={`rounded hidden md:flex
+         opacity-95  h-screen sticky flex-col ${classNames} py-2 px-2 bg-gradient-to-br dark:from-[#282728] dark:to-[#282728] mx-2 backdrop-blur-lg  bg-[#f2f3f3] shadow-lg shadow-black`}
       >
         <div
-          className={`w-full flex justify-between flex-row-reverse items-center text-white bold`}
+          className={`w-full flex justify-between flex-row-reverse items-center dark:text-white bold`}
         >
           {hideNames == true ? (
             <button onClick={() => setHideNames(false)}>
@@ -60,24 +63,26 @@ function Sidebar({ classNames }) {
               <BsArrowLeft />
             </button>
           )}
-
           <h1 className="text-xl capitalize"> {routeName} </h1>
         </div>
         {/**USER INFO */}
-        <UserAvatar />
+        <div className="flex flex-row justify-start items-center m-0 dark:text-white">
+          <UserAvatar />
+          <span>{page.props.auth.user?.name} </span>
+        </div>{' '}
+        <div className="w-full border-b-2 py-4 border-gray-400" />
         <InnerLinks
           innerLinks={innerLinks}
           setActiveItem={setactiveItem}
           setCurrentPage={setCurrentPage}
           setHideSidebar={setHideSider}
         />
-        <div className="w-full border-b-2 border-gray-400" />
       </div>
-      {}
+      {/**sidebar telefones */}
       <div
-        className={`absolute top-0 h-screen w-2/3 bg-gradient-to-tl from-white/10 to-[#483d8b] backdrop-blur-lg z-10 p-1 md:hidden smooth-transition ${
+        className={`absolute top-0 h-screen w-2/3 bg-gradient-to-tl backdrop-blur-lg z-10 p-1 md:hidden smooth-transition ${
           hideSider ? 'left-0' : '-left-full'
-        }`}
+        } dark:from-[#282728] dark:to-[#282728] mx-2 backdrop-blur-lg  bg-[#f2f3f3] shadow-lg shadow-black `}
       >
         <div className="w-full h-14 object-contain">
           <ApplicationLogo />
@@ -88,38 +93,11 @@ function Sidebar({ classNames }) {
             <GrClose />
           </button>
         </div>
-
-
-        <div
-          className="w-full flex flex-col  py-2 px-0 my-2 justify-start items-center space-x-1 text-white hover:bg-[#2e2c2e] rounded"
-          onClick={() => setHideSider(false)}
-        >
+        <div className="w-full mt-1 flex flex-row  dark:text-white justify-center items-center">
           <UserAvatar />
+          <span>{page.props.auth.user?.name} </span>
         </div>
-
-        {/**ICONES DE MENSAGENS, Notificações e usuário */}
-        <div className="flex flex-row items-center">
-          <div className="flex flex-row space-x-2">
-            <div className="border rounded p-2 m-4 cursor-pointer hover:bg-[#f6cc33 shadow-2xl b-[#4c88c4] text-white">
-              <Link href="notificacoes">
-                <span className="relative shadow-lg bg-slate-100 w-5 h-5 flex justify-center items-center rounded-full text-red-500 top-1">
-                  2
-                </span>
-                <GrNotification />
-              </Link>
-            </div>
-            <div className="border rounded p-2 m-4 cursor-pointer hover:bg-[#f6cc33 shadow-2xl b-[#4c88c4] text-white">
-              <Link href="chats">
-                <span className="relative shadow-lg bg-slate-100 w-5 h-5 flex justify-center items-center rounded-full text-red-500 top-1">
-                  5
-                </span>
-                <BiMessage />
-              </Link>
-            </div>
-
-          </div>
-        </div>
-
+        <div className="w-full border-b-2 py-4 border-gray-400" />
         <InnerLinks
           innerLinks={innerLinks}
           setActiveItem={setactiveItem}
@@ -127,8 +105,6 @@ function Sidebar({ classNames }) {
           setHideSidebar={setHideSider}
         />
       </div>
-
-      {}
     </>
   );
 }
@@ -149,15 +125,15 @@ function InnerLinks({
         ''
       ) : (
         <div className="mt-0">
-          <ul className="flex flex-col gap-1  justify-start my-5 text-sm font-medium text-white">
+          <ul className="flex flex-col gap-1  justify-start my-5 text-sm font-medium dark:text-white">
             {innerLinks.map(item => (
               <button
                 className={`flex 
           ${
             item.href === activo
-              ? 'border-l-4 border-[#4c88c4]  bg-[#2e2c2e] '
+              ? 'border-l-4 border-[#4c88c4]  bg-[#eaeaea] '
               : ''
-          } hover:bg-[#2e2c2e]
+          } dark:hover:bg-[#2e2c2e] hover:bg-[#eaeaea]
           `}
                 key={item.name}
                 onClick={() => {

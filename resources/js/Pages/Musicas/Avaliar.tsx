@@ -46,11 +46,12 @@ export default function Avaliar() {
           className="mySwiper2 "
           onActiveIndexChange={e => setActiveIndex(e.activeIndex)}
         >
-          {songs.map(song => (
+          {songs.map((song, i) => (
             <SwiperSlide>
               <div className="flex flex-col w-full h-full p-4 bg-white/5 ng-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer shadow-lg border">
                 <div className="relative w-full md:px-36 lg:px-52 xl:px-96 h-4/5">
                   <img
+                  key={i}
                     className="w-full h-full"
                     alt="song_img"
                     src={song.images?.coverart}
@@ -59,7 +60,7 @@ export default function Avaliar() {
 
                 <div className="flex flex-col h-1/5 w-full items-center justify-center">
                   <div className="flex flex-row justify-center items-center gap-2">
-                    <PlayPause classNames={''} song={song} />
+                    <PlayPause key={i} classNames={''} song={song} />
                     <p className="font-semibold text-lg  truncate">
                       <Link href={`/song-details/${song?.id}`}>
                         {song.title}
@@ -68,6 +69,7 @@ export default function Avaliar() {
                   </div>
                   <p className="text-sm truncate  mt-1">
                     <Link
+                    key={i}
                       href={
                         song.artist
                           ? `/artists/${song?.subtitle}`
