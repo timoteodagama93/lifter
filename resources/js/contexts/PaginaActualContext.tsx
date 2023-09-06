@@ -7,6 +7,7 @@ import React, {
   useState,
 } from 'react';
 import route from 'ziggy-js';
+import { account_links } from '../../assets/constants';
 
 interface InitialState {
   currentPage: string;
@@ -14,8 +15,8 @@ interface InitialState {
   setCurrentPage: Dispatch<SetStateAction<String>>;
 }
 const initialState = {
-  currentPage: '',
-  setCurrentPage: page => {},
+  currentPage: <></>,
+  setCurrentPage: page => {page},
   hideSider: false,
   setHideSider: bool => {},
 };

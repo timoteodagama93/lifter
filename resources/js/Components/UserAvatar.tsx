@@ -4,18 +4,20 @@ import DropdownLink from './DropdownLink';
 import useTypedPage from '@/Hooks/useTypedPage';
 import useRoute from '@/Hooks/useRoute';
 import { router } from '@inertiajs/core';
+import { useStateContext } from '@/contexts/PaginaActualContext';
+import { Perfil } from '@/Pages/Perfil';
 
 function UserAvatar() {
   const page = useTypedPage();
   const route = useRoute();
+  const { setCurrentPage } = useStateContext();
   function logout(e: React.FormEvent) {
     e.preventDefault();
     router.post(route('logout'));
-  } 
+  }
   return (
     <div className="right-full m-1 sm:flex sm:items-center sm:ml-6  rounded-full">
       <div className="ml-3 relative">
-        
         {/* <!-- Teams Dropdown --> */}
         {page.props.jetstream.hasTeamFeatures ? (
           <Dropdown
@@ -147,8 +149,9 @@ function UserAvatar() {
           <div className="block px-4 py-2 text-xs text-gray-400">
             Manage Account
           </div>
-
-          <DropdownLink href={route('conta')}>Perfil</DropdownLink>
+          <div onClick={() => setCurrentPage(<Perfil />)}>
+            <DropdownLink href={route('perfil')}>Perfil</DropdownLink>
+          </div>
           <DropdownLink href={route('profile.show')}>Definições</DropdownLink>
 
           {page.props.jetstream.hasApiFeatures ? (

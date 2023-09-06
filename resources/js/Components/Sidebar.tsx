@@ -1,43 +1,36 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import ApplicationLogo from './ApplicationLogo';
 import {
   account_links,
+  account_pages,
   ascensao_links,
   comunicaoes_links,
-  home_links,
-  jurados_links,
-  music_links,
+  home_pages,
+  music_pages,
 } from '../../assets/constants';
 import route from 'ziggy-js';
-import { HiOutlineMenu, HiOutlineUpload, HiOutlineUser } from 'react-icons/hi';
-import { Link } from '@inertiajs/react';
 import useTypedPage from '@/Hooks/useTypedPage';
-import useRoute from '@/Hooks/useRoute';
 import UserAvatar from './UserAvatar';
-import { BiArrowBack, BiMessage, BiUser } from 'react-icons/bi';
 import { useStateContext } from '@/contexts/PaginaActualContext';
-import { GrClose, GrNotification } from 'react-icons/gr';
+import { GrClose } from 'react-icons/gr';
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
-import { FaCog, FaCogs } from 'react-icons/fa';
-import { artists } from '../../data/dummy';
 
 function Sidebar({ classNames }) {
-  var innerLinks = home_links;
+  var innerLinks = home_pages;
 
   const { setCurrentPage, hideSider, setHideSider } = useStateContext();
   const [hideNames, setHideNames] = useState(false);
   const [routeName, setRouteName] = useState(route().current());
   const [activeItem, setactiveItem] = useState('');
-  if (route().current() === '/') {
-    innerLinks = home_links;
+
+  if (route().current() === '/home') {
+    innerLinks = home_pages;
   } else if (route().current()?.includes('ascensao')) {
     innerLinks = ascensao_links;
   } else if (route().current()?.includes('musicas')) {
-    innerLinks = music_links;
-  } else if (route().current()?.includes('jurados')) {
-    innerLinks = jurados_links;
-  } else if (route().current()?.includes('conta')) {
-    innerLinks = account_links;
+    innerLinks = music_pages;
+  } else if (route().current()?.includes('perfil')) {
+    innerLinks = account_pages;
   } else if (route().current()?.includes('comunicar')) {
     innerLinks = comunicaoes_links;
   } else if (route().current()?.includes('uploads')) {
@@ -138,7 +131,7 @@ function InnerLinks({
                 key={item.name}
                 onClick={() => {
                   setActivo(item.href);
-                  setCurrentPage(item.href);
+                  setCurrentPage(item.pagina);
                   setHideSidebar(false);
                 }}
               >

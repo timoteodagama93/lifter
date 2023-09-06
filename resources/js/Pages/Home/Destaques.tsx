@@ -1,75 +1,19 @@
 import React, { useState } from 'react';
-import { destaques, songs } from '../../../data/dummy';
-import { MdOutlineMessage } from 'react-icons/md';
-import {
-  BiDislike,
-  BiLibrary,
-  BiLike,
-  BiSend,
-  BiShare,
-  BiUser,
-} from 'react-icons/bi';
-import {
-  BsEmojiAngry,
-  BsEmojiExpressionless,
-  BsEmojiHeartEyes,
-  BsEmojiLaughing,
-  BsEmojiSmile,
-  BsSend,
-} from 'react-icons/bs';
-import { TiMessages } from 'react-icons/ti';
-import Modal from '@/Components/Modal';
-import { FaUser, FaUserInjured } from 'react-icons/fa';
+import { songs } from '../../../data/dummy';
+import { BiSend } from 'react-icons/bi';
+
+import { FaUser } from 'react-icons/fa';
 import PlayPause from '@/Components/PlayPause';
 import './destaques.css';
-import {
-  HiEmojiHappy,
-  HiOutlineEmojiHappy,
-  HiOutlineEmojiSad,
-} from 'react-icons/hi';
-import SecondaryButton from '@/Components/SecondaryButton';
-import PrimaryButton from '@/Components/PrimaryButton';
 import { Link } from '@inertiajs/react';
 import InteracoesMusical from '@/Components/InteracoesMusical';
+import AvaliarMusicas from '@/Components/AvaliarMusicas';
 function Destaques() {
   const [selectedPosition, setSelectedPosition] = useState(0);
   return (
-    <div className="flex p-1 flex-col md:flex-row-reverse md:justify-between">
-      <div className="w-full md:w-10/12 flex flex-col">
-        <ItemSelecionado
-          list_items={songs}
-          selected={selectedPosition}
-          isVideo={false}
-        />
-      </div>
-      <div className="w-full md:w-2/12 h-2/6 md:h-[80vh] flex flex-row md:flex-col justify-start items-start  md:overflow-auto overflow-x-auto lg:px-2 lg:space-y-1">
-        {songs.map((song, i) => (
-          <>
-              <img
-              key={i+1}
-                onClick={() => setSelectedPosition(i)}
-                className="flex md:hidden w-1/4 h-2/6 cursor-pointer"
-                src={song.images.coverart}
-              />
-            <div className="hidden w-1/4 md:flex flex-row h-[10vh] md:w-full md:h-full cursor-pointer p-1">
-              <img
-              key={i}
-                onClick={() => setSelectedPosition(i)}
-                className="w-full h-full cursor-pointer"
-                src={song.images.coverart}
-              />
-            </div>
-            {/*}
-              <div className="w-full hidden md:flex flex-row space-x-1 justify-start items-center bottom-1 left-0">
-                <img
-                  className="h-5 w-5 rounded-full"
-                  src={song.images.artistImage}
-                  />
-                <p> {song.subtitle} </p>
-              </div>
-                  {*/}
-          </>
-        ))}
+    <div className="">
+      <div className="w-full h-[100vh] flex flex-col justify-start rounded-lg p-2">
+        <AvaliarMusicas song={{}} index={9} />
       </div>
     </div>
   );
@@ -77,8 +21,39 @@ function Destaques() {
 
 export default Destaques;
 
+{
+  /*}
+<div className="w-full md:w-10/12 flex flex-col">
+  <ItemSelecionado
+    list_items={songs}
+    selected={selectedPosition}
+    isVideo={false}
+  />
+</div>
+<div className="w-full md:w-2/12 h-2/6 md:h-[80vh] flex flex-row md:flex-col justify-start items-start  md:overflow-auto overflow-x-auto lg:px-2 lg:space-y-1">
+  {songs.map((song, i) => (
+    <>
+        <img
+        key={i+1}
+          onClick={() => setSelectedPosition(i)}
+          className="flex md:hidden w-1/4 h-2/6 cursor-pointer"
+          src={song.images.coverart}
+        />
+      <div className="hidden w-1/4 md:flex flex-row h-[10vh] md:w-full md:h-full cursor-pointer p-1">
+        <img
+        key={i}
+          onClick={() => setSelectedPosition(i)}
+          className="w-full h-full cursor-pointer"
+          src={song.images.coverart}
+        />
+      </div>
+      
+    </>
+  ))}
+</div>
+{*/
+}
 function ItemSelecionado({ list_items, selected, isVideo }) {
- 
   return (
     <>
       <div className="flex flex-row">
@@ -179,7 +154,6 @@ function ItemSelecionado({ list_items, selected, isVideo }) {
           </div>
         </div>
       </div>
-      
     </>
   );
   function VideoItem({ song }) {
@@ -215,5 +189,4 @@ function ItemSelecionado({ list_items, selected, isVideo }) {
       </div>
     );
   }
- 
 }

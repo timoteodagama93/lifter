@@ -71,7 +71,7 @@ import SwiperMenu from './SwiperMenu';
 import classNames from 'classnames';
 import { GrPrevious } from 'react-icons/gr';
 import Galeria from '../../Components/Galeria';
-import Destaques from './Destaques';
+import Destaques from '../Home/Destaques';
 import Opinar from './Opinar';
 import Avaliar from './Avaliar';
 

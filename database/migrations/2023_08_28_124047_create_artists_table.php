@@ -13,13 +13,17 @@ return new class extends Migration
     {
         Schema::create('artists', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->constrained(table: 'users', column: 'id')
+                ->onDelete('cascade')
+                ->uonU('cascade');
             $table->string('name');
             $table->string('genres');
             $table->string('contact');
             $table->string('country');
+            $table->string('about');
             $table->string('city');
-            $table->string('url_cover');
-            $table->string('path_cover');
+            $table->string('url_cover')->nullable();
+            $table->string('path_cover')->nullable();
             $table->timestamps();
         });
     }

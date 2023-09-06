@@ -13,10 +13,13 @@ class Post extends Model
 
     protected $fillable = [
         'post_text',
-        'img_url',
-        'video_url',
+        'mime_type',
+        'file_url',
+        'user_id',
+        'file_path',
+        'likes',
+        'dislikes',
     ];
-
 
     /**
      * Recupera os comentários de um usuário
@@ -32,5 +35,13 @@ class Post extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Um poste tem um ficheiro: image, video, música
+     */
+    public function medias(): HasMany
+    {
+        return $this->hasMany(Media::class);
     }
 }

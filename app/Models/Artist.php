@@ -14,10 +14,12 @@ class Artist extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'name',
         'genres',
         'contact',
         'country',
+        'about',
         'city',
         'url_cover',
         'path_cover',
@@ -53,7 +55,7 @@ class Artist extends Model
      * Um artista tem muitos albuns
      */
 
-    
+
     /** 
      * Um artista vai ter muitos votos
      */
@@ -65,7 +67,8 @@ class Artist extends Model
     /**
      * Um artista pode ter muitos albuns
      */
-    public function albuns():HasMany{
+    public function albuns(): HasMany
+    {
         return $this->hasMany(Album::class);
     }
 }

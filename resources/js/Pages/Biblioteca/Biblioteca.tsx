@@ -14,7 +14,6 @@ import Videos from './Videos';
 function Biblioteca() {
   const [activar, setActivar] = useState('musicas');
   const { currentPage } = useStateContext();
-  console.log(currentPage);
   return (
     <AppLayout title="Bibliotecas">
       <div className="w-full flex flex-col bg-gray-200 rounded-lg">

@@ -16,7 +16,6 @@ import { router } from '@inertiajs/core';
 export default function RegisterArtist({ artist }) {
   const page = useTypedPage();
   const route = useRoute();
-  console.log(artist);
   const [souMusico, setSouMusico] = useState(false);
   const formArtist = useForm({
     name: '',
@@ -80,6 +79,7 @@ export default function RegisterArtist({ artist }) {
               />
               <div className="ml-2">Eu sou músico</div>
             </div>
+
             <InputError className="mt-2" message={formArtist.errors.terms} />
           </InputLabel>
         </div>

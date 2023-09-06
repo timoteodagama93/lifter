@@ -14,7 +14,7 @@ function Descobrir() {
 
   return (
     <AppLayout title="Descobrir">
-      <div className="flex flex-col bg-gray-200 rounded-lg p-2">
+      <div className="flex flex-col rounded-lg p-2">
         <div className="w-full flex justify-between items-center flex-row shadow-lg mb-5 pb-1">
           <h2 className="flex font-bold text-3xl  text-çeft">Descobrir</h2>
           <form className="w-full hidden md:flex ">

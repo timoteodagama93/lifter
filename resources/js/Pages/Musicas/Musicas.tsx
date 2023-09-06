@@ -67,37 +67,9 @@ import Avaliar from './Avaliar';
 export default function Musicas({ start_page }) {
   const page = route().current();
   const { currentPage } = useStateContext();
-  console.log(currentPage);
   return (
     <AppLayout title="Músicas">
-      <div className="w-[100%] h-full">
-        {currentPage === '' && <Avaliar />}
-        {currentPage === 'avaliar' && <Avaliar />}
-        {currentPage === 'ranking' && <Ranking />}
-        {currentPage === 'musicas' && (
-          <div className="w-full h-[100vh] pb-36 md:h-[82vh] p-5 overflow-y-auto">
-            {songs?.map((song, id) => (
-              <AscensaoListItem song={song} i={id} key={song.id} />
-            ))}
-          </div>
-        )}
-        {currentPage === 'videos' && (
-          <div className="w-full h-[100vh] pb-36 md:h-[82vh] p-5 overflow-y-auto">
-            {songs?.map((song, id) => ( 
-              <AscensaoListItem song={song} i={id} key={id} />
-            ))}
-          </div>
-        )}
-
-        {/*<Ranking />{*/}
-        {currentPage === 'descobrir' && (
-          <div className="w-full">
-            <Descobrir />
-          </div>
-        )}
-        {currentPage === 'artistas' && <TopArtists />}
-
-      </div>
+      <div className="relative">{currentPage}</div>
     </AppLayout>
   );
 }

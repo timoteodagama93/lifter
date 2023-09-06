@@ -42,6 +42,10 @@ import { BsEmojiSmile, BsFillCameraVideoFill, BsTrophy } from 'react-icons/bs';
 import { Logo, Musica } from '../../img';
 import { current } from '@reduxjs/toolkit';
 import UserAvatar from '@/Components/UserAvatar';
+import { Destaques } from '@/Pages/Home';
+import { Avaliar } from '@/Pages/Musicas';
+import { Sobre } from '@/Pages/Ascensao';
+import { Notificacoes } from '@/Pages/Comunicar/Index';
 interface Props {
   title: string;
   renderHeader?(): JSX.Element;
@@ -49,8 +53,6 @@ interface Props {
 
 export default function AppLayout({
   title,
-  renderHeader,
-  mudarPagina,
   children,
 }: PropsWithChildren<Props>) {
   const page = useTypedPage();
@@ -58,30 +60,11 @@ export default function AppLayout({
   const [showingNavigationDropdown, setShowingNavigationDropdown] =
     useState(false);
 
-  function switchToTeam(e: React.FormEvent, team: Team) {
-    e.preventDefault();
-    router.put(
-      route('current-team.update'),
-      {
-        team_id: team.id,
-      },
-      {
-        preserveState: false,
-      },
-    );
-  }
-
-  function logout(e: React.FormEvent) {
-    e.preventDefault();
-    router.post(route('logout'));
-  }
   //#d936d6
   //377377
 
   //f0f0f0
   //f8f8f8
-
-  const verify_if_artist = page.props.auth.user;
 
   const { activeSong } = useSelector(state => state.player);
 
@@ -91,6 +74,8 @@ export default function AppLayout({
   const { hideSider, setHideSider } = useStateContext();
   const [openSearch, setOpenSearch] = useState(false);
   const [openSongRandom, setOpenSongRandom] = useState(false);
+
+  const { setCurrentPage } = useStateContext();
 
   return (
     <div className="w-screen flex bg-gradient-to-br _from-[#e8e8e8] _to-[#e3e3e3] dark:from-[#282728] dark:to-[#2e2525w] fixed top-0 left-0 right-0 p-1 bg-white ">
@@ -109,14 +94,15 @@ export default function AppLayout({
               <div className="mx-auto mb-1 sm:px-1 lg:px-2 object-contain hidden md:flex flex-row b-[#997f2362]">
                 <div className="w-full h-16 hidden md:flex flex-row justify-center items-center p-0 ">
                   <div
+                    onClick={() => setCurrentPage(<Destaques />)}
                     className={`${
-                      route().current() == '/'
+                      route().current() == '/home'
                         ? 'border-b-2  border-[#4c88c4] dark:bg-[#2e2c2e] text-[#4c88c4]'
                         : ''
                     }  p-2 mx-1 cursor-pointer shadow-sm b-[#4c88c4] hover:bg-[#eaeaea] dark:bg-[#2e2c2e]  text-black dark:text-white hover:bg-[#fcfcf] dark:hover:bg-[#2e2c2e]`}
                   >
                     <Link
-                      href={route('/')}
+                      href={route('/home')}
                       className="flex flex-col lg:flex-row justify-center items-center gap-1 text-[#1a1a1a]"
                     >
                       <BiHome className="text-3xl" />
@@ -130,6 +116,7 @@ export default function AppLayout({
                     </Link>
                   </div>
                   <div
+                    onClick={() => setCurrentPage(<Avaliar />)}
                     className={`${
                       route().current()?.includes('musicas')
                         ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
@@ -151,6 +138,7 @@ export default function AppLayout({
                     </Link>
                   </div>
                   <div
+                    onClick={() => setCurrentPage(<Sobre />)}
                     className={`${
                       route().current()?.includes('ascensao')
                         ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
@@ -191,7 +179,11 @@ export default function AppLayout({
                     <span className="hidden">Músicas</span>
                   </button>
 
-                  <div className="md:flex rounded-sm md:rounded-sm p-1 px-2 md:px-2 m-4 cursor-pointer hover:bg-[#f6cc33 shadow-xl shadow-black bg-[#2e2c2e] text-white">
+                  <div
+                    /**Setup para carregar a pagina padrão do endereço actual: /comunicar */
+                    onClick={() => setCurrentPage(<Notificacoes />)}
+                    className="md:flex rounded-sm md:rounded-sm p-1 px-2 md:px-2 m-4 cursor-pointer hover:bg-[#f6cc33 shadow-xl shadow-black bg-[#2e2c2e] text-white"
+                  >
                     <Link href={route('comunicar')}>
                       <span className="sticky top-1 p-2  shadow-lg bg-[#000] w-4 h-4 flex justify-center items-center rounded-full text-red-500 text-xs">
                         2
@@ -223,15 +215,15 @@ export default function AppLayout({
           {/**MENU PARA TELEFONES */}
           <div className="flex  w-full h-16 md:hidden flex-row justify-center items-center px-1 ">
             <div
+              onClick={() => setCurrentPage(<Destaques />)}
               className={` ${
-                route().current()?.includes('/')
-                ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
-                : ' '
-            } bg-[#] shadow-sm rounded p-2 mx-1 cursor-pointer hover:bg-[#f6cc33  b-[#4c88c4] dark:text-white dark:hover:bg-[#2e2c2e] hover:bg-[#eaeaea]`
-          }
+                route().current()?.includes('/home')
+                  ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
+                  : ' '
+              } bg-[#] shadow-sm rounded p-2 mx-1 cursor-pointer hover:bg-[#f6cc33  b-[#4c88c4] dark:text-white dark:hover:bg-[#2e2c2e] hover:bg-[#eaeaea]`}
             >
               <Link
-                href={route('/')}
+                href={route('/home')}
                 className="flex flex-col lg:flex-row justify-center items-center gap-1"
               >
                 <HiHome className="text-3xl" />
@@ -244,12 +236,12 @@ export default function AppLayout({
               </Link>
             </div>
             <div
+              onClick={() => setCurrentPage(<Avaliar />)}
               className={`${
                 route().current()?.includes('musicas')
-                ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
-                : ' '
-            } bg-[#] shadow-sm rounded p-2 mx-1 cursor-pointer hover:bg-[#f6cc33  b-[#4c88c4] dark:text-white dark:hover:bg-[#2e2c2e] hover:bg-[#eaeaea]`
-            }
+                  ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
+                  : ' '
+              } bg-[#] shadow-sm rounded p-2 mx-1 cursor-pointer hover:bg-[#f6cc33  b-[#4c88c4] dark:text-white dark:hover:bg-[#2e2c2e] hover:bg-[#eaeaea]`}
             >
               <Link
                 href={route('musicas')}
@@ -265,12 +257,12 @@ export default function AppLayout({
               </Link>
             </div>
             <div
+              onClick={() => setCurrentPage(<Sobre />)}
               className={`${
                 route().current()?.includes('ascensao')
-                ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
-                : ' '
-            } bg-[#] shadow-sm rounded p-2 mx-1 cursor-pointer hover:bg-[#f6cc33  b-[#4c88c4] dark:text-white dark:hover:bg-[#2e2c2e] hover:bg-[#eaeaea]`
-            }
+                  ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
+                  : ' '
+              } bg-[#] shadow-sm rounded p-2 mx-1 cursor-pointer hover:bg-[#f6cc33  b-[#4c88c4] dark:text-white dark:hover:bg-[#2e2c2e] hover:bg-[#eaeaea]`}
             >
               <Link
                 href={route('ascensao')}

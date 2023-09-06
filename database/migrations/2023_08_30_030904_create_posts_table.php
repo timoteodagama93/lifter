@@ -13,6 +13,16 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')
+                ->constrained(table: 'users', indexName: 'id')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->string('post_text');
+            $table->string('mime_type');
+            $table->string('file_url');
+            $table->string('file_path');
+            $table->integer('likes')->default(0);
+            $table->integer('dislikes')->default(0);
             $table->timestamps();
         });
     }

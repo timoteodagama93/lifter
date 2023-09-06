@@ -1,0 +1,5 @@
+export {default as Biblioteca} from './Biblioteca'
+export {default as Perfil} from './Perfil'
+export {default as Carregamentos} from './Carregamentos'
+export {default as Contactos} from './Contactos'
+export {default as GerirArtista} from './GerirArtista'

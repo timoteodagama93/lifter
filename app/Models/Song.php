@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Song extends Model
 {
@@ -16,9 +17,10 @@ class Song extends Model
         'title',
         'artist',
         'cover',
+        'url',
+        'path',
         'downloads',
         'shares',
-        'url',
     ];
 
     /**
@@ -51,6 +53,13 @@ class Song extends Model
     public function votes(): HasMany
     {
         return $this->hasMany(Vote::class);
+    }
+    /** 
+     * Uma música vai ter um arquivo de mídia associado
+     */
+    public function media():HasOne 
+    {
+        return $this->hasOne(Media::class);
     }
 
     /**
