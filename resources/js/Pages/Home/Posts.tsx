@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { BiMusic, BiSend } from 'react-icons/bi';
 import { Musica } from '../../../img';
 import { BsArrowBarRight, BsCameraVideo, BsImage } from 'react-icons/bs';
@@ -17,12 +17,15 @@ function Posts() {
   const page = useTypedPage();
   const [posts, setPosts] = useState([]);
 
-  axios.post('/posts').then(response => {
-    if (response.status === 200) {
-      setPosts(response.data.posts);
-    }
-  });
-  
+  function loadPosts() {
+    axios.post('/posts').then(response => {
+      if (response.status === 200) {
+        setPosts(response.data);
+      }
+    });
+  }
+
+  useEffect(loadPosts, []);
   return (
     <>
       <div className="w-full md:px-2 flex flex-col">

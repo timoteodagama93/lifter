@@ -1,12 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import SongTest from '../../../../public/songs/remember.mp3';
 const initialState = {
   currentSongs: [],
   currentIndex: 0,
   isActive: false,
   isPlaying: false,
-  activeSong: {
-  },
+  activeSong: {},
   genreListId: '',
 };
 
@@ -17,16 +15,20 @@ const playerSlice = createSlice({
     setActiveSong: (state, action) => {
       state.activeSong = action.payload.song;
 
-      if (action.payload?.data?.tracks?.hits) {
-        state.currentSongs = action.payload.data.tracks.hits;
+      console.log('CHANGING active')
+      console.log(action.payload.songs)
+
+      if (action.payload?.songs) {
+        state.currentSongs = action.payload.songs;
       } else if (action.payload?.data?.properties) {
         state.currentSongs = action.payload?.data?.tracks;
       } else {
-        state.currentSongs = action.payload.data;
+        state.currentSongs = action.payload;
       }
 
       state.currentIndex = action.payload.i;
       state.isActive = true;
+      
     },
 
     nextSong: (state, action) => {

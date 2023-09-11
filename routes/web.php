@@ -8,6 +8,7 @@ use App\Models\Artist;
 use App\Models\Post;
 use App\Models\Song;
 use App\Models\User;
+use App\Models\Valuation;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Auth;
@@ -74,23 +75,49 @@ Route::middleware([
         return to_route('/');
     })->name('/');
 
-    Route::get('/artista', function (User $user) {
-        return Inertia::render('Auth/RegisterArtist', [
-            'user' => $user,
-            'add_artist' => false,
-        ]);
-    })->name('artista');
-
     Route::post('/get-my-artist', function (User $user) {
         return response()->json([
-            'artists' => Artist::all()->where(
+            'artists' => [Artist::all()->where(
                 'user_id',
                 auth()->id(),
-            ),
-            'all_artists' => Artist::all(),
+            )],
+            'all_artists' => [Artist::all()],
         ]);
     })->name('get-my-artist');
 
+
+    /**
+     * SONGSC ONTROLLER
+     *  Routas das Músicas
+     */
+    Route::post('/feedback', [SongsController::class, 'store_feedback'])->name('feedback');
+    Route::post('/feedbacks', [SongsController::class, 'get_feedbacks'])->name('feedbacks');
+
+    Route::post('/get-valluations', function(){
+        return response()->json(Valuation::where('song_id', Request::get('song_id'))->count());
+    })->name('get-valluations');
+    
+    Route::post('/get-my-valluation', [SongsController::class, 'minha_avaliacao'])->name('get-my-valluation');
+    
+    Route::post('/get-song', [SongsController::class, 'get_valuation_songs'])->name('get-song');
+    
+    Route::get('/get-songs', [SongsController::class, 'get_all_songs'])->name('get-songs');
+    
+    Route::post('/get-songs', [SongsController::class, 'get_songs'])->name('get-songs');
+    Route::post('/avaliar', [SongsController::class, 'avaliar'])->name('avaliar');
+    Route::post('/add-song', [SongsController::class, 'store'])->name('add-song');
+    Route::post('/add-song-cover', [SongsController::class, 'add_cover'])->name('add-song-cover');
+    Route::post('/update-song', [SongsController::class, 'update_info'])->name('update-song');
+    Route::post('/get-artist-songs', function () {
+        $data = Request::all();
+        return response()->json([
+            'artist_songs' => Song::all()->where(
+                'artist_id',
+                $data['id'],
+            ),
+            'all_songs' => Song::all(),
+        ]);
+    })->name('get-artist-songs');
 
 
     Route::get('inicio', function () {
@@ -160,9 +187,25 @@ Route::middleware([
         return Inertia::render('ChatsNotificacoes');
     })->name('chats');
 
+
+    /**
+     * POST CONTROLLER
+     */
     Route::post('/post', [PostController::class, 'store']);
     Route::post('/posts', [PostController::class, 'get']);
 
+    /**
+     * CONTEST CONTROLLER
+     */
+    Route::post('/contest', [PostController::class, 'store']);
+    Route::post('/contests', [PostController::class, 'get']);
+
+
+    /**
+     * COMUNICAÇÕES
+     * 1. Notificações
+     * 2. Mensagens
+     */
     Route::get('/comunicar', function () {
         return Inertia::render('Comunicar/Comunicar');
     })->name('comunicar');
@@ -181,6 +224,7 @@ Route::middleware([
 
     /**ARTIST ROUTES */
     Route::get('artistas/{pagina}/{id}', [ArtistaController::class, 'index'])->name('index');
+    Route::get('artistas/{pagina}/{id}', [ArtistaController::class, 'index'])->name('index');
     Route::post('/new-artist', [ArtistaController::class, 'store'])->name('new-artist');
     Route::post('/covers-artist', [ArtistaController::class, 'get_covers'])->name('covers-artist');
     Route::post('/add-cover', [ArtistaController::class, 'save_cover'])->name('add-cover');
@@ -191,6 +235,9 @@ Route::middleware([
             Artist::where('id', $id)->first()
         ]);
     })->name('artist-details');
+    Route::get('/get-top-artists', function () {
+        return response()->json(Artist::paginate(5));
+    })->name('get-top-artists');
 
     /**
      * CONTESTS ROUTES

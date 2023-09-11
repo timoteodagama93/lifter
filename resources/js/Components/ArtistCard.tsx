@@ -11,7 +11,7 @@ const ArtistCard = ({ artist, i }) => {
       <div className="flex-1 flex flex-col justify-between items-center">
         <div className="w-full ">
           <img
-            src={artist.images?.artistImage}
+            src={localStorage.getItem('prefix_storage') + artist.url_cover}
             alt="name artist"
             className="w-full h-full rounded-lg object-cover"
           />

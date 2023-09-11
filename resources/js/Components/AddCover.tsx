@@ -10,14 +10,17 @@ function AddCover() {
   const { data, setData, progress } = useForm({
     file: null as File | null,
   });
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
-  const photoRef = useRef<HTMLInputElement>(null);
   function saveNewPost(e) {
     e.preventDefault();
     axios.post('save-cover', data).then(response => {
       if (response.status == 200) clearPhotoFileInput;
     });
   }
+  
+  
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const photoRef = useRef<HTMLInputElement>(null);
+ 
   function selectNewPhoto() {
     photoRef.current?.click();
   }

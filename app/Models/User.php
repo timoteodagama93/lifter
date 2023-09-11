@@ -32,8 +32,9 @@ class User extends Authenticatable //implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'verify_if_artist',
         'is_artist',
+        'is_manager',
+        'is_editor',
     ];
 
     /**
@@ -128,6 +129,14 @@ class User extends Authenticatable //implements MustVerifyEmail
     public function votes(): HasMany
     {
         return $this->hasMany(VoteContest::class);
+    }
+
+    /** 
+     * Um usuário pode fazer muitas avaliações 
+     */
+    public function valuations(): HasMany
+    {
+        return $this->hasMany(Valuation::class);
     }
 
     /**

@@ -1,5 +1,5 @@
 import AppLayout from '@/Layouts/AppLayout';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { generos, songs } from '../../../data/dummy';
 import { BiMicrophone, BiTrophy } from 'react-icons/bi';
@@ -7,11 +7,18 @@ import { useStateContext } from '@/contexts/PaginaActualContext';
 import { MdClose, MdEvent } from 'react-icons/md';
 import { FaGraduationCap } from 'react-icons/fa';
 import { AiOutlinePicture } from 'react-icons/ai';
+import Sobre from './Sobre';
 
 function Ascensao() {
   const [activeSong, setActiveSong] = useState({});
   const [isPlaying, setIsPlaying] = useState(false);
-  const { currentPage } = useStateContext();
+  const { currentPage, setCurrentPage } = useStateContext();
+
+  function setDefaultPage() {
+    setCurrentPage(<Sobre />);
+  }
+
+  useEffect(setDefaultPage, []);
   return (
     <AppLayout title="Ascensão">
       <div className="w-full h-full flex flex-col bg-gray-200 pb-16 m-2 rounded-sm">

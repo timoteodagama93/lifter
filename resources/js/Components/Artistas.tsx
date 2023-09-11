@@ -5,10 +5,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { generos, songs } from '../../data/dummy';
 import SongCard from './SongCard';
 import TopArtists from './TopArtists';
+import { useGetValuateSongsQuery } from '@/redux/services/coreApi';
+import Loader from './Loader';
+import Error from './Error';
 
 function Artistas() {
-  const dispatch = useDispatch();
-  const { activeSong, isPlaying } = useSelector(state => state.player);
+  const { data, isFetching, error } =
+    useGetValuateSongsQuery('/get-top-artists');
+  if (isFetching) return <Loader />;
+  if (error) return <Error />;
 
   return (
     <AppLayout title="Descobrir">
@@ -40,9 +45,9 @@ function Artistas() {
         <div className="w-full max-h-screen pb-56 overflow-auto mx-auto px-2  dark:bg-gray-800 shadow-xl sm:rounded-lg">
           <div className="flex">
             <div className="flex flex-wrap justify-start md:justify-center">
-              <TopArtists artists={songs} />
+              <TopArtists artists={data.data} />
             </div>
-            {/*} <TopPlay />{*/}
+            
           </div>
         </div>
       </div>

@@ -11,14 +11,8 @@ import Player from './Player';
 import Seekbar from './Seekbar';
 import Track from './Track';
 import VolumeBar from './VolumeBar';
-import {
-  BsEmojiExpressionless,
-  BsEmojiHeartEyes,
-  BsEmojiLaughing,
-  BsEmojiSmile,
-} from 'react-icons/bs';
-import { BiDislike, BiLibrary, BiLike, BiShare } from 'react-icons/bi';
-import { MdOutlineMessage } from 'react-icons/md';
+import { BsStarFill, BsStar } from 'react-icons/bs';
+import axios from 'axios';
 
 const MusicPlayer = () => {
   const { activeSong, currentSongs, currentIndex, isActive, isPlaying } =
@@ -32,7 +26,7 @@ const MusicPlayer = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (currentSongs.length) dispatch(playPause(true));
+    if (currentSongs?.length) dispatch(playPause(true));
   }, [currentIndex]);
 
   const handlePlayPause = () => {
@@ -65,8 +59,45 @@ const MusicPlayer = () => {
     }
   };
 
+  const stars = [1, 2, 3, 4, 5];
+  const [selectedStar, setSelectedStar] = useState(0);
+
+  function submitValuation(stars) {
+    setSelectedStar(stars);
+    const data = new FormData();
+    data.append('song_id', activeSong?.id);
+    data.append('stars', stars);
+    console.log(data);
+
+    axios
+      .post('/avaliar', data)
+      .then(response => {
+        console.log(response);
+        setSelectedStar(response.data.stars);
+      })
+      .catch(errors => {
+        console.log(errors);
+      });
+  }
+  /**GET USER VALUATION TO SELECTED SONG */
+  function getUserValuation() {
+    const data = new FormData();
+    data.append('song_id', activeSong?.id);
+
+    axios
+      .post('/get-my-valluation', data)
+      .then(response => {
+        console.log(response);
+        setSelectedStar(response.data);
+      })
+      .catch(errors => {
+        console.log(errors);
+      });
+  }
+
+  useEffect(getUserValuation, [activeSong]);
   return (
-    <div className="">
+    <div className="w-full flex  flex-col md:flex-row justify-center items-center">
       <div className="relative sm:px-12 px-8 w-full flex items-center justify-between">
         <Track
           isPlaying={isPlaying}
@@ -76,7 +107,6 @@ const MusicPlayer = () => {
         <div className="flex-1 flex flex-col items-center justify-center">
           <Controls
             isPlaying={isPlaying}
-            isActive={isActive}
             repeat={repeat}
             setRepeat={setRepeat}
             shuffle={shuffle}
@@ -113,10 +143,24 @@ const MusicPlayer = () => {
           onChange={event => setVolume(event.target.value)}
           setVolume={setVolume}
         />
-         
       </div>
-      
-      
+      <div className=" flex flex-row items-center justify-center md:flex-col">
+        <span className="text-xs animate-bounce">Avalie</span>
+        <div className="justify-center items-center flex flex-row">
+          {stars.map(stars => (
+            <span key={stars} className="text-4xl ">
+              <button key={stars} onClick={() => submitValuation(stars)}>
+                {selectedStar >= stars ? (
+                  //                    || (isHovering == false && hoverStar >= stars)
+                  <BsStarFill className="text-[#f6cc33]" />
+                ) : (
+                  <BsStar />
+                )}
+              </button>
+            </span>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,22 +1,9 @@
-import { Link } from '@inertiajs/react';
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import useRoute from '@/Hooks/useRoute';
 import useTypedPage from '@/Hooks/useTypedPage';
 import { Head } from '@inertiajs/react';
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import Modal from '@/Components/Modal';
-import { Fones, Musica, PlayMusica } from '../../../img';
-import WelcomeToLifter from '@/Components/Welcome';
 
-import { Swiper, SwiperSlide } from 'swiper/react';
 // import Swiper core and required modules
-import {
-  Navigation,
-  Pagination,
-  Scrollbar,
-  A11y,
-  EffectCoverflow,
-} from 'swiper/modules';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -29,27 +16,13 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 
 import './style.css';
-import {
-  BsArrowBarRight,
-  BsCameraVideo,
-  BsEmojiExpressionless,
-  BsEmojiHeartEyes,
-  BsEmojiLaughing,
-  BsEmojiSmile,
-  BsImage,
-} from 'react-icons/bs';
-import PrimaryButton from '@/Components/PrimaryButton';
-import { GiVote } from 'react-icons/gi';
-import { FaHandshake, FaVoteYea } from 'react-icons/fa';
 import Destaques from './Destaques';
-import AuthenticationCard from '@/Components/AuthenticationCard';
 import AppLayout from '@/Layouts/AppLayout';
 import { router } from '@inertiajs/core';
 import { useStateContext } from '@/contexts/PaginaActualContext';
-import Galeria from '@/Components/Galeria';
-import Inicio from './Inicio';
-import { BiMusic, BiSend } from 'react-icons/bi';
-import Posts from './Posts';
+import { Error, Loader } from '@/Components';
+import { useGetValuateSongsQuery } from '@/redux/services/coreApi';
+import { useSelector } from 'react-redux';
 
 interface Props {
   pagina: string;
@@ -59,12 +32,27 @@ export default function Home({ pagina, posts, APP_URL }: Props) {
   const route = useRoute();
   const page = useTypedPage();
 
+/*
+  const { data, isFetching, error } = useGetValuateSongsQuery('/get-songs');
+  const { activeSong, isPlaying } = useSelector(state => state.player);
+
+  if (isFetching) return <Loader />;
+  if (error) return <Error />;
+
+  */
+
   const { currentPage, setCurrentPage } = useStateContext();
-  if (page.props.auth.user.verify_if_artist === 1) router.get('/artista');
+
 
   localStorage.getItem('APP_URL_STORAGE') == null
     ? localStorage.setItem('APP_URL_STORAGE', APP_URL + 'storage/')
     : '';
+
+    function setDefaultPage(){
+      setCurrentPage(<Destaques songs={[]} />)
+    }
+
+    useEffect(setDefaultPage,[]);
 
   return (
     <AppLayout title="Home">

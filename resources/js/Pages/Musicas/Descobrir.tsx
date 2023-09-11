@@ -7,10 +7,15 @@ import TopPlay from '@/Components/TopPlay';
 import Player from '@/Components/Player/Player';
 import { BiSearch } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
+import { useGetValuateSongsQuery } from '@/redux/services/coreApi';
+import { playPause, setActiveSong } from '@/redux/features/playerSlice';
 
 function Descobrir() {
-  const dispatch = useDispatch();
+  const { data, isFetching, error } = useGetValuateSongsQuery('/get-songs');
   const { activeSong, isPlaying } = useSelector(state => state.player);
+
+  if (isFetching) return <Loader />;
+  if (error) return <Error />;
 
   return (
     <AppLayout title="Descobrir">
@@ -40,22 +45,21 @@ function Descobrir() {
           </select>
         </div>
         <div className="w-full max-h-screen pb-56 overflow-auto mx-auto px-2  dark:bg-gray-800 shadow-xl sm:rounded-lg">
-            <div className="flex">
-              <div className="flex flex-wrap justify-start md:justify-center">
-                {songs.map((song, i) => (
-                  <SongCard
-                    song={song}
-                    i={i}
-                    key={i}
-                    activeSong={activeSong}
-                    isPlaying={isPlaying}
-                    songs={songs}
-                  />
-                ))}
-              </div>
-              {/*} <TopPlay />{*/}
+          <div className="flex">
+            <div className="flex flex-wrap justify-start md:justify-center">
+              {data.map((song, i) => (
+                <SongCard
+                  song={song}
+                  i={i}
+                  key={i}
+                  activeSong={activeSong}
+                  isPlaying={isPlaying}
+                  songs={data}
+                />
+              ))}
             </div>
-  
+            {/*} <TopPlay />{*/}
+          </div>
         </div>
       </div>
     </AppLayout>

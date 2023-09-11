@@ -39,7 +39,8 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            'my_artists' => Artist::all()->where('user_id', auth()->id())
+            'artist_account' => Artist::all()->where('user_id', auth()->id())->first(),
+            'my_artists' => [Artist::all()->where('user_id', auth()->id())]
         ]);
     }
 }

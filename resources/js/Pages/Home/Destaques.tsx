@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { songs } from '../../../data/dummy';
 import { BiSend } from 'react-icons/bi';
 
@@ -7,13 +7,30 @@ import PlayPause from '@/Components/PlayPause';
 import './destaques.css';
 import { Link } from '@inertiajs/react';
 import InteracoesMusical from '@/Components/InteracoesMusical';
-import AvaliarMusicas from '@/Components/AvaliarMusicas';
-function Destaques() {
-  const [selectedPosition, setSelectedPosition] = useState(0);
+import EnviarEstrelas from '@/Components/EnviarEstrelas';
+import axios from 'axios';
+import { useGetValuateSongsQuery } from '@/redux/services/coreApi';
+import { useSelector } from 'react-redux';
+import { Error, Loader } from '@/Components';
+import TopChartCard from '@/Components/TopChartCard';
+function Destaques({songs}) {
+  
   return (
     <div className="">
       <div className="w-full h-[100vh] flex flex-col justify-start rounded-lg p-2">
-        <AvaliarMusicas song={{}} index={9} />
+      <div className="mt-1 flex flex-col h-[100vh] pb-36 md:h-[75vh] overflow-auto ">
+          {songs?.map((song, id) => (
+            <TopChartCard
+              songs={data}
+              song={song}
+              isPlaying={isPlaying}
+              activeSong={activeSong}
+              i={id}
+              key={song.id}
+            />
+          ))}
+        </div>
+
       </div>
     </div>
   );

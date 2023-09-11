@@ -1,9 +1,15 @@
-import React from 'react'
+import React from 'react';
+import { HiEmojiSad } from 'react-icons/hi';
 
 function Error() {
   return (
-    <div>Error</div>
-  )
+    <div className="justify-center items-center w-full h-full flex flex-col">
+      <h1 className="text-xl">
+        Alguma coisa correu mal <HiEmojiSad /> ...
+      </h1>
+      <p className="text-base">Recarregue a página!</p>
+    </div>
+  );
 }
 
-export default Error
+export default Error;

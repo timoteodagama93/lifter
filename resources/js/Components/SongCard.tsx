@@ -1,11 +1,9 @@
 import React from 'react';
 import PlayPause from './PlayPause.tsx';
 import { Link } from '@inertiajs/react';
-import Modal from './Modal.js';
 
 import { playPause, setActiveSong } from '../redux/features/playerSlice.js';
 import { useDispatch } from 'react-redux';
-import { songs } from '../../data/dummy.js';
 
 function SongCard({ song, i, activeSong, isPlaying, songs }) {
   const dispatch = useDispatch();
@@ -14,7 +12,7 @@ function SongCard({ song, i, activeSong, isPlaying, songs }) {
     dispatch(playPause(false));
   };
   const handlePlayClick = () => {
-    dispatch(setActiveSong(song, songs, i));
+    dispatch(setActiveSong({song, songs, i}));
     dispatch(playPause(true));
   };
   return (
@@ -36,11 +34,21 @@ function SongCard({ song, i, activeSong, isPlaying, songs }) {
             handlePlay={handlePlayClick}
           />
         </div>
-        <img
-          className="w-full h-full"
-          alt="song_img"
-          src={song.images?.coverart}
-        />
+        {song.mime_type.includes('audio/') && (
+          <img
+            className="w-full h-full"
+            alt={song.title}
+            src={localStorage.getItem('prefix_storage') + song.cover}
+          />
+        )}
+        {song.mime_type.includes('video/') && (
+          <video className='w-full h-full'>
+            <source
+              type={song.mmime_type}
+              src={localStorage.getItem('prefix_storage') + song.url}
+            />
+          </video>
+        )}
       </div>
 
       <div className="flex flex-col">
@@ -48,12 +56,9 @@ function SongCard({ song, i, activeSong, isPlaying, songs }) {
           <Link href={`/song-details/${song?.id}`}>{song.title}</Link>
         </p>
         <p className="text-sm truncate  mt-1">
-          <Link
-            href={
-              song.artist ? `/artists/${song?.subtitle.adamid}` : 'top-artists'
-            }
-          >
-            {song.subtitle}
+          <Link href={song.artist ? `/artists/${song?.artist}` : 'top-artists'}>
+            {song.artist}{' '}
+            {!(song.participacoes === '') ? ' ft ' + song.participacoes : ''}
           </Link>
         </p>
       </div>

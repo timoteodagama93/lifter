@@ -35,7 +35,7 @@ import InputLabel from '@/Components/InputLabel';
 import useRoute from '@/Hooks/useRoute';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import AddArtistCover from '@/Components/AddArtistCover';
+import AddArtistCover from '@/Pages/Perfil/Artista/Info/AddArtistCover';
 
 function Musico() {
   const page = useTypedPage();

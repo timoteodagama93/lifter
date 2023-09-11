@@ -7,16 +7,16 @@ import { createInertiaApp } from '@inertiajs/react';
 import { RouteContext } from '@/Hooks/useRoute';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { Provider } from 'react-redux';
-import store from './redux/store';
+import store from './redux/store.jsx';
 const appName =
   window.document.getElementsByTagName('title')[0]?.innerText || 'Lifter';
 import { ContextPageProvider } from './contexts/PaginaActualContext';
+
 
 createInertiaApp({
   title: title => `${title} - ${appName}`,
   progress: {
     color: '#f6cc33',
-    
   },
   resolve: name =>
     resolvePageComponent(

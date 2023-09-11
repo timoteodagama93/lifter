@@ -11,13 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('valuations', function (Blueprint $table) {
-            $table->id();
-            $table->boolean('positive')->default(true);
-            $table->integer('points')->default(0);
-            $table->string('emotion')->nullable();
-            $table->timestamps();
-        });
     }
 
     /**
@@ -25,6 +18,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('valuations');
+        //
     }
 };

@@ -1,47 +1,21 @@
-import { router } from '@inertiajs/core';
 import { Link, Head } from '@inertiajs/react';
-import classNames from 'classnames';
-import React, { Children, PropsWithChildren, useState } from 'react';
+import React, { PropsWithChildren, useState } from 'react';
 import useRoute from '@/Hooks/useRoute';
 import useTypedPage from '@/Hooks/useTypedPage';
-import ApplicationMark from '@/Components/ApplicationMark';
 import Banner from '@/Components/Banner';
-import Dropdown from '@/Components/Dropdown';
-import DropdownLink from '@/Components/DropdownLink';
-import NavLink from '@/Components/NavLink';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Team } from '@/types';
 import { Sidebar } from '../Components';
-import TopPlay from '@/Components/TopPlay';
-import Player from '@/Components/Player/Player';
 import MusicPlayer from '@/Components/MusicPlayer';
 import { useSelector } from 'react-redux';
-import IconSidebar from '@/Components/IconSidebar';
-import { artists, generos } from '../../data/dummy';
-import {
-  BiHome,
-  BiLike,
-  BiMessage,
-  BiSearch,
-  BiSmile,
-  BiUser,
-  BiUserCircle,
-  BiUserPlus,
-} from 'react-icons/bi';
-import { GrNotification } from 'react-icons/gr';
-import { HiEmojiHappy, HiHome, HiOutlineMenu } from 'react-icons/hi';
-import { user_links } from '../../assets/constants';
+import { BiHome, BiSearch } from 'react-icons/bi';
+import { HiHome, HiOutlineMenu } from 'react-icons/hi';
 import { MdClose, MdNotifications } from 'react-icons/md';
-import ApplicationLogo from '@/Components/ApplicationLogo';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 
 //Style for swiper
 import './style.css';
-import { FaMusic, FaVoteYea } from 'react-icons/fa';
-import { BsEmojiSmile, BsFillCameraVideoFill, BsTrophy } from 'react-icons/bs';
-import { Logo, Musica } from '../../img';
-import { current } from '@reduxjs/toolkit';
-import UserAvatar from '@/Components/UserAvatar';
+import { FaMusic } from 'react-icons/fa';
+import { BsTrophy } from 'react-icons/bs';
+import { Logo } from '../../img';
 import { Destaques } from '@/Pages/Home';
 import { Avaliar } from '@/Pages/Musicas';
 import { Sobre } from '@/Pages/Ascensao';
@@ -66,7 +40,7 @@ export default function AppLayout({
   //f0f0f0
   //f8f8f8
 
-  const { activeSong } = useSelector(state => state.player);
+  const { activeSong, isPlaying } = useSelector(state => state.player);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState(route().current());
@@ -77,14 +51,19 @@ export default function AppLayout({
 
   const { setCurrentPage } = useStateContext();
 
+  if (localStorage.getItem('prefix_storage') === null)
+    localStorage.setItem('prefix_storage', 'http://127.0.0.1:8000/storage/');
+
   return (
-    <div className="w-screen flex bg-gradient-to-br _from-[#e8e8e8] _to-[#e3e3e3] dark:from-[#282728] dark:to-[#2e2525w] fixed top-0 left-0 right-0 p-1 bg-white ">
+    <div className="w-screen h-screen flex bg-gradient-to-br from-black to-[#121286] __dark:from-[#282728] __dark:to-[#2e2525w] fixed top-0 left-0 right-0 p-1 __bg-white ">
       {openSearch && <Search close={setOpenSearch} />}
       {openSongRandom && <SongRandom close={setOpenSongRandom} />}
       <Head title={title} />
       <Banner />
-      <div className="w-full flex flex-col">
-        <header className="w-full h-32 md:h-16 flex flex-col justify-center items-center  shadow-xl  rounded shadow-black mb-5 pb-1">
+      <Sidebar classNames="w-1/12 lg:w-3/12 rounded" />
+
+      <div className="relative w-full md:w-11/12 h-full flex flex-col">
+        <header className="relative w-full h-32 md:h-16 flex flex-col justify-center items-center  shadow-sm  rounded shadow-black mb-5 pb-1">
           <div className="w-full h-16 flex p-0 m-0">
             <Link href="/" className="md:w-2/12 object-contain ">
               <img className="w-full h-full " src={Logo} />
@@ -94,7 +73,6 @@ export default function AppLayout({
               <div className="mx-auto mb-1 sm:px-1 lg:px-2 object-contain hidden md:flex flex-row b-[#997f2362]">
                 <div className="w-full h-16 hidden md:flex flex-row justify-center items-center p-0 ">
                   <div
-                    onClick={() => setCurrentPage(<Destaques />)}
                     className={`${
                       route().current() == '/home'
                         ? 'border-b-2  border-[#4c88c4] dark:bg-[#2e2c2e] text-[#4c88c4]'
@@ -102,6 +80,7 @@ export default function AppLayout({
                     }  p-2 mx-1 cursor-pointer shadow-sm b-[#4c88c4] hover:bg-[#eaeaea] dark:bg-[#2e2c2e]  text-black dark:text-white hover:bg-[#fcfcf] dark:hover:bg-[#2e2c2e]`}
                   >
                     <Link
+                      onClick={() => setCurrentPage(<Destaques />)}
                       href={route('/home')}
                       className="flex flex-col lg:flex-row justify-center items-center gap-1 text-[#1a1a1a]"
                     >
@@ -116,15 +95,15 @@ export default function AppLayout({
                     </Link>
                   </div>
                   <div
-                    onClick={() => setCurrentPage(<Avaliar />)}
                     className={`${
                       route().current()?.includes('musicas')
                         ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
                         : ''
                     } shadow-sm rounded 
-                       p-2 mx-1 cursor-pointer hover:bg-[#f6cc33   b-[#4c88c4] text-black dark:text-white hover:bg-[#eaeaea] dark:hover:bg-[#2e2c2e] `}
+                    p-2 mx-1 cursor-pointer hover:bg-[#f6cc33   b-[#4c88c4] text-black dark:text-white hover:bg-[#eaeaea] dark:hover:bg-[#2e2c2e] `}
                   >
                     <Link
+                      onClick={() => setCurrentPage(<Avaliar />)}
                       href={route('musicas')}
                       className="flex flex-col lg:flex-row justify-center items-center gap-1"
                     >
@@ -138,7 +117,6 @@ export default function AppLayout({
                     </Link>
                   </div>
                   <div
-                    onClick={() => setCurrentPage(<Sobre />)}
                     className={`${
                       route().current()?.includes('ascensao')
                         ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
@@ -146,6 +124,7 @@ export default function AppLayout({
                     } bg-[#] shadow-sm rounded p-2 mx-1 cursor-pointer hover:bg-[#f6cc33  b-[#4c88c4] dark:text-white dark:hover:bg-[#2e2c2e] hover:bg-[#eaeaea]`}
                   >
                     <Link
+                      onClick={() => setCurrentPage(<Sobre />)}
                       href={route('ascensao')}
                       className="flex flex-col lg:flex-row justify-center items-center gap-1"
                     >
@@ -215,7 +194,6 @@ export default function AppLayout({
           {/**MENU PARA TELEFONES */}
           <div className="flex  w-full h-16 md:hidden flex-row justify-center items-center px-1 ">
             <div
-              onClick={() => setCurrentPage(<Destaques />)}
               className={` ${
                 route().current()?.includes('/home')
                   ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
@@ -223,6 +201,7 @@ export default function AppLayout({
               } bg-[#] shadow-sm rounded p-2 mx-1 cursor-pointer hover:bg-[#f6cc33  b-[#4c88c4] dark:text-white dark:hover:bg-[#2e2c2e] hover:bg-[#eaeaea]`}
             >
               <Link
+                onClick={() => setCurrentPage(<Destaques />)}
                 href={route('/home')}
                 className="flex flex-col lg:flex-row justify-center items-center gap-1"
               >
@@ -236,7 +215,6 @@ export default function AppLayout({
               </Link>
             </div>
             <div
-              onClick={() => setCurrentPage(<Avaliar />)}
               className={`${
                 route().current()?.includes('musicas')
                   ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
@@ -244,6 +222,7 @@ export default function AppLayout({
               } bg-[#] shadow-sm rounded p-2 mx-1 cursor-pointer hover:bg-[#f6cc33  b-[#4c88c4] dark:text-white dark:hover:bg-[#2e2c2e] hover:bg-[#eaeaea]`}
             >
               <Link
+                onClick={() => setCurrentPage(<Avaliar />)}
                 href={route('musicas')}
                 className="flex flex-col lg:flex-row justify-center items-center gap-1"
               >
@@ -257,7 +236,6 @@ export default function AppLayout({
               </Link>
             </div>
             <div
-              onClick={() => setCurrentPage(<Sobre />)}
               className={`${
                 route().current()?.includes('ascensao')
                   ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
@@ -265,6 +243,7 @@ export default function AppLayout({
               } bg-[#] shadow-sm rounded p-2 mx-1 cursor-pointer hover:bg-[#f6cc33  b-[#4c88c4] dark:text-white dark:hover:bg-[#2e2c2e] hover:bg-[#eaeaea]`}
             >
               <Link
+                onClick={() => setCurrentPage(<Sobre />)}
                 href={route('ascensao')}
                 className="flex flex-col lg:flex-row justify-center items-center gap-1"
               >
@@ -279,18 +258,17 @@ export default function AppLayout({
             </div>
           </div>
         </header>
-        <div className="w-full flex flex-row bg-[#f2f3f3] shadow-lg shadow-black dark:bg-[#2e2c2e] px-2">
-          <Sidebar classNames="w-2/12 lg:w-3/12 rounded" />
+        <div className="w-full h-full relative flex flex-rowpx-1">
 
           {/* <!-- Page Content --> */}
-          <main className="w-full md:w-10/12 flex mx-auto justify-center items-center dark:bg-[#2e2c2e] p-1 rounded ">
+          <main className="relative h-full w-full  flex mx-auto justify-center items-center  p-1 rounded ">
             {children}
           </main>
         </div>
       </div>
 
-      {activeSong?.title && (
-        <div className="relative h-28 bottom-0 left-0 right-0 flex animate-slideup bg-gradient-to-br from-white/10 to-[#2a2a80] backdrop-blur-lg rounded-t-3xl z-10">
+      {activeSong?.title && isPlaying &&  (
+        <div className="absolute h-28 bottom-0 left-0 right-0 flex animate-slideup bg-gradient-to-br from-white/10 to-[#2a2a80] backdrop-blur-lg rounded-t-3xl z-10">
           <MusicPlayer />
         </div>
       )}

@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PlayPause from './PlayPause';
 import { Link } from '@inertiajs/react';
-import { artists as artistas } from '../../data/dummy';
 import TopArtistCard from './TopArtistCard';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -54,8 +53,8 @@ function TopArtists({ artists }) {
             e.activeIndex;
           }}
         >
-          {artistas?.map((artist, id) => (
-            <SwiperSlide className='h-screen'>
+          {artists?.map((artist, id) => (
+            <SwiperSlide key={id} className='h-screen'>
               <ArtistCard artist={artist} i={id} key={artist.id} />
             </SwiperSlide>
           ))}

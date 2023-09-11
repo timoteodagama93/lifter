@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Swiper as Swiper22 } from 'swiper';
@@ -20,16 +20,14 @@ import InteracoesMusical from '@/Components/InteracoesMusical';
 import { songs } from '../../../data/dummy';
 import PlayPause from '@/Components/PlayPause';
 import { Link } from '@inertiajs/react';
-import AvaliarMusicas from '@/Components/AvaliarMusicas';
+import EnviarEstrelas from '@/Components/EnviarEstrelas';
+import axios from 'axios';
 
 export default function Avaliar() {
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-
   return (
     <div className="">
       <div className="w-full h-[100vh] flex flex-col justify-start rounded-lg p-2">
-        <AvaliarMusicas song={{}} index={4} />
+        <EnviarEstrelas />
       </div>
     </div>
   );

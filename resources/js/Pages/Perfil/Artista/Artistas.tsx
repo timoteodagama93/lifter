@@ -1,5 +1,5 @@
 import AddArtist from '@/Components/AddArtist';
-import AddArtistCover from '@/Components/AddArtistCover';
+import AddArtistCover from '@/Pages/Perfil/Artista/Info/AddArtistCover';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -11,14 +11,15 @@ import { BiEdit, BiPhotoAlbum, BiUserVoice } from 'react-icons/bi';
 import { BsEye } from 'react-icons/bs';
 import { MdOutlineAppRegistration } from 'react-icons/md';
 
-import React, {useState} from 'react'
+import React, { useState } from 'react';
 import useTypedPage from '@/Hooks/useTypedPage';
+import SecondaryButton from '@/Components/SecondaryButton';
+import { useStateContext } from '@/contexts/PaginaActualContext';
+import DetailsArtist from './Info/DetailsArtist';
 
-function GerirArtista() {
+function Artistas() {
   const [uploadCover, setUploadCover] = useState(false);
-  const [updateArtist, setUpdateArtis] = useState(false);
-  const [editaArtist, setEditArtist] = useState(false);
-const page = useTypedPage();
+  const page = useTypedPage();
   const [pagina, setPagina] = useState(
     <>
       <div className="w-full flex flex-col p-5 bg-gray-50 rounded-lg shadow-lg">
@@ -39,6 +40,8 @@ const page = useTypedPage();
     axios.post('/get-my-artist', page.props.auth.user).then(response => {
       const all_artists = response.data.all_artists;
       const artists = response.data.artists;
+      console.log(artists)
+      console.log(page)
       if (artists.length <= 0) {
         setPagina(
           <>
@@ -46,124 +49,18 @@ const page = useTypedPage();
               Você ainda não registrou-se como artista. Nem registrou qualquer
               músico sob-sua tutela.{' '}
             </h1>
-            <SectionBorder />
-            {all_artists.map(artist => (
-              <>
-                <Link
-                  key={artist.id}
-                  href={`artistas/detalhes/${artist.id}`}
-                  className="w-full h-full p-2 flex items-center "
-                >
-                  <div className="flex-1 flex flex-col justify-between items-center">
-                    <div className="w-full ">
-                      <img
-                        src={artist.images?.artistImage}
-                        alt="name artist"
-                        className="w-full h-full rounded-lg object-cover"
-                      />
-                    </div>
-                    <div className="w-full absolute bottom-2 rounded-lg flex-1 space-x-1 flex flex-col justify-start items-center mx-3 bg-[#00000000] backdrop-blur-lg ">
-                      <p className="text-base font-bold text-white">
-                        {' '}
-                        {artist.name}{' '}
-                      </p>
-                      <p className="text-xs text-gray-300"> {artist.genres}</p>
-                    </div>
-                  </div>
-                </Link>
-              </>
-            ))}
+            
           </>,
         );
       } else {
         setPagina(
           <>
-            {artists?.map((artist, i) => (
-              <div
-                key={i}
-                className="w-full flex flex-row items-center border shadow-lg hover:bg-[#eaeaea] py-1 p-0 md:p-1 md:px-10 rounded-lg cursor-pointer mb-1"
-              >
-                <h3 className="hidden md:flex font-bold text-base  mr-1">
-                  {' '}
-                  {i + 1}.{' '}
-                </h3>
-                <Link href={`/artist-details/${artist.id}`} className="flex-1 flex flex-row justify-between items-center">
-                  <img
-                    src={'http://127.0.0.1:8000/storage/' + artist?.url_cover}
-                    alt=""
-                    className="flex w-10 h-10 rounded-full"
-                  />
-                  <div className="flex-1 flex flex-col justify-center mx-1">
-                    <Link href={`/artist-details/${artist.id}`} className="">
-                      <p className="text-sm md:text-xl font-bold ">
-                        {' '}
-                        {artist.name}{' '}
-                      </p>
-                    </Link>
-                    <Link href={`artist-details/${artist.id}`} className="">
-                      <p className="text-xs md:text-base text-">
-                        {' '}
-                        {artist.genres}{' '}
-                      </p>
-                    </Link>
-                  </div>
-                </Link>
-                <div className="flex p-2 gap-2 justify-center items-center">
-                  <button
-                    onClick={() => {
-                      setArtist(artist);
-                      setUploadCover(true);
-                    }}
-                  >
-                    <BiPhotoAlbum className="text-xl" /> Foto
-                  </button>
-                  <Link href={`/artist-details/${artist.id}`} className="px-2 shadow-black shadow-lg gap-1 flex flex-col text-xs">
-                    <BsEye className="text-xl" /> Ver
-                  </Link>
-                  <Link
-                    href={`/artist-details/${artist.id}`}
-                    onClick={() => setPagina(<EditArtist artist={artist} />)}
-                    className="px-2 shadow-black shadow-lg gap- flex flex-col text-xs"
-                  >
-                    <BiEdit className="text-xl" /> Editar
-                  </Link>
-                </div>
-              </div>
-            ))}
-            <SectionBorder />
-            {/** TOP ARTISTS */}
-            <div className="flex flex-col md:flex-row flex-wrap">
-              {all_artists?.map(artist => (
-                <div className="w-full flex">
-                  <Link
-                    href={`artistas/detalhes/${artist.id}`}
-                    className="w-full h-full p-2 flex items-center "
-                  >
-                    <div className="flex-1 flex flex-col justify-between items-center">
-                      <div className="w-full ">
-                        <img
-                          src={
-                            'http://127.0.0.1:8000/storage/' + artist.url_cover
-                          }
-                          alt="name artist"
-                          className="w-12 h-12 rounded-lg object-cover"
-                        />
-                      </div>
-                      <div className="hidden w-full absolute bottom-2 rounded-lg flex-1 space-x-1 flex flex-col justify-start items-center mx-3 bg-[#00000000] backdrop-blur-lg ">
-                        <p className="text-base font-bold text-white">
-                          {' '}
-                          {artist.name}{' '}
-                        </p>
-                        <p className="text-xs text-gray-300">
-                          {' '}
-                          {artist.genres}
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-                </div>
-              ))}
-            </div>
+            <ShowArtists
+              artists={artists}
+              setPagina={setPagina}
+              setArtist={setArtist}
+              setUploadCover={setUploadCover}
+            />
           </>,
         );
       }
@@ -203,19 +100,74 @@ const page = useTypedPage();
           </button>
         </div>
       </div>
-      {pagina}
-      <AddArtistCover
-        isOpen={uploadCover}
-        onClose={setUploadCover}
-        artist={artist}
-      />
-      ,
+      {pagina}      
     </div>
   );
 }
 
-export default GerirArtista
+export default Artistas;
 
+function ShowArtists({ artists, setPagina, setArtist, setUploadCover }) {
+  const { setCurrentPage } = useStateContext();
+  return (
+    <>
+      {artists?.map((artist, i) => (
+        <div
+          key={i}
+          className="w-full flex flex-row items-center border shadow-lg hover:bg-[#eaeaea] py-1 p-0 md:p-1 md:px-10 rounded-lg cursor-pointer mb-1"
+        >
+          <h3 className="hidden md:flex font-bold text-base  mr-1">
+            {' '}
+            {i + 1}.{' '}
+          </h3>
+          <Link
+            href={`/artist-details/${artist.id}`}
+            className="flex-1 flex flex-row justify-between items-center"
+          >
+            <img
+              src={'http://127.0.0.1:8000/storage/' + artist?.url_cover}
+              alt=""
+              className="flex w-10 h-10 rounded-full"
+            />
+            <div className="flex-1 flex flex-col justify-center mx-1">
+              <Link href={`/artist-details/${artist.id}`} className="">
+                <p className="text-sm md:text-xl font-bold "> {artist.name} </p>
+              </Link>
+              <Link href={`artist-details/${artist.id}`} className="">
+                <p className="text-xs md:text-base text-"> {artist.genres} </p>
+              </Link>
+            </div>
+          </Link>
+          <div className="flex p-2 gap-2 justify-center items-center">
+            <button
+              onClick={() => {
+                setArtist(artist);
+                setUploadCover(true);
+              }}
+            >
+              <BiPhotoAlbum className="text-xl" /> Foto
+            </button>
+            <button
+              onClick={() => setCurrentPage(<DetailsArtist artist={artist} />)}
+              className="px-2 shadow-black shadow-lg gap-1 flex flex-col text-xs"
+            >
+              <BsEye className="text-xl" /> Ver
+            </button>
+            <Link
+              href={`/artist-details/${artist.id}`}
+              onClick={() =>
+                setPagina(<EditArtist setPagina={setPagina} artist={artist} />)
+              }
+              className="px-2 shadow-black shadow-lg gap- flex flex-col text-xs"
+            >
+              <BiEdit className="text-xl" /> Editar
+            </Link>
+          </div>
+        </div>
+      ))}
+    </>
+  );
+}
 
 /**
  *
@@ -224,7 +176,7 @@ export default GerirArtista
  * @returns
  *
  */
-function EditArtist({ artist }) {
+function EditArtist({ artist, setPagina }) {
   const formArtist = useForm({
     id: artist.id,
     name: artist.name,
@@ -237,7 +189,11 @@ function EditArtist({ artist }) {
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    axios.post('/update-artist', formArtist.data).then(response => {});
+    axios.post('/update-artist', formArtist).then(response => {
+      if (response.status === 200) {
+        setPagina(<></>);
+      }
+    });
   }
 
   return (
@@ -350,7 +306,7 @@ function EditArtist({ artist }) {
 
         <div className="flex items-center justify-end mt-4">
           <PrimaryButton className={`'ml-4`} disabled={formArtist.processing}>
-            Registrar artista
+            Actualizar informações
           </PrimaryButton>
         </div>
       </form>

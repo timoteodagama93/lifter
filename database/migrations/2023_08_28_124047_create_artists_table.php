@@ -12,10 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('artists', function (Blueprint $table) {
-            $table->id();
+            $table->ulid('id')->primary();
+
             $table->foreignId('user_id')->nullable()->constrained(table: 'users', column: 'id')
                 ->onDelete('cascade')
-                ->uonU('cascade');
+                ->onUpdate('cascade');
+
             $table->string('name');
             $table->string('genres');
             $table->string('contact');

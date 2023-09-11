@@ -11,17 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('songs', function (Blueprint $table) {
+        Schema::create('valuations', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('artist');
-            $table->string('cover');
-            $table->string('url');
-            $table->string('path');
-            $table->integer('downloads')->default(0);
-            $table->integer('shares')->default(0);
+            $table->ulid('song_id');
+            $table->bigInteger('user_id');
+            $table->integer('stars')->default(0);
+            $table->string('emotion')->nullable();
             $table->timestamps();
-        }); 
+        });
     }
 
     /**
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('songs');
+        Schema::dropIfExists('valuations');
     }
 };

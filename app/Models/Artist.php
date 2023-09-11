@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
+use Symfony\Component\Uid\Ulid;
 
 class Artist extends Model
 {
     use HasFactory;
+    use HasUlids;
 
     protected $fillable = [
         'user_id',
@@ -24,6 +27,17 @@ class Artist extends Model
         'url_cover',
         'path_cover',
     ];
+
+
+    public function uniqueIds(): array
+    {
+        return ['id'];
+    }
+
+    public function newUniqueId(): string
+    {
+        return Ulid::generate();
+    }
 
     /**
      * Cada artist belongsTo one user. Significando que cada user pode gerenciar um artista.
