@@ -48,7 +48,7 @@ function Sobre() {
               navigation={true}
               pagination={true}
               modules={[EffectCoverflow, Pagination, Navigation]}
-              className="mySwiper w-[20vw] "
+              className="mySwiper w-full relative "
             >
               <SwiperSlide>
                 <img className="w-full h-10/12" src="img/ascensao/Slide1.PNG" />

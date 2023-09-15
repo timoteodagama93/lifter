@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react';
 import route from 'ziggy-js';
-import { account_links } from '../../assets/constants';
+import { account_links } from '../assets/constants';
 
 interface InitialState {
   currentPage: string;
@@ -17,23 +17,23 @@ interface InitialState {
 const initialState = {
   currentPage: <></>,
   setCurrentPage: page => {page},
-  hideSider: false,
-  setHideSider: bool => {},
+  openMobileMenu: false,
+  setOpenMobileMenu: bool => {},
 };
 const StateContextPage = createContext(initialState);
 
 export const ContextPageProvider = ({ children }) => {
   const [currentPage, setCurrentPage] = useState(initialState.currentPage);
 
-  const [hideSider, setHideSider] = useState(false);
+  const [openMobileMenu, setOpenMobileMenu] = useState(false);
 
   return (
     <StateContextPage.Provider
       value={{
         currentPage,
         setCurrentPage,
-        hideSider,
-        setHideSider,
+        openMobileMenu,
+        setOpenMobileMenu,
       }}
     >
       {children}

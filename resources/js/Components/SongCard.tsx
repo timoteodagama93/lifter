@@ -12,11 +12,11 @@ function SongCard({ song, i, activeSong, isPlaying, songs }) {
     dispatch(playPause(false));
   };
   const handlePlayClick = () => {
-    dispatch(setActiveSong({song, songs, i}));
+    dispatch(setActiveSong({ song, songs, i }));
     dispatch(playPause(true));
   };
   return (
-    <div className="flex flex-col w-full md:w-1/3 lg:w-1/4 p-4 bg-white/5 ng-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer shadow-lg border">
+    <div className="flex flex-col w-full md:w-1/2 lg:w-1/3 xl:w-1/4 xxl:w-1/5 p-4 bg-white/5 ng-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer shadow-lg border">
       <div className=" relative w-full h-full group">
         <div
           className={`absolute inset-0 justify-center items-center bg-black bg-opacity-50 group-hover:flex ${
@@ -42,7 +42,7 @@ function SongCard({ song, i, activeSong, isPlaying, songs }) {
           />
         )}
         {song.mime_type.includes('video/') && (
-          <video className='w-full h-full'>
+          <video className="w-full h-full">
             <source
               type={song.mmime_type}
               src={localStorage.getItem('prefix_storage') + song.url}
@@ -56,7 +56,7 @@ function SongCard({ song, i, activeSong, isPlaying, songs }) {
           <Link href={`/song-details/${song?.id}`}>{song.title}</Link>
         </p>
         <p className="text-sm truncate  mt-1">
-          <Link href={song.artist ? `/artists/${song?.artist}` : 'top-artists'}>
+          <Link href={song.artist ? `/artists/details/${song?.artist_id}` : 'top-artists'}>
             {song.artist}{' '}
             {!(song.participacoes === '') ? ' ft ' + song.participacoes : ''}
           </Link>

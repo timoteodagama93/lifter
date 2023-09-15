@@ -1,9 +1,13 @@
 import React from 'react';
-
-function Loader() {
+import loader from '../assets';
+function Loader({ title }) {
   return (
-    <div className="justify-center items-center w-full h-full">
-      <h1 className="text-xl">Carregando</h1>
+    <div className="w-full flex flex-com justify-center items-center">
+      <img src={loader} alt="loader" className="w-32 h-32 object-contain" />
+      <h1 className="font-bold text-2xl texx-white">
+        {' '}
+        {title || 'Loading...'}{' '}
+      </h1>
     </div>
   );
 }

@@ -6,7 +6,7 @@ import CardMusica from '../../Components/CardMusica';
 import { generos, songs } from '../../../data/dummy';
 import SelectGenre from '@/Components/SelectGenre';
 import { FaRandom } from 'react-icons/fa';
-import { zela_orange } from '../../../assets/constants';
+import { zela_orange } from '../../assets/constants';
 import { BiSearch } from 'react-icons/bi';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import Videos from './Videos';

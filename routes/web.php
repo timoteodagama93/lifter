@@ -5,6 +5,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\SongsController;
 use App\Http\Controllers\UploadController;
 use App\Models\Artist;
+use App\Models\Notification;
 use App\Models\Post;
 use App\Models\Song;
 use App\Models\User;
@@ -34,9 +35,11 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-
-    Route::get('/', function (User $user) {
-        return Inertia::render('Lifter', []);
+    /**
+     * ROUTAS PRINCIPAIS
+     */
+    Route::get('/', function () {
+        return Inertia::render('Home/Home', []);
     })->name('/');
     Route::get('/home', function (User $user) {
 
@@ -46,6 +49,20 @@ Route::middleware([
             'APP_URL' => 'http://127.0.0.1:8000',
         ]);
     })->name('/home');
+
+    Route::get('/discover', function () {
+        return Inertia::render('Discover', []);
+    })->name('discover');
+
+    Route::get('/ranking', function () {
+        return Inertia::render('Ranking', []);
+    })->name('ranking');
+
+    Route::get('/noticias', function () {
+        return Inertia::render('Noticias', []);
+    })->name('noticias');
+
+
 
     /**Uploading files */
     Route::post('/upload', [UploadController::class, 'store'])->name('upload');
@@ -93,16 +110,16 @@ Route::middleware([
     Route::post('/feedback', [SongsController::class, 'store_feedback'])->name('feedback');
     Route::post('/feedbacks', [SongsController::class, 'get_feedbacks'])->name('feedbacks');
 
-    Route::post('/get-valluations', function(){
+    Route::post('/get-valluations', function () {
         return response()->json(Valuation::where('song_id', Request::get('song_id'))->count());
     })->name('get-valluations');
-    
+
     Route::post('/get-my-valluation', [SongsController::class, 'minha_avaliacao'])->name('get-my-valluation');
-    
+
     Route::post('/get-song', [SongsController::class, 'get_valuation_songs'])->name('get-song');
-    
+
     Route::get('/get-songs', [SongsController::class, 'get_all_songs'])->name('get-songs');
-    
+
     Route::post('/get-songs', [SongsController::class, 'get_songs'])->name('get-songs');
     Route::post('/avaliar', [SongsController::class, 'avaliar'])->name('avaliar');
     Route::post('/add-song', [SongsController::class, 'store'])->name('add-song');
@@ -134,6 +151,7 @@ Route::middleware([
         return Inertia::render('Musicas/Musicas', ['start_page' => 'avaliar']);
     })->name('musicas');
 
+
     Route::get('/som_emocao', function () {
         return Inertia::render('Videos/Videos');
     })->name('som_emocao');
@@ -157,15 +175,48 @@ Route::middleware([
     });
 
     Route::get('/noticias', function () {
-        return Inertia::render('Descobrir');
+        return Inertia::render('Noticias');
     })->name('noticias');
     Route::get('/explorar', function () {
         return Inertia::render('Biblioteca/Biblioteca');
     })->name('explorar');
 
+
+    /**
+     * MOSTRAR PERFIS
+     */
+
     Route::get('/perfil', function () {
-        return Inertia::render('Perfil/IndexPerfl');
+        return Inertia::render('Perfil/Perfil');
     })->name('perfil');
+
+    Route::get('/perfil-artista', function () {
+        return Inertia::render('Perfil/Artista/Perfl');
+    })->name('perfil-artista');
+
+
+    /**
+     * Enviar FEEDBACK À LIFTER
+     */
+    Route::post('/notification-to-lifter', function () {
+
+        $notification = Notification::create([
+            'user_id' => auth()->id(),
+            'title' => Request::get('type'),
+            'summary' => Request::get('error_page'),
+            'message' => Request::get('message'),
+        ]);
+        return response()->json($notification);
+    })->name('notification-to-lifter');
+
+
+
+
+
+
+
+
+
 
     Route::get('/profile', function () {
         return Inertia::render('Profile/Musico');
@@ -218,9 +269,32 @@ Route::middleware([
         return Inertia::render('Inicio');
     })->name('about');
 
-    Route::get('/song-details/{some}', function () {
-        return Inertia::render('SongDetails');
+    /**SONGS DETAILS */
+    Route::get('/song-details/{songId}', function ($songId) {
+        return Inertia::render('SongDetails', ['songId' => $songId, 'song' => Song::where('id', $songId)->first()]);
     })->name('song-details');
+    Route::get('/tracks/details/{songId}', function ($songId) {
+        return response()->json(Song::where('id', $songId)->first());
+    })->name('tracks/details/');
+    Route::get('/tracks/related/{songId}', function ($songId) {
+        return response()->json([Song::where('genre', Song::where('id', $songId)->first()->genre)->first()]);
+    })->name('tracks/related/');
+
+
+
+    /**ARTIST DETAILS AND RELATED SONGS*/
+    Route::get('/artists-details/{artistId}', function ($artistId) {
+        return Inertia::render('ArtistDetails', ['artistId' => $artistId, 'artist' => Artist::where('id', $artistId)->first()]);
+    })->name('artists-details');
+    Route::get('/artists/details/{artistId}', function ($artistId) {
+        return response()->json(Artist::where('id', $artistId)->first());
+    })->name('artists/details/');
+    Route::get('/artists/related/{artistId}', function ($artistId) {
+        return response()->json([Song::where('artist_id', $artistId)]);
+    })->name('artists/related/');
+
+
+
 
     /**ARTIST ROUTES */
     Route::get('artistas/{pagina}/{id}', [ArtistaController::class, 'index'])->name('index');

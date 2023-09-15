@@ -15,9 +15,6 @@ const playerSlice = createSlice({
     setActiveSong: (state, action) => {
       state.activeSong = action.payload.song;
 
-      console.log('CHANGING active')
-      console.log(action.payload.songs)
-
       if (action.payload?.songs) {
         state.currentSongs = action.payload.songs;
       } else if (action.payload?.data?.properties) {
@@ -28,7 +25,7 @@ const playerSlice = createSlice({
 
       state.currentIndex = action.payload.i;
       state.isActive = true;
-      
+
     },
 
     nextSong: (state, action) => {

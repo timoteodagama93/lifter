@@ -31,14 +31,14 @@ export default function ShowMusics({ artist }) {
           onClick={() =>
             setPagina(<ListSongs setPagina={setPagina} songs={songs} />)
           }
-          className="m-1 border border-b-4 hover:bg-gray-200 border-orange-500 rounded text-xs items-center justify-center flex flex-col md:flex-row"
+          className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
         >
           <HiPhotograph className="mr-3 text-xl" />
-          Músicas
+          Minhas Músicas
         </button>
         <button
           onClick={() => setPagina(<AddSong artist={artist} />)}
-          className="border border-b-4 hover:bg-gray-200 border-orange-500 rounded text-xs items-center justify-center flex flex-col md:flex-row md:p-2"
+          className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
         >
           <BiUpload className="text-xl mr-1" />
           Carregar música
@@ -46,7 +46,7 @@ export default function ShowMusics({ artist }) {
         <button
           disabled
           onClick={() => setPagina(<AddYoutubeSong artist={artist} />)}
-          className="border border-b-4 hover:bg-gray-200 border-orange-500 rounded text-xs items-center justify-center flex flex-col md:flex-row md:p-2"
+          className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
         >
           <BsYoutube className="text-xl mr-1" />
           Adicionar do Youtube
@@ -64,28 +64,28 @@ function ListSongs({ songs, setPagina }) {
       {songs?.map((song, i) => (
         <div
           key={i}
-          className="w-full flex flex-row items-center border shadow-lg hover:bg-[#eaeaea] py-1 p-0 md:p-1 md:px-10 rounded-lg cursor-pointer mb-1"
+          className="w-full flex flex-row items-center border shadow-lg hover:bg-[#2e2c2e] py-1 p-0 md:p-1 md:px-10 rounded-lg cursor-pointer mb-1"
         >
           <h3 className="hidden md:flex font-bold text-base  mr-1">
             {' '}
             {i + 1}.{' '}
           </h3>
-          <Link
-            href={`/song-details/${song.id}`}
-            className="flex-1 flex flex-row justify-between items-center"
-          >
-            {song.mime_type.includes('audio/') && (
-              <img
-                src={localStorage.getItem('prefix_storage') + song?.cover}
-                alt=""
-                className="flex w-10 h-10 rounded-sm"
-              />
-            )}
-            <div className="flex-1 flex flex-col justify-center mx-1">
+          {song.mime_type.includes('audio/') && (
+            <img
+              src={localStorage.getItem('prefix_storage') + song?.cover}
+              alt=""
+              className="flex w-10 h-10 rounded-sm"
+            />
+          )}
+          <div className="flex-1 flex flex-col justify-center mx-1">
+            <Link
+              href={`/song-details/${song.id}`}
+              className="flex-1 flex flex-row justify-between items-center"
+            >
               <p className="text-sm md:text-xl font-bold "> {song.title} </p>
-              <p className="text-xs md:text-base text-"> {song.genre} </p>
-            </div>
-          </Link>
+            </Link>
+            <p className="text-xs md:text-base text-"> {song.genre} </p>
+          </div>
           {song.mime_type.includes('audio/') && (
             <audio controls>
               <source
@@ -103,7 +103,6 @@ function ListSongs({ songs, setPagina }) {
             </video>
           )}
           <div className="flex p-2 gap-2 justify-center items-center">
-            {song.mime_type.includes('audio/') && (
               <button
                 onClick={() => {
                   setPagina(<AddSongCover song={song} />);
@@ -111,7 +110,7 @@ function ListSongs({ songs, setPagina }) {
               >
                 <BiPhotoAlbum className="text-xl" /> Foto
               </button>
-            )}
+         
             <Link
               href={`/artist-details/${song.id}`}
               className="px-2 shadow-black shadow-lg gap-1 flex flex-col text-xs"

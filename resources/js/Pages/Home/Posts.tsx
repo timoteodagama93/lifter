@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { BiMusic, BiSend } from 'react-icons/bi';
-import { Musica } from '../../../img';
 import { BsArrowBarRight, BsCameraVideo, BsImage } from 'react-icons/bs';
 import { useForm } from '@inertiajs/react';
 import useTypedPage from '@/Hooks/useTypedPage';
@@ -9,7 +8,6 @@ import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import SecondaryButton from '@/Components/SecondaryButton';
 import Modal from '@/Components/Modal';
-import { router } from '@inertiajs/core';
 import axios from 'axios';
 
 function Posts() {
@@ -30,40 +28,37 @@ function Posts() {
     <>
       <div className="w-full md:px-2 flex flex-col">
         <div className="flex flex-col-reverse md:flex-row  justify-center items-center gap-5 pb-1">
-          <span className="mt-0 flex justify-center items-center text-xs md:text-base gap-1">
-            <span>Partilhar</span>{' '}
-            <BsArrowBarRight className="hidden md:flex" />{' '}
-          </span>
-          <div className="-mb-2 gap-5 md:mb-2 w-full h-full flex flex-row justify-center mt-0">
-            <button className=" shadow-lg shadow-black border flex flex-col text-4xl  justify-start items-center p-1 rounded ">
+          <div className="-mb-2 gap-5 md:mb-2 w-full h-full flex flex-row justify-start mt-0">
+            <button className=" shadow shadow-white border flex flex-col text-4xl  justify-start items-center p-1 rounded ">
               <BiMusic className="animate-bounce" />
               <span className="text-xs">Música</span>
             </button>
             <button
               onClick={() => setOpenNewImagePost(true)}
-              className=" shadow-lg shadow-black border flex flex-col text-4xl  justify-start items-center p-1 rounded "
+              className=" shadow shadow-white border flex flex-col text-4xl  justify-start items-center p-1 rounded "
             >
               <BsImage />
               <span className="text-xs">Imagem</span>
             </button>
-            <button className=" shadow-lg shadow-black border flex flex-col text-4xl  justify-start items-center p-1 rounded ">
+            <button className=" shadow shadow-white border flex flex-col text-4xl  justify-start items-center p-1 rounded ">
               <BsCameraVideo />
               <span className="text-xs">Vídeo</span>
             </button>
           </div>
         </div>
         <NewPost isOpen={openNewImagePost} onClose={setOpenNewImagePost} />
-        <div className="flex flex-row flex-wrap mb-5 ">
+        <div className="flex flex-col md:flex-row flex-wrap mb-5 ">
           {posts?.map(post => (
-            <div className="w-full columns-lg  md:w-1/2 lg:w-1/3 flex flex-col p-1 border">
+            <div className="w-full columns-lg  flex flex-col md:flex-row p-2 shadow shadow-white rounded mx-1 ">
               <img
                 src={'http://127.0.0.1:8000/storage/' + post.file_url}
                 alt=""
-                className="h-full w-full"
+                className="h-auto w-full md:w-1/3 rounded border"
               />
-              <span>{} </span>
-              <div className="px-10 md:px-1">
+              <div className="w-full md:2/3 px-10 md:px-1">
                 <p>{post.post_text} </p>
+                <p className=''>{post.created_at.toString()} </p>
+                <p className=''>Redação Lifter</p>
               </div>
             </div>
           ))}

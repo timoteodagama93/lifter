@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { BiLibrary, BiShare } from 'react-icons/bi';
-import { MdOutlineMessage } from 'react-icons/md';
+import { MdEmojiEmotions, MdOutlineMessage } from 'react-icons/md';
 import { TiMessages } from 'react-icons/ti';
 import PrimaryButton from './PrimaryButton';
-import { BsEmojiAngry } from 'react-icons/bs';
+import { BsEmojiAngry, BsEmojiHeartEyes, BsEmojiKiss } from 'react-icons/bs';
 import { HiOutlineEmojiHappy, HiOutlineEmojiSad } from 'react-icons/hi';
 import Modal from './Modal';
 import Checkbox from './Checkbox';
@@ -102,14 +102,14 @@ function Avaliar({ song }) {
       <h1 className="text-center text-xl md:text-4xl">
         Jurado, como avalia música?
       </h1>
-      <p className="w-full text-xs">
-        Faça uma avaliação com bas no conteúdo que ouviu. Avalie em termos
+      <p className="w-full text-xl">
+        Faça uma avaliação com base no conteúdo que ouviu. Avalie em termos
         emocionais, qualidade na produção, conteúdo, etc. E claro, se gostou,
         não se esqueça de partilhar e recomendar.
       </p>
       <form
         onSubmit={() => {}}
-        className="flex flex-col justify-center items-center p-5 space-y-2"
+        className="flex flex-col justify-start text-base items-center p-5 space-y-2"
       >
         <div className="flex flex-col ">
           <label className="" htmlFor="nota">
@@ -117,25 +117,35 @@ function Avaliar({ song }) {
           </label>
           <input type="range" defaultValue={0} />
         </div>
-        <p className="">E como foi em termos emocionais?</p>
-        <div className="flex flex-row justify-center">
+        <p className="">É uma música para que momentos em termos emocionais?</p>
+        <div className="flex text-black flex-row justify-center">
           <button onClick={() => setEmotionalValuation('happy')}>
-            <HiOutlineEmojiHappy className="w-16 h-16" />
+            <HiOutlineEmojiHappy className="w-16 h-16" /> Felicidade
           </button>
-          <button onClick={() => setEmotionalValuation('happy')}>
-            <HiOutlineEmojiSad className="w-16 h-16" />
+          <button onClick={() => setEmotionalValuation('sad')}>
+            <HiOutlineEmojiSad className="w-16 h-16" /> Tristeza
           </button>
-          <button onClick={() => setEmotionalValuation('happy')}>
-            <BsEmojiAngry className="w-14 h-14" />
+          <button onClick={() => setEmotionalValuation('BsEmojiAngry')}>
+            <BsEmojiAngry className="w-14 h-14" /> Raíva
+          </button>
+          <button onClick={() => setEmotionalValuation('BsEmojiKiss')}>
+            <BsEmojiKiss className="w-14 h-14" />Amor
+          </button>
+          <button onClick={() => setEmotionalValuation('BsEmojiHeartEyes')}>
+            <BsEmojiHeartEyes className="w-14 h-14" />Amor
+          </button>
+          <button onClick={() => setEmotionalValuation('MdEmojiEmotions')}>
+            <MdEmojiEmotions className="w-14 h-14" />Amor
           </button>
         </div>
         <div>
-          <InputLabel>
-            <Checkbox /> Avaliar como positiva
-          </InputLabel>
-          <InputLabel>
-            <Checkbox /> Avalia como negativa
-          </InputLabel>
+          <div>
+            <input
+            type='checkbox'
+            className='text-black'
+            style={{color:'#000'}} /> Selecione está opção se considerar o conteúdo como
+            negativo
+          </div>
         </div>
         <PrimaryButton>Avaliar música</PrimaryButton>
       </form>

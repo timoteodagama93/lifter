@@ -33,7 +33,7 @@ function Descobrir() {
             <BiSearch className="mr-2 text-3xl text-center" />
           </button>
           <select
-            onChange={() => {}}
+            onChange={(e) => {}}
             value=""
             className="p-1 text-sm rounded-lg outline-none "
           >
@@ -58,7 +58,6 @@ function Descobrir() {
                 />
               ))}
             </div>
-            {/*} <TopPlay />{*/}
           </div>
         </div>
       </div>

@@ -2,81 +2,70 @@ import React, { useState } from 'react';
 
 import UserAvatar from '@/Components/UserAvatar';
 import { Link } from '@inertiajs/react';
-import { BiMusic, BiStats, BiUpload } from 'react-icons/bi';
+import {
+  BiEdit,
+  BiInfoCircle,
+  BiLibrary,
+  BiMusic,
+  BiStats,
+  BiUpload,
+} from 'react-icons/bi';
 import { TiMessages } from 'react-icons/ti';
-import { songs } from '../../../data/dummy';
 import useTypedPage from '@/Hooks/useTypedPage';
+import AppLayout from '@/Layouts/AppLayout';
+import { MdPhoto } from 'react-icons/md';
+import DetailsArtist from './Artista/Info/DetailsArtist';
+import { FaCoins } from 'react-icons/fa';
+import { RiContactsBook2Fill } from 'react-icons/ri';
 
 function Perfil() {
   const page = useTypedPage();
   return (
-    <div className="w-full flex flex-col">
-      <div className="w-full flex flex-col rounded-lg shadow-lg shadow-black p-5">
-        <div className="w-full flex justify-center items-center">
+    <AppLayout title="Perfil">
+      <div className="w-full flex flex-col">
+        <div
+          className="relative w-full flex flex-col rounded-lg shadow-lg shadow-black p-5 justify-center items-center"
+          style={{
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center center',
+            backgroundImage: `url(${page.props.auth.user?.profile_photo_url_})`,
+          }}
+        >
+          <button className="absolute top-0 right-0 p-2 md:p-5 rounded-full bg-[#2e2c2e] text-sm md:text-2xl  ">
+            <MdPhoto />
+          </button>
           <div className="w-20 m-2">
             <img
               src={page.props.auth.user?.profile_photo_url}
               className=" rounded-full w-20 border border-black"
             />
           </div>
-          <div className="w-2/3 flex flex-col">
-            <h2 className="text-4xl text-bold">{page.props.auth.user?.name}</h2>
-            <div className="w-full flex flex-row">
-              <span className="mr-2"> Coleções: 0 </span>
-              <span className="mr-2"> Pontos: 0 </span>
-              <span> Contactos: 0 </span>
+          <div className="w-full flex flex-col justify-center items-center">
+            <h2 className="text-xl md:text-2xl text-bold">{page.props.auth.user?.name}</h2>
+            <div className="w-full flex flex-row justify-center items-center">
+              <span className="p-1 shadow-sm shadow-white gap-1 mb-2 justify-center items-center mr-2 flex"> <BiLibrary/> 0 </span>
+              <span className="p-1 shadow-sm shadow-white gap-1 mb-2 justify-center items-center mr-2 flex"> <FaCoins/> 0 </span>
+              <span className='p-1 shadow-sm shadow-white gap-1 mb-2 justify-center items-center flex'> <RiContactsBook2Fill/> 0 </span>
             </div>
           </div>
+          <div className="w-full flex ">
+            <button className="border border-b-4 hover:bg-[#2e2c2e] border-[#4c88c4] rounded text-xs items-center justify-center flex flex-col md:flex-row p-1">
+              <BiInfoCircle className="text-xl mr-1" />
+              Informações
+            </button>
+            <button className="border border-b-4 hover:bg-[#2e2c2e] border-[#4c88c4] rounded text-xs items-center justify-center flex flex-col md:flex-row p-1">
+              <BiInfoCircle className="text-xl mr-1" />
+              Definições
+            </button>
+            <button className="border border-b-4 hover:bg-[#2e2c2e] border-[#4c88c4] rounded text-xs items-center justify-center flex flex-col md:flex-row p-1">
+              <BiInfoCircle className="text-xl mr-1" />
+              Informações
+            </button>
+          </div>
         </div>
-        <div className="w-full hidden ">
-          <button
-            className="m-1 border border-b-4 hover:bg-gray-200 border-orange-500 rounded-lg items-center flex p-1"
-            onClick={() => {
-              setRegistroArtistico(true);
-            }}
-          >
-            <BiMusic className="mr-3" />
-            Criar perfil artístico
-          </button>
-          <Link
-            href="/upload.song"
-            className="m-1 border border-b-4 hover:bg-gray-200 border-orange-500 rounded-lg items-center flex p-1"
-          >
-            <BiUpload className="mr-3" />
-            Carregar música
-          </Link>
-          <Link
-            href="/upload.new"
-            className="m-1 border border-b-4 hover:bg-gray-200 border-orange-500 rounded-lg items-center flex p-1"
-          >
-            <BiUpload className="mr-3" />
-            Carregar música nova
-          </Link>
-          <button className="m-1 border border-b-4 hover:bg-gray-200 border-orange-500 rounded-lg items-center flex p-1">
-            <BiStats className="mr-3" />
-            Relatórios
-          </button>
-          <button className="m-1 border border-b-4 hover:bg-gray-200 border-orange-500 rounded-lg items-center flex p-1">
-            <TiMessages className="mr-3" />
-            Feedbacks nas músicas
-          </button>
-        </div>
-      </div>
-      <div className="w-full hidden">
-        <p className="w-full mt-2 p-2 ">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum obcaecati
-          cumque at amet eum modi hic unde. Quos, corporis perferendis?
-          Necessitatibus ex iste, voluptatibus magni cum culpa repellendus illo
-          dolor! Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum
-          earum nam rem, numquam exercitationem fuga possimus quas neque
-          suscipit! Culpa labore quos veritatis at vel obcaecati quisquam?
-          Quasi, atque nulla.
-        </p>
-      </div>
-
-      <div className="hidden w-full flex flex-col p-5 bg-gray-50 rounded-lg shadow-lg">
-        <div className="w-full">
-          <p className="w-full mt-2 p-5 ">
+        <div className="w-full ">
+          <p className="w-full mt-2 p-2 ">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
             obcaecati cumque at amet eum modi hic unde. Quos, corporis
             perferendis? Necessitatibus ex iste, voluptatibus magni cum culpa
@@ -86,8 +75,22 @@ function Perfil() {
             obcaecati quisquam? Quasi, atque nulla.
           </p>
         </div>
+
+        <div className=" w-full flex flex-col p-5 bg-gray-50 rounded-lg shadow-lg">
+          <div className="w-full">
+            <p className="w-full mt-2 p-5 ">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
+              obcaecati cumque at amet eum modi hic unde. Quos, corporis
+              perferendis? Necessitatibus ex iste, voluptatibus magni cum culpa
+              repellendus illo dolor! Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Eum earum nam rem, numquam exercitationem fuga
+              possimus quas neque suscipit! Culpa labore quos veritatis at vel
+              obcaecati quisquam? Quasi, atque nulla.
+            </p>
+          </div>
+        </div>
       </div>
-    </div>
+    </AppLayout>
   );
 }
 

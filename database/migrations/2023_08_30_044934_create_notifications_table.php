@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained(table: 'users', column: 'id');
             $table->string('summary');
             $table->string('title');
+            $table->string('message');
+            $table->string('to')->default('LIFTER');
             $table->boolean('status_read')->default(false);
             $table->string('description')->nullable();
             $table->string('url_image')->nullable();

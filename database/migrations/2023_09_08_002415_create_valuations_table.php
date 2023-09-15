@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('valuations', function (Blueprint $table) {
             $table->id();
-            $table->ulid('song_id');
-            $table->bigInteger('user_id');
+            $table->foreignId('user_id')->constrained(table: 'users', column: 'id');
+            $table->foreignId('song_id')->constrained(table: 'songs', column: 'id');
             $table->integer('stars')->default(0);
+            $table->integer('points')->default(0);
+            $table->boolean('positive')->default(true);
             $table->string('emotion')->nullable();
             $table->timestamps();
         });

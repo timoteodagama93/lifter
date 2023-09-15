@@ -14,6 +14,8 @@ class Valuation extends Model
         'user_id',
         'song_id',
         'stars',
+        'points',
+        'positive',
         'emotion',
     ];
 

@@ -16,8 +16,37 @@ export const coreApi = createApi({
         baseUrl: 'http://127.0.0.1:8000'
     }),
     endpoints: (builder) => ({
-        getValuateSongs: builder.query({ query: (query) => query }),
+        getValuateSongs: builder.query({ query: (query) => '/get-songs' }),
+        getSongDetails: builder.query({ query: (songId) => `/tracks/details/${songId}` }),
+        getSongRelated: builder.query({ query: (songId) => `/tracks/related/${songId}` }),
+        getArtistDetails: builder.query({ query: (artistId) => `/ artists/details/${artistId}` }),
+        getArtistRelatedSongs: builder.query({ query: (artistId) => `/artists/related/${artistId}` }),
     }),
 });
 
-export const { useGetValuateSongsQuery} = coreApi;
+export const {
+    useGetValuateSongsQuery,
+    useGetSongDetailsQuery,
+    useGetSongRelatedQuery,
+    useGetArtistDetailsQuery,
+    useGetArtistRelatedSongsQuery
+} = coreApi;
+
+
+export const shazamCoreApi = createApi({
+    reducerPath: 'shazamCoreApi',
+    baseQuery: fetchBaseQuery({
+        baseUrl: 'https://shazam-core.p.rapid.com/v1',
+        prepareHeaders: (headers) => {
+            headers.set('X-RapidAPI-Key', 'KJwZZIJSFimshuivMSVGaiYzkRomp15f2vkjsnK4bkzuUzVLzA');
+            //headers.set('X-RapidAPI-Host', 'shazam-api-new1.p.rapidapi.com');
+            return headers;
+        },
+    }),
+    endpoints: (builder) => ({
+        getTopCharts: builder.query({ query: (query) => '/charts/world' }),
+        getTopPops: builder.query({ query: (query) => `/charts/world` }),
+    }),
+});
+
+export const { useGetTopChartsQuery, useGetTopPopsQuery } = shazamCoreApi;

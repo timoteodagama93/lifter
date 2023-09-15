@@ -1,85 +1,95 @@
 import React, { useEffect, useRef } from 'react';
 import PlayPause from './PlayPause';
 import { Link } from '@inertiajs/react';
-import { top5Songs } from '../../data/dummy';
-import Swiper, { SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { useDispatch, useSelector } from 'react-redux';
+import { FreeMode } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import { playPause, setActiveSong } from '@/redux/features/playerSlice';
+import { useGetValuateSongsQuery } from '@/redux/services/coreApi';
+import TopChartCard from '@/Components/TopChartCard';
 
-const TopChartCard = ({ song, i }) => {
-  return (
-    <div className="w-full flex flex-row items-center border shadow-lg hover:bg-[#6ba976] py-2 p-4 rounded-lg cursor-pointer mb-2">
-      <h3 className="font-bold text-base  mr-3"> {i + 1}. </h3>
-      <div className="flex-1 flex flex-row justify-between items-center">
-        <img
-          src={song?.images?.coverart}
-          alt=""
-          className="w-10 h-10 rounded-lg"
-        />
-        <div className="flex-1 flex flex-col justify-center mx-1">
-          <Link href={`song-details/${song.id}`} className="">
-            <p className="text-xl font-bold "> {song.title} </p>
-          </Link>
-          <Link href={`song-details/${song.id}`} className="">
-            <p className="text-base text-"> {song.subtitle} </p>
-          </Link>
-        </div>
-      </div>
-      <PlayPause />
-    </div>
-  );
-};
+const TopPlay = ({}) => {
+  const dispatch = useDispatch();
+  const { activeSong, isPlaying } = useSelector(state => state.player);
+  const { data } = useGetValuateSongsQuery('/get-songs');
+  const divRef = useRef(null);
+  useEffect(() => {
+    divRef.current.scrollIntoView({ behavior: 'smooth' });
+  });
 
-function TopPlay() {
+  const topPlays = data?.slice(0, 5);
+
+  const handlePauseClick = () => {
+    dispatch(playPause(false));
+  };
+  const handlePlayClick = () => {
+    dispatch(setActiveSong({ song, songs, i }));
+    dispatch(playPause(true));
+  };
+
   return (
-    <div className="xl:ml-1 ml-0 xl:mb-0 mb-6 xl:max-w-[400px] max-w-full flex flex-col">
+    <div
+      ref={divRef}
+      className="relative xl:ml-6 ml-1 xl:mb-0 mb-6 flex-1 xl:max-w-[500px] max-w-full flex flex-col"
+    >
       <div className="w-full flex flex-col">
-        <div
-          className="flex flex-row justify-between
-             items-center"
-        >
-          <h2 className=" font-bold text-2xl">Talentos: Top 10 </h2>
-          <Link href="top-charts">
-            <p className="text-base cursor-pointer">Ver mais</p>
+        <div className="w-full flex flex-row justify-between items-center">
+          <h1 className="text-white text-2xl">Top charts</h1>
+          <Link href="/top-charts">
+            <p className="text-gray-300 text-base">Vê mais</p>
           </Link>
         </div>
         <div className="mt-4 flex flex-col gap-1">
-          {top5Songs?.map((song, id) => (
-            <TopChartCard song={song} i={id} key={song.id} />
+          {topPlays?.map((song, i) => (
+            <TopChartCard
+              song={song}
+              i={i}
+              key={i}
+              isPlaying={isPlaying}
+              activeSong={activeSong}
+              songs={topPlays}
+            />
           ))}
         </div>
       </div>
       <div className="w-full flex flex-col mt-8">
-        <div
-          className="flex flex-row justify-between
-             items-center"
-        >
-          <h2 className=" font-bold text-2xl">Top Artistas</h2>
-          <Link href="top-charts">
-            <p className="text-base cursor-pointer">Ver mais</p>
+        <div className="w-full flex flex-row justify-between items-center">
+          <h1 className="text-white font-bold text-2xl">Top Artists</h1>
+          <Link href="/top-artists">
+            <p className="text-gray-300 text-base cursor-pointer">Vê mais</p>
           </Link>
         </div>
-
-        <div className="mt-4 flex flex-row ">
-          <div
-            className="flex flex-row shadow-lg rounded-full animate-slideright"
-            style={{ width: '50%', height: 'auto' }}
-          >
-              {top5Songs?.map((song, i) => (
-                <>
-                
-                  <Link href="">
-                    <img
-                      src={song.images.artistImage}
-                      alt="name artist"
-                      className="rounded-full w-full object-cover"
-                      />
-                  </Link>
-                      </>
-              ))}
-          </div>
-        </div>
+        <Swiper
+          loop={true}
+          spaceBetween={15}
+          navigation={true}
+          modules={[FreeMode]}
+          slidesPerView="auto"
+          centeredSlides
+          centeredSlidesBounds
+          className="mt-4 "
+        >
+          {topPlays?.map((song, i) => (
+            <SwiperSlide
+              key={song.key}
+              style={{ width: '25%', height: 'auto' }}
+              className="shadow-lg rounded-full animate-sliderrigth"
+            >
+              <Link href={`/artists/${song?.artist_id}`}>
+                <img
+                  src={localStorage.getItem('prefix_storage') + song.cover}
+                  alt="name"
+                  className="rounded-full w-full object-cover"
+                />
+              </Link>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </div>
   );
-}
+};
 
 export default TopPlay;

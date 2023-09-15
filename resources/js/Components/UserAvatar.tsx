@@ -16,13 +16,13 @@ function UserAvatar() {
     router.post(route('logout'));
   }
   return (
-    <div className="right-full m-1 sm:flex sm:items-center sm:ml-6  rounded-full">
-      <div className="ml-3 relative">
+    <div className="right-full m- sm:flex sm:items-center sm:ml-  rounded-full">
+      <div className="ml-0 relative">
         {/* <!-- Teams Dropdown --> */}
         {page.props.jetstream.hasTeamFeatures ? (
           <Dropdown
             align="right"
-            width="48"
+            width="28"
             renderTrigger={() => (
               <span className="inline-flex rounded-md">
                 <button
@@ -152,6 +152,9 @@ function UserAvatar() {
           <div onClick={() => setCurrentPage(<Perfil />)}>
             <DropdownLink href={route('perfil')}>Perfil</DropdownLink>
           </div>
+          <DropdownLink href={route('perfil-artista')}>
+            Perfil Artistico
+          </DropdownLink>
           <DropdownLink href={route('profile.show')}>Definições</DropdownLink>
 
           {page.props.jetstream.hasApiFeatures ? (

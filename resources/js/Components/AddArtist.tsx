@@ -93,12 +93,12 @@ export default function AddArtist({ setPagina }) {
   return (
     <>
       {isLoading ? (
-        <div className="relative flex justify-center items-center bg-black text-white z-50 top-0 left-0 w-screen h-screen animate-ping">
+        <div className="relative flex justify-center items-center bg-black text-white z-50 top-0 left-0 w-screen h-full animate-ping">
           <h1 className="text-xl">Carregando</h1>
         </div>
       ) : (
         <>
-          <div className="p-5 h-[60vh] mb-36 overflow-y-auto m-5 shadow-lg shadow-black">
+          <div className="p-5 h-full m-5 shadow-lg shadow-black">
             <p className="w-full text-xl flex justify-center uppercase">
               Criar novo perfil de artista
             </p>

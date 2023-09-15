@@ -80,32 +80,32 @@ function DetailsArtist({ artist }) {
 
   return (
     <div className="relative w-full h-full flex flex-col md:flex-row">
-      <div className="w-1/3 p-2 flex border flex-row md:flex-col rounded-lg shadow-lg pb-1 justify-start">
+      <div className="w-full md:w-1/3 p-2 flex border flex-row md:flex-col rounded-lg shadow-lg pb-1 justify-start">
         <button
           onClick={() => setPagina(<AboutArtist artist={artist} />)}
-          className="border hover:bg-gray-200 rounded text-xs items-center justify-center flex flex-col md:flex-row m-1 p-2"
+          className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
         >
-          <MdOutlineAppRegistration className="text-xl mr-1" />
+          <MdOutlineAppRegistration className="text-xl mr-3" />
           Detalhes
         </button>
         <button
           onClick={() =>
             setPagina(<EditArtist artist={artist} setPagina={setPagina} />)
           }
-          className="border border-b-4 hover:bg-gray-200 border-orange-500 rounded text-xs items-center justify-center flex flex-col md:flex-row md:p-2"
+          className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
         >
-          <BiUpload className="text-xl mr-1" />
+          <BiUpload className="text-xl mr-3" />
           Editar Perfil
         </button>
         <button
           onClick={() => setPagina(<AddArtistCover artist={artist} />)}
-          className="m-1 border border-b-4 hover:bg-gray-200 border-orange-500 rounded text-xs items-center justify-center flex flex-col md:flex-row"
+          className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
         >
           <HiPhotograph className="mr-3 text-xl" />
           Adicionar capa
         </button>
       </div>
-      <div className="w-2/3">{pagina}</div>
+      <div className="w-full md:w-2/3">{pagina}</div>
     </div>
   );
 }
@@ -115,10 +115,11 @@ export default DetailsArtist;
 function AboutArtist({ artist }) {
   return (
     <>
-      <div className="w-full h-full justify-start flex flex-row border-[#2e2c2e] border shadow-lg shadow-black p-5 rounded-lg items-center">
-        <div className="">
+      <div className="w-full m-1 justify-start flex flex-row border-[#2e2c2e] border shadow-lg shadow-black p-5 rounded-lg">
+        <div className="flex justify-start">
           <img
-            src={localStorage.getItem('prefix_urk') + artist?.url_cover}
+          className='w-36 h-auto'
+            src={localStorage.getItem('prefix_storage') + artist?.url_cover}
             alt={artist.name}
           />
         </div>
@@ -130,7 +131,7 @@ function AboutArtist({ artist }) {
             Contacto para shows: <span> {artist?.contact} </span>
           </div>
           <div>
-            Género musical: <span> {artist?.genre} </span>
+            Género musical: <span> {artist?.genres} </span>
           </div>
           <div>
             País: <span> {artist?.country} </span>

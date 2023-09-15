@@ -102,10 +102,7 @@ class SongsController extends Controller
     {
 
         $data = $d::all();
-        $artist_id = $data['artist_id'];
-        $cover = Request::file("cover")->store("artists/{$artist_id}/covers", 'public');
-
-
+        
         $song = Song::where('id', $data['id'])->first();
 
         $song->title = $data['title'];
@@ -114,8 +111,8 @@ class SongsController extends Controller
         $song->gravadora = $data['gravadora'];
         $song->participacoes = $data['participacoes'];
         $song->letra = $data['letra'];
-        $song->cover = $cover;
 
+        
         $song->save();
         return; // response()->json($song);
     }
@@ -169,7 +166,7 @@ class SongsController extends Controller
      */
     public function get_all_songs()
     {
-        return response()->json( Song::all());
+        return response()->json(Song::all());
     }
 
 

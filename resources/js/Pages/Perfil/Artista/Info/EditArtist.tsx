@@ -29,7 +29,7 @@ export default function EditArtist({ artist, setPagina }) {
     }
   
     return (
-      <div className="relative w-full h-full lg:h-[69vh] overflow-y-auto m-1 border-[#2e2c2e] border shadow-lg shadow-black p-5 rounded-lg items-center">
+      <div className="relative w-full h-full lg:h-[69vh] overflow-y-auto m-1 border-[#2e2c2e] border shadow-lg shadow-black p-5 rounded-lg items-center  ">
         <p className="w-full text-xl flex justify-center uppercase">
           Actualizar dados do artista
         </p>
@@ -60,7 +60,7 @@ export default function EditArtist({ artist, setPagina }) {
             <InputLabel htmlFor="genre">Estilo Musical</InputLabel>
             <select
               id="genre"
-              className="mt-1 block w-full"
+              className="mt-1 block w-full text-gray-700"
               value={formArtist.data.genre}
               onChange={e => formArtist.setData('genre', e.currentTarget.value)}
               required
@@ -96,7 +96,7 @@ export default function EditArtist({ artist, setPagina }) {
             <InputLabel htmlFor="country">País</InputLabel>
             <select
               id="country"
-              className="mt-1 block w-full"
+              className="mt-1 block w-full text-gray-900"
               value={formArtist.data.country}
               onChange={e => formArtist.setData('country', e.currentTarget.value)}
               required
@@ -128,7 +128,7 @@ export default function EditArtist({ artist, setPagina }) {
             <span>Apresentação artística chamativa. </span>
             <textarea
               id="about"
-              className="mt-1 block w-full"
+              className="mt-1 block w-full text-gray-700"
               value={formArtist.data.about}
               onChange={e => formArtist.setData('about', e.currentTarget.value)}
               required
