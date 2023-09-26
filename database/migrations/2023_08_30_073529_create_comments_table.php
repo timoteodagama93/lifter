@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
+            $table->string('user_id');
+            $table->string('song_id')->nullable();
+            $table->string('post_id')->nullable();
             $table->string('comment');
             $table->boolean('public')->default(true);
             $table->boolean('status_saw')->default(false);

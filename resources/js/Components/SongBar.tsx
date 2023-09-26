@@ -26,7 +26,7 @@ const SongBar = ({
             ? song?.attributes?.artwork?.url
                 .replace('{w}', '125')
                 .replace('{h}', '125')
-            : localStorage.getItem('prefix_storage') + song?.cover
+            :  song?.cover
         }
         alt={song?.title}
       />

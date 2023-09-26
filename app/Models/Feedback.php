@@ -11,12 +11,15 @@ class Feedback extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
+        'song_id',
         'message',
         'public',
         'status_read',
         'likes',
         'dislikes',
     ];
+    protected $table = 'feedbacks';
     /**
      * Um feedback pertence a uma música.
      */

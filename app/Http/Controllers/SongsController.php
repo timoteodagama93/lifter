@@ -8,6 +8,8 @@ use App\Models\Valuation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\File;
 use Inertia\Inertia;
 use Symfony\Component\Console\Input\Input;
@@ -33,6 +35,10 @@ class SongsController extends Controller
         $artist_id = Request::input('artist_id');
         $song_url = Request::file("song")->store("artists/{$artist_id}/songs", 'public');
 
+        Validator::make(Request::all(), [
+            'song' => ['required', 'mimes:mp3,mp4', 'max:5120']
+        ]);
+
         if ($song_url != false) {
 
             //$cover_url = Request::file("cover")->store("artists/{$artist_id}/songs/covers", 'public');
@@ -53,7 +59,7 @@ class SongsController extends Controller
                 'letra' => Request::input('letra'),
                 'mime_type' => $file_mime,
                 'extension' => $file_extension,
-                'url' => $song_url,
+                'url' => Storage::url($song_url),
                 //'cover' => $cover_url,
             ]);
             return;
@@ -89,7 +95,7 @@ class SongsController extends Controller
                 'letra' => Request::input('letra'),
                 'mime_type' => $file_mime,
                 'extension' => $file_extension,
-                'url' => $song_url,
+                'url' => Storage::url($song_url),
                 //'cover' => $cover_url,
             ]);
             return;
@@ -102,7 +108,7 @@ class SongsController extends Controller
     {
 
         $data = $d::all();
-        
+
         $song = Song::where('id', $data['id'])->first();
 
         $song->title = $data['title'];
@@ -112,7 +118,7 @@ class SongsController extends Controller
         $song->participacoes = $data['participacoes'];
         $song->letra = $data['letra'];
 
-        
+
         $song->save();
         return; // response()->json($song);
     }
@@ -127,7 +133,7 @@ class SongsController extends Controller
 
         $song = Song::where('id', $song_id)->first();
 
-        $song->cover = $cover;
+        $song->cover = Storage::url($cover);
 
         $song->save();
         return response()->json($song);
@@ -210,6 +216,7 @@ class SongsController extends Controller
 
         return response()->json($val);
     }
+
 
     /**
      * Obtém a avaliação do usuário em uma música

@@ -13,11 +13,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('contests_songs', function (Blueprint $table) {
-            $table->id();
-            $table->string('contest_name');
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
+            $table->ulid();
+            $table->string('designacao');
+            $table->string('descricao');
+            $table->string('estilo_musical');
+            $table->date('inicio_inscricoes')->nullable();
+            $table->date('inicio_votacoes')->nullable();
+            $table->date('termino_inscricoes')->nullable();
+            $table->date('termino_votacoes')->nullable();
+            $table->boolean('activo')->default(true);
+            $table->string('estado')->default('PUBLICADO');
             $table->string('url_cover')->nullable();
+            $table->string('url_schedule')->nullable();
+            $table->string('url_beneficios')->nullable();
             $table->string('url_terms')->nullable();
             $table->string('url_conditions')->nullable();
             $table->timestamps();

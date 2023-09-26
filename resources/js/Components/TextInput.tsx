@@ -12,7 +12,7 @@ const TextInput = forwardRef<
     {...props}
     ref={ref}
     className={classNames(
-      'border-gray-300 text-gray-700 focus:border-red-500 dark:focus:border-red-600 focus:ring-red-500 dark:focus:ring-red-600 rounded-md shadow-sm',
+      'w-full border-gray-300 text-gray-700 focus:border-red-500 dark:focus:border-red-600 focus:ring-red-500 dark:focus:ring-red-600 rounded-md shadow-sm',
       props.className,
     )}
   />

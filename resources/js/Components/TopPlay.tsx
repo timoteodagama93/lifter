@@ -79,7 +79,7 @@ const TopPlay = ({}) => {
             >
               <Link href={`/artists/${song?.artist_id}`}>
                 <img
-                  src={localStorage.getItem('prefix_storage') + song.cover}
+                  src={song.cover}
                   alt="name"
                   className="rounded-full w-full object-cover"
                 />

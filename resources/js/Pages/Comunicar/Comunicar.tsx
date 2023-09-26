@@ -14,6 +14,7 @@ import { Notificacoes } from './Index';
 import SectionBorder from '@/Components/SectionBorder';
 import { GrNotification } from 'react-icons/gr';
 import Feedbacks from './Feedbacks';
+import Swal from 'sweetalert2';
 //import Swal from 'sweetalert2'
 function Mensagens() {
   const [activar, setActivar] = useState('musicas');
@@ -48,8 +49,8 @@ function Mensagens() {
               Swal.fire({
                 title: 'Funcionalidade em desenvolvimento!',
                 text: 'A troca de mensagens estará disponível brevemente. Acompanhe as novidades e o cronograma de lançamentos.',
-                icon: 'error',
-                confirmButtonText: 'Cool'
+                icon: 'info',
+                confirmButtonText: 'Legal'
               })
               
             }}

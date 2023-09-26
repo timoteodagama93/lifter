@@ -9,7 +9,7 @@ const Track = ({ isPlaying, isActive, activeSong }) => (
         } hidden sm:block h-16 w-16 mr-4`}
       >
         <img
-          src={localStorage.getItem('prefix_storage') + activeSong?.cover}
+          src={ activeSong?.cover}
           alt="cover art"
           className="h-full w-full rounded-full"
         />
@@ -24,7 +24,7 @@ const Track = ({ isPlaying, isActive, activeSong }) => (
         <video>
           <source
             className="w-full h-full"
-            src={localStorage.getItem('prefix_storage') + activeSong?.url}
+            src={activeSong?.url}
           />
         </video>
       </div>

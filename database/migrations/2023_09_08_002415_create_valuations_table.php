@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('valuations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained(table: 'users', column: 'id');
-            $table->foreignId('song_id')->constrained(table: 'songs', column: 'id');
+            $table->string('song_id');
             $table->integer('stars')->default(0);
             $table->integer('points')->default(0);
-            $table->boolean('positive')->default(true);
+            $table->boolean('negative')->default(false);
+            $table->boolean('why_negative')->nullable();
             $table->string('emotion')->nullable();
             $table->timestamps();
         });

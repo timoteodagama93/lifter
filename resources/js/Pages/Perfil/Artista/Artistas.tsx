@@ -125,7 +125,7 @@ function ShowArtists({ artists, setPagina, setArtist, setUploadCover }) {
             className="flex-1 flex flex-row justify-between items-center"
           >
             <img
-              src={'http://127.0.0.1:8000/storage/' + artist?.url_cover}
+              src={artist?.url_cover}
               alt=""
               className="flex w-10 h-10 rounded-full"
             />

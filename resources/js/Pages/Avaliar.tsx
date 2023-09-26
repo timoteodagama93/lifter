@@ -48,8 +48,9 @@ import {
 } from 'react-icons/gi';
 import { siblings } from '@syncfusion/ej2-base';
 import Seekbar from '@/Components/MusicPlayer/Seekbar';
+import MediaDeEstrelas from '@/Components/MediaDeEstrelas';
 
-export default function Avaliar() {
+export default function Avaliar({ songs }) {
   const [duration, setDuration] = useState(0);
   const [seekTime, setSeekTime] = useState(0);
   const [appTime, setAppTime] = useState(0);
@@ -59,8 +60,6 @@ export default function Avaliar() {
 
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const { data, isFetching, error } = useGetValuateSongsQuery('');
-  const songs = data?.slice(0, 5);
   const [activeSong, setActiveSong] = useState();
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -106,62 +105,34 @@ export default function Avaliar() {
       if (selectedIndex + 1 === songs?.length) {
         setSelectedIndex(0);
         setActiveSong(songs[selectedIndex]);
-      } else {
-        setSelectedIndex(selectedIndex - 1);
-        setActiveSong(songs[selectedIndex]);
       }
     }
   };
 
-  if (isFetching) return <Loader title="Carregando músicas" />;
-  if (error) return <Error />;
+  useEffect(initials, [songs]);
+
   return (
     <AppLayout title="Avaliar">
-      <div className="w-full h-[90vh] md:h-[97vh] flex gap-1 flex-col-reverse md:flex-row justify-start rounded-lg">
-        <div className="w-full md:w-9/12 h-full md:h-[95vh] overflow-y-hidden  relative flex flex-col">
-          {activeSong && (
-            <div className="flex flex-col relative">
-              {activeSong?.mime_type.includes('audio/') && (
-                <>
-                  <AudioPlayer
-                    activeSong={activeSong}
-                    isPlaying={isPlaying}
-                    volume={volume}
-                    seekTime={seekTime}
-                    //onEnded={()=> handleNextSong()}
-                    onTimeUpdate={event => setAppTime(event.target.currentTime)}
-                    onLoadedData={event => setDuration(event.target.duration)}
-                    repeat={repeat}
-                  />
-                  <div className="relative flex flex-col w-full h-full md:h-[80vh]  ">
-                    <img
-                      src={
-                        localStorage.getItem('prefix_storage') +
-                        activeSong?.cover
-                      }
-                      alt={activeSong?.title}
-                      className="w-full h-full"
-                    />
-                    <div className="absolute top-0 left-0 justify-between px-5 w-full flex flex-row gap-1">
-                      <div className="flex flex-col">
-                        <span>{activeSong.title}</span>
-                        <span>{activeSong.artist} </span>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-              {activeSong?.mime_type.includes('video/') && (
-                <>
-                  <VideoPlayer
-                    activeSong={activeSong}
-                    isPlaying={isPlaying}
-                    volume={volume}
-                    seekTime={seekTime}
-                    //onEnded={handleNextSong}
-                    onTimeUpdate={event => setAppTime(event.target.currentTime)}
-                    onLoadedData={event => setDuration(event.target.duration)}
-                    repeat={repeat}
+      <div className="w-full h-[100vh] flex gap-1 justify-cebter items-center rounded-lg">
+        {songs?.length > 0 && activeSong ? (
+          <div className="flex w-full h-full flex-col relative ">
+            {activeSong?.mime_type.includes('audio/') && (
+              <>
+                <AudioPlayer
+                  activeSong={activeSong}
+                  isPlaying={isPlaying}
+                  volume={volume}
+                  seekTime={seekTime}
+                  //onEnded={()=> handleNextSong()}
+                  onTimeUpdate={event => setAppTime(event.target.currentTime)}
+                  onLoadedData={event => setDuration(event.target.duration)}
+                  repeat={repeat}
+                />
+                <div className="relative flex flex-col w-full h-full  ">
+                  <img
+                    src={activeSong?.cover}
+                    alt={activeSong?.title}
+                    className="w-full h-[100%] "
                   />
                   <div className="absolute top-0 left-0 justify-between px-5 w-full flex flex-row gap-1">
                     <div className="flex flex-col">
@@ -169,52 +140,80 @@ export default function Avaliar() {
                       <span>{activeSong.artist} </span>
                     </div>
                   </div>
-                </>
-              )}
-              <div className="absolute top-0 right-0">
-                <EnviarEstrelas wich_flex="flex-row" song={activeSong} />
-              </div>
-
-              <div className="absolute  bottom-16 left-0 w-full justify-center items-center flex mx-auto opacity-75 bg-black ">
-                <Seekbar
-                  appTime={appTime}
-                  max={duration}
-                  min="0"
-                  value={appTime}
-                  onInput={e => setSeekTime(e.target.value)}
-                  setSeekTime={seekTime}
+                </div>
+              </>
+            )}
+            {activeSong?.mime_type.includes('video/') && (
+              <>
+                <VideoPlayer
+                  activeSong={activeSong}
+                  isPlaying={isPlaying}
+                  volume={volume}
+                  seekTime={seekTime}
+                  //onEnded={handleNextSong}
+                  onTimeUpdate={event => setAppTime(event.target.currentTime)}
+                  onLoadedData={event => setDuration(event.target.duration)}
+                  repeat={repeat}
                 />
-                <button
-                  className="text-xs p-1 flex justify-center items-center rounded"
-                  onClick={handlePreviousSong}
-                >
-                  {isPlaying && <GiPreviousButton className="w-10 h-10" />}
-                </button>
-                <button
-                  className="text-xs p-1  justify-center items-center rounded"
-                  onClick={pausePlay}
-                >
-                  {!isPlaying ? (
-                    <>
-                      <GiPlayButton className="w-10 h-10" />
-                    </>
-                  ) : (
-                    <>
-                      <GiPauseButton className="w-10 h-10" />
-                    </>
-                  )}
-                </button>
-                <button
-                  className="text-xs p-1  flex justify-center items-center rounded"
-                  onClick={handleNextSong}
-                >
-                  {isPlaying && <GiNextButton className="w-10 h-10" />}
-                </button>
-              </div>
-              <InteracoesMusical song={activeSong} orientation="flex-row " />
+                <div className="absolute top-0 left-0 justify-between px-5 w-full flex flex-row gap-1">
+                  <div className="flex flex-col">
+                    <span>{activeSong.title}</span>
+                    <span>{activeSong.artist} </span>
+                  </div>
+                </div>
+              </>
+            )}
+            <div className="absolute z-10 top-8 right-0">
+              <MediaDeEstrelas wich_flex="flex-row" song={activeSong} />
             </div>
-          )}
-        </div>
+
+            <div className="z-10 absolute  bottom-16 left-0 w-full justify-center items-center flex mx-auto opacity-75 bg-black ">
+              <Seekbar
+                appTime={appTime}
+                max={duration}
+                min="0"
+                value={appTime}
+                onInput={e => setSeekTime(e.target.value)}
+                setSeekTime={seekTime}
+              />
+              <button
+                className="text-xs p-1 flex justify-center items-center rounded"
+                onClick={handlePreviousSong}
+              >
+                {isPlaying && <GiPreviousButton className="w-10 h-10" />}
+              </button>
+              <button
+                className="text-xs p-1  justify-center items-center rounded"
+                onClick={pausePlay}
+              >
+                {!isPlaying ? (
+                  <>
+                    <GiPlayButton className="w-10 h-10" />
+                  </>
+                ) : (
+                  <>
+                    <GiPauseButton className="w-10 h-10" />
+                  </>
+                )}
+              </button>
+              <button
+                className="text-xs p-1  flex justify-center items-center rounded"
+                onClick={handleNextSong}
+              >
+                {isPlaying && <GiNextButton className="w-10 h-10" />}
+              </button>
+            </div>
+            <div className="h-full items-center flex absolute top-10 right-0">
+              <InteracoesMusical song={activeSong} orientation="flex-col " />
+            </div>
+          </div>
+        ) : (
+          <h1 className="text-xl text-center">
+            Não existe nenhum destaque no momento..
+          </h1>
+        )}
+
+        {/*}
         <div className="w-full md:w-3/12 h-[10vh] md:h-full overflow-y-auto relative flex flex-row md:flex-col border ">
           <div className="w-full h-full md:h-[80%] overflow-y-auto relative flex flex-row md:flex-col border ">
             {songs?.map((song, i) => (
@@ -227,7 +226,7 @@ export default function Avaliar() {
                     <img
                       onClick={() => play(song, i)}
                       key={i}
-                      src={localStorage.getItem('prefix_storage') + song?.cover}
+                      src={song?.cover}
                       alt={song.title}
                       className="w-full md:w-2/3 h-auto"
                     />
@@ -253,7 +252,7 @@ export default function Avaliar() {
                       src={
                         song?.cover === null
                           ? microImage
-                          : localStorage.getItem('prefix_storage') + song?.cover
+                          : song?.cover
                       }
                       key={i}
                       onClick={() => play(song, i)}
@@ -286,6 +285,7 @@ export default function Avaliar() {
             Ver rank
           </Link>{' '}
         </div>
+        {*/}
       </div>
     </AppLayout>
   );

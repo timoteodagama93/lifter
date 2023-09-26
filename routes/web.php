@@ -1,10 +1,13 @@
 <?php
 
 use App\Http\Controllers\ArtistaController;
+use App\Http\Controllers\ContestController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SongsController;
 use App\Http\Controllers\UploadController;
+use App\Http\Controllers\ValuationFeedbackCommentController;
 use App\Models\Artist;
+use App\Models\Contest;
 use App\Models\Notification;
 use App\Models\Post;
 use App\Models\Song;
@@ -39,7 +42,7 @@ Route::middleware([
      * ROUTAS PRINCIPAIS
      */
     Route::get('/', function () {
-        return Inertia::render('Home/Home', []);
+        return Inertia::render('Home/Home', ['songs' => Song::all()]);
     })->name('/');
     Route::get('/home', function (User $user) {
 
@@ -104,7 +107,7 @@ Route::middleware([
 
 
     /**
-     * SONGSC ONTROLLER
+     * SONGSC CONTROLLER
      *  Routas das Músicas
      */
     Route::post('/feedback', [SongsController::class, 'store_feedback'])->name('feedback');
@@ -136,6 +139,37 @@ Route::middleware([
         ]);
     })->name('get-artist-songs');
 
+    /**
+     * VALUATIONFEEDBACKCOMMENT CONTROLLER
+     */
+    Route::controller(ValuationFeedbackCommentController::class)->group(function () {
+        Route::post('/get-comments', 'get_comments')->name('get-comments');
+        Route::post('/get-comment-user', 'get_comments')->name('get-comment-user');
+        Route::post('/save-to-collection', 'save_to_collection')->name('save-to-collection');
+        Route::post('/share-opinion', 'share_opinion')->name('share-opinion');
+        Route::post('/share-feedback', 'share_feedback')->name('share-feedback');
+        Route::post('/share-comment', 'share_comment')->name('share-comment');
+    });
+
+    /**
+     * CONTESTCONTROLLER
+     */
+    Route::controller(ContestController::class)->group(function () {
+        Route::get('contest-details/{contestId}', 'details')->name('contest-details');
+        Route::put('update-contest', 'update')->name('update-contest');
+        Route::put('create-contest', 'store')->name('create-contest');
+        Route::post('add-contest-schedule', 'add_schedule')->name('add-contest-schedule');
+        Route::post('add-contest-premios', 'add_premios')->name('add-contest-premios');
+        Route::post('get-my-contests', 'get_my_contests')->name('get-my-contests');
+    });
+
+
+
+
+
+
+
+
 
     Route::get('inicio', function () {
         return  Inertia::render('Inicio/Inicio');
@@ -156,11 +190,11 @@ Route::middleware([
         return Inertia::render('Videos/Videos');
     })->name('som_emocao');
 
-    Route::get('/ascensao', function () {
-        return Inertia::render('Ascensao/Ascensao', [
-            'start_page' => 'sobre'
+    Route::get('/concursos', function () {
+        return Inertia::render('Concursos/Concursos', [
+            'contests' => Contest::all()
         ]);
-    })->name('ascensao');
+    })->name('concursos');
     Route::get('/bibliotecas', function () {
         return Inertia::render('Biblioteca/Biblioteca');
     })->name('bibliotecas');
@@ -245,11 +279,6 @@ Route::middleware([
     Route::post('/post', [PostController::class, 'store']);
     Route::post('/posts', [PostController::class, 'get']);
 
-    /**
-     * CONTEST CONTROLLER
-     */
-    Route::post('/contest', [PostController::class, 'store']);
-    Route::post('/contests', [PostController::class, 'get']);
 
 
     /**
@@ -292,9 +321,6 @@ Route::middleware([
     Route::get('/artists/related/{artistId}', function ($artistId) {
         return response()->json([Song::where('artist_id', $artistId)]);
     })->name('artists/related/');
-
-
-
 
     /**ARTIST ROUTES */
     Route::get('artistas/{pagina}/{id}', [ArtistaController::class, 'index'])->name('index');

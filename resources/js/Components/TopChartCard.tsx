@@ -24,7 +24,7 @@ function TopChartCard({ song, i, isPlaying, activeSong, songs }) {
       <div className="flex-1 flex flex-row justify-between items-center">
         {song.mime_type.includes('audio/') && (
           <img
-            src={localStorage.getItem('prefix_storage') + song?.cover}
+            src={ song?.cover}
             alt=""
             className="flex w-10 h-10 rounded-lg"
           />
@@ -33,7 +33,7 @@ function TopChartCard({ song, i, isPlaying, activeSong, songs }) {
           <video controls>
             <source
               type={song.mime_type}
-              src={localStorage.getItem('prefix_storage') + song?.url}
+              src={song?.url}
               className="flex w-10 h-10 rounded-lg"
             />
           </video>

@@ -11,12 +11,13 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import Modal from '@/Components/Modal';
 import { router } from '@inertiajs/core';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 function AddSongCover({ song }) {
   const page = useTypedPage();
   const route = useRoute();
   console.log(song);
-  const { data, setData, progress, post } = useForm({
+  const { data, setData, reset, progress, post } = useForm({
     artist_id: song.artis_id,
     id: song.id,
     cover: null as File | null,
@@ -34,7 +35,12 @@ function AddSongCover({ song }) {
     axios
       .post('/add-song-cover', formData)
       .then(response => {
-        console.log(response);
+        reset();
+        Swal.fire({
+          title: 'Bem feito',
+          text: 'A capa foi carregada e associada à música.',
+          icon: 'success',
+        });
       })
       .catch(e => {
         console.log(e);

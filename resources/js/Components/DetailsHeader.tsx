@@ -11,13 +11,13 @@ function DetailsHeader({ artistId, artistData, songData }) {
         {artistData?.url_cover ? (
           <img
             className="w-48 h-48 border-2 shadow-xl shadow-black"
-            src={localStorage.getItem('prefix_storage') + artistId.url_cover}
+            src={artistId.url_cover}
             alt="art"
           />
         ) : (
           <img
             className="w-16 h-16 rounded-full border-2 shadow-xl shadow-black flex"
-            src={localStorage.getItem('prefix_storage') + songData?.cover}
+            src={ songData?.cover}
             alt="art"
           />
         )}

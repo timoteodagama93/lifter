@@ -78,7 +78,7 @@ function Sidebar({}) {
           </div>
         </div>
         <SectionBorder />
-        <Links links={links} />
+        <Links links={links} setOpenMobileMenu={setOpenMobileMenu} />
         <Footer />
       </div>
       {/**sidebar telefones */}
@@ -130,7 +130,7 @@ function Sidebar({}) {
           </div>
         </div>
         <SectionBorder />
-        <Links links={links} />
+        <Links setOpenMobileMenu={setOpenMobileMenu} links={links} />
         <Footer />
       </div>
     </>
@@ -145,7 +145,7 @@ const Footer = () => {
   );
 };
 
-function Links({ links }) {
+function Links({ links, setOpenMobileMenu }) {
   return (
     <>
       <div className="mt-0">
@@ -161,7 +161,7 @@ function Links({ links }) {
               : ''
           }   items-center
           `}
-              onClick={() => {}}
+              onClick={() => setOpenMobileMenu(false)}
             >
               <item.icon className="w-6 h-6 mr-2" />
               {item.name}

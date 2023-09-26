@@ -72,7 +72,7 @@ function ListSongs({ songs, setPagina }) {
           </h3>
           {song.mime_type.includes('audio/') && (
             <img
-              src={localStorage.getItem('prefix_storage') + song?.cover}
+              src={ song?.cover}
               alt=""
               className="flex w-10 h-10 rounded-sm"
             />
@@ -90,7 +90,7 @@ function ListSongs({ songs, setPagina }) {
             <audio controls>
               <source
                 type={song.mime_type}
-                src={localStorage.getItem('prefix_storage') + song.url}
+                src={ song.url}
               />
             </audio>
           )}
@@ -98,7 +98,7 @@ function ListSongs({ songs, setPagina }) {
             <video className="w-36 h-36" controls>
               <source
                 type={song.mime_type}
-                src={localStorage.getItem('prefix_storage') + song.url}
+                src={song.url}
               />
             </video>
           )}

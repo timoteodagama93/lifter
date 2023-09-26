@@ -119,7 +119,7 @@ function AboutArtist({ artist }) {
         <div className="flex justify-start">
           <img
           className='w-36 h-auto'
-            src={localStorage.getItem('prefix_storage') + artist?.url_cover}
+            src={ artist?.url_cover}
             alt={artist.name}
           />
         </div>

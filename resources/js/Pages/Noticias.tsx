@@ -45,9 +45,7 @@ export default function Noticias({ pagina, posts, APP_URL }: Props) {
 
   const { currentPage, setCurrentPage } = useStateContext();
 
-  localStorage.getItem('APP_URL_STORAGE') == null
-    ? localStorage.setItem('APP_URL_STORAGE', APP_URL + 'storage/')
-    : '';
+
 
   function setDefaultPage() {
     setCurrentPage(<Posts />);
@@ -56,8 +54,8 @@ export default function Noticias({ pagina, posts, APP_URL }: Props) {
   useEffect(setDefaultPage, []);
 
   return (
-    <AppLayout title="Home">
-      <Head title="Home" />
+    <AppLayout title="Notícias">
+      <Head title="Notícias" />
 
       <div className="relative sm:flex flex-col sm:justify-center sm:items-center  bg-dots-darker bg-center dark:bg-dots-lighter  selection:bg-red-500 selection:text-white">
         {currentPage}

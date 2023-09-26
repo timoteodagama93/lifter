@@ -40,7 +40,7 @@ const VideoPlayer = ({
       >
         <source
           type={activeSong.mime_type}
-          src={localStorage.getItem('prefix_storage') + activeSong?.url}
+          src={activeSong?.url}
         />
       </video>
     </>

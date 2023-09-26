@@ -24,7 +24,7 @@ class PostController extends Controller
             [
                 'post_text' => Request::input('text'),
                 'mime_type' => Request::file('file')->extension(),
-                'file_url' => $file,
+                'file_url' => Storage::url($file),
                 'file_path' => $file,
                 'user_id' => $user_id,
             ]

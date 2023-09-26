@@ -74,7 +74,7 @@ class UploadController extends Controller
             'name' => $file->hashName(),
             'file_name' => $file->hashName(),
             'mime_type' => $file->extension(),
-            'path' => $song_file,
+            'path' => Storage::url($song_file),
             'file_has' => $file->hashName(),
         ]);
 
@@ -98,7 +98,7 @@ class UploadController extends Controller
                 'name' => Request::input('title'),
                 'file_name' => Request::file('song')->hashName(),
                 'mime_type' => Request::file('song')->extension(),
-                'path' => $song,
+                'path' => Storage::url($song),
 
                 'disk' => config('app.uploads.disk'),
                 'file_has' => hash_file(
@@ -135,7 +135,7 @@ class UploadController extends Controller
                 'name' => Request::input('title'),
                 'file_name' => Request::file('song')->hashName(),
                 'mime_type' => Request::file('song')->extension(),
-                'path' => $song,
+                'path' => Storage::url($song),
 
                 'disk' => config('app.uploads.disk'),
                 'file_has' => hash_file(

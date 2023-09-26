@@ -14,6 +14,7 @@ import { BiHappy } from 'react-icons/bi';
 import { router } from '@inertiajs/core';
 import SecondaryButton from '../../../../Components/SecondaryButton';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 export default function AddSong({ artist }) {
   const [successOnAdd, setSuccessOnAdd] = useState(false);
 
@@ -38,6 +39,11 @@ export default function AddSong({ artist }) {
         formSong.setData('title', '');
         clearSongFileInput();
         setSuccessOnAdd(true);
+        Swal.fire({
+          title: 'Bem feito',
+          text: 'A música foi carregada.',
+          icon: 'success',
+        });
       },
       onError: e => {},
       onFinish: r => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import UserAvatar from '@/Components/UserAvatar';
 import { Link } from '@inertiajs/react';
@@ -8,6 +8,7 @@ import {
   BiLibrary,
   BiMusic,
   BiStats,
+  BiTrophy,
   BiUpload,
 } from 'react-icons/bi';
 import { TiMessages } from 'react-icons/ti';
@@ -17,9 +18,16 @@ import { MdPhoto } from 'react-icons/md';
 import DetailsArtist from './Artista/Info/DetailsArtist';
 import { FaCoins } from 'react-icons/fa';
 import { RiContactsBook2Fill } from 'react-icons/ri';
+import ContestCard from '@/Components/ContestCard';
+import axios from 'axios';
+import NewContest from '@/Components/Contest/Index';
+import { BsEye } from 'react-icons/bs';
+import EditContest from '@/Components/EditContest/Index';
 
-function Perfil() {
+function Perfil({}) {
   const page = useTypedPage();
+  const [pagina, setPagina] = useState(<></>);
+
   return (
     <AppLayout title="Perfil">
       <div className="w-full flex flex-col">
@@ -42,52 +50,59 @@ function Perfil() {
             />
           </div>
           <div className="w-full flex flex-col justify-center items-center">
-            <h2 className="text-xl md:text-2xl text-bold">{page.props.auth.user?.name}</h2>
+            <h2 className="text-xl md:text-2xl text-bold">
+              {page.props.auth.user?.name}
+            </h2>
             <div className="w-full flex flex-row justify-center items-center">
-              <span className="p-1 shadow-sm shadow-white gap-1 mb-2 justify-center items-center mr-2 flex"> <BiLibrary/> 0 </span>
-              <span className="p-1 shadow-sm shadow-white gap-1 mb-2 justify-center items-center mr-2 flex"> <FaCoins/> 0 </span>
-              <span className='p-1 shadow-sm shadow-white gap-1 mb-2 justify-center items-center flex'> <RiContactsBook2Fill/> 0 </span>
+              <span className="p-1 shadow-sm shadow-white gap-1 mb-2 justify-center items-center mr-2 flex">
+                {' '}
+                <BiLibrary /> 0{' '}
+              </span>
+              <span className="p-1 shadow-sm shadow-white gap-1 mb-2 justify-center items-center mr-2 flex">
+                {' '}
+                <FaCoins /> 0{' '}
+              </span>
+              <span className="p-1 shadow-sm shadow-white gap-1 mb-2 justify-center items-center flex">
+                {' '}
+                <RiContactsBook2Fill /> 0{' '}
+              </span>
             </div>
           </div>
-          <div className="w-full flex ">
+          <div className="w-full flex justify-center items-center ">
             <button className="border border-b-4 hover:bg-[#2e2c2e] border-[#4c88c4] rounded text-xs items-center justify-center flex flex-col md:flex-row p-1">
               <BiInfoCircle className="text-xl mr-1" />
               Informações
             </button>
-            <button className="border border-b-4 hover:bg-[#2e2c2e] border-[#4c88c4] rounded text-xs items-center justify-center flex flex-col md:flex-row p-1">
+            <button
+              onClick={() => setPagina(<NewContest />)}
+              className=" shadow-lg shadow-black border flex flex-col text-4xl  justify-start items-center p-1 rounded "
+            >
+              <BiTrophy className="animate-bounce" />
+              <span className="text-xs">Criar concurso</span>
+            </button>
+            <button
+              onClick={() =>
+                setPagina(
+                  <MyContests
+                    setPagina={setPagina}
+                    userId={page.props.auth.user?.id}
+                  />,
+                )
+              }
+              className="border border-b-4 hover:bg-[#2e2c2e] border-[#4c88c4] rounded text-xs items-center justify-center flex flex-col md:flex-row p-1"
+            >
               <BiInfoCircle className="text-xl mr-1" />
-              Definições
+              Concursos
             </button>
             <button className="border border-b-4 hover:bg-[#2e2c2e] border-[#4c88c4] rounded text-xs items-center justify-center flex flex-col md:flex-row p-1">
               <BiInfoCircle className="text-xl mr-1" />
-              Informações
+              Contactos
             </button>
           </div>
-        </div>
-        <div className="w-full ">
-          <p className="w-full mt-2 p-2 ">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
-            obcaecati cumque at amet eum modi hic unde. Quos, corporis
-            perferendis? Necessitatibus ex iste, voluptatibus magni cum culpa
-            repellendus illo dolor! Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Eum earum nam rem, numquam exercitationem fuga
-            possimus quas neque suscipit! Culpa labore quos veritatis at vel
-            obcaecati quisquam? Quasi, atque nulla.
-          </p>
         </div>
 
-        <div className=" w-full flex flex-col p-5 bg-gray-50 rounded-lg shadow-lg">
-          <div className="w-full">
-            <p className="w-full mt-2 p-5 ">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
-              obcaecati cumque at amet eum modi hic unde. Quos, corporis
-              perferendis? Necessitatibus ex iste, voluptatibus magni cum culpa
-              repellendus illo dolor! Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Eum earum nam rem, numquam exercitationem fuga
-              possimus quas neque suscipit! Culpa labore quos veritatis at vel
-              obcaecati quisquam? Quasi, atque nulla.
-            </p>
-          </div>
+        <div className=" w-full relative flex flex-col p-5  rounded-lg ">
+          {pagina}
         </div>
       </div>
     </AppLayout>
@@ -95,3 +110,74 @@ function Perfil() {
 }
 
 export default Perfil;
+
+function MyContests({ userId, setPagina }) {
+  const [contests, setContests] = useState(null);
+  const loadMyContests = () => {
+    axios
+      .post('get-my-contests', userId)
+      .then(response => {
+        setContests(response.data);
+      })
+      .catch(error => {
+        return (
+          <h1 className="p-5 text-xl text-center w-full">
+            Alguma coisa correu mal, não foi possível carregar seu concursos.
+            Tente novamente dentro de instantes.
+          </h1>
+        );
+      });
+  };
+
+  useEffect(loadMyContests, []);
+  return (
+    <div className="w-full flex flex-row flex-wrap">
+      <h1 className="flex w-full text-center text-4xl  ">Meus concursos</h1>
+      <>
+        <table className="w-full table">
+          <thead className="thead-dark">
+            <tr className="">
+              <th aria-sort="ascending" className="">
+                Designação do concurso
+              </th>
+              <th aria-sort="ascending" className="">
+                Início das votações
+              </th>
+              <th aria-sort="ascending" className="">
+                Termino das votações
+              </th>
+              <th aria-sort="ascending" className="">
+                Ações
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {contests?.map(concurso => (
+              <tr className="odd:bg-white p-1 odd:text-gray-900 even:bg-slate-500">
+                <td>{concurso.designacao}</td>
+                <td>{concurso.inicio_votacoes}</td>
+                <td>{concurso.termino_votacoes}</td>
+                <td>
+                  <div className="flex flex-row gap-1">
+                    {' '}
+                    <button className="px-2 shadow-black shadow-lg gap-1 flex flex-col text-xs">
+                      <BsEye className="text-xl" /> Ver
+                    </button>
+                    <button
+                      onClick={() =>
+                        setPagina(<EditContest contest={concurso} />)
+                      }
+                      className="px-2 shadow-black shadow-lg gap- flex flex-col text-xs"
+                    >
+                      <BiEdit className="text-xl" /> Editar
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </>
+    </div>
+  );
+}

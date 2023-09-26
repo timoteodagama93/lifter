@@ -12,14 +12,28 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('contests', function (Blueprint $table) {
-            $table->id();
-            $table->string('contest_name');
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
+            $table->ulid('id');
+            $table->foreignId('user_id')->constrained(table: 'users', column: 'id');
+            $table->string('designacao');
+            $table->string('descricao');
+            $table->string('estilo_musical');
+            $table->date('inicio_inscricoes')->nullable();
+            $table->date('inicio_votacoes')->nullable();
+            $table->date('termino_inscricoes')->nullable();
+            $table->date('termino_votacoes')->nullable();
+            $table->date('total_premios')->nullable();
+            $table->date('tipo_premio')->nullable();
+            $table->date('lugar_1')->nullable();
+            $table->date('lugar_2')->nullable();
+            $table->date('lugar_3')->nullable();
+            $table->date('premios_extras')->nullable();
+            $table->boolean('activo')->default(true);
+            $table->string('estado')->default('PUBLICADO');
             $table->string('url_cover')->nullable();
+            $table->string('url_schedule')->nullable();
+            $table->string('url_beneficios')->nullable();
             $table->string('url_terms')->nullable();
             $table->string('url_conditions')->nullable();
-
             $table->timestamps();
         });
     }

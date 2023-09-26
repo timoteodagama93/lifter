@@ -87,7 +87,7 @@ function HeaderArtist({ artist, setPagina }) {
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center center',
           backgroundImage: `url(${
-            localStorage.getItem('prefix_storage') + artist?.url_cover_
+            artist?.url_cover_
           })`,
         }}
       >
@@ -96,7 +96,7 @@ function HeaderArtist({ artist, setPagina }) {
         </button>
         <div className="w-20 m-2">
           <img
-            src={localStorage.getItem('prefix_storage') + artist?.url_cover}
+            src={artist?.url_cover}
             className=" rounded-full w-20 border border-black"
           />
         </div>

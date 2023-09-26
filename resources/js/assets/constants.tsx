@@ -171,8 +171,8 @@ export const links = [
     icon: RankingIcon,
   },
   {
-    name: 'Ascensão',
-    href: '/ascensao',
+    name: 'Concursos',
+    href: '/concursos',
     icon: BsTrophy,
   },
   {

@@ -17,7 +17,7 @@ return new class extends Migration
                 ->constrained(table: 'users', indexName: 'id')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->string('post_text');
+            $table->longText('post_text');
             $table->string('mime_type');
             $table->string('file_url');
             $table->string('file_path');

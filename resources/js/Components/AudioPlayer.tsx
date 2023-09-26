@@ -31,7 +31,7 @@ const AudioPlayer = ({
   return (
     <>
         <audio
-        src={localStorage.getItem('prefix_storage') + activeSong?.url}
+        src={activeSong?.url}
         ref={ref}
         loop={repeat}
         //        onEnded={onEnded}

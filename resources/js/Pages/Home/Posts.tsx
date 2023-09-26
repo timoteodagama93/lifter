@@ -1,6 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { BiMusic, BiSend } from 'react-icons/bi';
-import { BsArrowBarRight, BsCameraVideo, BsImage } from 'react-icons/bs';
+import { BiCalendar, BiComment, BiDislike, BiLike, BiMusic, BiSend } from 'react-icons/bi';
+import {
+  BsArrowBarRight,
+  BsCameraVideo,
+  BsImage,
+  BsSearchHeart,
+} from 'react-icons/bs';
 import { useForm } from '@inertiajs/react';
 import useTypedPage from '@/Hooks/useTypedPage';
 import useRoute from '@/Hooks/useRoute';
@@ -9,6 +14,8 @@ import InputError from '@/Components/InputError';
 import SecondaryButton from '@/Components/SecondaryButton';
 import Modal from '@/Components/Modal';
 import axios from 'axios';
+import PrimaryButton from '@/Components/PrimaryButton';
+import OffOnCheckBox from '@/Components/OffOnCheckBox';
 
 function Posts() {
   const [openNewImagePost, setOpenNewImagePost] = useState(false);
@@ -24,6 +31,10 @@ function Posts() {
   }
 
   useEffect(loadPosts, []);
+
+  function Like(postId){
+
+  }
   return (
     <>
       <div className="w-full md:px-2 flex flex-col">
@@ -44,23 +55,67 @@ function Posts() {
               <BsCameraVideo />
               <span className="text-xs">Vídeo</span>
             </button>
+            <OffOnCheckBox />
           </div>
         </div>
         <NewPost isOpen={openNewImagePost} onClose={setOpenNewImagePost} />
-        <div className="flex flex-col md:flex-row flex-wrap mb-5 ">
+        <div className="flex flex-col md:flex-row flex-wrap p-1 ">
           {posts?.map(post => (
-            <div className="w-full columns-lg  flex flex-col md:flex-row p-2 shadow shadow-white rounded mx-1 ">
-              <img
-                src={'http://127.0.0.1:8000/storage/' + post.file_url}
-                alt=""
-                className="h-auto w-full md:w-1/3 rounded border"
-              />
-              <div className="w-full md:2/3 px-10 md:px-1">
-                <p>{post.post_text} </p>
-                <p className=''>{post.created_at.toString()} </p>
-                <p className=''>Redação Lifter</p>
+            <>
+              <div className="relative w-full md:w-1/2 lg:w-1/3 h-[400px]  overflow-hidden   rounded p-1">
+                <div className="w-full h-1/2 backdrop-blur-lg justify-center items-center flex rounded shadow ">
+                  <img
+                    src={post.file_url}
+                    alt=""
+                    className="object-cover h-full w-full rounded-t shadow"
+                  />
+                </div>
+                <div className="w-full h-1/2 bg-white">
+                  <div className="w-full  h-1/3n  flex flex-row text-gray-300 gap-1">
+                    <p className="flex gap-1 items-center">
+                      {' '}
+                      <BiCalendar />{' '}
+                      {new Date(post?.created_at).getDate() +
+                        '/' +
+                        (new Date(post?.created_at).getUTCMonth() + 1) +
+                        '/' +
+                        new Date(post?.created_at).getFullYear()+
+                        ' ' +
+                        new Date(post?.created_at).getUTCHours()+
+                        ':' +
+                        new Date(post?.created_at).getUTCMinutes()
+                        }
+                    </p>
+                    <SecondaryButton 
+                    onClick={()=>Like(post?.id)}
+                    className=" mt-1 p-1 flex gap-1 items-center">
+                      {' '}
+                      <BiLike /> {post?.likes}{' '}
+                    </SecondaryButton>
+                    <SecondaryButton 
+                    onClick={()=>Like(post?.id)}
+                    className=" flex gap-1 items-center">
+                      {' '}
+                      <BiDislike /> {post?.dislikes}{' '}
+                    </SecondaryButton>
+                    <p className="flex gap-1 items-center text-[#ff0000]">
+                      <BsSearchHeart className="text-[#ff0000] " /> 
+                      Lifter
+                    </p>
+                  </div>
+                  <div className="w-full  overflow-y-hidden flex flex-row text-gray-300 gap-5">
+                    <p className="text-black bold flex gap-1 items-center">
+                      {post?.post_text}
+                    </p>
+                  </div>
+                  <div className="w-full absolute p-1 bottom-0 left-0   flex flex-row text-gray-300 gap-5">
+                    <button className="w-full h-12 justify-center items-center flex bg-[#1422b1] rounded-t ">
+                      Ler mais
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
+            </>
           ))}
         </div>
       </div>
@@ -182,6 +237,8 @@ function NewPost({ isOpen, onClose }) {
             onChange={e => {
               setData('text', e.currentTarget.value);
             }}
+            maxLength={500}
+            minLength={5}
             placeholder="Conte a história..."
             className="w-full p-2 border border-[#2e2c2e] rounded shadow-sm"
           ></textarea>

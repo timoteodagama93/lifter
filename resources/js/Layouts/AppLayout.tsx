@@ -6,22 +6,13 @@ import Banner from '@/Components/Banner';
 import { Sidebar } from '../Components';
 import MusicPlayer from '@/Components/MusicPlayer';
 import { useSelector } from 'react-redux';
-import { BiHome, BiSearch } from 'react-icons/bi';
-import { HiHome, HiOutlineMenu } from 'react-icons/hi';
-import { MdClose, MdNotifications } from 'react-icons/md';
+import { HiOutlineMenu } from 'react-icons/hi';
+import { MdClose } from 'react-icons/md';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 
 //Style for swiper
 import './style.css';
-import { FaMusic } from 'react-icons/fa';
-import { BsTrophy } from 'react-icons/bs';
 import { Logo } from '../../img';
-import { Destaques } from '@/Pages/Home';
-import { Avaliar } from '@/Pages/Musicas';
-import { Sobre } from '@/Pages/Ascensao';
-import { Notificacoes } from '@/Pages/Comunicar/Index';
-import UserAvatar from '@/Components/UserAvatar';
-import TopPlay from '@/Components/TopPlay';
 interface Props {
   title: string;
   renderHeader?(): JSX.Element;
@@ -29,6 +20,7 @@ interface Props {
 
 export default function AppLayout({
   title,
+  renderHeader,
   children,
 }: PropsWithChildren<Props>) {
   const page = useTypedPage();
@@ -53,9 +45,6 @@ export default function AppLayout({
 
   const { setCurrentPage } = useStateContext();
 
-  if (localStorage.getItem('prefix_storage') === null)
-    localStorage.setItem('prefix_storage', 'http://127.0.0.1:8000/storage/');
-
   return (
     <>
       <div className="w-screen h-screen flex bg-gradient-to-br from-black to-[#121286] __dark:from-[#282728] __dark:to-[#2e2525w] fixed top-0 left-0 right-0 p-1 __bg-white text-white">
@@ -77,168 +66,21 @@ export default function AppLayout({
                 />
               </Link>
 
-             
-
               <div className="flex justify-center items-center cursor-pointer">
-                  {openMobileMenu ? (
-                    <MdClose
-                      className="w-6 h-6 text-[#4c88c4] "
-                      onClick={() => setOpenMobileMenu(false)}
-                    />
-                  ) : (
-                    <HiOutlineMenu
-                      className="w-8 h-8 text-[#4c88c4] "
-                      onClick={() => setOpenMobileMenu(true)}
-                    />
-                  )}
-                </div>
-
-
-              <div className="hidden w-10/12 gap-1 h-16 justify-end  items-center   flex-row  rounded-lg">
-                {}
-                <div className="mx-auto mb-1 sm:px-1 lg:px-2 object-contain hidden flex-row b-[#997f2362]">
-                  <div className="w-full h-16 hidden md:flex flex-row justify-center items-center p-0 ">
-                    <div
-                      className={`${
-                        route().current() == '/home'
-                          ? 'border-b-2  border-[#4c88c4] dark:bg-[#2e2c2e] text-[#4c88c4]'
-                          : ''
-                      }  p-2 mx-1 cursor-pointer shadow-sm b-[#4c88c4] hover:bg-[#2e2c2e]  text-gray-400`}
-                    >
-                      <Link
-                        onClick={() => setCurrentPage(<Destaques />)}
-                        href={route('/home')}
-                        className="flex flex-col lg:flex-row justify-center items-center gap-1"
-                      >
-                        <BiHome className="text-3xl" />
-
-                        <div className="flex flex-col text-start">
-                          <span className="text-base">Início</span>
-                          <span className="text-xs dark:text-gray-400 hidden xl:flex">
-                            Comece a explorar
-                          </span>
-                        </div>
-                      </Link>
-                    </div>
-                    <div
-                      className={`${
-                        route().current()?.includes('musicas')
-                          ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
-                          : ''
-                      } shadow-sm rounded 
-                    p-2 mx-1 cursor-pointer hover:bg-[#f6cc33   b-[#4c88c4] text-gray-400 `}
-                    >
-                      <Link
-                        onClick={() => setCurrentPage(<Avaliar />)}
-                        href={route('musicas')}
-                        className="flex flex-col lg:flex-row justify-center items-center gap-1"
-                      >
-                        <FaMusic className="text-3xl" />
-                        <div className="flex flex-col text-start">
-                          <span className="text-base">Músicas</span>
-                          <span className="text-xs text-gray-400 hidden xl:flex">
-                            Biblioteca musical
-                          </span>
-                        </div>
-                      </Link>
-                    </div>
-                    <div
-                      className={`${
-                        route().current()?.includes('ascensao')
-                          ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
-                          : ' '
-                      } bg-[#] shadow-sm rounded p-2 mx-1 cursor-pointer hover:bg-[#f6cc33  b-[#4c88c4] dark:text-white dark:hover:bg-[#2e2c2e] hover:bg-[#eaeaea]`}
-                    >
-                      <Link
-                        onClick={() => setCurrentPage(<Sobre />)}
-                        href={route('ascensao')}
-                        className="flex flex-col lg:flex-row justify-center items-center gap-1"
-                      >
-                        <BsTrophy className="text-3xl" />
-                        <div className="flex flex-col text-start">
-                          <span className="text-base">Ascensão</span>
-                          <span className="text-xs text-gray-400 hidden xl:flex">
-                            Concurso musical
-                          </span>
-                        </div>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-               
-                <div className="hidden  cursor-pointer items-center justify-center hover:bg-[#f6cc33 shadow-2xl ">
-                  <div className="w-full object-contain p-2 m-1 rounded-lg bg-[#2e2c2e] shadow shadow-black"></div>
-                </div>{' '}
+                {openMobileMenu ? (
+                  <MdClose
+                    className="w-6 h-6 text-[#4c88c4] "
+                    onClick={() => setOpenMobileMenu(false)}
+                  />
+                ) : (
+                  <HiOutlineMenu
+                    className="w-8 h-8 text-[#4c88c4] "
+                    onClick={() => setOpenMobileMenu(true)}
+                  />
+                )}
               </div>
+              {renderHeader ? renderHeader() : null}
             </div>
-            {/**MENU PARA TELEFONES */
-            /*}
-            <div className="flex  w-full h-16 md:hidden flex-row justify-center items-center px-1 ">
-              <div
-                className={` ${
-                  route().current()?.includes('/home')
-                    ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
-                    : ' '
-                } bg-[#] shadow-sm rounded p-2 mx-1 cursor-pointer hover:bg-[#f6cc33  b-[#4c88c4] dark:text-white dark:hover:bg-[#2e2c2e] hover:bg-[#eaeaea]`}
-              >
-                <Link
-                  onClick={() => setCurrentPage(<Destaques />)}
-                  href={route('/home')}
-                  className="flex flex-col lg:flex-row justify-center items-center gap-1"
-                >
-                  <HiHome className="text-3xl" />
-                  <div className="mt-0 flex flex-col text-start">
-                    <span className="text-base">Início</span>
-                    <span className="text-xs text-gray-400 hidden xl:flex">
-                      Comece a explorar
-                    </span>
-                  </div>
-                </Link>
-              </div>
-              <div
-                className={`${
-                  route().current()?.includes('musicas')
-                    ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
-                    : ' '
-                } bg-[#] shadow-sm rounded p-2 mx-1 cursor-pointer hover:bg-[#f6cc33  b-[#4c88c4] dark:text-white dark:hover:bg-[#2e2c2e] hover:bg-[#eaeaea]`}
-              >
-                <Link
-                  onClick={() => setCurrentPage(<Avaliar />)}
-                  href={route('musicas')}
-                  className="flex flex-col lg:flex-row justify-center items-center gap-1"
-                >
-                  <FaMusic className="text-3xl" />
-                  <div className="flex flex-col text-start">
-                    <span className="text-base">Músicas</span>
-                    <span className="text-xs text-gray-400 hidden xl:flex">
-                      Biblioteca musical
-                    </span>
-                  </div>
-                </Link>
-              </div>
-              <div
-                className={`${
-                  route().current()?.includes('ascensao')
-                    ? 'border-b-2 border-[#4c88c4]  shadow-lg rounded shadow-black'
-                    : ' '
-                } bg-[#] shadow-sm rounded p-2 mx-1 cursor-pointer hover:bg-[#f6cc33  b-[#4c88c4] dark:text-white dark:hover:bg-[#2e2c2e] hover:bg-[#eaeaea]`}
-              >
-                <Link
-                  onClick={() => setCurrentPage(<Sobre />)}
-                  href={route('ascensao')}
-                  className="flex flex-col lg:flex-row justify-center items-center gap-1"
-                >
-                  <BsTrophy className="text-3xl" />
-                  <div className="flex flex-col text-start">
-                    <span className="text-base">Ascensão</span>
-                    <span className="text-xs text-gray-400 hidden xl:flex">
-                      Concurso musical
-                    </span>
-                  </div>
-                </Link>
-              </div>
-            </div>
-            {*/}
           </header>
           {/* <!-- Page Content --> */}
           <main className="relative h-full w-full  flex mx-auto justify-start items-start  p-1 rounded overflow-y-auto ">

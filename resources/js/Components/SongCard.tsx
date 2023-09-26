@@ -38,14 +38,14 @@ function SongCard({ song, i, activeSong, isPlaying, songs }) {
           <img
             className="w-full h-full"
             alt={song.title}
-            src={localStorage.getItem('prefix_storage') + song.cover}
+            src={ song.cover}
           />
         )}
         {song.mime_type.includes('video/') && (
           <video className="w-full h-full">
             <source
               type={song.mmime_type}
-              src={localStorage.getItem('prefix_storage') + song.url}
+              src={song.url}
             />
           </video>
         )}
