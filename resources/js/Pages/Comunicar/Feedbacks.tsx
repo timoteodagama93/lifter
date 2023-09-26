@@ -78,10 +78,10 @@ function Feedbacks() {
                   >
                     <option value="home">Home</option>
                     <option value="ranking">Ranking</option>
-                    <option value="ascensao">Ascensão</option>
-                    <option value="descobrir">Descobrir</option>
                     <option value="noticias">Notícias</option>
                     <option value="comunicacoes">Comunicações</option>
+                    <option value="comunicacoes">Gospel</option>
+                    <option value="comunicacoes">Concursos</option>
                     <option value="outro">Outro local</option>
                   </select>
                 </>

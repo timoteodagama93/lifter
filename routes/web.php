@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArtistaController;
+use App\Http\Controllers\ComunicacaoController;
 use App\Http\Controllers\ContestController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SongsController;
@@ -68,19 +69,13 @@ Route::middleware([
 
 
     /**Uploading files */
-    Route::post('/upload', [UploadController::class, 'store'])->name('upload');
-    Route::post('/upload.song', [UploadController::class, 'song'])->name('upload.song');
-    Route::put('/upload.cover', [UploadController::class, 'cover'])->name('upload.cover');
-    Route::put('/upload.payment', [UploadController::class, 'payment'])->name('upload.payment');
-    Route::get('/upload.song', function () {
-        return Inertia::render('Songs/Upload', ['artists' => Artist::all()->where(Auth::user()->id)]);
-    })->name('upload.song');
+    Route::controller(UploadController::class)->group(function () {
+        Route::post('/upload', [UploadController::class, 'store'])->name('upload');
+        Route::post('/upload.song', [UploadController::class, 'song'])->name('upload.song');
+        Route::put('/upload.cover', [UploadController::class, 'cover'])->name('upload.cover');
+        Route::put('/upload.payment', [UploadController::class, 'payment'])->name('upload.payment');
+    });
 
-    Route::get('/edit.song', function (Request $request) {
-        $song = Song::all()->where('id', $request->get('song')->id);
-        dd($song);
-        return Inertia::render('Songs/Edit', ['song_id' => $song]);
-    })->name('edit.song');
 
     Route::get('/patrocinar', function (User $user) {
         return Inertia::render('Patrocinar', []);
@@ -90,44 +85,31 @@ Route::middleware([
         return Inertia::render('parceiros', []);
     })->name('parceiros');
 
-    Route::post('/', function (User $user) {
-        DB::update('update users set verify_if_artist = 0');
-        return to_route('/');
-    })->name('/');
-
-    Route::post('/get-my-artist', function (User $user) {
-        return response()->json([
-            'artists' => [Artist::all()->where(
-                'user_id',
-                auth()->id(),
-            )],
-            'all_artists' => [Artist::all()],
-        ]);
-    })->name('get-my-artist');
-
 
     /**
      * SONGSC CONTROLLER
      *  Routas das Músicas
      */
-    Route::post('/feedback', [SongsController::class, 'store_feedback'])->name('feedback');
-    Route::post('/feedbacks', [SongsController::class, 'get_feedbacks'])->name('feedbacks');
+    Route::controller(SongsController::class)->group(function () {
+        Route::post('/feedback',  'store_feedback')->name('feedback');
+        Route::post('/feedbacks',  'get_feedbacks')->name('feedbacks');
+        Route::post('/get-my-valluation',  'minha_avaliacao')->name('get-my-valluation');
+        Route::post('/get-song',  'get_valuation_songs')->name('get-song');
+        Route::get('/get-songs',  'get_all_songs')->name('get-songs');
+        Route::post('/get-songs',  'get_songs')->name('get-songs');
+        Route::post('/avaliar',  'avaliar')->name('avaliar');
+        Route::post('/add-song',  'store')->name('add-song');
+        Route::post('/add-song-cover',  'add_cover')->name('add-song-cover');
+        Route::post('/update-song',  'update_info')->name('update-song');
 
+        Route::post('upload.new', 'store')->name('upload.new');
+        Route::get('songs/{id}', 'list');
+        Route::post('/songs', 'store');
+    });
     Route::post('/get-valluations', function () {
         return response()->json(Valuation::where('song_id', Request::get('song_id'))->count());
     })->name('get-valluations');
 
-    Route::post('/get-my-valluation', [SongsController::class, 'minha_avaliacao'])->name('get-my-valluation');
-
-    Route::post('/get-song', [SongsController::class, 'get_valuation_songs'])->name('get-song');
-
-    Route::get('/get-songs', [SongsController::class, 'get_all_songs'])->name('get-songs');
-
-    Route::post('/get-songs', [SongsController::class, 'get_songs'])->name('get-songs');
-    Route::post('/avaliar', [SongsController::class, 'avaliar'])->name('avaliar');
-    Route::post('/add-song', [SongsController::class, 'store'])->name('add-song');
-    Route::post('/add-song-cover', [SongsController::class, 'add_cover'])->name('add-song-cover');
-    Route::post('/update-song', [SongsController::class, 'update_info'])->name('update-song');
     Route::post('/get-artist-songs', function () {
         $data = Request::all();
         return response()->json([
@@ -164,26 +146,11 @@ Route::middleware([
     });
 
 
+    Route::controller(ComunicacaoController::class)->group(function () {
+        Route::post('get-unread', 'get_unread')->name('get-unread');
+    });
 
 
-
-
-
-
-
-    Route::get('inicio', function () {
-        return  Inertia::render('Inicio/Inicio');
-    })->name('inicio');
-
-    Route::get('jurados', function () {
-        return  Inertia::render('Jurados/Jurados', [
-            'current_page' => 'destaques'
-        ]);
-    })->name('jurados');
-
-    Route::get('/musicas', function () {
-        return Inertia::render('Musicas/Musicas', ['start_page' => 'avaliar']);
-    })->name('musicas');
 
 
     Route::get('/som_emocao', function () {
@@ -198,15 +165,6 @@ Route::middleware([
     Route::get('/bibliotecas', function () {
         return Inertia::render('Biblioteca/Biblioteca');
     })->name('bibliotecas');
-
-    Route::controller(SongsController::class)->group(function () {
-        Route::get('/upload.new', function () {
-            return Inertia::render('Musicas/Upload');
-        })->name('upload.new');
-        Route::post('upload.new', 'store')->name('upload.new');
-        Route::get('songs/{id}', 'list');
-        Route::post('/songs', 'store');
-    });
 
     Route::get('/noticias', function () {
         return Inertia::render('Noticias');
@@ -276,8 +234,12 @@ Route::middleware([
     /**
      * POST CONTROLLER
      */
-    Route::post('/post', [PostController::class, 'store']);
-    Route::post('/posts', [PostController::class, 'get']);
+
+    Route::controller(PostController::class)->group(function () {
+        Route::post('/post', 'store');
+        Route::post('/post-like/{postId}', 'like');
+        Route::post('/posts/{filter?}',  'get');
+    });
 
 
 

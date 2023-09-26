@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Media;
 use App\Models\Post;
+use App\Models\PostLike;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Mockery\Matcher\Type;
 
 class PostController extends Controller
 {
@@ -18,17 +22,54 @@ class PostController extends Controller
 
     public function store()
     {
-        $file = Request::file('file')->store('posts', 'public');
-        $user_id = Auth::id();
-        $post = Post::create(
-            [
-                'post_text' => Request::input('text'),
-                'mime_type' => Request::file('file')->extension(),
-                'file_url' => Storage::url($file),
-                'file_path' => $file,
-                'user_id' => $user_id,
-            ]
-        );
+        if (Request::file('file') != null) {
+
+            validator(Request::all(), [
+                'file' => ['required', 'max:5120', 'mimes:jpg,png,jpeg,gif,mp3,mp4,webm'],
+                'text' => ['required'],
+                'community' => ['required'],
+            ])->validate();
+
+            $file = Request::file('file')->store('posts', 'public');
+
+            $user = Auth::user();
+            $user_id = $user->id;
+
+            $community = Request::input('community');
+            $from = 'comunidade';
+            if ($user->is_manager == 1) {
+                $from = 'lifter';
+            }
+            $post = Post::create(
+                [
+                    'post_text' => Request::input('text'),
+                    'community' => $community,
+                    'mime_type' => Request::file('file')->getMimeType(),
+                    'file_url' => Storage::url($file),
+                    'file_path' => $file,
+                    'user_id' => $user_id,
+                ]
+            );
+        } else {
+            validator(Request::all(), [
+                'text' => ['required'],
+                'community' => ['required'],
+            ])->validate();
+            $user = Auth::user();
+            $user_id = $user->id;
+            $from = 'comunidade';
+            if ($user->is_manager == 1) {
+                $from = 'lifter';
+            }
+
+            $post = Post::create(
+                [
+                    'post_text' => Request::input('text'),
+                    'community' => Request::input('community'),
+                    'user_id' => $user_id,
+                ]
+            );
+        }
 
         return;  //response()->json($post);// $post;
     }
@@ -77,8 +118,28 @@ class PostController extends Controller
         return $post;
     }
 
-    public function get()
+    public function get($filter = 'tudo')
     {
-        return response()->json(Post::all());
+        if ($filter == 'tudo') {
+            return response()->json(DB::select('select * from posts ORDER BY created_at DESC'));
+        } else {
+            return response()->json(DB::select('select * from posts where community =?  ORDER BY created_at DESC', [$filter]));
+        }
+    }
+    public function like($postId)
+    {
+        $post = Post::all()->where('id', $postId)->first();
+        PostLike::updateOrCreate(
+            [
+                'post_id' => $postId,
+                'user_id' => auth()->id(),
+            ],
+            [
+                'type' => 'like',
+            ]
+        );
+        $post->likes = PostLike::where('post_id', $postId)->count();
+        $post->save();
+        return response()->json($post);
     }
 }

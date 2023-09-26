@@ -1,34 +1,36 @@
-import React, { useState } from 'react';
-import ApplicationLogo from './ApplicationLogo';
-import {
-  links,
-  account_pages,
-  ascensao_links,
-  comunicaoes_links,
-  home_pages,
-  music_pages,
-} from '../assets/constants';
+import React, { useState, useEffect } from 'react';
+import { links } from '../assets/constants';
 import route from 'ziggy-js';
 import useTypedPage from '@/Hooks/useTypedPage';
 import UserAvatar from './UserAvatar';
 import { useStateContext } from '@/contexts/PaginaActualContext';
-import { GrClose } from 'react-icons/gr';
-import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
 import { Link } from '@inertiajs/react';
 import { Logo } from '../../img';
-import { RiCloseLine } from 'react-icons/ri';
-import { HiOutlineMenu } from 'react-icons/hi';
 import { MdNotifications } from 'react-icons/md';
 import Notificacoes from '@/Pages/Comunicar/Notificacoes';
 import { BiSearch } from 'react-icons/bi';
 import { FaMusic } from 'react-icons/fa';
 import SectionBorder from './SectionBorder';
+import axios from 'axios';
 
 function Sidebar({}) {
   const { setCurrentPage, openMobileMenu, setOpenMobileMenu } =
     useStateContext();
 
   const page = useTypedPage();
+  const [unread, setUnread] = useState(0);
+  function unreadComunications() {
+    axios
+      .post(`/get-unread`)
+      .then(response => {
+        if (response.status === 200) {
+          setUnread(response.data);
+        }
+      })
+      .catch(error => {});
+  }
+
+  useEffect(unreadComunications, []);
 
   return (
     <>
@@ -48,29 +50,31 @@ function Sidebar({}) {
             <div className="flex flex-row space-x-1  items-center justify-center">
               <span></span>
               <button
-                className="rounded-sm p-2 m-0 md:m-4 cursor-pointer hover:bg-[#f6cc33 shadow-xl shadow-black bg-[#2e2c2e] text-white flex flex-row justify-center items-center"
+                className="hidden rounded-sm p-2 m-0 md:m-4 cursor-pointer hover:bg-[#f6cc33 shadow-xl shadow-black bg-[#2e2c2e] text-white flex flex-row justify-center items-center"
                 onClick={() => setOpenSearch(true)}
               >
                 <BiSearch />
                 <span className="hidden">Músicas</span>
               </button>
               <button
-                className="rounded-sm p-2 m-0 md:m-4 cursor-pointer hover:bg-[#f6cc33 shadow-xl shadow-black bg-[#2e2c2e] text-white flex flex-row justify-center items-center"
+                className="hidden rounded-sm p-2 m-0 md:m-4 cursor-pointer hover:bg-[#f6cc33 shadow-xl shadow-black bg-[#2e2c2e] text-white flex flex-row justify-center items-center"
                 onClick={() => setOpenSongRandom(true)}
               >
                 <FaMusic />
                 <span className="hidden">Músicas</span>
               </button>
 
-              <div
-                /**Setup para carregar a pagina padrão do endereço actual: /comunicar */
-                onClick={() => setCurrentPage(<Notificacoes />)}
-                className="md:flex rounded-sm md:rounded-sm p-1 px-2 md:px-2 m-4 cursor-pointer hover:bg-[#f6cc33 shadow-xl shadow-black bg-[#2e2c2e] text-white"
-              >
+              <div className="relative ml-2 md:flex rounded-sm md:rounded-sm p-1 px-2 md:px-2 m-4 cursor-pointer hover:bg-[#f6cc33 shadow-xl shadow-black bg-[#2e2c2e] text-white min-h-10">
                 <Link href={route('comunicar')}>
-                  <span className="sticky top-1 p-2  shadow-lg bg-[#000] w-4 h-4 flex justify-center items-center rounded-full text-red-500 text-xs">
-                    2
-                  </span>
+                  {unread > 0 ? (
+                    <span className="sticky top-1 p-2  shadow-lg bg-[#000] w-4 h-4 flex justify-center items-center rounded-full text-red-500 text-xs">
+                      {unread}
+                    </span>
+                  ) : (
+                    <span className="bottom-1 p-2  shadow-lg  w-4 h-4 flex justify-center items-center rounded-full text-red-500 text-xs">
+                      {''}
+                    </span>
+                  )}
                   <MdNotifications />
                 </Link>
               </div>

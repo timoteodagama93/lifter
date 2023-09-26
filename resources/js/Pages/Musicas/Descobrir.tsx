@@ -19,7 +19,7 @@ function Descobrir() {
 
   return (
     <AppLayout title="Descobrir">
-      <div className="flex flex-col rounded-lg p-2">
+      <div className="w-full relative flex flex-col rounded-lg p-2">
         <div className="w-full flex justify-between items-center flex-row shadow-lg mb-5 pb-1">
           <h2 className="flex font-bold text-3xl  text-çeft">Descobrir</h2>
           <form className="w-full hidden md:flex ">
@@ -33,7 +33,7 @@ function Descobrir() {
             <BiSearch className="mr-2 text-3xl text-center" />
           </button>
           <select
-            onChange={(e) => {}}
+            onChange={e => {}}
             value=""
             className="p-1 text-sm rounded-lg outline-none "
           >
@@ -44,21 +44,17 @@ function Descobrir() {
             ))}
           </select>
         </div>
-        <div className="w-full max-h-screen pb-56 overflow-auto mx-auto px-2  dark:bg-gray-800 shadow-xl sm:rounded-lg">
-          <div className="flex">
-            <div className="flex flex-wrap justify-start md:justify-center">
-              {data.map((song, i) => (
-                <SongCard
-                  song={song}
-                  i={i}
-                  key={i}
-                  activeSong={activeSong}
-                  isPlaying={isPlaying}
-                  songs={data}
-                />
-              ))}
-            </div>
-          </div>
+        <div className="w-full relative max-h-screen pb-56 overflow-auto mx-auto px-2   shadow-xl sm:rounded-lg flex flex-wrap justify-start md:justify-center">
+          {data.map((song, i) => (
+            <SongCard
+              song={song}
+              i={i}
+              key={i}
+              activeSong={activeSong}
+              isPlaying={isPlaying}
+              songs={data}
+            />
+          ))}
         </div>
       </div>
     </AppLayout>

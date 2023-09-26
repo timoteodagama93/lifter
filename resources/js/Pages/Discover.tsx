@@ -48,21 +48,17 @@ function Descover() {
               ))}
             </select>
           </div>
-          <div className="w-full max-h-screen mx-auto  dark:bg-gray-800 shadow-xl sm:rounded-lg justify-start">
-            <div className="flex">
-              <div className="flex flex-wrap justify-start">
-                {data.map((song, i) => (
-                  <SongCard
-                    song={song}
-                    i={i}
-                    key={i}
-                    activeSong={activeSong}
-                    isPlaying={isPlaying}
-                    songs={data}
-                  />
-                ))}
-              </div>
-            </div>
+          <div className="w-full relative max-h-screen mx-auto  dark:bg-gray-800 shadow-xl sm:rounded-lg flex flex-wrap justify-start">
+            {data.map((song, i) => (
+              <SongCard
+                song={song}
+                i={i}
+                key={i}
+                activeSong={activeSong}
+                isPlaying={isPlaying}
+                songs={data}
+              />
+            ))}
           </div>
         </div>
         <div className="xl:stick relative h-fit">

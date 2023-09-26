@@ -39,7 +39,15 @@ function Mensagens() {
             <MdFeedback /> Feedback
           </button>
           <button
-            onClick={() => setCurrentPage(<Notificacoes />)}
+            onClick={() => {
+              Swal.fire({
+                title: 'Funcionalidade em desenvolvimento!',
+                text: 'A brevemente. Acompanhe as novidades e o cronograma de lançamentos.',
+                icon: 'info',
+                confirmButtonText: 'Legal'
+              })
+              
+            }}
             className="justify-center items-center flex p-2 gap-1 text-base md:text-xl shadow shadow-[#4c88c4] "
           >
             <MdNotifications /> Notificações

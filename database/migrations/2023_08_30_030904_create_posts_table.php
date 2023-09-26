@@ -18,9 +18,11 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->longText('post_text');
-            $table->string('mime_type');
-            $table->string('file_url');
-            $table->string('file_path');
+            $table->string('community')->default('musica');
+            $table->string('from')->default('comunidade');
+            $table->string('mime_type')->nullable();
+            $table->string('file_url')->nullable();
+            $table->string('file_path')->nullable();
             $table->integer('likes')->default(0);
             $table->integer('dislikes')->default(0);
             $table->timestamps();

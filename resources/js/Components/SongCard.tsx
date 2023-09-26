@@ -16,7 +16,7 @@ function SongCard({ song, i, activeSong, isPlaying, songs }) {
     dispatch(playPause(true));
   };
   return (
-    <div className="flex flex-col w-full md:w-1/2 lg:w-1/3 xl:w-1/4 xxl:w-1/5 p-4 bg-white/5 ng-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer shadow-lg border">
+    <div className="flex flex-col w-full md:w-1/2 lg:w-1/3 p-4 bg-white/5 ng-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer shadow-lg border">
       <div className=" relative w-full h-full group">
         <div
           className={`absolute inset-0 justify-center items-center bg-black bg-opacity-50 group-hover:flex ${

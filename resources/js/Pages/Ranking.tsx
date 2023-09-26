@@ -22,10 +22,10 @@ function Ranking() {
 
   return (
     <AppLayout title="Ranking">
-      <div className="w-full flex flex-row rounded">
-        <div className="flex flex-col px-4 rounded-lg">
+      <div className="relative w-full flex flex-row rounded">
+        <div className="w-full flex flex-col px-4 rounded-lg">
           <div
-            className="flex flex-row justify-between
+            className="relative w-full flex flex-row justify-between
              items-center"
           >
             <h2 className=" font-bold text-base md:text-4xl">Top 100 </h2>
@@ -33,7 +33,7 @@ function Ranking() {
               <p className="text-sm md:text-base cursor-pointer">Ver mais</p>
             </Link>
           </div>
-          <div className="flex flex-col ">
+          <div className="w-full relative flex flex-col ">
             {data?.map((song, id) => (
               <TopChartCard
                 songs={data}

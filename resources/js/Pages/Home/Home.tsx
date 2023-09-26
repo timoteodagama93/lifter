@@ -51,8 +51,6 @@ export default function Home({ pagina, songs, APP_URL }: Props) {
 
   const { currentPage, setCurrentPage } = useStateContext();
 
-
-
   function setDefaultPage() {
     setCurrentPage(<Avaliar songs={songs} />);
   }
@@ -98,7 +96,7 @@ export default function Home({ pagina, songs, APP_URL }: Props) {
               >
                 <Link
                   onClick={() => setCurrentPage(<Avaliar />)}
-                  href={route('musicas')}
+                  href={'musicas'}
                   className="flex flex-col lg:flex-row justify-center items-center gap-1"
                 >
                   <FaMusic className="text-3xl" />
