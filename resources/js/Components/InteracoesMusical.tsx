@@ -349,19 +349,22 @@ function Feedback({ song, setOpenModal }) {
 }
 
 function Comentarios({ song, setOpenModal }) {
-  const [comments, setComments] = useState();
+  const [comments, setComments] = useState([]);
+  const [loadedComments, setLoadedComments] = useState(true);
+  const [errorLoadingComments, setErrorLoadingComments] = useState(false);
 
   function getComments() {
     const data = new FormData();
     data.append('song_id', song.id);
-    axios.post('get-comments', data).then(response => {
-      let c = [];
-      console.log(response);
-      response.data.map(cc => c.push(cc));
-      setComments(c);
-      console.log(c);
-      console.log(response);
-    });
+    axios
+      .post('get-comments', data)
+      .then(response => {
+        setComments(response.data);
+        setLoadedComments(false);
+      })
+      .catch(error => {
+        setErrorLoadingComments(true);
+      });
   }
 
   const form = useForm({
@@ -377,7 +380,7 @@ function Comentarios({ song, setOpenModal }) {
       .then(response => {
         form.setData('comment', '');
         form.setData('public', true);
-        setComments(response.data);
+        getComments();
       })
       .catch(error => {
         Swal.fire({
@@ -388,16 +391,7 @@ function Comentarios({ song, setOpenModal }) {
       });
   }
 
-  const [loadedComments, setLoadedComments] = useState(false);
-  console.log(comments);
-  const initials = () => {
-    if (comments?.length > 0) {
-      setLoadedComments(true);
-    }
-  };
-
   useEffect(getComments, []);
-  useEffect(initials, [comments]);
   return (
     <div className="w-full justify-start p-2 flex flex-col">
       <h1 className="text-center text-base md:text-2xl">
@@ -429,15 +423,15 @@ function Comentarios({ song, setOpenModal }) {
           </div>
         </div>
       </form>
-      <div>
-        {loadedComments ? (
+      <div style={{ transition: '5s' }}>
+        {!loadedComments ? (
           comments?.map(comment => (
-            <div className="flex flex-col">
-              <p>{comment?.comment}</p>
+            <div className=" flex flex-col">
+              <p className="text-xl">{comment?.comment}</p>
             </div>
           ))
         ) : (
-          <Loader />
+          <Loader title="Carregadndo comentários" />
         )}
       </div>
     </div>

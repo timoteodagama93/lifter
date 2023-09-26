@@ -7,6 +7,7 @@ use App\Models\Feedback;
 use App\Models\Playlist;
 use App\Models\User;
 use App\Models\Valuation;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 
 class ValuationFeedbackCommentController extends Controller
@@ -92,7 +93,9 @@ class ValuationFeedbackCommentController extends Controller
      */
     public function get_comments()
     {
-        return response()->json(Comment::all()->where('song_id', Request::get('song_id'))); 
+        $songId = Request::get('song_id');
+
+        return DB::select('SELECT * FROM  comments WHERE song_id=? ORDER BY created_at DESC', [$songId]);
     }
 
     /**

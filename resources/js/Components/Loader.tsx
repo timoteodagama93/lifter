@@ -1,5 +1,5 @@
 import React from 'react';
-import loader from '../assets';
+import loader from '../assets/loader.svg';
 function Loader({ title }) {
   return (
     <div className="w-full flex flex-com justify-center items-center">
