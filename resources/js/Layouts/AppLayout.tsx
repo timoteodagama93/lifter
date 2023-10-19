@@ -13,14 +13,23 @@ import { useStateContext } from '@/contexts/PaginaActualContext';
 //Style for swiper
 import './style.css';
 import { Logo } from '../../img';
+import { smalLogo } from '../../img';
+import Container from './Container';
+import { BiSearch } from 'react-icons/bi';
 interface Props {
   title: string;
+  bg?: string;
   renderHeader?(): JSX.Element;
+  renderSidebarList?(): JSX.Element;
+  renderBottom?(): JSX.Element;
 }
 
 export default function AppLayout({
   title,
+  bg,
   renderHeader,
+  renderSidebarList,
+  renderBottom,
   children,
 }: PropsWithChildren<Props>) {
   const page = useTypedPage();
@@ -47,20 +56,23 @@ export default function AppLayout({
 
   return (
     <>
-      <div className="w-screen h-screen flex bg-gradient-to-br from-black to-[#121286] __dark:from-[#282728] __dark:to-[#2e2525w] fixed top-0 left-0 right-0 p-1 __bg-white text-white">
+      <div className="w-screen h-screen flex bg-gradient-to-br from-[#222d84] to-[#543889] __dark:from-[#282728] __dark:to-[#2e2525w] fixed top-0 left-0 right-0 p-1 __bg-white text-white">
         {openSearch && <Search close={setOpenSearch} />}
         {openSongRandom && <SongRandom close={setOpenSongRandom} />}
         <Head title={title} />
         <Banner />
-        <Sidebar />
+        <Sidebar renderSidebarList={renderSidebarList} />
 
-        <div className="relative w-full md:w-11/12 h-full flex flex-col">
-          <header className="md:hidden relative w-full h-10 flex flex-col justify-center items-center  shadow-sm  rounded shadow-black mb-1 pb-1">
+        <div className="relative w-full h-full flex flex-col">
+          <header className=" relative w-full h-[10%] flex flex-col justify-center items-center  shadow-sm  rounded shadow-black pb-1 px-5">
             <div className="w-full h-16 flex justify-between ">
+              <button  className=" flex text-bold text-2xl  justify-center items-center bg-[#4c88c4] p-2 rounded-lg">
+                <BiSearch className="mx-1 text-3xl text-center" />
+              </button>
               {/**LOGO */}
               <Link href="/">
                 <img
-                  className="w-full h-10 object-contain"
+                  className="w-full h-14 object-contain"
                   src={Logo}
                   alt="logo"
                 />
@@ -83,12 +95,34 @@ export default function AppLayout({
             </div>
           </header>
           {/* <!-- Page Content --> */}
-          <main className="relative h-full w-full  flex mx-auto justify-start items-start  p-1 rounded overflow-y-auto ">
-            {children}
+          <main className="relative h-full w-full  flex mx-auto justify-start items-start  p-1 rounded overflow-y-hidden ">
+            {/**Rendering the bottom botons */}
+            {renderBottom ? (
+              <>
+                {/** Verifying if there is a bg or not */}
+                {bg ? (
+                  <Container renderBottom={renderBottom} bg={bg}>
+                    {children}{' '}
+                  </Container>
+                ) : (
+                  <Container renderBottom={renderBottom}>{children}</Container>
+                )}
+              </>
+            ) : (
+              <>
+                {bg ? (
+                  <Container renderBottom={renderBottom} bg={bg}>
+                    {children}{' '}
+                  </Container>
+                ) : (
+                  <Container renderBottom={renderBottom}>{children}</Container>
+                )}
+              </>
+            )}
           </main>
         </div>
       </div>
-      {activeSong?.title && isPlaying && (
+      {activeSong?.title?.after && isPlaying && (
         <div className="absolute h-28 bottom-0 left-0 right-0 flex animate-slideup bg-gradient-to-br from-white/10 to-[#2a2a80] backdrop-blur-lg rounded-t-3xl z-10">
           <MusicPlayer />
         </div>

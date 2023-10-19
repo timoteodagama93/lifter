@@ -7,7 +7,7 @@ function PlayPause({
   song,
   handlePlay,
   handlePause,
-  classNames,
+  classNames='',
 }) {
   return isPlaying && activeSong?.title === song.title ? (
     <FaPauseCircle

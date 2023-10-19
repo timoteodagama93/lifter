@@ -43,24 +43,24 @@ Route::middleware([
      * ROUTAS PRINCIPAIS
      */
     Route::get('/', function () {
-        return Inertia::render('Home/Home', ['songs' => Song::all()]);
-    })->name('/');
-    Route::get('/home', function (User $user) {
-
         return Inertia::render('Home/Home', [
-            'pagina' => 'destaques',
-            'user' => $user,
-            'APP_URL' => 'http://127.0.0.1:8000',
+            'songs' => DB::select('SELECT * FROM songs ORDER BY created_at'),
+            'posts' => DB::select('SELECT * FROM posts ORDER BY created_at DESC')
         ]);
-    })->name('/home');
-
+    })->name('/');
     Route::get('/discover', function () {
         return Inertia::render('Discover', []);
     })->name('discover');
 
-    Route::get('/ranking', function () {
-        return Inertia::render('Ranking', []);
-    })->name('ranking');
+    Route::get('/musicas', function () {
+        return Inertia::render('Musicas/Musicas', []);
+    })->name('musicas');
+
+    Route::get('/concursos', function () {
+        return Inertia::render('Concursos/Concursos', [
+            'contests' => Contest::all()
+        ]);
+    })->name('concursos');
 
     Route::get('/noticias', function () {
         return Inertia::render('Noticias', []);
@@ -157,18 +157,11 @@ Route::middleware([
         return Inertia::render('Videos/Videos');
     })->name('som_emocao');
 
-    Route::get('/concursos', function () {
-        return Inertia::render('Concursos/Concursos', [
-            'contests' => Contest::all()
-        ]);
-    })->name('concursos');
+
     Route::get('/bibliotecas', function () {
         return Inertia::render('Biblioteca/Biblioteca');
     })->name('bibliotecas');
 
-    Route::get('/noticias', function () {
-        return Inertia::render('Noticias');
-    })->name('noticias');
     Route::get('/explorar', function () {
         return Inertia::render('Biblioteca/Biblioteca');
     })->name('explorar');
@@ -238,8 +231,14 @@ Route::middleware([
     Route::controller(PostController::class)->group(function () {
         Route::post('/post', 'store');
         Route::post('/post-like/{postId}', 'like');
+        Route::post('/comment', 'comment');
+        Route::post('/comments', 'comments');
         Route::post('/posts/{filter?}',  'get');
     });
+
+    Route::post('get-user', function(){
+        return User::all()->where('id', Request::get('user_id'))->first();
+    })->name('get-user');
 
 
 

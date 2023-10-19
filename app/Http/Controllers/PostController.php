@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Media;
 use App\Models\Post;
 use App\Models\PostLike;
@@ -73,6 +74,38 @@ class PostController extends Controller
 
         return;  //response()->json($post);// $post;
     }
+
+    public function comment()
+    {
+        $valuation = Comment::create(
+            [
+                'user_id' => auth()->id(),
+                'post_id' => Request::get('song_id'),
+                'comment' => Request::get('comment'),
+                'public' => Request::get('public'),
+            ]
+        );
+        return response()->json($valuation);
+    }
+
+     /**
+     * Obtém os comentários de uma música
+     */
+    public function comments()
+    {
+        $postId = Request::get('post_id');
+
+        return DB::select('SELECT * FROM  comments WHERE post_id=? ORDER BY created_at DESC', [$postId]);
+    }
+
+        /**
+     * Obtém o usuário de um comentario em uma musica
+     */
+    public function get_comment_user()
+    {
+        return response()->json(User::all()->where('id', Request::get('id')));
+    }
+
 
     public function store_media(Request $request)
     {

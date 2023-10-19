@@ -30,6 +30,7 @@ return new class extends Migration
             $table->boolean('activo')->default(true);
             $table->string('estado')->default('PUBLICADO');
             $table->string('url_cover')->nullable();
+            $table->string('cover_mime_type')->nullable();
             $table->string('url_schedule')->nullable();
             $table->string('url_beneficios')->nullable();
             $table->string('url_terms')->nullable();

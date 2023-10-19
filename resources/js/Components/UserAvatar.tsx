@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Dropdown from './Dropdown';
 import DropdownLink from './DropdownLink';
 import useTypedPage from '@/Hooks/useTypedPage';
@@ -6,6 +6,9 @@ import useRoute from '@/Hooks/useRoute';
 import { router } from '@inertiajs/core';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import { Perfil } from '@/Pages/Perfil';
+import axios from 'axios';
+import { Link } from '@inertiajs/react';
+import { MdNotifications } from 'react-icons/md';
 
 function UserAvatar() {
   const page = useTypedPage();
@@ -15,6 +18,20 @@ function UserAvatar() {
     e.preventDefault();
     router.post(route('logout'));
   }
+
+  const [unread, setUnread] = useState(0);
+  function unreadComunications() {
+    axios
+      .post(`/get-unread`)
+      .then(response => {
+        if (response.status === 200) {
+          setUnread(response.data);
+        }
+      })
+      .catch(error => {});
+  }
+
+  useEffect(unreadComunications, []);
   return (
     <div className="right-full m- sm:flex sm:items-center sm:ml-  rounded-full">
       <div className="ml-0 relative">
@@ -113,7 +130,7 @@ function UserAvatar() {
           width="48"
           renderTrigger={() =>
             page.props.jetstream.managesProfilePhotos ? (
-              <button className="flex text-sm border-2 border-transparent rounded-full shadow-sm shadow-white focus:outline-none focus:border-gray-300 transition">
+              <button className="flex text-sm border-2 border-transparent rounded-full shadow-sm shadow-white focus:outline-none  focus:border-gray-300 transition">
                 <img
                   className="h-12 w-12 rounded-full object-cover"
                   src={page.props.auth.user?.profile_photo_url}
@@ -149,7 +166,24 @@ function UserAvatar() {
           <div className="block px-4 py-2 text-xs text-gray-400">
             Manage Account
           </div>
-          <div onClick={() => setCurrentPage(<Perfil />)}>
+          <div>
+            <DropdownLink href={route('comunicar')}>
+              <div className="relative ml-2 md:flex rounded-sm md:rounded-sm p-1 px-2 md:px-2 m-4 cursor-pointer hover:bg-[#f6cc33 shadow-xl shadow-black bg-[#2e2c2e] text-white min-h-10">
+                {unread > 0 ? (
+                  <span className="sticky top-1 p-2  shadow-lg bg-[#000] w-4 h-4 flex justify-center items-center rounded-full text-red-500 text-xs">
+                    {unread}
+                  </span>
+                ) : (
+                  <span className="bottom-1 p-2  shadow-lg  w-4 h-4 flex justify-center items-center rounded-full text-red-500 text-xs">
+                    {''}
+                  </span>
+                )}
+                <MdNotifications />
+              </div>
+              Comunicações
+            </DropdownLink>
+          </div>
+          <div>
             <DropdownLink href={route('perfil')}>Perfil</DropdownLink>
           </div>
           <DropdownLink href={route('perfil-artista')}>

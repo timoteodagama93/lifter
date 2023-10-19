@@ -8,7 +8,7 @@ import {
   HiOutlineHashtag,
   HiOutlineVideoCamera,
 } from 'react-icons/hi';
-import { FaHandshake, FaNewspaper } from 'react-icons/fa';
+import { FaCog, FaCogs, FaHandshake, FaNewspaper } from 'react-icons/fa';
 import {
   MdExplore,
   MdMessage,
@@ -16,8 +16,8 @@ import {
   MdOutlineExplore,
 } from 'react-icons/md';
 import { GiTrophyCup } from 'react-icons/gi';
-import { BsInfoCircle, BsTrophy } from 'react-icons/bs';
-import { BiHome, BiLibrary, BiMicrophone, BiUserVoice } from 'react-icons/bi';
+import { BsInfoCircle, BsStars, BsTrophy } from 'react-icons/bs';
+import { BiHome, BiLibrary, BiMicrophone, BiSearch, BiUserVoice } from 'react-icons/bi';
 import { RiContactsBook2Fill, RiProfileLine, RiTeamLine } from 'react-icons/ri';
 import React from 'react';
 
@@ -166,14 +166,19 @@ export const links = [
     icon: BiHome,
   },
   {
+    name: 'Pesquisar',
+    href: '/pesquisar',
+    icon: BiSearch,
+  },
+  {
     name: 'Ranking',
     href: '/ranking',
     icon: RankingIcon,
   },
   {
-    name: 'Concursos',
+    name: 'Avaliações',
     href: '/concursos',
-    icon: BsTrophy,
+    icon: BsStars,
   },
   {
     name: 'Descobrir',
@@ -181,9 +186,14 @@ export const links = [
     icon: MdOutlineExplore,
   },
   {
-    name: 'Notícias',
+    name: 'Configurações',
     href: '/noticias',
-    icon: FaNewspaper,
+    icon: FaCog,
+  },
+  {
+    name: 'Políticas',
+    href: '/noticias',
+    icon: FaHandshake,
   },
 /**
   {

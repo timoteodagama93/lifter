@@ -87,7 +87,7 @@ import artist6 from '../img/artists/artist2.png';
 import artist7 from '../../public/img/artists/artista1.jpeg';
 import artist8 from '../../public/img/artists/artista2.jpeg';
 import smal_logo from '../img/z00.png';
-import lifter_smal_logo from '../img/z00.png';
+import lifter_smal_logo from '../img/lifter.png';
 export const artists = [
   {
     id: 1,

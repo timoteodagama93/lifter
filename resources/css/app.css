@@ -125,14 +125,165 @@
   width: 5px;
 }
 
-::-webkit-scrollbar-track{
+::-webkit-scrollbar-track {
   background: yellow;
 }
 
-::-webkit-scrollbar-thumb{
+::-webkit-scrollbar-thumb {
   background: rgb(7, 167, 230);
 }
 
-::-webkit-scrollbar-thumb:hover{
+::-webkit-scrollbar-thumb:hover {
   background: red;
 }
+
+.shadow-left::before,
+.shadow-right::after {
+  box-shadow: #d2f4ea;
+}
+
+.transition-1s {
+  transition: 1s !important;
+}
+
+.transition-2s {
+  transition: 2s !important;
+}
+
+.transition-3s {
+  transition: 3s !important;
+}
+
+.transition-4s {
+  transition: 4s !important;
+}
+
+.transition-5s {
+  transition: 5s !important;
+}
+
+
+/*
+* PULSAR botões
+*/
+
+.pulsating-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.pulsating-button.pulsating {
+  animation: pulsate 1s infinite;
+}
+
+@keyframes pulsate {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.pulsar {
+  border-radius: 5%;
+  color: #fff;
+  transition: transform 1.3s ease;
+}
+
+.pulsating-button.pulsating {
+  animation: pulsate 1s infinite;
+}
+
+@keyframes pulsate {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+.wave-button {
+  position: relative;
+  overflow: hidden;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 16px;
+}
+
+.wave-button .wave {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  transform: scale(0);
+  animation: pulse 1.5s linear;
+}
+
+@keyframes pulse {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.wave-button:hover {
+  background-color: #e74c3c;
+}
+
+
+
+/* estilos.css */
+.comments-section {
+  display: flex;
+}
+
+.users {
+  flex: 1;
+  padding: 20px;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.user img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.comments {
+  flex: 2;
+  padding: 20px;
+}
+
+.comment {
+  margin-bottom: 10px;
+}
+
+.user {
+  font-weight: bold;
+}
+
+/* Outras estilizações conforme necessário */

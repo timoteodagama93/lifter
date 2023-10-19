@@ -29,6 +29,7 @@ class Contest extends Model
         'activo',
         'estado',
         'url_cover',
+        'cover_mime_type',
         'url_schedule',
         'url_beneficios',
         'url_terms',

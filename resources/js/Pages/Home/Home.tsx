@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import useRoute from '@/Hooks/useRoute';
 import useTypedPage from '@/Hooks/useTypedPage';
 import { Head, Link } from '@inertiajs/react';
@@ -18,25 +18,28 @@ import 'swiper/css/pagination';
 import './style.css';
 import Destaques from './Destaques';
 import AppLayout from '@/Layouts/AppLayout';
-import { router } from '@inertiajs/core';
 import { useStateContext } from '@/contexts/PaginaActualContext';
-import { Error, Loader } from '@/Components';
-import { useGetValuateSongsQuery } from '@/redux/services/coreApi';
-import { useSelector } from 'react-redux';
-import Posts from './Posts';
-import Avaliar from '../Avaliar';
-import { BiHome } from 'react-icons/bi';
-import { BsTrophy } from 'react-icons/bs';
+import Avaliar from './Avaliar';
+import Noticias from './Noticias';
+import { LiveTV, Posts } from './';
+import { BiHome, BiLike } from 'react-icons/bi';
+import { BsNewspaper, BsTrophy } from 'react-icons/bs';
 import { FaMusic } from 'react-icons/fa';
 import Sobre from '../Concursos/Sobre';
+import Container from '@/Layouts/Container';
+import { MdLiveTv } from 'react-icons/md';
+import { HiUserGroup } from 'react-icons/hi';
+import { GrUserExpert } from 'react-icons/gr';
+import CommunityDiscussion from '@/Components/CommunityDiscussion';
 
 interface Props {
   pagina: string;
   songs: Array<Object>;
+  posts: Array<Object>;
   APP_URL: String;
 }
 
-export default function Home({ pagina, songs, APP_URL }: Props) {
+export default function Home({ songs, posts }: Props) {
   const route = useRoute();
   const page = useTypedPage();
 
@@ -50,13 +53,23 @@ export default function Home({ pagina, songs, APP_URL }: Props) {
   */
 
   const { currentPage, setCurrentPage } = useStateContext();
+  const [bgPage, setBgPage] = useState(undefined);
 
   function setDefaultPage() {
-    setCurrentPage(<Avaliar songs={songs} />);
+    setCurrentPage(
+      <Avaliar
+        songs={songs}
+        setSongsList={setSidebarList}
+        setBgPage={setBgPage}
+      />,
+    );
   }
 
-  useEffect(setDefaultPage, []);
+  const [sidebarList, setSidebarList] = useState(<></>);
 
+  useEffect(setDefaultPage, []);
+  /**Para marcar o botão  de baixo actualmente activo */
+  const [activeBottomButton, setActiveBottomButton] = useState('Ao Vivo');
   return (
     <AppLayout
       title="Home"
@@ -66,14 +79,14 @@ export default function Home({ pagina, songs, APP_URL }: Props) {
             <div className="w-full h-16 hidden md:flex flex-row justify-center items-center p-0 ">
               <div
                 className={`${
-                  route().current() == '/home'
+                  route().current() == '/'
                     ? 'border-b-2  border-[#4c88c4] dark:bg-[#2e2c2e] text-[#4c88c4]'
                     : ''
                 }  p-2 mx-1 cursor-pointer shadow-sm b-[#4c88c4] hover:bg-[#2e2c2e]  text-gray-400`}
               >
                 <Link
                   onClick={() => setCurrentPage(<Destaques />)}
-                  href={route('/home')}
+                  href={route('/')}
                   className="flex flex-col lg:flex-row justify-center items-center gap-1"
                 >
                   <BiHome className="text-3xl" />
@@ -133,10 +146,82 @@ export default function Home({ pagina, songs, APP_URL }: Props) {
           </div>
         </div>
       )}
+      renderBottom={() => (
+        <>
+          <button
+            onClick={() => {
+              setCurrentPage(
+                <LiveTV songs={songs} setSongsList={setSidebarList} />,
+              );
+              setActiveBottomButton('Ao Vivo');
+            }}
+            className={`flex flex-col w-full h-full justify-center items-center text-xs hover:bg-gray-300 first-letter:
+            ${activeBottomButton === 'Ao Vivo' ? 'bg-gray-300' : ''}
+            `}
+          >
+            <MdLiveTv className="w-10 h-10" />
+            Ao Vivo
+          </button>
+          <button
+            onClick={() => {
+              setCurrentPage(
+                <Avaliar songs={songs} setSongsList={setSidebarList} />,
+              );
+              setActiveBottomButton('Avaliar');
+            }}
+            className={`flex flex-col w-full h-full justify-center items-center text-xs hover:bg-gray-300 first-letter:
+            ${activeBottomButton === 'Avaliar' ? 'bg-gray-300' : ''}
+            `}
+          >
+            <BiLike className="w-10 h-10" />
+            Destaques
+          </button>
+          <button
+            onClick={() => {
+              setCurrentPage(
+                <Avaliar songs={songs} setSongsList={setSidebarList} />,
+              );
+              setActiveBottomButton('Juris');
+            }}
+            className={`flex flex-col w-full h-full justify-center items-center text-xs hover:bg-gray-300 first-letter:
+            ${activeBottomButton === 'Juris' ? 'bg-gray-300' : ''}
+            `}
+          >
+            <GrUserExpert className="w-10 h-10" />
+            Jurís
+          </button>
+          <button
+            onClick={() => {
+              setCurrentPage(<CommunityDiscussion setPostsList={setSidebarList} />);
+              setActiveBottomButton('Comunidade');
+            }}
+            className={`flex flex-col w-full h-full justify-center items-center text-xs hover:bg-gray-300 first-letter:
+            ${activeBottomButton === 'Comunidade' ? 'bg-gray-300' : ''}
+            `}
+          >
+            <HiUserGroup className="w-10 h-10" />
+            Comunidade
+          </button>
+          <button
+            onClick={() => {
+              setCurrentPage(<Posts setPostsList={setSidebarList} />);
+              setActiveBottomButton('Noticias');
+            }}
+            className={`flex flex-col w-full h-full justify-center items-center text-xs hover:bg-gray-300 first-letter:
+            ${activeBottomButton === 'Noticias' ? 'bg-gray-300' : ''}
+            `}
+          >
+            <BsNewspaper className="w-10 h-10" />
+            Notícias
+          </button>
+        </>
+      )}
+      renderSidebarList={() => sidebarList}
+      bg={bgPage}
     >
       <Head title="Home" />
 
-      <div className="relative sm:flex flex-col sm:justify-center sm:items-center  bg-dots-darker bg-center dark:bg-dots-lighter  selection:bg-red-500 selection:text-white">
+      <div className="w-full relative sm:flex flex-col sm:justify-center sm:items-center  bg-dots-darker bg-center dark:bg-dots-lighter  selection:bg-red-500 selection:text-white">
         {currentPage}
       </div>
     </AppLayout>

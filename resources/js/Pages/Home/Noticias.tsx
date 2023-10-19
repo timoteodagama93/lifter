@@ -15,22 +15,20 @@ import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 
-import Destaques from './Home/Destaques';
+import Destaques from './Destaques';
 import AppLayout from '@/Layouts/AppLayout';
 import { router } from '@inertiajs/core';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import { Error, Loader } from '@/Components';
 import { useGetValuateSongsQuery } from '@/redux/services/coreApi';
 import { useSelector } from 'react-redux';
-import Posts from './Home/Posts';
+import Posts from './Posts';
 
 interface Props {
-  pagina: string;
-  posts: {};
-  APP_URL: string;
+  posts: Array<Object>;
 }
 
-export default function Noticias({ pagina, posts, APP_URL }: Props) {
+export default function Noticias({ posts }: Props) {
   const route = useRoute();
   const page = useTypedPage();
 
@@ -44,8 +42,6 @@ export default function Noticias({ pagina, posts, APP_URL }: Props) {
   */
 
   const { currentPage, setCurrentPage } = useStateContext();
-
-
 
   function setDefaultPage() {
     setCurrentPage(<Posts />);

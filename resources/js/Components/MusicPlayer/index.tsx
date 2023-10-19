@@ -134,29 +134,17 @@ const MusicPlayer = () => {
             onLoadedData={event => setDuration(event.target.duration)}
           />
         </div>
-        <VolumeBar
-          value={volume}
-          min="0"
-          max="1"
-          onChange={event => setVolume(event.target.value)}
-          setVolume={setVolume}
-        />
-      </div>
-      <div className=" flex flex-row items-center justify-center md:flex-col">
-        <span className="text-xs animate-bounce">Avalie</span>
-        <div className="justify-center items-center flex flex-row">
-          {stars.map(stars => (
-            <span key={stars} className="text-4xl ">
-              <button key={stars} onClick={() => submitValuation(stars)}>
-                {selectedStar >= stars ? (
-                  //                    || (isHovering == false && hoverStar >= stars)
-                  <BsStarFill className="text-[#f6cc33]" />
-                ) : (
-                  <BsStar />
-                )}
-              </button>
-            </span>
-          ))}
+
+        <button></button>
+
+        <div className="hidden">
+          <VolumeBar
+            value={volume}
+            min="0"
+            max="1"
+            onChange={event => setVolume(event.target.value)}
+            setVolume={setVolume}
+          />
         </div>
       </div>
     </div>

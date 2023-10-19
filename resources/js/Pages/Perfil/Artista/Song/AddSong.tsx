@@ -19,10 +19,10 @@ export default function AddSong({ artist }) {
   const [successOnAdd, setSuccessOnAdd] = useState(false);
 
   const formSong = useForm({
-    artist_id: artist.id,
+    artist_id: artist?.id,
     title: '',
-    artist: artist.name,
-    genre: artist.genres,
+    artist: artist?.name,
+    genre: artist?.genres,
     gravadora: '',
     participacoes: '',
     letra: '',
@@ -94,7 +94,7 @@ export default function AddSong({ artist }) {
           </PrimaryButton>
         </>
       ) : (
-        <div className="p-5 h-[55vh] mb-96 overflow-y-auto m-5 shadow-lg shadow-black">
+        <div className="p-5  m-5 shadow-lg shadow-black">
           <p className="w-full text-xl flex justify-center uppercase gap-1">
             Adicionar música de <strong> {artist.name}</strong>
           </p>
@@ -231,7 +231,6 @@ export default function AddSong({ artist }) {
                 className="mt-1 block w-full"
                 value={formSong.data.letra}
                 onChange={e => formSong.setData('letra', e.currentTarget.value)}
-                required
               />
               <InputError className="mt-2" message={formSong.errors.letra} />
             </div>

@@ -11,7 +11,7 @@ const Track = ({ isPlaying, isActive, activeSong }) => (
         <img
           src={ activeSong?.cover}
           alt="cover art"
-          className="h-full w-full rounded-full"
+          className=" h-full w-full rounded-full"
         />
       </div>
     )}

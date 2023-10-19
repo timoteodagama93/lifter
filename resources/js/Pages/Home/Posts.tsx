@@ -6,6 +6,7 @@ import {
   BiLike,
   BiMusic,
   BiNews,
+  BiPlay,
   BiSend,
   BiShare,
 } from 'react-icons/bi';
@@ -27,8 +28,13 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import { Error, Loader } from '@/Components';
 import { MdOutlinePublish } from 'react-icons/md';
 import { GrNew } from 'react-icons/gr';
+import { useStateContext } from '@/contexts/PaginaActualContext';
+import VideoPlayer from '@/Components/VideoPlayer';
+import PulseButton from '@/Components/PulseButton';
+import Swal from 'sweetalert2';
+import CommentsSection from '@/Components/CommentsSection';
 
-function Posts() {
+function Posts({}) {
   const [openNewImagePost, setOpenNewImagePost] = useState(false);
   const page = useTypedPage();
   const [posts, setPosts] = useState([]);
@@ -41,6 +47,8 @@ function Posts() {
       .then(response => {
         if (response.status === 200) {
           setPosts(response.data);
+          if (displayPost === undefined) setDisplayPost(response.data[0]);
+
           setLoading(false);
         }
       })
@@ -52,19 +60,22 @@ function Posts() {
 
   useEffect(loadPosts, []);
 
+  const [displayPost, setDisplayPost] = useState();
+  const [detailsPost, setDetailsPost] = useState(false);
+
   return (
     <>
-      <div className="w-full md:px-2 flex flex-col">
-        <div className="flex flex-col-reverse md:flex-row  justify-center items-center gap-5 pb-1">
-          <div className="-mb-2 gap-5 md:mb-2 w-full h-full flex flex-row justify-between mt-0">
+      <div className="w-full h-full md:px-2 flex flex-col">
+        <div className=" flex flex-col-reverse md:flex-row  justify-center items-center gap-1 py-1">
+          <div className="-mb-2 gap-5 md:mb-2 w-full flex flex-row justify-between items-center ">
             <div className="w-full md:px-2 flex flex-row">
-              <button
+              <PulseButton
                 onClick={() => setOpenNewImagePost(true)}
-                className=" shadow shadow-white border flex flex-col text-4xl  justify-start items-center p-1 rounded "
+                className="pulsating-button  shadow shadow-white border flex flex-col text-4xl  justify-start items-center p-1 rounded "
               >
                 <BiNews className="animate-bounce" />
-                <span className="text-xs">Noticiar</span>
-              </button>
+                <span className="text-xs">Publicar</span>
+              </PulseButton>
             </div>
             <FiltrarNoticias
               setPosts={setPosts}
@@ -81,12 +92,38 @@ function Posts() {
         />
         {loading && <Loader title="Carregando Posts & Notícias" />}
         {error && <Error />}
+        {posts && (
+          <div className="w-full h-[62vh] flex overflow-y-auto justify-center">
+          <div className="w-[50%] h-full">
+            {posts?.map(post => (
+              <>
+                <PostSingleSidebar
+                  key={post.id}
+                  post={post}
+                  setDisplayPost={setDisplayPost}
+                />
+              </>
+            ))}
+          </div>
+          </div>
+        )}
+      </div>
+
+      <div
+        style={{ transition: '1s' }}
+        className={`absolute top-0 h-screen w-2/3 md:w-[240px] bg-gradient-to-tl from-white/10 to-[#483d8b backdrop-blur z-10 p-6  smooth-transition ${
+          detailsPost ? 'left-0' : '-left-full '
+        }  `}
+      >
         {!loading && !error && (
-          <div className="flex flex-col md:flex-row flex-wrap p-1 ">
+          <div className="flex flex-col md:flex-row flex-wrap p-1  ">
             {posts?.length > 0 ? (
-              posts?.map(post => (
-                <PostSingle post={post} loadPosts={loadPosts} />
-              ))
+              <PostSingle
+                key={displayPost?.id}
+                post={displayPost}
+                loadPosts={loadPosts}
+                setDetailsPost={setDetailsPost}
+              />
             ) : (
               <h1 className="w-full text-center text-xl uppercase">
                 Nada publicado recentemente em {filter} ...
@@ -99,7 +136,7 @@ function Posts() {
   );
 }
 
-function PostSingle({ post, loadPosts }) {
+function PostSingle({ post, loadPosts, setDetailsPost }) {
   const [lerMais, setLerMais] = useState(false);
   function Like(postId) {
     axios
@@ -114,8 +151,8 @@ function PostSingle({ post, loadPosts }) {
 
   return (
     <>
-      <div className="relative w-full md:w-1/2 lg:w-1/3 h-[400px]  overflow-hidden   rounded p-1">
-        <div className="w-full h-1/2 backdrop-blur-lg justify-center items-center flex rounded shadow ">
+      <div className="relative w-full h-full  overflow-hidden   rounded p-1">
+        <div className="w-full backdrop-blur-lg justify-center items-center flex rounded shadow ">
           {post?.mime_type?.includes('image/') && (
             <img
               src={post.file_url}
@@ -139,8 +176,8 @@ function PostSingle({ post, loadPosts }) {
             />
           )}
         </div>
-        <div className="w-full h-1/2 bg-white">
-          <div className="w-full  h-1/3n  flex flex-row text-gray-300 gap-1">
+        <div className="w-full h-full bg-white">
+          <div className="w-full  flex flex-row text-gray-300 gap-1">
             <p className="flex gap-1 items-center">
               {' '}
               <BiCalendar />{' '}
@@ -173,23 +210,39 @@ function PostSingle({ post, loadPosts }) {
               {post.community}
             </p>
           </div>
-          <div className="w-full  overflow-y-hidden flex flex-row text-gray-300 gap-5">
+          <div className="w-full  flex my-5 text-gray-300 gap-5">
             <p className="text-black bold flex gap-1 items-center">
               {post?.post_text}
             </p>
           </div>
-          <div className="w-full absolute p-1 bottom-0 left-0   flex flex-row text-gray-300 gap-5">
-            <button
-              onClick={() => setLerMais(true)}
-              className="w-full h-12 justify-center items-center flex bg-[#1422b1] rounded-t "
-            >
-              Ler mais
-            </button>
-          </div>
+          <CommentsSection key={post.id} item={post} itemType="noticia" />
         </div>
       </div>
-      <Modal isOpen={lerMais} onClose={() => setLerMais(false)}>
-        <div className="relative w-full p-1">
+    </>
+  );
+}
+
+function PostSingleSidebar({ post, setDisplayPost }) {
+  const ref = useRef(null);
+  // eslint-disable-next-line no-unused-expressions
+  function play() {
+    if (ref.current) {
+      ref.current?.play();
+    }
+  }
+  function pause() {
+    if (ref.current) {
+      ref.current?.pause();
+    }
+  }
+  return (
+    <>
+      <div
+        onClick={() => setDisplayPost(post)}
+        className="relative w-full h-auto  overflow-hidden   rounded p-1 my-1 hover:cursor-pointer "
+      >
+        {post?.mime_type?.includes('image/') ||
+        post?.mime_type?.includes('video/') ? (
           <div className="w-full h-1/2 backdrop-blur-lg justify-center items-center flex rounded shadow ">
             {post?.mime_type?.includes('image/') && (
               <img
@@ -201,69 +254,46 @@ function PostSingle({ post, loadPosts }) {
 
             {post?.mime_type?.includes('video/') && (
               <video
-                src={post.file_url}
-                className="object-cover h-full w-full rounded-t shadow"
+                onMouseEnter={play}
+                onMouseLeave={pause}
+                ref={ref}
+                loop={false}
+                //        onEnded={onEnded}
+                onTimeUpdate={() => {}}
+                onLoadedData={() => {}}
+                muted
                 controls
-              />
-            )}
-            {post?.mime_type?.includes('audio/') && (
-              <audio
-                controls
-                src={post.file_url}
-                className="object-cover h-full w-full rounded-t shadow"
-              />
+              >
+                <source type={post.mime_type} src={post?.file_url} />
+              </video>
             )}
           </div>
-          <div className="w-full h-1/2 bg-white">
-            <div className="w-full  h-1/3n  flex flex-row text-gray-300 gap-1">
-              <p className="flex gap-1 items-center">
-                {' '}
-                <BiCalendar />{' '}
-                {new Date(post?.created_at).getDate() +
-                  '/' +
-                  (new Date(post?.created_at).getUTCMonth() + 1) +
-                  '/' +
-                  new Date(post?.created_at).getFullYear() +
-                  ' ' +
-                  new Date(post?.created_at).getUTCHours() +
-                  ':' +
-                  new Date(post?.created_at).getUTCMinutes()}
-              </p>
-              <SecondaryButton
-                onClick={() => Like(post?.id)}
-                className=" mt-1 p-1 flex gap-1 items-center"
-              >
-                {' '}
-                <BiLike /> {post?.likes}{' '}
-              </SecondaryButton>
-              <SecondaryButton
-                onClick={() => Like(post?.id)}
-                className="hidden gap-1 items-center"
-              >
-                {' '}
-                <BiDislike /> {post?.dislikes}{' '}
-              </SecondaryButton>
-              <p className="flex gap-1 items-center text-[#ff0000] uppercase">
-                <BsSearchHeart className="text-[#ff0000] " />
-                {post.community}
-              </p>
-            </div>
-            <div className="w-full h-fit flex flex-row text-gray-300 gap-5">
-              <p className="text-black bold flex gap-1 items-center">
-                {post?.post_text}
-              </p>
-            </div>
-            <div className="w-full p-1 flex flex-row text-gray-300 gap-5">
-              <button
-                onClick={() => setLerMais(false)}
-                className="w-full h-12 justify-center items-center flex bg-[#1422b1] rounded-t "
-              >
-                Voltar
-              </button>
-            </div>
-          </div>
-        </div>
-      </Modal>
+        ) : (
+          <p className="flex gap-1 items-center w-full bg-white text-[#ff0000]">
+            {post.post_text}
+          </p>
+        )}
+        <p className="w-full bg-white  flex flex-row text-gray-300  gap-1 items-center">
+          {' '}
+          <BiCalendar />{' '}
+          {new Date(post?.created_at).getDate() +
+            '/' +
+            (new Date(post?.created_at).getUTCMonth() + 1) +
+            '/' +
+            new Date(post?.created_at).getFullYear() +
+            ' ' +
+            new Date(post?.created_at).getUTCHours() +
+            ':' +
+            new Date(post?.created_at).getUTCMinutes()}
+        </p>
+
+        <PulseButton
+          className="w-full p-1 text-gray-300  justify-center bg-[#1422b1] rounded-t "
+          onClick={() => setDisplayPost(post)}
+        >
+          Ler matéria
+        </PulseButton>
+      </div>
     </>
   );
 }
@@ -433,7 +463,7 @@ function FiltrarNoticias({ setPosts, setLoading, setError, setFilter }) {
       });
   }
   return (
-    <div className="flex justify-end w-full text-black ">
+    <div className="flex justify-end w-full items-center gap-1 text-black ">
       <label>Filtrar</label>
       <select onChange={e => loadPostsByFilter(e)} className="rounded">
         <option value="tudo">Tudo</option>

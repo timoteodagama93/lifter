@@ -1,28 +1,26 @@
 import React, { useEffect, useRef } from 'react';
-import PlayPause from '../Components/PlayPause';
+import PlayPause from '../../Components/PlayPause';
 import { Link } from '@inertiajs/react';
-import { songs, top5Songs } from '../../data/dummy';
+import { songs, top5Songs } from '../../../data/dummy';
 import Swiper, { SwiperSlide } from 'swiper/react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   useGetArtistsQuery,
   useGetValuateSongsQuery,
 } from '@/redux/services/coreApi';
-import Loader from '../Components/Loader';
-import Error from '../Components/Error';
+import Loader from '../../Components/Loader';
+import Error from '../../Components/Error';
 import { playPause, setActiveSong } from '@/redux/features/playerSlice';
-import TopChartCard from '../Components/TopChartCard';
+import TopChartCard from '../../Components/TopChartCard';
 import AppLayout from '@/Layouts/AppLayout';
 import Container from '@/Layouts/Container';
 import SongCard1 from '@/Components/SongCard1';
 
-function Ranking({ setSidebarList }) {
+function Songs({}) {
   const { data, isFetching, error } = useGetValuateSongsQuery('/get-songs');
   const { activeSong, isPlaying } = useSelector(state => state.player);
   if (isFetching) return <Loader title="Carregando músicas..." />;
   if (error) return <Error />;
-
-  setSidebarList(data?.map(song => <SongCard1 song={song} />));
 
   return (
     <div className="w-full relative flex flex-row rounded">
@@ -31,7 +29,7 @@ function Ranking({ setSidebarList }) {
           className="w-full flex flex-row justify-between
              items-center"
         >
-          <h2 className=" font-bold text-base md:text-4xl">Top 100 </h2>
+          <h2 className=" font-bold text-base md:text-4xl text-[#]">Ranking </h2>
           <Link href="top-charts">
             <p className="text-sm md:text-base cursor-pointer">Ver mais</p>
           </Link>
@@ -53,4 +51,4 @@ function Ranking({ setSidebarList }) {
   );
 }
 
-export default Ranking;
+export default Songs;

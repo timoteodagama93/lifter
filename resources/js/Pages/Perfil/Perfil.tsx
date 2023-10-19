@@ -1,24 +1,16 @@
 import React, { useEffect, useState } from 'react';
 
-import UserAvatar from '@/Components/UserAvatar';
-import { Link } from '@inertiajs/react';
 import {
   BiEdit,
   BiInfoCircle,
   BiLibrary,
-  BiMusic,
-  BiStats,
   BiTrophy,
-  BiUpload,
 } from 'react-icons/bi';
-import { TiMessages } from 'react-icons/ti';
 import useTypedPage from '@/Hooks/useTypedPage';
 import AppLayout from '@/Layouts/AppLayout';
 import { MdPhoto } from 'react-icons/md';
-import DetailsArtist from './Artista/Info/DetailsArtist';
 import { FaCoins } from 'react-icons/fa';
 import { RiContactsBook2Fill } from 'react-icons/ri';
-import ContestCard from '@/Components/ContestCard';
 import axios from 'axios';
 import NewContest from '@/Components/Contest/Index';
 import { BsEye } from 'react-icons/bs';

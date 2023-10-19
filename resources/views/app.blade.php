@@ -7,7 +7,7 @@
     <meta name="author" content="Timóteo Da Gama, Lifter CEO">
     <meta name="about" content="Lifter is a musical classification plataform">
 
-    <link rel="icon" type="image/x-icon" href="img/logo/lifter.png">
+    <link rel="icon" type="image/x-icon" href="img/logo/lifter.svg">
 
     <title inertia>{{ config('app.name', 'Lifter') }}</title>
 

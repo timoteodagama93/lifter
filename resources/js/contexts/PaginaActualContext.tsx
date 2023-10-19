@@ -16,14 +16,31 @@ interface InitialState {
 }
 const initialState = {
   currentPage: <></>,
-  setCurrentPage: page => {page},
+  setCurrentPage: page => page,
+
+  activeMenuItem: '',
+  setActiveMenuItem: name => name,
+
   openMobileMenu: false,
-  setOpenMobileMenu: bool => {},
+  setOpenMobileMenu: bool => {
+    return bool;
+  },
+
+  background: undefined,
+  setBackground: el => {
+    return el;
+  },
 };
 const StateContextPage = createContext(initialState);
 
 export const ContextPageProvider = ({ children }) => {
   const [currentPage, setCurrentPage] = useState(initialState.currentPage);
+
+  const [activeMenuItem, setActiveMenuItem] = useState(
+    initialState.activeMenuItem,
+  );
+
+  const [background, setBackground] = useState(initialState.background);
 
   const [openMobileMenu, setOpenMobileMenu] = useState(false);
 
@@ -34,6 +51,10 @@ export const ContextPageProvider = ({ children }) => {
         setCurrentPage,
         openMobileMenu,
         setOpenMobileMenu,
+        activeMenuItem,
+        setActiveMenuItem,
+        background,
+        setBackground,
       }}
     >
       {children}

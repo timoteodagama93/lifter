@@ -5,9 +5,9 @@ import PlayPause from '@/Components/PlayPause';
 function Galeria({ nome_colecao }) {
   return (
     <div>
-      <div className="container w-full h-full ">
+      <div className="container w-full h-full overflow-y-auto ">
         <h2 className="hidden md:flex heading-text text-center space-x-2 text-white">
-          <span>Coleção de</span> {' '} <span> { nome_colecao} </span>
+          <span>Destaques </span>
         </h2>
         <div className="image-gallery p-1 overflow-auto">
           <div className="column">

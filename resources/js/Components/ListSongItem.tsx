@@ -6,11 +6,8 @@ import PlayPause from './PlayPause';
 import EnviarEstrelas from './EnviarEstrelas';
 import axios from 'axios';
 import MediaDeEstrelas from './MediaDeEstrelas';
-import { HiHeart, HiStar } from 'react-icons/hi';
-import { BiStar } from 'react-icons/bi';
-import { AiOutlineLike } from 'react-icons/ai';
 
-function TopChartCard({ song, i, isPlaying, activeSong, songs }) {
+function ListSongItem({ song, i, isPlaying, activeSong, songs }) {
   const dispatch = useDispatch();
 
   const handlePauseClick = () => {
@@ -57,19 +54,8 @@ function TopChartCard({ song, i, isPlaying, activeSong, songs }) {
           </Link>
         </div>
       </div>
-      <div className="flex flex-row mx-5">
-        <HiHeart
-          size={35}
-          className={`text-gray-300 cursor-pointer hover:text-red-300 `}
-        />
-        <HiStar
-          size={35}
-          className={`text-gray-300 cursor-pointer hover:text-red-300 `}
-        />
-        <AiOutlineLike
-          size={35}
-          className={`text-gray-300 cursor-pointer hover:text-red-300 `}
-        />
+      <div className="mx-2">
+        <MediaDeEstrelas song={song} wich_flex="flex-row px-1 rounded" />
       </div>
       {song.mime_type.includes('audio/') && (
         <PlayPause
@@ -85,4 +71,4 @@ function TopChartCard({ song, i, isPlaying, activeSong, songs }) {
   );
 }
 
-export default TopChartCard;
+export default ListSongItem;

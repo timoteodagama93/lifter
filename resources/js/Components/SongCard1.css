@@ -1,0 +1,36 @@
+.song-card {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 1px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+  overflow: hidden;
+}
+
+.song-card img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.song-details {
+  padding: 10px;
+}
+
+.song-details h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.song-details p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.song-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}

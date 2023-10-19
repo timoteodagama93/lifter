@@ -15,6 +15,7 @@ import { router } from '@inertiajs/core';
 import SecondaryButton from './SecondaryButton';
 import axios from 'axios';
 import { load } from '@syncfusion/ej2-react-grids';
+import Swal from 'sweetalert2';
 export default function AddArtist({ setPagina }) {
   const formArtist = useForm({
     name: '',
@@ -53,6 +54,11 @@ export default function AddArtist({ setPagina }) {
         formArtist.setData('city', 'Luanda');
         clearPhotoFileInput();
         setPhotoPreview(null);
+        Swal.fire({
+          title: 'Sucesso',
+          text: 'Conta criada, recarregue a página.',
+          icon: 'success',
+        });
         router.reload();
       })
       .catch(e => {

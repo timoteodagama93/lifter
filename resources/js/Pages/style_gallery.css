@@ -3,7 +3,7 @@ Responsive Image gallery Style rules
 ======================================*/
 
 .container {
-  padding: 5px 1%;
+  padding: 1px 1%;
 }
 
 .heading-text {
@@ -22,8 +22,9 @@ Responsive Image gallery Style rules
   display: flex;
   flex-direction: column;
   gap: 1px;
-  height: 100vh !important;
-  margin-bottom: 1px;
+  height: 70vh !important;
+  overflow-y: scroll;
+  margin-bottom: 10px;
 }
 
 .image-gallery .column {
@@ -33,9 +34,9 @@ Responsive Image gallery Style rules
 }
 
 .image-item img {
-  width: 50%;
-  height: 100%;
+  width: 100%;
   border-radius: 5px;
+  height: 100%;
   object-fit: cover;
 }
 

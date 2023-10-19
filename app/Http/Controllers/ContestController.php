@@ -15,7 +15,6 @@ class ContestController extends Controller
 
     public function store()
     {
-
         Validator::make(Request::all(), [
             'cover' => ['required', 'mimes:jpg,jpeg,png', 'max:5120'],
             'designacao' => ['required'],
@@ -40,49 +39,47 @@ class ContestController extends Controller
 
     public function update()
     {
-        if (Request::get('cover') != null) {
+        if (Request::file('cover') != null) {
 
             Validator::make(Request::all(), [
-                'cover' => ['nullable', 'mimes:jpg,jpeg,png', 'max:5120'],
+                'cover' => ['nullable', 'mimes:jpg,jpeg,png, mp4', 'max:5120'],
                 'designacao' => ['required'],
                 'estilo' => ['required'],
                 'descricao' => ['required'],
             ])->validateWithBag('contestCreationCoverFails');
 
             $file = Request::file('cover')->store('contests', 'public');
-
-
             $user_id = Auth::id();
             $contest = Contest::updateOrCreate(
                 [
                     'user_id' => $user_id,
-                    'id' => Request::get('id'),
+                    'id' => Request::input('id'),
                 ],
                 [
-                    'designacao' => Request::get('designacao'),
-                    'descricao' => Request::get('descricao'),
-                    'estilo_musical' => Request::get('estilo'),
+                    'url_cover' => Storage::url($file),
+                    'cover_mime_type' => Request::file('cover')->getMimeType(),
+                    'designacao' => Request::input('designacao'),
+                    'descricao' => Request::input('descricao'),
+                    'estilo_musical' => Request::input('estilo'),
                 ]
             );
             echo response(['new_contest' => $contest]);
         } else {
-
             Validator::make(Request::all(), [
                 'designacao' => ['required'],
                 'estilo' => ['required'],
                 'descricao' => ['required'],
             ])->validateWithBag('contestCreationCoverFails');
-
             $user_id = Auth::id();
             $contest = Contest::updateOrCreate(
                 [
                     'user_id' => $user_id,
-                    'id' => Request::get('id'),
+                    'id' => Request::input('id'),
                 ],
                 [
-                    'designacao' => Request::get('designacao'),
+                    'designacao' => Request::input('designacao'),
                     'descricao' => Request::get('descricao'),
-                    'estilo_musical' => Request::get('estilo'),
+                    'estilo_musical' => Request::input('estilo'),
                 ]
             );
             echo response(['new_contest' => $contest]);
@@ -145,6 +142,6 @@ class ContestController extends Controller
 
     public function details($contestId)
     {
-        return Inertia::render('Concursos/Details',['contest'=>Contest::all()->where('id', $contestId)->first()]);
+        return Inertia::render('Concursos/Details', ['contest' => Contest::all()->where('id', $contestId)->first()]);
     }
 }
