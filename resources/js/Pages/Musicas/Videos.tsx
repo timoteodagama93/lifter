@@ -1,78 +1,99 @@
+import React, { useEffect, useRef, useState } from 'react';
+import PlayPause from '../../Components/PlayPause';
+import { Link } from '@inertiajs/react';
+import { songs, top5Songs } from '../../../data/dummy';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  useGetArtistsQuery,
+  useGetSongsQuery,
+  useGetVideosQuery,
+} from '@/redux/services/coreApi';
+import Loader from '../../Components/Loader';
+import Error from '../../Components/Error';
+import { playPause, setActiveSong } from '@/redux/features/playerSlice';
+import TopChartCard from '../../Components/TopChartCard';
 import AppLayout from '@/Layouts/AppLayout';
-import React, { useState } from 'react';
-import { generos, songs } from '../../../data/dummy';
-import SelectGenre from '@/Components/SelectGenre';
-import { FaRandom } from 'react-icons/fa';
-import CardVideo from '../../Components/CardVideo';
-import Galeria from '../../Components/Galeria';
-import ArtistsGalery from '@/Pages/ArtistsGalery';
-function Videos() {
-  const [activar, setActivar] = useState('todos');
+import Container from '@/Layouts/Container';
+import SongCard1 from '@/Components/SongCard1';
+import { SongCard } from '@/Components';
+import { FreeMode } from 'swiper/modules';
+import VideoCard from '@/Components/VideoCard';
+
+function Videos({}) {
+  const { data: videos, isFetching, error } = useGetVideosQuery('/get-videos');
+  const { activeSong, isPlaying } = useSelector(state => state.player);
+  if (isFetching) return <Loader title="Carregando músicas..." />;
+  if (error) return <Error />;
+  /**REF for playing and pausing videos */
+  const [refVideo, setRefVideo] = useState(useRef(null));
   return (
-    <div className="w-full h-full flex flex-col">
-      <div className="w-full h-[10%] flex justify-between items-center sm:flex-row flex-col">
-        <h2 className="font-bold text-3xl text-white text-left">Vídeos</h2>
-
-        <div className="justify-center items-center mx-5">
-          <button
-            className="w-auto justify-center items-center text-xl text-bold p-3"
-            onClick={() => setActivar('todos')}
-          >
-            Destaques
-            {activar === 'todos' ? (
-              <div className="justify-center mx-auto mt-2 w-5 rounded-lg border-b-4 border-white" />
-            ) : (
-              ''
-            )}
-          </button>
-          <button
-            className="text-xl text-bold p-3"
-            onClick={() => setActivar('clipes')}
-          >
-            Recentes
-            {activar === 'clipes' ? (
-              <div className="justify-center mx-auto mt-2 w-5 rounded-lg border-b-4 border-white" />
-            ) : (
-              ''
-            )}
-          </button>
-          <button
-            className="text-xl text-bold p-3"
-            onClick={() => setActivar('recortes')}
-          >
-            Tendências
-            {activar === 'recortes' ? (
-              <div className="justify-center mx-auto mt-2 w-5 rounded-lg border-b-4 border-white" />
-            ) : (
-              ''
-            )}
-          </button>
+    <div className="w-full relative flex flex-row rounded">
+      <div className="w-full flex flex-col px-4 rounded-lg">
+        <div
+          className="w-full flex flex-row justify-between
+             items-center"
+        >
+          <h2 className=" font-bold text-base md:text-4xl text-[#]">
+            Destaques{' '}
+          </h2>
+          <Link href="top-charts">
+            <p className="text-sm md:text-base cursor-pointer">Ver mais</p>
+          </Link>
         </div>
-
-        <div className="w-auto">
-          <SelectGenre className="" />
+        <div className="w-full relative flex flex-row">
+          <Swiper
+            loop={true}
+            spaceBetween={15}
+            navigation={true}
+            modules={[FreeMode]}
+            slidesPerView="auto"
+            centeredSlides
+            centeredSlidesBounds
+            className="mt-4 "
+          >
+            {videos?.map((song, i) => (
+              <SwiperSlide
+                key={song.id}
+                style={{ width: '', height: '' }}
+                className="shadow-lg w-full md:w-1/2 h-auto rounded-full animate-sliderrigth"
+              >
+                <VideoCard
+                  refVideo={refVideo}
+                  setRefVideo={setRefVideo}
+                  song={song}
+                  i={song.id}
+                  key={song.id}
+                  activeSong={activeSong}
+                  isPlaying={isPlaying}
+                  songs={videos}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
-      </div>
-
-      <div className="w-full h-10 flex flex-row justify-between items-center text-white">
-        <button className="items-center flex shadow-lg shadow-white rounded-sm bg-[#2e2c2e] text-white p-2">
-          <FaRandom />
-          <span className="ml-5">Ordem aleatória e reproduzir</span>
-        </button>
-        <span className="text-white ">
-          Ordenar por:
-          <select className="m-0 p-0 ml-2 pl-1 h-8 bg-[#4c88c4]">
-            <option>A - Z</option>
-            <option>Artista</option>
-            <option>Album</option>
-            <option>Ano de lançamento</option>
-          </select>
-        </span>
-      </div>
-
-      <div className="w-full h-[50%] overflow-y-auto mx-auto sm:px-6 lg:px-8">
-        <div className="w-full h-full flex flex-wrap  dark:bg-gray-800  sm:rounded-lg ">
-          <Galeria nome_colecao="Vídeos" />
+        <div
+          className="w-full flex flex-row justify-between
+             items-center"
+        >
+          <h2 className=" font-bold text-base md:text-4xl text-[#]">
+            Ranking{' '}
+          </h2>
+          <Link href="top-charts">
+            <p className="text-sm md:text-base cursor-pointer">Ver mais</p>
+          </Link>
+        </div>
+        <div className="w-full relative flex flex-col ">
+          {videos?.map((song, id) => (
+            <VideoCard
+              songs={videos}
+              song={song}
+              isPlaying={isPlaying}
+              activeSong={activeSong}
+              i={id}
+              key={song.id}
+            />
+          ))}
         </div>
       </div>
     </div>

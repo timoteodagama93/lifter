@@ -6,7 +6,7 @@ import Swiper, { SwiperSlide } from 'swiper/react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   useGetArtistsQuery,
-  useGetValuateSongsQuery,
+  useGetSongsQuery,
 } from '@/redux/services/coreApi';
 import Loader from '../Components/Loader';
 import Error from '../Components/Error';
@@ -17,7 +17,7 @@ import Container from '@/Layouts/Container';
 import SongCard1 from '@/Components/SongCard1';
 
 function Ranking({ setSidebarList }) {
-  const { data, isFetching, error } = useGetValuateSongsQuery('/get-songs');
+  const { data, isFetching, error } = useGetSongsQuery('/get-songs');
   const { activeSong, isPlaying } = useSelector(state => state.player);
   if (isFetching) return <Loader title="Carregando músicas..." />;
   if (error) return <Error />;

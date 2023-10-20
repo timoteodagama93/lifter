@@ -9,7 +9,7 @@ import { Link } from '@inertiajs/react';
 import InteracoesMusical from '@/Components/InteracoesMusical';
 import EnviarEstrelas from '@/Components/EnviarEstrelas';
 import axios from 'axios';
-import { useGetValuateSongsQuery } from '@/redux/services/coreApi';
+import { useGetSongsQuery } from '@/redux/services/coreApi';
 import { useSelector } from 'react-redux';
 import { Error, Loader } from '@/Components';
 import TopChartCard from '@/Components/TopChartCard';

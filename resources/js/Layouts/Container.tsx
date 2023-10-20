@@ -15,14 +15,14 @@ import {
   MdLiveTv,
   MdVoiceChat,
 } from 'react-icons/md';
-import { GiJetpack, GiJumpAcross } from 'react-icons/gi';
+import { GiJetpack, GiJumpAcross, GiSoundWaves } from 'react-icons/gi';
 import { BsNewspaper, BsTrophy } from 'react-icons/bs';
 import RankingIcon from '../Components/RankingIcon';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import MusicPlayer from '../Components/MusicPlayer';
 import { useDispatch, useSelector } from 'react-redux';
 import PlayPause from '../Components/PlayPause';
-import { useGetValuateSongsQuery } from '@/redux/services/coreApi';
+import { useGetSongsQuery, useGetVideosQuery } from '@/redux/services/coreApi';
 import Loader from '../Components/Loader';
 import { playPause, setActiveSong } from '@/redux/features/playerSlice';
 import EnviarEstrelas from '../Components/EnviarEstrelas';
@@ -39,6 +39,9 @@ import Songs from '@/Pages/Musicas/Songs';
 import Videos from '@/Pages/Musicas/Videos';
 import { Posts } from '@/Pages/Home';
 import ArtistsGalery from '@/Pages/ArtistsGalery';
+import ContestCard from '@/Components/ContestCard';
+import useTypedPage from '@/Hooks/useTypedPage';
+import route from 'ziggy-js';
 
 interface Props {
   renderBottom?(): JSX.Element;
@@ -51,7 +54,7 @@ function Container({
   bg = loader,
 }: PropsWithChildren<Props>) {
   const { activeSong, isPlaying } = useSelector(state => state.player);
-  const { data, isFetching, error } = useGetValuateSongsQuery('/get-songs');
+  const { data, isFetching, error } = useGetVideosQuery('/get-videos');
   const dispatch = useDispatch();
 
   const { background, setBackground } = useStateContext();
@@ -84,6 +87,7 @@ function Container({
   /**Para marcar o botão  de baixo actualmente activo */
   const [activeBottomButton, setActiveBottomButton] = useState('musicas');
   const [sidebarList, setSidebarList] = useState(<></>);
+  const page = useTypedPage();
   return (
     <div
       className="w-full h-[90%] backdrop-blur-lg  "
@@ -94,9 +98,9 @@ function Container({
           <div
             className={`relative  text-white w-full ${
               isPlaying ? 'h-[70%]' : 'h-[85%]'
-            }  p-5 overflow-y-hidden top-0 left-0 shadow-xl flex flex-wrap shadow-black justify-center items-start`}
+            }  p-5 overflow-y-auto top-0 left-0 shadow-xl flex flex-wrap shadow-black justify-center items-start`}
           >
-            {children}
+            <>{children}</>
           </div>
           <div
             className={`w-full ${
@@ -143,7 +147,9 @@ function Container({
                     setActiveBottomButton('videos');
                   }}
                   className={`flex flex-col w-full h-full justify-center items-center text-xs hover:bg-gray-300 first-letter: ${
-                    activeBottomButton === 'videos' ? 'bg-gray-100 text-black' : ''
+                    activeBottomButton === 'videos'
+                      ? 'bg-gray-100 text-black'
+                      : ''
                   } `}
                 >
                   <MdLiveTv className="w-10 h-10" />
@@ -157,47 +163,53 @@ function Container({
                 </button>
                 <button
                   onClick={() => {
-                    setCurrentPage(<ArtistsGalery nome_colecao='Artistas' />);
+                    setCurrentPage(<ArtistsGalery nome_colecao="Artistas" />);
                     setActiveBottomButton('artistas');
                   }}
                   className={`flex flex-col w-full h-full justify-center items-center text-xs hover:bg-gray-300 first-letter:
             ${activeBottomButton === 'artistas' ? 'bg-gray-100 text-black' : ''}
             `}
                 >
-                  <RiUserStarFill className="w-10 h-10" />
+                  <GiSoundWaves className="w-10 h-10" />
                   <span
                     className={` ${
                       activeBottomButton === 'artistas' ? 'flex' : 'hidden'
                     }`}
                   >
-                    Artistas
+                    Voz Activa
                   </span>
                 </button>
-                <button
+                <Link
+                href='/concursos'
                   onClick={() => {
-                    setCurrentPage(<Ranking setSidebarList={setSidebarList} />);
                     setActiveBottomButton('concursos');
                   }}
                   className={`flex flex-col w-full h-full justify-center items-center text-xs hover:bg-gray-300 first-letter:
-            ${activeBottomButton === 'concursos' ? 'bg-gray-100 text-black' : ''}
+            ${
+              route().current()?.includes('concursos') ? 'bg-gray-100 text-black' : ''
+            }
             `}
                 >
                   <BsTrophy className="w-10 h-10" />
                   <span
                     className={` ${
-                      activeBottomButton === 'concursos' ? 'flex' : 'hidden'
+                      route().current()?.includes('concursos') ? 'flex' : 'hidden'
                     }`}
                   >
                     Concursos
                   </span>
-                </button>
+                </Link>
                 <button
                   onClick={() => {
                     setCurrentPage(<Ranking setSidebarList={setSidebarList} />);
                     setActiveBottomButton('comunidade');
                   }}
                   className={`flex flex-col w-full h-full justify-center items-center text-xs hover:bg-gray-300 first-letter:
-            ${activeBottomButton === 'comunidade' ? 'bg-gray-100 text-black' : ''}
+            ${
+              activeBottomButton === 'comunidade'
+                ? 'bg-gray-100 text-black'
+                : ''
+            }
             `}
                 >
                   <HiUserGroup className="w-10 h-10" />
@@ -277,3 +289,4 @@ function AppLinks({}) {
     </div>
   );
 }
+

@@ -16,7 +16,9 @@ export default function ShowMusics({ artist }) {
   const [pagina, setPagina] = useState(<h1>Gerencie suas músicas aqui!</h1>);
   function getSongs() {
     axios.post('/get-artist-songs', artist).then(response => {
-      const artist_songs = response.data.artist_songs;
+      console.log('ARTIST SONGS:')
+      console.log(response.data.artist_songs)
+      const artist_songs = [...response.data.artist_songs];
       const popular_songs = response.data.popular_songs;
       setsongs(artist_songs);
       setPagina(<ListSongs setPagina={setPagina} songs={artist_songs} />);

@@ -94,8 +94,9 @@ Route::middleware([
         Route::post('/feedback',  'store_feedback')->name('feedback');
         Route::post('/feedbacks',  'get_feedbacks')->name('feedbacks');
         Route::post('/get-my-valluation',  'minha_avaliacao')->name('get-my-valluation');
-        Route::post('/get-song',  'get_valuation_songs')->name('get-song');
-        Route::get('/get-songs',  'get_all_songs')->name('get-songs');
+        Route::post('/get-song',  'get_list_songs')->name('get-song');
+        Route::get('/get-songs',  'get_songs')->name('get-songs');
+        Route::get('/get-videos',  'get_videos')->name('get-videos');
         Route::post('/get-songs',  'get_songs')->name('get-songs');
         Route::post('/avaliar',  'avaliar')->name('avaliar');
         Route::post('/add-song',  'store')->name('add-song');
@@ -113,9 +114,8 @@ Route::middleware([
     Route::post('/get-artist-songs', function () {
         $data = Request::all();
         return response()->json([
-            'artist_songs' => Song::all()->where(
-                'artist_id',
-                $data['id'],
+            'artist_songs' => DB::select(
+                'SELECT * FROM songs WHERE artist_id = "' . $data['id'] .'"'
             ),
             'all_songs' => Song::all(),
         ]);
@@ -236,7 +236,7 @@ Route::middleware([
         Route::post('/posts/{filter?}',  'get');
     });
 
-    Route::post('get-user', function(){
+    Route::post('get-user', function () {
         return User::all()->where('id', Request::get('user_id'))->first();
     })->name('get-user');
 

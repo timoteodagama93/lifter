@@ -18,7 +18,7 @@ import {
 import { GiTrophyCup } from 'react-icons/gi';
 import { BsInfoCircle, BsStars, BsTrophy } from 'react-icons/bs';
 import { BiHome, BiLibrary, BiMicrophone, BiSearch, BiUserVoice } from 'react-icons/bi';
-import { RiContactsBook2Fill, RiProfileLine, RiTeamLine } from 'react-icons/ri';
+import { RiContactsBook2Fill, RiProfileLine, RiTeamLine, RiUserStarFill } from 'react-icons/ri';
 import React from 'react';
 
 /**
@@ -174,6 +174,11 @@ export const links = [
     name: 'Ranking',
     href: '/ranking',
     icon: RankingIcon,
+  },
+  {
+    name: 'Artistas',
+    href: '/ranking',
+    icon: RiUserStarFill,
   },
   {
     name: 'Avaliações',

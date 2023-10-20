@@ -7,11 +7,11 @@ import TopPlay from '@/Components/TopPlay';
 import Player from '@/Components/Player/Player';
 import { BiSearch } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
-import { useGetValuateSongsQuery } from '@/redux/services/coreApi';
+import { useGetSongsQuery } from '@/redux/services/coreApi';
 import { playPause, setActiveSong } from '@/redux/features/playerSlice';
 
 function Descobrir() {
-  const { data, isFetching, error } = useGetValuateSongsQuery('/get-songs');
+  const { data, isFetching, error } = useGetSongsQuery('/get-songs');
   const { activeSong, isPlaying } = useSelector(state => state.player);
 
   if (isFetching) return <Loader />;

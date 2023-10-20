@@ -7,6 +7,7 @@ import { BsList } from 'react-icons/bs';
 import { MdCreate } from 'react-icons/md';
 import { generos } from '../../../data/dummy';
 import NewContest from '@/Components/Contest/Index';
+import useTypedPage from '@/Hooks/useTypedPage';
 
 
 interface Props {
@@ -19,6 +20,7 @@ function Concursos({ contests }: Props) {
   }
 
   useEffect(setDefaultPage, []);
+  const page = useTypedPage();
   return (
     <AppLayout title="Ascensão" renderHeader={() => <></>}>
       <div className="w-full h-full flex flex-col  m-2 rounded-sm transition-opacity">

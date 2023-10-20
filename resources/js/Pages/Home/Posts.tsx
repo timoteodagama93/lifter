@@ -66,12 +66,12 @@ function Posts({}) {
   return (
     <>
       <div className="w-full h-full md:px-2 flex flex-col">
-        <div className=" flex flex-col-reverse md:flex-row  justify-center items-center gap-1 py-1">
-          <div className="-mb-2 gap-5 md:mb-2 w-full flex flex-row justify-between items-center ">
+        <div className=" flex flex-col-reverse md:flex-row  justify-center items-center gap-1">
+          <div className=" md:mb-2 w-full flex flex-row justify-between items-center ">
             <div className="w-full md:px-2 flex flex-row">
               <PulseButton
                 onClick={() => setOpenNewImagePost(true)}
-                className="pulsating-button  shadow shadow-white border flex flex-col text-4xl  justify-start items-center p-1 rounded "
+                className="pulsating-button  shadow shadow-white border flex flex-col text-4xl  justify-start items-center p- rounded "
               >
                 <BiNews className="animate-bounce" />
                 <span className="text-xs">Publicar</span>
@@ -97,7 +97,7 @@ function Posts({}) {
           <div className="w-[50%] h-full">
             {posts?.map(post => (
               <>
-                <PostSingleSidebar
+                <PostSingleItem
                   key={post.id}
                   post={post}
                   setDisplayPost={setDisplayPost}
@@ -222,7 +222,7 @@ function PostSingle({ post, loadPosts, setDetailsPost }) {
   );
 }
 
-function PostSingleSidebar({ post, setDisplayPost }) {
+function PostSingleItem({ post, setDisplayPost }) {
   const ref = useRef(null);
   // eslint-disable-next-line no-unused-expressions
   function play() {

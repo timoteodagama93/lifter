@@ -10,7 +10,7 @@ import axios from 'axios';
 import { useForm } from '@inertiajs/react';
 //import ReactStars from 'react-rating-stars-component';
 
-import { useGetValuateSongsQuery } from '@/redux/services/coreApi';
+import { useGetSongsQuery } from '@/redux/services/coreApi';
 import { useDispatch } from 'react-redux';
 import { playPause } from '@/redux/features/playerSlice';
 

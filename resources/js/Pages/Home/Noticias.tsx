@@ -20,7 +20,7 @@ import AppLayout from '@/Layouts/AppLayout';
 import { router } from '@inertiajs/core';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import { Error, Loader } from '@/Components';
-import { useGetValuateSongsQuery } from '@/redux/services/coreApi';
+import { useGetSongsQuery } from '@/redux/services/coreApi';
 import { useSelector } from 'react-redux';
 import Posts from './Posts';
 

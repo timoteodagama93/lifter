@@ -99,12 +99,12 @@ export default function AddArtist({ setPagina }) {
   return (
     <>
       {isLoading ? (
-        <div className="relative flex justify-center items-center bg-black text-white z-50 top-0 left-0 w-screen h-full animate-ping">
+        <div className="relative flex justify-center items-center bg-black  z-50 top-0 left-0 w-screen h-full animate-ping">
           <h1 className="text-xl">Carregando</h1>
         </div>
       ) : (
         <>
-          <div className="p-5 h-full m-5 shadow-lg shadow-black">
+          <div className="p-5 h-full m-1 shadow-lg shadow-black">
             <p className="w-full text-xl flex justify-center uppercase">
               Criar novo perfil de artista
             </p>
@@ -179,7 +179,7 @@ export default function AddArtist({ setPagina }) {
                 <InputLabel htmlFor="genre">Estilo Musical</InputLabel>
                 <select
                   id="genre"
-                  className="mt-1 block w-full"
+                  className="mt-1 block w-full text-black"
                   value={formArtist.data.genre}
                   onChange={e =>
                     formArtist.setData('genre', e.currentTarget.value)
@@ -225,7 +225,7 @@ export default function AddArtist({ setPagina }) {
                 <InputLabel htmlFor="country">País</InputLabel>
                 <select
                   id="country"
-                  className="mt-1 block w-full"
+                  className="mt-1 block w-full text-black"
                   value={formArtist.data.country}
                   onChange={e =>
                     formArtist.setData('country', e.currentTarget.value)
@@ -248,7 +248,7 @@ export default function AddArtist({ setPagina }) {
                 <InputLabel htmlFor="city">Cidade</InputLabel>
                 <select
                   id="city"
-                  className="mt-1 block w-full"
+                  className="mt-1 block w-full text-black"
                   value={formArtist.data.city}
                   onChange={e =>
                     formArtist.setData('city', e.currentTarget.value)
@@ -282,7 +282,7 @@ export default function AddArtist({ setPagina }) {
                 <span>Apresentação artística chamativa. </span>
                 <textarea
                   id="about"
-                  className="mt-1 block w-full"
+                  className="mt-1 block w-full text-black"
                   value={formArtist.data.about}
                   onChange={e =>
                     formArtist.setData('about', e.currentTarget.value)

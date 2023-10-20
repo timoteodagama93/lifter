@@ -7,13 +7,13 @@ import { FreeMode } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import { playPause, setActiveSong } from '@/redux/features/playerSlice';
-import { useGetValuateSongsQuery } from '@/redux/services/coreApi';
+import { useGetSongsQuery } from '@/redux/services/coreApi';
 import TopChartCard from '@/Components/TopChartCard';
 
 const TopPlay = ({}) => {
   const dispatch = useDispatch();
   const { activeSong, isPlaying } = useSelector(state => state.player);
-  const { data } = useGetValuateSongsQuery('/get-songs');
+  const { data } = useGetSongsQuery('/get-songs');
   const divRef = useRef(null);
   useEffect(() => {
     divRef.current.scrollIntoView({ behavior: 'smooth' });

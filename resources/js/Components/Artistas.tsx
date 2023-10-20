@@ -5,13 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { generos, songs } from '../../data/dummy';
 import SongCard from './SongCard';
 import TopArtists from './TopArtists';
-import { useGetValuateSongsQuery } from '@/redux/services/coreApi';
+import { useGetSongsQuery } from '@/redux/services/coreApi';
 import Loader from './Loader';
 import Error from './Error';
 
 function Artistas() {
   const { data, isFetching, error } =
-    useGetValuateSongsQuery('/get-top-artists');
+    useGetSongsQuery('/get-top-artists');
   if (isFetching) return <Loader />;
   if (error) return <Error />;
 

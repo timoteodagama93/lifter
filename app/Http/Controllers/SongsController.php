@@ -6,6 +6,7 @@ use App\Models\ContestsSong;
 use App\Models\Song;
 use App\Models\Valuation;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
@@ -177,11 +178,19 @@ class SongsController extends Controller
 
 
     /**
-     * Obté os artistas inscritos especificamente no concurso ascensão
+     * Obté as músicas
      */
     public function get_songs()
     {
-        return Song::paginate(1);
+        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%audio%' ORDER BY created_at DESC"); // where('mime_type', `%audio/%`)->paginate(1);
+    }
+
+    /**
+     * Obté os vídeos
+     */
+    public function get_videos()
+    {
+        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%video%' ORDER BY created_at DESC"); // where('mime_type', `%audio/%`)->paginate(1);
     }
 
     /**

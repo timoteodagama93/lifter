@@ -16,7 +16,9 @@ export const coreApi = createApi({
         baseUrl: 'http://127.0.0.1:8000'
     }),
     endpoints: (builder) => ({
-        getValuateSongs: builder.query({ query: (query) => '/get-songs' }),
+        getSongs: builder.query({ query: (query) => '/get-songs' }),
+        getVideos: builder.query({ query: (query) => query }),
+        getActiveVoice: builder.query({ query: (query) => query }),
         getSongDetails: builder.query({ query: (songId) => `/tracks/details/${songId}` }),
         getSongRelated: builder.query({ query: (songId) => `/tracks/related/${songId}` }),
         getArtistDetails: builder.query({ query: (artistId) => `/ artists/details/${artistId}` }),
@@ -25,7 +27,9 @@ export const coreApi = createApi({
 });
 
 export const {
-    useGetValuateSongsQuery,
+    useGetSongsQuery,
+    useGetVideosQuery,
+    useGetActiveVoiceQuery,
     useGetSongDetailsQuery,
     useGetSongRelatedQuery,
     useGetArtistDetailsQuery,
