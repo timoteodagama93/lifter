@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('mime_type');
             $table->string('extension');
             $table->string('participacoes')->nullable();
-            $table->string('letra')->nullable();
+            $table->text('letra')->nullable();
             $table->string('cover')->nullable();
             $table->string('url');
             $table->string('path')->nullable();

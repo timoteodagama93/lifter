@@ -43,10 +43,8 @@ const Player = ({
       {activeSong.mime_type.includes('video/') && (
         <video>
           <source
-            className=""
             src={activeSong?.url}
             ref={ref}
-            loop={repeat}
             onEnded={onEnded}
             onTimeUpdate={onTimeUpdate}
             onLoadedData={onLoadedData}

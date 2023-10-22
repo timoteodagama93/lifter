@@ -5,9 +5,9 @@ import useTypedPage from '@/Hooks/useTypedPage';
 import Banner from '@/Components/Banner';
 import { Sidebar } from '../Components';
 import MusicPlayer from '@/Components/MusicPlayer';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { HiOutlineMenu } from 'react-icons/hi';
-import { MdClose } from 'react-icons/md';
+import { MdClose, MdCloseFullscreen } from 'react-icons/md';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 
 //Style for swiper
@@ -16,6 +16,10 @@ import { Logo } from '../../img';
 import { smalLogo } from '../../img';
 import Container from './Container';
 import { BiSearch } from 'react-icons/bi';
+import Player from '@/Components/VideoPlayer/Player';
+import VideoPlayer from '@/Components/VideoPlayer';
+import Modal from '@/Components/Modal';
+import { playPauseVideo } from '@/redux/features/playerSlice';
 interface Props {
   title: string;
   bg?: string;
@@ -43,16 +47,16 @@ export default function AppLayout({
   //f0f0f0
   //f8f8f8
 
-  const { activeSong, isPlaying } = useSelector(state => state.player);
-
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState(route().current());
+  const { activeSong, isPlaying, isPlayingVideo, activeVideo } = useSelector(
+    state => state.player,
+  );
 
   const { openMobileMenu, setOpenMobileMenu } = useStateContext();
   const [openSearch, setOpenSearch] = useState(false);
   const [openSongRandom, setOpenSongRandom] = useState(false);
 
   const { setCurrentPage } = useStateContext();
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -62,31 +66,30 @@ export default function AppLayout({
         <Head title={title} />
         <Banner />
         <Sidebar renderSidebarList={renderSidebarList} />
-
         <div className="relative w-full h-full flex flex-col">
           <header className=" relative w-full h-[10%] flex flex-col justify-center items-center  shadow-sm  rounded shadow-black pb-1 px-5">
-            <div className="w-full h-16 flex justify-between ">
-              <button  className=" flex text-bold text-2xl  justify-center items-center bg-[#4c88c4] p-2 rounded-lg">
+            <div className="w-full h-16 flex justify-between py-1">
+              <button className=" flex text-bold text-xl  justify-center items-center bg-[#4c88c4] p-2 rounded-lg">
                 <BiSearch className="mx-1 text-3xl text-center" />
               </button>
               {/**LOGO */}
               <Link href="/">
                 <img
-                  className="w-full h-14 object-contain"
+                  className="w-auto h-16 object-contain"
                   src={Logo}
                   alt="logo"
                 />
               </Link>
 
-              <div className="flex justify-center items-center cursor-pointer">
+              <div className="flex justify-center items-center cursor-pointer ">
                 {openMobileMenu ? (
                   <MdClose
-                    className="w-6 h-6 text-[#4c88c4] "
+                    className="w-6 h-6 text-[#4c88c4] transform-effect transition "
                     onClick={() => setOpenMobileMenu(false)}
                   />
                 ) : (
                   <HiOutlineMenu
-                    className="w-8 h-8 text-[#4c88c4] "
+                    className="w-8 h-8 text-[#4c88c4] transform-effect "
                     onClick={() => setOpenMobileMenu(true)}
                   />
                 )}
@@ -96,32 +99,28 @@ export default function AppLayout({
           </header>
           {/* <!-- Page Content --> */}
           <main className="relative h-full w-full  flex mx-auto justify-start items-start  p-1 rounded overflow-y-hidden ">
-            {/**Rendering the bottom botons */}
-            {renderBottom ? (
-              <>
-                {/** Verifying if there is a bg or not */}
-                {bg ? (
-                  <Container renderBottom={renderBottom} bg={bg}>
-                    {children}{' '}
-                  </Container>
-                ) : (
-                  <Container renderBottom={renderBottom}>{children}</Container>
-                )}
-              </>
-            ) : (
-              <>
-                {bg ? (
-                  <Container renderBottom={renderBottom} bg={bg}>
-                    {children}{' '}
-                  </Container>
-                ) : (
-                  <Container renderBottom={renderBottom}>{children}</Container>
-                )}
-              </>
-            )}
+            <Container>{children}</Container>
           </main>
         </div>
       </div>
+      {}
+      <Modal
+        isOpen={isPlayingVideo}
+        onClose={() => dispatch(playPauseVideo(false))}
+      >
+        <div className="flex flex-col animate-slideup bg-gradient-to-br from-white/10 to-[#2a2a80] backdrop-blur-lg rounded gap-1 ">
+          <div className="w-full flex float-right justify-end">
+            <button
+              onClick={() => dispatch(playPauseVideo(false))}
+              className="p-4 transform-effect w-fit right-1 text-black"
+            >
+              <MdCloseFullscreen className="w-5 h-5 font-bold text-4xl" />
+            </button>
+          </div>
+          <VideoPlayer />
+        </div>
+      </Modal>
+      {}
       {activeSong?.title?.after && isPlaying && (
         <div className="absolute h-28 bottom-0 left-0 right-0 flex animate-slideup bg-gradient-to-br from-white/10 to-[#2a2a80] backdrop-blur-lg rounded-t-3xl z-10">
           <MusicPlayer />

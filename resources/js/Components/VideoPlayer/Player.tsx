@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import React, { useRef, useEffect } from 'react';
 
-const VideoPlayer = ({
-  activeSong,
-  isPlaying,
+const Player = ({
+  activeVideo,
+  isPlayingVideo,
   volume,
   seekTime,
-  // onEnded,
+  onEnded,
   onTimeUpdate,
   onLoadedData,
   repeat,
@@ -14,7 +14,7 @@ const VideoPlayer = ({
   const ref = useRef(null);
   // eslint-disable-next-line no-unused-expressions
   if (ref.current) {
-    if (isPlaying) {
+    if (isPlayingVideo) {
       ref.current.play();
     } else {
       ref.current.pause();
@@ -31,20 +31,14 @@ const VideoPlayer = ({
   return (
     <>
       <video
+        src={activeVideo?.url}
         ref={ref}
-        loop={repeat}
-        autoPlay
-        //        onEnded={onEnded}
+        onEnded={onEnded}
         onTimeUpdate={onTimeUpdate}
         onLoadedData={onLoadedData}
-      >
-        <source
-          type={activeSong.mime_type}
-          src={activeSong?.url}
-        />
-      </video>
+      />
     </>
   );
 };
 
-export default VideoPlayer;
+export default Player;

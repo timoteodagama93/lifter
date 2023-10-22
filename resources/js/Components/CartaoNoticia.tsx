@@ -7,7 +7,7 @@ import axios from 'axios';
 import { FaComments } from 'react-icons/fa';
 import CommentsSection from './CommentsSection';
 
-const PostCard = ({ post, setSeeComments, setPostToComment }) => {
+const CartaoNoticia = ({ post, setSeeComments, setPostToComment }) => {
   function Like(postId) {
     axios
       .post(`/post-like/${postId}`)
@@ -20,17 +20,9 @@ const PostCard = ({ post, setSeeComments, setPostToComment }) => {
 
   return (
     <div className={`post-card`}>
-      <img
-        src={post.imageUrl}
-        alt={post.title}
-        onClick={() => {
-          setSeeComments(true);
-          setPostToComment(post);
-        }}
-      />
+      <img src={post.file_url} alt={post.title} />
       <div className="post-details">
         <h3>{post.title}</h3>
-        <p>{post.content}</p>
         <div className="w-full  flex flex-row text-gray-300 gap-1">
           <p className="flex gap-1 items-center">
             {' '}
@@ -57,7 +49,7 @@ const PostCard = ({ post, setSeeComments, setPostToComment }) => {
             className=" mt-1 p-2 flex gap-1 items-center transform-effect"
           >
             {' '}
-            <BiDislike /> {post?.likes}{' '}
+            <BiDislike /> {post?.dislikes}{' '}
           </button>
           <button
             onClick={() => {
@@ -67,19 +59,20 @@ const PostCard = ({ post, setSeeComments, setPostToComment }) => {
             className=" mt-1 p-2 flex gap-1 items-center transform-effect"
           >
             {' '}
-            <FaComments /> {post?.likes}{' '}
+            <FaComments /> {}{' '}
           </button>
           <button
-            onClick={() => Like(post?.id)}
+            onClick={() => {}}
             className=" mt-1 p-2 flex gap-1 items-center transform-effect"
           >
             {' '}
-            <BiShare /> {post?.likes}{' '}
+            <BiShare /> {}{' '}
           </button>
         </div>
+        <p className='p-2 flex-wrap flex'>{post.post_text}</p>
       </div>
     </div>
   );
 };
 
-export default PostCard;
+export default CartaoNoticia;

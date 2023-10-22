@@ -22,7 +22,6 @@ import { useStateContext } from '@/contexts/PaginaActualContext';
 import { Error, Loader } from '@/Components';
 import { useGetSongsQuery } from '@/redux/services/coreApi';
 import { useSelector } from 'react-redux';
-import Posts from './Posts';
 
 interface Props {
   posts: Array<Object>;
@@ -44,7 +43,7 @@ export default function Noticias({ posts }: Props) {
   const { currentPage, setCurrentPage } = useStateContext();
 
   function setDefaultPage() {
-    setCurrentPage(<Posts />);
+    setCurrentPage(<Noticias />);
   }
 
   useEffect(setDefaultPage, []);

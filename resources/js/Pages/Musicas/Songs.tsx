@@ -13,14 +13,17 @@ import AppLayout from '@/Layouts/AppLayout';
 import Container from '@/Layouts/Container';
 import SongCard1 from '@/Components/SongCard1';
 import { SongCard } from '@/Components';
-import { FreeMode } from 'swiper/modules';
+import {
+  FreeMode,
+  EffectCoverflow,
+  Navigation,
+  Pagination,
+} from 'swiper/modules';
 import VideoCard from '@/Components/VideoCard';
 
 function Songs({}) {
   const { data: songs, isFetching, error } = useGetSongsQuery('/get-songs');
   const { activeSong, isPlaying } = useSelector(state => state.player);
-  /**REF for playing and pausing videos */
-  const [refVideo, setRefVideo] = useState(useRef(null));
   if (isFetching) return <Loader title="Carregando músicas..." />;
   if (error) return <Error />;
   return (
@@ -39,21 +42,30 @@ function Songs({}) {
         </div>
         <div className="w-full relative flex flex-row">
           <Swiper
-            loop={true}
-            spaceBetween={15}
+            spaceBetween={30}
             navigation={true}
-            modules={[FreeMode]}
+            modules={[EffectCoverflow, Navigation]}
             slidesPerView="auto"
+            effect={'coverflow'}
+            coverflowEffect={{
+              rotate: 50,
+              stretch: 10,
+              depth: 50,
+              modifier: 1,
+              slideShadows: true,
+            }}
             centeredSlides
             centeredSlidesBounds
-            className="mt-4 "
+            loop={true}
+            className="mySwiper"
           >
             {songs?.map((song, i) => (
-              <SwiperSlide className="animate-sliderrigth">
+              <SwiperSlide key={song.id + i}>
                 <SongCard
+                  w={'w-full'}
                   song={song}
-                  i={song.id}
-                  key={song.key}
+                  i={i}
+                  key={song.id}
                   activeSong={activeSong}
                   isPlaying={isPlaying}
                   songs={songs}
@@ -74,13 +86,13 @@ function Songs({}) {
           </Link>
         </div>
         <div className="w-full relative flex flex-col ">
-          {songs?.map((song, id) => (
+          {songs?.map((song, i) => (
             <TopChartCard
               songs={songs}
               song={song}
               isPlaying={isPlaying}
               activeSong={activeSong}
-              i={id}
+              i={i}
               key={song.id}
             />
           ))}

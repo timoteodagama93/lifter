@@ -196,7 +196,7 @@ export default function AddSong({ artist }) {
                 onChange={e =>
                   formSong.setData('gravadora', e.currentTarget.value)
                 }
-                required
+                
                 autoComplete="new-password"
               />
               <InputError
@@ -215,8 +215,8 @@ export default function AddSong({ artist }) {
                 onChange={e =>
                   formSong.setData('participacoes', e.currentTarget.value)
                 }
-                required
-              />
+                />
+                
               <InputError
                 className="mt-2"
                 message={formSong.errors.participacoes}
@@ -228,7 +228,7 @@ export default function AddSong({ artist }) {
               <span>Opcional. </span>
               <textarea
                 id="letra"
-                className="mt-1 block w-full"
+                className="mt-1 block w-full text-black"
                 value={formSong.data.letra}
                 onChange={e => formSong.setData('letra', e.currentTarget.value)}
               />

@@ -40,7 +40,6 @@ import {
 import { FaSpeakerDeck, FaVoteYea } from 'react-icons/fa';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import { Sidebar } from '@/Components';
-import Descobrir from './Descobrir';
 import Sugestoes from './Sugestoes';
 import GallerySwiperSlide from './GallerySwiperSlide';
 import EffectsCards from './EffectsCards';
@@ -73,28 +72,28 @@ import { GrPrevious } from 'react-icons/gr';
 import Galeria from '../../Components/Galeria';
 import Destaques from '../Home/Destaques';
 import Opinar from './Opinar';
-import Avaliar from './Avaliar';
 
-export default function Jurados({ current_page }) {
+export default function Jurados() {
   const page = route().current();
   const { currentPage, setCurrentPage } = useStateContext();
-  if (currentPage === '') setCurrentPage(current_page);
   return (
-    <AppLayout title="Início">
-      <div className="w-full max-w-screen p-2">
+    <div className="w-full max-w-screen p-2">
         {/**
          * Página Index é o padrão de todas as páginas.
          */}
-        {(currentPage === 'destaques' && <Destaques />)}
-        {currentPage === 'avaliar' && <Avaliar />}
-        {currentPage === 'avaliar_' && <GallerySwiperSlide />}
-        {currentPage === 'opinar' && <Opinar />}
-        {currentPage === 'sugestoes' && <EffectsCards />}
-        {currentPage === 'ranking' && <EffectsCards />}
-        {currentPage === 'descobrir' && <Descobrir />}
-        {currentPage === 'tendencias' && <TopArtists />}
+        <h1>destaques</h1>
+        <Destaques songs={{}} />
+       
+        <h1>Galery</h1>
+        <GallerySwiperSlide />
+        <h1>Opinar</h1>
+         <Opinar />
+        <h1>Effects</h1>
+        <EffectsCards />
+        {/*currentPage === 'ranking' && <EffectsCards />*/}
+        <Sugestoes />
+        {/*currentPage === 'tendencias' && <TopArtists />*/}
       </div>
-    </AppLayout>
   );
 }
 

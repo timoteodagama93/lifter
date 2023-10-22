@@ -20,6 +20,7 @@ return new class extends Migration
 
             $table->string('name');
             $table->string('genres');
+            $table->boolean('active')->default(false);
             $table->string('contact');
             $table->string('country');
             $table->string('about');

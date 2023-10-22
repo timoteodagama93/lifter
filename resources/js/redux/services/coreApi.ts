@@ -3,12 +3,12 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 const options = {
     method: 'POST'
 };
-
+/*
 axios.post('get-songs')
     .then((response) => {
         console.log(response)
     })
-    .catch(e => { console.error(e) })
+    .catch(e => { console.error(e) })*/
 
 export const coreApi = createApi({
     reducerPath: 'coreApi',
@@ -18,7 +18,10 @@ export const coreApi = createApi({
     endpoints: (builder) => ({
         getSongs: builder.query({ query: (query) => '/get-songs' }),
         getVideos: builder.query({ query: (query) => query }),
-        getActiveVoice: builder.query({ query: (query) => query }),
+        getActiveVoice: builder.query({ query: (artistId) => artistId }),
+        getActiveVoiceSongs: builder.query({ query: (artistId) => `get-activevoice-songs/${artistId}` }),
+        getActiveVoiceVideos: builder.query({ query: (artistId) => `get-activevoice-videos/${artistId}` }),
+        getActiveVoiceImages: builder.query({ query: (artistId) => `get-activevoice-images/${artistId}` }),
         getSongDetails: builder.query({ query: (songId) => `/tracks/details/${songId}` }),
         getSongRelated: builder.query({ query: (songId) => `/tracks/related/${songId}` }),
         getArtistDetails: builder.query({ query: (artistId) => `/ artists/details/${artistId}` }),
@@ -29,6 +32,9 @@ export const coreApi = createApi({
 export const {
     useGetSongsQuery,
     useGetVideosQuery,
+    useGetActiveVoiceSongsQuery,
+    useGetActiveVoiceVideosQuery,
+    useGetActiveVoiceImagesQuery,
     useGetActiveVoiceQuery,
     useGetSongDetailsQuery,
     useGetSongRelatedQuery,

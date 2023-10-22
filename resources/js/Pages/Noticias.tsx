@@ -26,15 +26,19 @@ import Modal from '@/Components/Modal';
 import axios from 'axios';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { Error, Loader } from '@/Components';
-import { MdOutlinePublish } from 'react-icons/md';
+import { MdCloseFullscreen, MdOutlinePublish } from 'react-icons/md';
 import { GrNew } from 'react-icons/gr';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import VideoPlayer from '@/Components/VideoPlayer';
 import PulseButton from '@/Components/PulseButton';
 import Swal from 'sweetalert2';
 import CommentsSection from '@/Components/CommentsSection';
+import PostCard from '@/Components/PostCard';
+import CartaoNoticia from '@/Components/CartaoNoticia';
+import Comment from '@/Components/Comment';
+import AppLayout from '@/Layouts/AppLayout';
 
-function Posts({}) {
+function Noticias({}) {
   const [openNewImagePost, setOpenNewImagePost] = useState(false);
   const page = useTypedPage();
   const [posts, setPosts] = useState([]);
@@ -64,7 +68,7 @@ function Posts({}) {
   const [detailsPost, setDetailsPost] = useState(false);
 
   return (
-    <>
+    <AppLayout title='Notícias'>
       <div className="w-full h-full md:px-2 flex flex-col">
         <div className=" flex flex-col-reverse md:flex-row  justify-center items-center gap-1">
           <div className=" md:mb-2 w-full flex flex-row justify-between items-center ">
@@ -92,212 +96,103 @@ function Posts({}) {
         />
         {loading && <Loader title="Carregando Posts & Notícias" />}
         {error && <Error />}
-        {posts && (
+        {!loading && !error && posts && (
           <div className="w-full h-[62vh] flex overflow-y-auto justify-center">
-          <div className="w-[50%] h-full">
-            {posts?.map(post => (
-              <>
-                <PostSingleItem
-                  key={post.id}
-                  post={post}
-                  setDisplayPost={setDisplayPost}
+            <div className="w-full flex justify-center">
+              {posts?.length > 0 ? (
+                <DisplayNew posts={posts} />
+              ) : (
+                <h1 className="w-full text-center text-xl uppercase">
+                  Nada publicado recentemente em {filter} ...
+                </h1>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </AppLayout>
+  );
+}
+
+function DisplayNew({ posts }) {
+  const [seeComments, setSeeComments] = useState(false);
+  const [postToComment, setPostToComment] = useState(null);
+
+  const [comments, setComments] = useState([
+    { text: 'Great post!' },
+    { text: 'I have a question about the second post.' },
+  ]);
+
+  return (
+    <>
+      {postToComment && seeComments && (
+        <div
+        style={{ transition: '1.5s' }}
+        className={`w-full h-full flex justify-center items-center absolute top-0 left-0 bg-[#4c88c4] ${
+          seeComments ? 'flex z-20' : 'hidden'
+        }`}
+      >
+        <div
+          className={`w-full md:w-[70%] h-full flex flex-col justify-center items-center`}
+        >
+          <div className="w-full flex float-right justify-end">
+            <button
+              onClick={() => setSeeComments(false)}
+              className="p-5 transform-effect w-fit right-1 text-black"
+            >
+              <MdCloseFullscreen className="w-5 h-5 font-bold text-4xl" />
+            </button>
+          </div>
+          <div
+              className={`w-full md:w-[70%] h-full flex flex-col justify-center items-center`}
+            >
+              <div className="w-full flex justify-center">
+                <CartaoNoticia
+                  key={postToComment?.id}
+                  post={postToComment}
+                  setSeeComments={setSeeComments}
+                  setPostToComment={setPostToComment}
                 />
-              </>
+              </div>
+              <CommentsSection
+                key={postToComment?.id}
+                item={postToComment}
+                itemType="discussion"
+              />
+              <div className="comments">
+                <h2>Comments</h2>
+                {comments.map((comment, index) => (
+                  <Comment
+                    key={index}
+                    comment={comment.text}
+                    user={''}
+                    text={comment.text}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="w-full md:w-[60%] ">
+        <div className="community-discussion">
+          <div className="posts">
+            {posts.map((post) => (
+              <CartaoNoticia
+                key={post.id}
+                post={post}
+                setSeeComments={setSeeComments}
+                setPostToComment={setPostToComment}
+              />
             ))}
           </div>
-          </div>
-        )}
-      </div>
-
-      <div
-        style={{ transition: '1s' }}
-        className={`absolute top-0 h-screen w-2/3 md:w-[240px] bg-gradient-to-tl from-white/10 to-[#483d8b backdrop-blur z-10 p-6  smooth-transition ${
-          detailsPost ? 'left-0' : '-left-full '
-        }  `}
-      >
-        {!loading && !error && (
-          <div className="flex flex-col md:flex-row flex-wrap p-1  ">
-            {posts?.length > 0 ? (
-              <PostSingle
-                key={displayPost?.id}
-                post={displayPost}
-                loadPosts={loadPosts}
-                setDetailsPost={setDetailsPost}
-              />
-            ) : (
-              <h1 className="w-full text-center text-xl uppercase">
-                Nada publicado recentemente em {filter} ...
-              </h1>
-            )}
-          </div>
-        )}
-      </div>
-    </>
-  );
-}
-
-function PostSingle({ post, loadPosts, setDetailsPost }) {
-  const [lerMais, setLerMais] = useState(false);
-  function Like(postId) {
-    axios
-      .post(`/post-like/${postId}`)
-      .then(response => {
-        if (response.status === 200) {
-          loadPosts();
-        }
-      })
-      .catch(error => {});
-  }
-
-  return (
-    <>
-      <div className="relative w-full h-full  overflow-hidden   rounded p-1">
-        <div className="w-full backdrop-blur-lg justify-center items-center flex rounded shadow ">
-          {post?.mime_type?.includes('image/') && (
-            <img
-              src={post.file_url}
-              alt=""
-              className="object-cover h-full w-full rounded-t shadow"
-            />
-          )}
-
-          {post?.mime_type?.includes('video/') && (
-            <video
-              src={post.file_url}
-              className="object-cover h-full w-full rounded-t shadow"
-              controls
-            />
-          )}
-          {post?.mime_type?.includes('audio/') && (
-            <audio
-              controls
-              src={post.file_url}
-              className="object-cover h-full w-full rounded-t shadow"
-            />
-          )}
-        </div>
-        <div className="w-full h-full bg-white">
-          <div className="w-full  flex flex-row text-gray-300 gap-1">
-            <p className="flex gap-1 items-center">
-              {' '}
-              <BiCalendar />{' '}
-              {new Date(post?.created_at).getDate() +
-                '/' +
-                (new Date(post?.created_at).getUTCMonth() + 1) +
-                '/' +
-                new Date(post?.created_at).getFullYear() +
-                ' ' +
-                new Date(post?.created_at).getUTCHours() +
-                ':' +
-                new Date(post?.created_at).getUTCMinutes()}
-            </p>
-            <SecondaryButton
-              onClick={() => Like(post?.id)}
-              className=" mt-1 p-1 flex gap-1 items-center"
-            >
-              {' '}
-              <BiLike /> {post?.likes}{' '}
-            </SecondaryButton>
-            <SecondaryButton
-              onClick={() => Like(post?.id)}
-              className="hidden gap-1 items-center"
-            >
-              {' '}
-              <BiDislike /> {post?.dislikes}{' '}
-            </SecondaryButton>
-            <p className="flex gap-1 items-center text-[#ff0000] uppercase">
-              <BsSearchHeart className="text-[#ff0000] " />
-              {post.community}
-            </p>
-          </div>
-          <div className="w-full  flex my-5 text-gray-300 gap-5">
-            <p className="text-black bold flex gap-1 items-center">
-              {post?.post_text}
-            </p>
-          </div>
-          <CommentsSection key={post.id} item={post} itemType="noticia" />
         </div>
       </div>
     </>
   );
 }
 
-function PostSingleItem({ post, setDisplayPost }) {
-  const ref = useRef(null);
-  // eslint-disable-next-line no-unused-expressions
-  function play() {
-    if (ref.current) {
-      ref.current?.play();
-    }
-  }
-  function pause() {
-    if (ref.current) {
-      ref.current?.pause();
-    }
-  }
-  return (
-    <>
-      <div
-        onClick={() => setDisplayPost(post)}
-        className="relative w-full h-auto  overflow-hidden   rounded p-1 my-1 hover:cursor-pointer "
-      >
-        {post?.mime_type?.includes('image/') ||
-        post?.mime_type?.includes('video/') ? (
-          <div className="w-full h-1/2 backdrop-blur-lg justify-center items-center flex rounded shadow ">
-            {post?.mime_type?.includes('image/') && (
-              <img
-                src={post.file_url}
-                alt=""
-                className="object-cover h-full w-full rounded-t shadow"
-              />
-            )}
-
-            {post?.mime_type?.includes('video/') && (
-              <video
-                onMouseEnter={play}
-                onMouseLeave={pause}
-                ref={ref}
-                loop={false}
-                //        onEnded={onEnded}
-                onTimeUpdate={() => {}}
-                onLoadedData={() => {}}
-                muted
-                controls
-              >
-                <source type={post.mime_type} src={post?.file_url} />
-              </video>
-            )}
-          </div>
-        ) : (
-          <p className="flex gap-1 items-center w-full bg-white text-[#ff0000]">
-            {post.post_text}
-          </p>
-        )}
-        <p className="w-full bg-white  flex flex-row text-gray-300  gap-1 items-center">
-          {' '}
-          <BiCalendar />{' '}
-          {new Date(post?.created_at).getDate() +
-            '/' +
-            (new Date(post?.created_at).getUTCMonth() + 1) +
-            '/' +
-            new Date(post?.created_at).getFullYear() +
-            ' ' +
-            new Date(post?.created_at).getUTCHours() +
-            ':' +
-            new Date(post?.created_at).getUTCMinutes()}
-        </p>
-
-        <PulseButton
-          className="w-full p-1 text-gray-300  justify-center bg-[#1422b1] rounded-t "
-          onClick={() => setDisplayPost(post)}
-        >
-          Ler matéria
-        </PulseButton>
-      </div>
-    </>
-  );
-}
-export default Posts;
+export default Noticias;
 
 function NewPost({ isOpen, onClose, loadPosts }) {
   const page = useTypedPage();

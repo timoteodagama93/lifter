@@ -3,12 +3,13 @@ import PlayPause from './PlayPause';
 import { Link } from '@inertiajs/react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FreeMode } from 'swiper/modules';
+import { FreeMode, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import { playPause, setActiveSong } from '@/redux/features/playerSlice';
 import { useGetSongsQuery } from '@/redux/services/coreApi';
 import TopChartCard from '@/Components/TopChartCard';
+import { smalLogo } from '../../img';
 
 const TopPlay = ({}) => {
   const dispatch = useDispatch();
@@ -65,24 +66,36 @@ const TopPlay = ({}) => {
           loop={true}
           spaceBetween={15}
           navigation={true}
-          modules={[FreeMode]}
+          modules={[FreeMode, Navigation]}
           slidesPerView="auto"
           centeredSlides
           centeredSlidesBounds
-          className="mt-4 "
+          className=" "
         >
           {topPlays?.map((song, i) => (
             <SwiperSlide
               key={song.key}
-              style={{ width: '25%', height: 'auto' }}
-              className="shadow-lg rounded-full animate-sliderrigth"
+              className=" w-24 h-24 shadow-lg rounded-full animate-sliderrigth"
             >
-              <Link href={`/artists/${song?.artist_id}`}>
-                <img
-                  src={song.cover}
-                  alt="name"
-                  className="rounded-full w-full object-cover"
-                />
+              <Link
+                href={`/artists/${song?.artist_id}`}
+                className=" w-full h-full shadow-lg rounded-full animate-sliderrigth"
+              >
+                <div className=" w-full h-full shadow-lg rounded-full animate-sliderrigth">
+                  {song.cover ? (
+                    <img
+                      src={song.cover}
+                      alt="name"
+                      className="rounded-full w-full h-full object-cover"
+                    />
+                  ) : (
+                    <img
+                      src={smalLogo}
+                      alt="name"
+                      className="rounded-full w-full object-cover"
+                    />
+                  )}
+                </div>
               </Link>
             </SwiperSlide>
           ))}

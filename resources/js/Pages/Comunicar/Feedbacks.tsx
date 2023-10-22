@@ -31,7 +31,7 @@ function Feedbacks() {
   }
   return (
     <div className="w-full flex flex-col">
-      <h1 className="text-center text-2xl justify-start shadow animate-[flow] ">
+      <h1 className="text-center text-base justify-start shadow animate-[flow] ">
         Deixe um comentário, sugestão ou reporte algum problema no funcionamento
         da plataforma.
       </h1>
@@ -91,7 +91,7 @@ function Feedbacks() {
             </div>
             <div className="flex py-1 flex-col px-10 justify-start items-center gap-1">
               <textarea
-              required
+                required
                 value={form.data.message}
                 onChange={e => form.setData('message', e.target.value)}
                 name="message"
@@ -102,11 +102,13 @@ function Feedbacks() {
               ></textarea>
             </div>
             <div className="w-full justify-center flex">
-              <PrimaryButton>Enviar Feedback</PrimaryButton>
+              <button
+              className={`flex justify-center items-center  bg-gradient-to-br from-white/10 to-[#2a2a80] backdrop-blur-lg p-5 transform-effect text-white font-bold text-xl `}
+              >Enviar Feedback</button>
             </div>
           </form>
         </div>
-        <p className="text-xl px-5 py-1y my-1">
+        <p className="text-base px-5 py-1y my-1">
           Estamos a trabalhar arduamente para lhe entregarmos a melhor
           experiência, vai ser mais fácil se contarmos com a sua colaboração.
           Por isso não se acanhe, partilhe connosco as suas ideias, opiniões e

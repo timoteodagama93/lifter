@@ -48,11 +48,10 @@ function Descobrir() {
       <div className="w-full relative max-h-scr erflow-auto mx-auto px-2   shadow-xl sm:rounded-lg flex flex-wrap justify-start md:justify-center">
         {data.map((song, i) => (
           <SongCard
-            refVideo={refVideo}
-            setRefVideo={setRefVideo}
+          w='w-1/2'
+            key={song.id}
             song={song}
             i={song.id}
-            key={i}
             activeSong={activeSong}
             isPlaying={isPlaying}
             songs={data}

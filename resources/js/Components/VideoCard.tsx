@@ -1,102 +1,80 @@
-import React, { useRef } from 'react';
-import PlayPause from './PlayPause.js';
+import React from 'react';
 import { Link } from '@inertiajs/react';
 
-import { playPause, setActiveSong } from '../redux/features/playerSlice.js';
+import {
+  playPauseVideo,
+  setActiveVideo,
+} from '../redux/features/playerSlice.js';
 import { useDispatch } from 'react-redux';
-import classNames from 'classnames';
-import { FaPauseCircle, FaPlayCircle } from 'react-icons/fa';
+import PlayPauseVideo from './PlayPauseVideo.js';
+import VideoPlayer from './VideoPlayer/index.js';
 
 function VideoCard({
-  song,
+  video,
   i,
-  activeSong,
-  isPlaying,
-  songs,
-  refVideo,
-  setRefVideo,
+  activeVideo,
+  isPlayingVideo,
+  videos,
+  w = 'w-full lg:w-1/2',
 }) {
   const dispatch = useDispatch();
 
   const handlePauseClick = () => {
-    dispatch(playPause(false));
+    dispatch(playPauseVideo(false));
   };
+
   const handlePlayClick = () => {
-    dispatch(setActiveSong({ song, songs, i }));
-    dispatch(playPause(true));
+    dispatch(setActiveVideo({ video, videos, i }));
+    dispatch(playPauseVideo(true));
   };
 
-  const localVideoRef = useRef(null);
-  const video = (
-    <video onClick={playPause} id={i} ref={localVideoRef}>
-      <source type={song.mmime_type} src={song.url} />
-    </video>
-  );
-
-  function playVideo() {
-    if (refVideo?.current?.id === i) {
-      refVideo.current.play();
-    } else {
-      refVideo.current.pause();
-      setRefVideo(localVideoRef);
-      refVideo.current.play();
-    }
-  }
-  function playPauseVideo() {
-    if (refVideo?.current?.id === i) {
-      if (refVideo?.current?.playing) {
-        refVideo.current.pause();
-      } else {
-        refVideo.current.play();
-      }
-    } else {
-      setRefVideo(localVideoRef);
-    }
-    if (refVideo?.current?.playing) {
-      refVideo.current.pause();
-    } else {
-      refVideo?.current?.play();
-    }
-  }
   return (
-    <div className="flex flex-col w-full p-4 bg-white/5 ng-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer shadow-lg border">
+    <div
+      className={`flex flex-col ${w} p-4 bg-white/5 ng-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer shadow-lg border`}
+    >
       <div className=" relative w-full h-full group">
         <div
-          className={`absolute inset-0 justify-center items-center bg-black bg-opacity-50 group-hover:flex ${
-            activeSong?.title === song.title
-              ? 'flex bg-black bg-opacity-70'
-              : ' hidden'
+          style={{ transition: '1s' }}
+          className={`absolute z-10 inset-0 justify-center items-center bg-black bg-opacity-50 group-hover:${
+            isPlayingVideo && activeVideo?.id === video.id ? 'flex' : 'flex'
+          } ${
+            activeVideo?.id === video.id
+              ? 'hidden'
+              : ' flex bg-black bg-opacity-70'
           } `}
         >
-          {refVideo?.current?.playing ? (
-            <FaPlayCircle
-              className={`w-16 h-16 text-gray-300 cursor-pointer `}
-              onClick={playPauseVideo}
-            />
-          ) : (
-            <FaPauseCircle
-              className={`w-16 h-16 text-gray-300 cursor-pointer `}
-              onClick={playPauseVideo}
-            />
-          )}
+          <PlayPauseVideo
+            isPlayingVideo={isPlayingVideo}
+            activeVideo={activeVideo}
+            video={video}
+            handlePlay={handlePlayClick}
+            handlePause={handlePauseClick}
+          />
         </div>
-        {video}
+        {
+          /*isPlayingVideo && activeVideo.id === video.id ? (
+          <VideoPlayer />
+        ) :*/
+        }
+          <video className="w-full h-full">
+            <source src={video.url} type={video.mime_type} />
+          </video>
       </div>
 
       <div className="flex flex-col">
         <p className="font-semibold text-lg  truncate">
-          <Link href={`/song-details/${song?.id}`}>{song.title}</Link>
+          <Link href={`/song-details/${video?.id}`}>{video.title}</Link>
         </p>
         <p className="text-sm truncate  mt-1">
           <Link
             href={
-              song.artist
-                ? `/artists/details/${song?.artist_id}`
+              video.artist
+                ? `/artists/details/${video?.artist_id}`
                 : 'top-artists'
             }
           >
-            {song.artist}{' '}
-            {!(song.participacoes === '') ? ' ft ' + song.participacoes : ''}
+            {video.artist}{' '}
+            {!(video.participacoes === '') ? ' ft ' + video.participacoes : ''}
           </Link>
         </p>
       </div>

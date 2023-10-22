@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 /*
@@ -56,16 +57,33 @@ Route::middleware([
         return Inertia::render('Musicas/Musicas', []);
     })->name('musicas');
 
+    Route::get('/video', function () {
+        return Inertia::render('Videos', []);
+    })->name('video');
+
+    Route::get('/vozactiva', function () {
+        return Inertia::render('VozActiva', [
+            'activeVoiceArtist' => DB::select('SELECT * FROM artists WHERE active =' . true)[0]
+        ]);
+    })->name('vozactiva');
+
     Route::get('/concursos', function () {
         return Inertia::render('Concursos/Concursos', [
             'contests' => Contest::all()
         ]);
     })->name('concursos');
 
+    Route::get('/comunidade', function () {
+        return Inertia::render('CommunityDiscussion', [
+            'contests' => Contest::all()
+        ]);
+    })->name('comunidade');
+
     Route::get('/noticias', function () {
         return Inertia::render('Noticias', []);
     })->name('noticias');
 
+   
 
 
     /**Uploading files */
@@ -115,7 +133,7 @@ Route::middleware([
         $data = Request::all();
         return response()->json([
             'artist_songs' => DB::select(
-                'SELECT * FROM songs WHERE artist_id = "' . $data['id'] .'"'
+                'SELECT * FROM songs WHERE artist_id = "' . $data['id'] . '"'
             ),
             'all_songs' => Song::all(),
         ]);
@@ -284,6 +302,25 @@ Route::middleware([
     })->name('artists/related/');
 
     /**ARTIST ROUTES */
+    Route::get('get-activevoice-songs/{artistId}', function ($artistId) {
+        return response()->json(
+            DB::select('SELECT * FROM songs WHERE artist_id=?  AND mime_type LIKE ? ', [$artistId, '%audio%'])
+        );
+    })->name('get-activevoice-songs/{artistId}');
+    
+    Route::get('get-activevoice-images/{artistId}', function ($artistId) {
+        return response()->json(
+            Storage::allFiles("public/artists/$artistId/covers")
+        );
+    })->name('get-activevoice-images/{artistId}');
+    
+    Route::get('get-activevoice-videos/{artistId}', function ($artistId) {
+        return response()->json(
+            DB::select('SELECT * FROM songs WHERE artist_id=?  AND mime_type LIKE ? ', [$artistId, '%video%'])
+        );
+    })->name('get-activevoice-videos/{artistId}');
+    Route::controller(ArtistaController::class)->group(function () {
+    });
     Route::get('artistas/{pagina}/{id}', [ArtistaController::class, 'index'])->name('index');
     Route::get('artistas/{pagina}/{id}', [ArtistaController::class, 'index'])->name('index');
     Route::post('/new-artist', [ArtistaController::class, 'store'])->name('new-artist');

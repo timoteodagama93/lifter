@@ -9,6 +9,7 @@ import MediaDeEstrelas from './MediaDeEstrelas';
 import { HiHeart, HiStar } from 'react-icons/hi';
 import { BiStar } from 'react-icons/bi';
 import { AiOutlineLike } from 'react-icons/ai';
+import { smalLogo } from '../../img';
 
 function TopChartCard({ song, i, isPlaying, activeSong, songs }) {
   const dispatch = useDispatch();
@@ -34,9 +35,13 @@ function TopChartCard({ song, i, isPlaying, activeSong, songs }) {
           isAudio ? 'flex-row' : 'flex-col'
         } justify-between items-center`}
       >
-        {song.mime_type.includes('audio/') && (
-          <img src={song?.cover} alt="" className="flex w-10 h-10 rounded-lg" />
+         {song.mime_type.includes('audio/') && song.cover && (
+          <img className="flex w-10 h-10 rounded-lg" alt={song.title} src={song.cover} />
         )}
+        {song.mime_type.includes('audio/') && !song.cover && (
+          <img className="flex w-10 h-10 rounded-lg" alt={song.title} src={smalLogo} />
+        )}
+        
         {song.mime_type.includes('video/') && (
           <div className="w-ful">
             <video controls>

@@ -20,8 +20,7 @@ import Destaques from './Destaques';
 import AppLayout from '@/Layouts/AppLayout';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import Avaliar from './Avaliar';
-import Noticias from './Noticias';
-import { LiveTV, Posts } from './';
+import { LiveTV } from './';
 import { BiHome, BiLike } from 'react-icons/bi';
 import { BsNewspaper, BsTrophy } from 'react-icons/bs';
 import { FaMusic } from 'react-icons/fa';
@@ -30,7 +29,13 @@ import Container from '@/Layouts/Container';
 import { MdLiveTv } from 'react-icons/md';
 import { HiUserGroup } from 'react-icons/hi';
 import { GrUserExpert } from 'react-icons/gr';
-import CommunityDiscussion from '@/Components/CommunityDiscussion';
+import CommunityDiscussion from '@/Pages/CommunityDiscussion';
+import { useGetSongsQuery, useGetVideosQuery } from '@/redux/services/coreApi';
+import { useSelector } from 'react-redux';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { EffectCoverflow, Navigation } from 'swiper/modules';
+import { SongCard } from '@/Components';
+import VideoCard from '@/Components/VideoCard';
 
 interface Props {
   pagina: string;
@@ -39,7 +44,7 @@ interface Props {
   APP_URL: String;
 }
 
-export default function Home({ songs, posts }: Props) {
+export default function Home({ posts }: Props) {
   const route = useRoute();
   const page = useTypedPage();
 
@@ -56,20 +61,22 @@ export default function Home({ songs, posts }: Props) {
   const [bgPage, setBgPage] = useState(undefined);
 
   function setDefaultPage() {
-    setCurrentPage(
-      <Avaliar
-        songs={songs}
-        setSongsList={setSidebarList}
-        setBgPage={setBgPage}
-      />,
-    );
+    setCurrentPage(<Avaliar />);
   }
 
   const [sidebarList, setSidebarList] = useState(<></>);
 
   useEffect(setDefaultPage, []);
-  /**Para marcar o botão  de baixo actualmente activo */
-  const [activeBottomButton, setActiveBottomButton] = useState('Ao Vivo');
+  const { data: songs, isFetching, error } = useGetSongsQuery('/get-songs');
+  const { activeSong, isPlaying } = useSelector(state => state.player);
+
+  const {
+    data: videos,
+    isFetching: fetchV,
+    error: errorV,
+  } = useGetVideosQuery('/get-videos');
+  const { activeVideo, isPlayingVideo } = useSelector(state => state.player);
+
   return (
     <AppLayout
       title="Home"
@@ -146,83 +153,154 @@ export default function Home({ songs, posts }: Props) {
           </div>
         </div>
       )}
-      renderBottom={() => (
-        <>
-          <button
-            onClick={() => {
-              setCurrentPage(
-                <LiveTV songs={songs} setSongsList={setSidebarList} />,
-              );
-              setActiveBottomButton('Ao Vivo');
-            }}
-            className={`flex flex-col w-full h-full justify-center items-center text-xs hover:bg-gray-300 first-letter:
-            ${activeBottomButton === 'Ao Vivo' ? 'bg-gray-300' : ''}
-            `}
-          >
-            <MdLiveTv className="w-10 h-10" />
-            Ao Vivo
-          </button>
-          <button
-            onClick={() => {
-              setCurrentPage(
-                <Avaliar songs={songs} setSongsList={setSidebarList} />,
-              );
-              setActiveBottomButton('Avaliar');
-            }}
-            className={`flex flex-col w-full h-full justify-center items-center text-xs hover:bg-gray-300 first-letter:
-            ${activeBottomButton === 'Avaliar' ? 'bg-gray-300' : ''}
-            `}
-          >
-            <BiLike className="w-10 h-10" />
-            Destaques
-          </button>
-          <button
-            onClick={() => {
-              setCurrentPage(
-                <Avaliar songs={songs} setSongsList={setSidebarList} />,
-              );
-              setActiveBottomButton('Juris');
-            }}
-            className={`flex flex-col w-full h-full justify-center items-center text-xs hover:bg-gray-300 first-letter:
-            ${activeBottomButton === 'Juris' ? 'bg-gray-300' : ''}
-            `}
-          >
-            <GrUserExpert className="w-10 h-10" />
-            Jurís
-          </button>
-          <button
-            onClick={() => {
-              setCurrentPage(<CommunityDiscussion setPostsList={setSidebarList} />);
-              setActiveBottomButton('Comunidade');
-            }}
-            className={`flex flex-col w-full h-full justify-center items-center text-xs hover:bg-gray-300 first-letter:
-            ${activeBottomButton === 'Comunidade' ? 'bg-gray-300' : ''}
-            `}
-          >
-            <HiUserGroup className="w-10 h-10" />
-            Comunidade
-          </button>
-          <button
-            onClick={() => {
-              setCurrentPage(<Posts setPostsList={setSidebarList} />);
-              setActiveBottomButton('Noticias');
-            }}
-            className={`flex flex-col w-full h-full justify-center items-center text-xs hover:bg-gray-300 first-letter:
-            ${activeBottomButton === 'Noticias' ? 'bg-gray-300' : ''}
-            `}
-          >
-            <BsNewspaper className="w-10 h-10" />
-            Notícias
-          </button>
-        </>
-      )}
       renderSidebarList={() => sidebarList}
       bg={bgPage}
     >
       <Head title="Home" />
 
       <div className="w-full relative sm:flex flex-col sm:justify-center sm:items-center  bg-dots-darker bg-center dark:bg-dots-lighter  selection:bg-red-500 selection:text-white">
-        {currentPage}
+        <div className="w-full h-full overflow-y-hidden flex flex-col gap-1 justify-cebter items-center rounded-lg">
+          {videos ? (
+            <div className="flex w-full h-full flex-col relative  ">
+              <div
+                className="w-full flex flex-row justify-between
+             items-center"
+              >
+                <h2 className=" font-bold text-base md:text-4xl text-[#]">
+                  Vídeos em Destaques{' '}
+                </h2>
+                <Link href="/videos">
+                  <p className="text-sm md:text-base cursor-pointer">
+                    Ver mais
+                  </p>
+                </Link>
+              </div>
+              <div className="w-full relative flex flex-row">
+                <Swiper
+                  spaceBetween={30}
+                  navigation={true}
+                  modules={[EffectCoverflow, Navigation]}
+                  slidesPerView="auto"
+                  effect={'coverflow'}
+                  coverflowEffect={{
+                    rotate: 50,
+                    stretch: 10,
+                    depth: 50,
+                    modifier: 1,
+                    slideShadows: true,
+                  }}
+                  centeredSlides
+                  centeredSlidesBounds
+                  loop={true}
+                  className="mySwiper"
+                >
+                  {videos?.map((video, i) => (
+                    <SwiperSlide key={video.id + video.id + i}>
+                      <VideoCard
+                        w="w-full"
+                        video={video}
+                        i={i}
+                        key={video.id + i + video.id}
+                        activeVideo={activeVideo}
+                        isPlayingVideo={isPlayingVideo}
+                        videos={videos}
+                      />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
+            </div>
+          ) : (
+            <div className="w-full h-full flex flex-col">
+              <h1 className="text-xl text-center w-full">
+                Nenhum destaque disponível momento..
+              </h1>
+            </div>
+          )}
+          {songs ? (
+            <div className="flex w-full h-full flex-col relative  ">
+              <div
+                className="w-full flex flex-row justify-between
+             items-center"
+              >
+                <h2 className=" font-bold text-base md:text-4xl text-[#]">
+                  Músicas em Destaques{' '}
+                </h2>
+                <Link href="top-charts">
+                  <p className="text-sm md:text-base cursor-pointer">
+                    Ver mais
+                  </p>
+                </Link>
+              </div>
+              <div className="w-full relative flex flex-row">
+                <Swiper
+                  spaceBetween={30}
+                  navigation={true}
+                  modules={[EffectCoverflow, Navigation]}
+                  slidesPerView="auto"
+                  effect={'coverflow'}
+                  coverflowEffect={{
+                    rotate: 50,
+                    stretch: 10,
+                    depth: 50,
+                    modifier: 1,
+                    slideShadows: true,
+                  }}
+                  centeredSlides
+                  centeredSlidesBounds
+                  loop={true}
+                  className="mySwiper"
+                >
+                  {songs?.map((song, i) => (
+                    <SwiperSlide>
+                      <SongCard
+                        w={'w-full'}
+                        song={song}
+                        i={i}
+                        key={song.id}
+                        activeSong={activeSong}
+                        isPlaying={isPlaying}
+                        songs={songs}
+                      />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
+            </div>
+          ) : (
+            <div className="w-full h-full flex flex-col">
+              <h1 className="text-xl text-center w-full">
+                Nenhum destaque disponível momento..
+              </h1>
+            </div>
+          )}
+          <div className="flex w-full h-full flex-col relative  ">
+            <div
+              className="w-full flex flex-row justify-between
+             items-center"
+            >
+              <h2 className=" font-bold text-base md:text-4xl text-[#]">
+                Sobre a Lifter{' '}
+              </h2>
+              <Link href="top-charts">
+                <p className="text-sm md:text-base cursor-pointer">
+                  Saiba mais...
+                </p>
+              </Link>
+            </div>
+            <div className="w-full relative flex flex-col gap-1">
+              <h1 className="text-xl">
+                Lifter é uma plataforma de avaliação, sugestão e classificação
+                musical.
+              </h1>
+              <p>
+                Com isso queremos dizer que a Lifter existe para criar conexões
+                através da partilha da paixão individual, do talento querendo
+                emergir e do bom gosto musical.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </AppLayout>
   );

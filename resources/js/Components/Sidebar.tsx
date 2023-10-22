@@ -3,7 +3,7 @@ import { links } from '../assets/constants';
 import useTypedPage from '@/Hooks/useTypedPage';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import { Link } from '@inertiajs/react';
-import { Logo } from '../../img';
+import { Logo, smalLogo } from '../../img';
 import SectionBorder from './SectionBorder';
 import { BiHome, BiMessage, BiMusic } from 'react-icons/bi';
 import { BsTrophy } from 'react-icons/bs';
@@ -58,12 +58,12 @@ function Sidebar({ renderSidebarList }: Props) {
       {/**sidebar telefones */}
       <div
         style={{ transition: '1s' }}
-        className={`absolute top-0 h-screen w-2/3 md:w-[240px] bg-gradient-to-tl from-white/10 to-[#483d8b backdrop-blur z-10 p-6  smooth-transition ${
+        className={`absolute top-0 h-screen w-2/3 md:w-[240px] bg-gradient-to-tl from-white/10 to-[#483d8b] backdrop-blur z-10 p-3  smooth-transition ${
           openMobileMenu ? 'left-0' : '-left-full '
         }  `}
       >
-        <Link href="/">
-          <img className="w-full h-24 object-contain" src={Logo} alt="logo" />
+        <Link href="/" className='w-full object-contain flex justify-center'>
+          <img className="w-auto h-24 object-contain" src={smalLogo} alt="logo" />
         </Link>
         <div className="w-full flex flex-row gap-1 justify-between items-center">
           <div className="w-full h full justify-center items-center flex">
@@ -71,14 +71,14 @@ function Sidebar({ renderSidebarList }: Props) {
             <UserAvatar />
           </div>
           <Link
-            href="/notificacoes"
+            href="/comunicar"
             className="h-full flex flex-col justify-center items-center hover:"
           >
             <MdNotifications className='w-7 h-7' />
             
           </Link>
           <Link
-            href="/mensagens"
+            href="/comunicar"
             className="h-full flex flex-col justify-center items-center hover:"
           >
             <BiMessage  className='w-7 h-7' />
@@ -109,7 +109,7 @@ function Links({ links, setOpenMobileMenu }) {
   return (
     <>
       <div className="mt-0">
-        <ul className="flex flex-col gap-1  justify-start my-5 text-sm font-medium ">
+        <ul className="flex flex-col gap-1  justify-start text-sm font-medium ">
           {links.map(item => (
             <Link
               href={item.href}

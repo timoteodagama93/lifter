@@ -27,8 +27,15 @@ import { BiCalendar } from 'react-icons/bi';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 
 import microImage from '../../assets/micro.jpg';
+import { useSelector } from 'react-redux';
+import { useGetSongsQuery, useGetVideosQuery } from '@/redux/services/coreApi';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import VideoCard from '@/Components/VideoCard';
+import { EffectCoverflow, EffectCube, Navigation } from 'swiper/modules';
+import { Link } from '@inertiajs/react';
+import { SongCard } from '@/Components';
 
-const Avaliar = ({ songs, setSongsList }) => {
+const Avaliar = ({}) => {
   const [duration, setDuration] = useState(0);
   const [seekTime, setSeekTime] = useState(0);
   const [appTime, setAppTime] = useState(0);
@@ -38,247 +45,152 @@ const Avaliar = ({ songs, setSongsList }) => {
 
   const { background, setBackground } = useStateContext();
 
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [activeSong, setActiveSong] = useState();
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const { data: songs, isFetching, error } = useGetSongsQuery('/get-songs');
+  const { activeSong, isPlaying } = useSelector(state => state.player);
 
-  function play(song, index) {
-    setSelectedIndex(index);
-    setActiveSong(song);
-    setIsPlaying(true);
-  }
-
-  function handleNextSong() {
-    if (songs?.length > 0) {
-      if (selectedIndex + 1 >= songs?.length) {
-        setSelectedIndex(0);
-        setActiveSong(songs[selectedIndex]);
-      } else {
-        setSelectedIndex(selectedIndex + 1);
-        setActiveSong(songs[selectedIndex]);
-      }
-    }
-  }
-
-  function handlePreviousSong() {
-    if (songs?.length > 0) {
-      if (selectedIndex === 0) {
-        setSelectedIndex(songs?.length - 1);
-        setActiveSong(songs[selectedIndex]);
-      } else {
-        setSelectedIndex(selectedIndex - 1);
-        setActiveSong(songs[selectedIndex]);
-      }
-    }
-  }
-  function pausePlay() {
-    if (isPlaying) {
-      setIsPlaying(false);
-    } else {
-      setIsPlaying(true);
-    }
-  }
-
-  const initials = () => {
-    if (songs?.length > 0) {
-      if (selectedIndex + 1 === songs?.length) {
-        setSelectedIndex(0);
-        setActiveSong(songs[selectedIndex]);
-      }
-    }
-  };
-
-  setSongsList(
-    songs?.map(song => (
-      <PostSingleSidebar song={song} setDisplaySong={setActiveSong} />
-    )),
-  );
-
-  useEffect(initials, [songs]);
-  const ref = useRef(null);
-  // eslint-disable-next-line no-unused-expressions
-  if (ref.current) {
-    if (isPlaying) {
-      ref.current.play();
-    } else {
-      ref.current.pause();
-    }
-  }
-  useEffect(
-    function () {
-      activeSong?.cover != null
-        ? setBackground(activeSong.cover)
-        : '';
-    },
-    [isPlaying],
-  );
+  const {
+    data: videos,
+    isFetching: fetchV,
+    error: errorV,
+  } = useGetVideosQuery('/get-videos');
+  const { activeVideo, isPlayingVideo } = useSelector(state => state.player);
 
   return (
-    <div className="w-full h-full overflow-y-hidden flex gap-1 justify-cebter items-center rounded-lg">
-      {activeSong ? (
+    <div className="w-full h-full overflow-y-hidden flex flex-col gap-1 justify-cebter items-center rounded-lg">
+      {videos ? (
         <div className="flex w-full h-full flex-col relative  ">
-          {activeSong?.mime_type.includes('audio/') && (
-            <>
-              <div className="relative flex flex-col w-full h-full  ">
-                <img
-                  src={activeSong?.cover}
-                  alt={activeSong?.title}
-                  className="w-full h-[100%] "
-                />
-                <div className="absolute top-0 left-0 justify-between px-5 w-full flex flex-row gap-1">
-                  <div className="flex flex-col">
-                    <span>{activeSong.title}</span>
-                    <span>{activeSong.artist} </span>
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
-          {activeSong?.mime_type.includes('video/') && (
-            <>
-              <VideoPlayer
-                activeSong={activeSong}
-                isPlaying={isPlaying}
-                volume={volume}
-                seekTime={seekTime}
-                //onEnded={handleNextSong}
-                onTimeUpdate={event => setAppTime(event.target.currentTime)}
-                onLoadedData={event => setDuration(event.target.duration)}
-                repeat={repeat}
-              />
-              <div className="absolute top-0 left-0 justify-between px-5 w-full flex flex-row gap-1">
-                <div className="flex flex-col">
-                  <span>{activeSong.title}</span>
-                  <span>{activeSong.artist} </span>
-                </div>
-              </div>
-            </>
-          )}
           <div
-            style={{ transition: '5s' }}
-            className="absolute z-20 w-full h-full top-0 backdrop-blur-sm  left-0 justify-center items-center flex "
+            className="w-full flex flex-row justify-between
+             items-center"
           >
-            <div className="relative shadow-left shadow-right w-[60%] bg-white text-gray-900 h-full top-0   shadow-lg shadow-black justify-center items-center  ">
-              <div className="items-center flex justify-center w-full">
-                <InteracoesMusical song={activeSong} orientation="flex-row " />
-              </div>
-              <div className="relative flex flex-col w-full h-full  ">
-                {activeSong?.mime_type.includes('audio/') && (
-                  <>
-                    <audio
-                      src={activeSong?.url}
-                      ref={ref}
-                      loop={repeat}
-                      //        onEnded={onEnded}
-                      onTimeUpdate={event =>
-                        setAppTime(event.target.currentTime)
-                      }
-                      onLoadedData={event => setDuration(event.target.duration)}
-                    />
-                    <div className="relative flex flex-col w-full h-full  ">
-                      <img
-                        src={activeSong?.cover}
-                        alt={activeSong?.title}
-                        className="w-full h-[100%] "
-                      />
-                      <div className="absolute top-0 left-0 justify-between px-5 w-full flex flex-row gap-1">
-                        <div className="flex flex-col">
-                          <span>{activeSong.title}</span>
-                          <span>{activeSong.artist} </span>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                )}
-                {activeSong?.mime_type.includes('video/') && (
-                  <>
-                    <video
-                      ref={ref}
-                      loop={repeat}
-                      autoPlay
-                      //        onEnded={onEnded}
-                      onTimeUpdate={event =>
-                        setAppTime(event.target.currentTime)
-                      }
-                      onLoadedData={event => setDuration(event.target.duration)}
-                    >
-                      <source
-                        type={activeSong.mime_type}
-                        src={activeSong?.url}
-                      />
-                    </video>
-
-                    <div className="absolute top-0 left-0 justify-between px-5 w-full flex flex-row gap-1">
-                      <div className="flex flex-col">
-                        <span>{activeSong.title}</span>
-                        <span>{activeSong.artist} </span>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-
-              <div className="absolute bottom-5 left-0 w-full justify-center items-center flex mx-auto opacity-75 bg-black p-1">
-                <div className="flex flex-row bg-gray-400 rounded-lg p-2">
-                  <Seekbar
-                    appTime={appTime}
-                    max={duration}
-                    min="0"
-                    value={appTime}
-                    onInput={e => setSeekTime(e.target.value)}
-                    setSeekTime={seekTime}
+            <h2 className=" font-bold text-base md:text-4xl text-[#]">
+              Vídeos em Destaques{' '}
+            </h2>
+            <Link href="/videos">
+              <p className="text-sm md:text-base cursor-pointer">Ver mais</p>
+            </Link>
+          </div>
+          <div className="w-full relative flex flex-row">
+            <Swiper
+              spaceBetween={30}
+              navigation={true}
+              modules={[EffectCoverflow, Navigation]}
+              slidesPerView="auto"
+              effect={'coverflow'}
+              coverflowEffect={{
+                rotate: 50,
+                stretch: 10,
+                depth: 50,
+                modifier: 1,
+                slideShadows: true,
+              }}
+              centeredSlides
+              centeredSlidesBounds
+              loop={true}
+              className="mySwiper"
+            >
+              {videos?.map((video, i) => (
+                <SwiperSlide key={video.id + video.id + i}>
+                  <VideoCard
+                    w="w-full"
+                    video={video}
+                    i={i}
+                    key={video.id + i + video.id}
+                    activeVideo={activeVideo}
+                    isPlayingVideo={isPlayingVideo}
+                    videos={videos}
                   />
-                  <button
-                    onClick={handlePreviousSong}
-                    className="text-xs p-1 flex justify-center items-center rounded"
-                    style={{ transition: '5s' }}
-                  >
-                    {isPlaying && <GiPreviousButton className="w-10 h-10" />}
-                  </button>
-                  <button
-                    onClick={pausePlay}
-                    className="text-xs p-1  justify-center items-center rounded"
-                    style={{ transition: '5s' }}
-                  >
-                    {!isPlaying ? (
-                      <>
-                        <GiPlayButton className="w-10 h-10" />
-                      </>
-                    ) : (
-                      <>
-                        <GiPauseButton className="w-10 h-10" />
-                      </>
-                    )}
-                  </button>
-                  <button
-                    onClick={handleNextSong}
-                    style={{ transition: '5s' }}
-                    className="text-xs p-1  flex justify-center items-center rounded"
-                  >
-                    {isPlaying && <GiNextButton className="w-10 h-10" />}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="absolute z-10 top-8 right-0">
-            <MediaDeEstrelas wich_flex="flex-row" song={activeSong} />
-          </div>
-
-          <div className="h-full items-center flex absolute top-10 right-0">
-            <InteracoesMusical song={activeSong} orientation="flex-col " />
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
         </div>
       ) : (
         <div className="w-full h-full flex flex-col">
           <h1 className="text-xl text-center w-full">
-            Nenhum item activo no momento..
+            Nenhum destaque disponível momento..
           </h1>
-          {songs?.map(song => (
-            <PostSingleSidebar key={song.id} song={song} setDisplaySong={setActiveSong} />
-          ))}
         </div>
       )}
+      {songs ? (
+        <div className="flex w-full h-full flex-col relative  ">
+          <div
+            className="w-full flex flex-row justify-between
+             items-center"
+          >
+            <h2 className=" font-bold text-base md:text-4xl text-[#]">
+              Músicas em Destaques{' '}
+            </h2>
+            <Link href="top-charts">
+              <p className="text-sm md:text-base cursor-pointer">Ver mais</p>
+            </Link>
+          </div>
+          <div className="w-full relative flex flex-row">
+            <Swiper
+              spaceBetween={30}
+              navigation={true}
+              modules={[EffectCoverflow, Navigation]}
+              slidesPerView="auto"
+              effect={'coverflow'}
+              coverflowEffect={{
+                rotate: 50,
+                stretch: 10,
+                depth: 50,
+                modifier: 1,
+                slideShadows: true,
+              }}
+              centeredSlides
+              centeredSlidesBounds
+              loop={true}
+              className="mySwiper"
+            >
+              {songs?.map((song, i) => (
+                <SwiperSlide>
+                  <SongCard
+                    w={'w-full'}
+                    song={song}
+                    i={i}
+                    key={song.key}
+                    activeSong={activeSong}
+                    isPlaying={isPlaying}
+                    songs={songs}
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </div>
+      ) : (
+        <div className="w-full h-full flex flex-col">
+          <h1 className="text-xl text-center w-full">
+            Nenhum destaque disponível momento..
+          </h1>
+        </div>
+      )}
+      <div className="flex w-full h-full flex-col relative  ">
+        <div
+          className="w-full flex flex-row justify-between
+             items-center"
+        >
+          <h2 className=" font-bold text-base md:text-4xl text-[#]">
+            Sobre a Lifter{' '}
+          </h2>
+          <Link href="top-charts">
+            <p className="text-sm md:text-base cursor-pointer">Saiba mais...</p>
+          </Link>
+        </div>
+        <div className="w-full relative flex flex-col gap-1">
+          <h1 className="text-xl">
+            Lifter é uma plataforma de avaliação, sugestão e classificação
+            musical.
+          </h1>
+          <p>
+            Com isso queremos dizer que a Lifter existe para criar conexões
+            através da partilha da paixão individual, do talento querendo
+            emergir e do bom gosto musical.
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

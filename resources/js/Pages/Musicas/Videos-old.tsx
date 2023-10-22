@@ -5,7 +5,7 @@ import SelectGenre from '@/Components/SelectGenre';
 import { FaRandom } from 'react-icons/fa';
 import CardVideo from '../../Components/CardVideo';
 import Galeria from '../../Components/Galeria';
-import ArtistsGalery from '@/Pages/ArtistsGalery';
+import ArtistsGalery from '@/Pages/VozActiva';
 function Videos-old() {
   const [activar, setActivar] = useState('todos');
   return (

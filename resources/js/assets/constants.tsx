@@ -11,6 +11,7 @@ import {
 import { FaCog, FaCogs, FaHandshake, FaNewspaper } from 'react-icons/fa';
 import {
   MdExplore,
+  MdLiveTv,
   MdMessage,
   MdNotifications,
   MdOutlineExplore,
@@ -167,8 +168,13 @@ export const links = [
   },
   {
     name: 'Pesquisar',
-    href: '/pesquisar',
+    href: 1,
     icon: BiSearch,
+  },
+  {
+    name: 'Live TV',
+    href: '/livetv',
+    icon: MdLiveTv,
   },
   {
     name: 'Ranking',

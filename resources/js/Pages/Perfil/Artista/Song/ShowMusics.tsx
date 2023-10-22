@@ -10,14 +10,15 @@ import { EditArtist, AddArtistCover } from '../Info';
 import AddSong from './AddSong';
 import AddYoutubeSong from './AddYoutubeSong';
 import AddSongCover from './AddSongCover';
+import ButtonWraper from '@/Components/Button';
 
 export default function ShowMusics({ artist }) {
   const [songs, setsongs] = useState([]);
   const [pagina, setPagina] = useState(<h1>Gerencie suas músicas aqui!</h1>);
   function getSongs() {
     axios.post('/get-artist-songs', artist).then(response => {
-      console.log('ARTIST SONGS:')
-      console.log(response.data.artist_songs)
+      console.log('ARTIST SONGS:');
+      console.log(response.data.artist_songs);
       const artist_songs = [...response.data.artist_songs];
       const popular_songs = response.data.popular_songs;
       setsongs(artist_songs);
@@ -28,31 +29,37 @@ export default function ShowMusics({ artist }) {
 
   return (
     <div className="w-full relative flex flex-col">
-      <div className="w-full p-1 flex flex-row rounded-lg shadow-lg pb-1 justify-start">
-        <button
-          onClick={() =>
-            setPagina(<ListSongs setPagina={setPagina} songs={songs} />)
-          }
-          className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
-        >
-          <HiPhotograph className="mr-3 text-xl" />
-          Minhas Músicas
-        </button>
-        <button
-          onClick={() => setPagina(<AddSong artist={artist} />)}
-          className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
-        >
-          <BiUpload className="text-xl mr-1" />
-          Carregar música
-        </button>
-        <button
-          disabled
-          onClick={() => setPagina(<AddYoutubeSong artist={artist} />)}
-          className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
-        >
-          <BsYoutube className="text-xl mr-1" />
-          Adicionar do Youtube
-        </button>
+      <div className="w-full p-1 gap-2 flex flex-row rounded-lg shadow-lg pb-1 justify-start">
+        <ButtonWraper className="w-full">
+          <button
+            onClick={() =>
+              setPagina(<ListSongs setPagina={setPagina} songs={songs} />)
+            }
+            className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
+          >
+            <HiPhotograph className="mr-3 text-xl" />
+            Minhas Músicas
+          </button>
+        </ButtonWraper>
+        <ButtonWraper className="w-full">
+          <button
+            onClick={() => setPagina(<AddSong artist={artist} />)}
+            className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
+          >
+            <BiUpload className="text-xl mr-1" />
+            Carregar música
+          </button>
+        </ButtonWraper>
+        <ButtonWraper className="w-full">
+          <button
+            disabled
+            onClick={() => setPagina(<AddYoutubeSong artist={artist} />)}
+            className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
+          >
+            <BsYoutube className="text-xl mr-1" />
+            Adicionar do Youtube
+          </button>
+        </ButtonWraper>
       </div>
       <div className="w-full h-full overflow-y-auto"> {pagina} </div>
     </div>
@@ -74,7 +81,7 @@ function ListSongs({ songs, setPagina }) {
           </h3>
           {song.mime_type.includes('audio/') && (
             <img
-              src={ song?.cover}
+              src={song?.cover}
               alt=""
               className="flex w-10 h-10 rounded-sm"
             />
@@ -90,29 +97,23 @@ function ListSongs({ songs, setPagina }) {
           </div>
           {song.mime_type.includes('audio/') && (
             <audio controls>
-              <source
-                type={song.mime_type}
-                src={ song.url}
-              />
+              <source type={song.mime_type} src={song.url} />
             </audio>
           )}
           {song.mime_type.includes('video/') && (
             <video className="w-36 h-36" controls>
-              <source
-                type={song.mime_type}
-                src={song.url}
-              />
+              <source type={song.mime_type} src={song.url} />
             </video>
           )}
           <div className="flex p-2 gap-2 justify-center items-center">
-              <button
-                onClick={() => {
-                  setPagina(<AddSongCover song={song} />);
-                }}
-              >
-                <BiPhotoAlbum className="text-xl" /> Foto
-              </button>
-         
+            <button
+              onClick={() => {
+                setPagina(<AddSongCover song={song} />);
+              }}
+            >
+              <BiPhotoAlbum className="text-xl" /> Foto
+            </button>
+
             <Link
               href={`/artist-details/${song.id}`}
               className="px-2 shadow-black shadow-lg gap-1 flex flex-col text-xs"

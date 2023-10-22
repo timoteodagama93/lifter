@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {
-  nextSong,
+  nextVideo,
   prevSong,
   playPause,
 } from '../../redux/features/playerSlice';
@@ -40,10 +40,12 @@ const MusicPlayer = () => {
   };
 
   const handleNextSong = () => {
+    dispatch(playPause(false));
+
     if (!shuffle) {
-      dispatch(nextSong((currentIndex + 1) % currentSongs.length));
+      dispatch(nextVideo((currentIndex + 1) % currentSongs.length));
     } else {
-      dispatch(nextSong(Math.floor(Math.random() * currentSongs.length)));
+      dispatch(nextVideo(Math.floor(Math.random() * currentSongs.length)));
     }
   };
 
@@ -126,7 +128,7 @@ const MusicPlayer = () => {
             isPlaying={isPlaying}
             seekTime={seekTime}
             repeat={repeat}
-            //currentIndex={currentIndex}
+            currentIndex={currentIndex}
             onEnded={handleNextSong}
             onTimeUpdate={event => setAppTime(event.target.currentTime)}
             onLoadedData={event => setDuration(event.target.duration)}

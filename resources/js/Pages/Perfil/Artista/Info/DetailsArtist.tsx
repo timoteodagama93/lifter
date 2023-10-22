@@ -17,6 +17,7 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import AddSong from '@/Pages/Perfil/Artista/Song/AddSong';
 import EditArtist from './EditArtist';
 import { HiPhotograph } from 'react-icons/hi';
+import ButtonWraper from '@/Components/Button';
 
 function DetailsArtist({ artist }) {
   const [uploadCover, setUploadCover] = useState(false);
@@ -80,30 +81,36 @@ function DetailsArtist({ artist }) {
 
   return (
     <div className="relative w-full h-full flex flex-col md:flex-row">
-      <div className="w-full md:w-1/3 p-2 flex border flex-row md:flex-col rounded-lg shadow-lg pb-1 justify-start">
-        <button
-          onClick={() => setPagina(<AboutArtist artist={artist} />)}
-          className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
-        >
-          <MdOutlineAppRegistration className="text-xl mr-3" />
-          Detalhes
-        </button>
-        <button
-          onClick={() =>
-            setPagina(<EditArtist artist={artist} setPagina={setPagina} />)
-          }
-          className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
-        >
-          <BiUpload className="text-xl mr-3" />
-          Editar Perfil
-        </button>
-        <button
-          onClick={() => setPagina(<AddArtistCover artist={artist} />)}
-          className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
-        >
-          <HiPhotograph className="mr-3 text-xl" />
-          Adicionar capa
-        </button>
+      <div className="w-full md:w-1/3 p-2 gap-2 flex border flex-row md:flex-col rounded-lg shadow-lg pb-1 justify-start">
+        <ButtonWraper className="w-full">
+          <button
+            onClick={() => setPagina(<AboutArtist artist={artist} />)}
+            className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
+          >
+            <MdOutlineAppRegistration className="text-xl mr-3" />
+            Detalhes
+          </button>
+        </ButtonWraper>
+        <ButtonWraper className="w-full">
+          <button
+            onClick={() =>
+              setPagina(<EditArtist artist={artist} setPagina={setPagina} />)
+            }
+            className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
+          >
+            <BiUpload className="text-xl mr-3" />
+            Editar Perfil
+          </button>
+        </ButtonWraper>
+        <ButtonWraper className="w-full">
+          <button
+            onClick={() => setPagina(<AddArtistCover artist={artist} />)}
+            className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
+          >
+            <HiPhotograph className="mr-3 text-xl" />
+            Adicionar capa
+          </button>
+        </ButtonWraper>
       </div>
       <div className="w-full md:w-2/3">{pagina}</div>
     </div>
@@ -118,8 +125,8 @@ function AboutArtist({ artist }) {
       <div className="w-full m-1 justify-start flex flex-row border-[#2e2c2e] border shadow-lg shadow-black p-5 rounded-lg">
         <div className="flex justify-start">
           <img
-          className='w-36 h-auto'
-            src={ artist?.url_cover}
+            className="w-36 h-auto"
+            src={artist?.url_cover}
             alt={artist.name}
           />
         </div>

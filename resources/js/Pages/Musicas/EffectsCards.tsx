@@ -13,7 +13,7 @@ import { EffectCards } from 'swiper/modules';
 
 export default function EffectsCards() {
   return (
-    <div className="w-[#320px] ">
+    <div className="w-[320px] ">
       <div className="effectsCardSwiper">
         <Swiper
           effect={'cards'}

@@ -36,10 +36,11 @@ function Sobre() {
               grabCursor={true}
               centeredSlides={true}
               slidesPerView={'auto'}
-              spaceBetween={0}
+              spaceBetween={15}
               loop={false}
+              direction='horizontal'
               coverflowEffect={{
-                rotate: 0,
+                rotate: 45,
                 stretch: 0,
                 depth: 50,
                 modifier: 1,
