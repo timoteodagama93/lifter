@@ -41,8 +41,7 @@ function Videos({}) {
   const { activeVideo, isPlayingVideo } = useSelector(state => state.player);
   if (isFetching) return <Loader title="Carregando músicas..." />;
   if (error) return <Error />;
-  /**REF for playing and pausing videos */
-  const [refVideo, setRefVideo] = useState(useRef(null));
+
   return (
     <AppLayout title="Vídeos">
       <div className="w-full relative flex flex-row rounded">

@@ -12,10 +12,10 @@ import UserAvatar from './UserAvatar';
 import { MdNotifications } from 'react-icons/md';
 
 interface Props {
-  renderSidebarList?(): JSX.Element;
+  
 }
 
-function Sidebar({ renderSidebarList }: Props) {
+function Sidebar({  }) {
   const { openMobileMenu, setOpenMobileMenu } = useStateContext();
 
   const page = useTypedPage();

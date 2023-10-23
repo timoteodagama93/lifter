@@ -186,6 +186,23 @@ class SongsController extends Controller
     }
 
     /**
+     * Pesquisa músicas
+     */
+    public function search_songs()
+    {
+        $query = Request::get('searchTerm');
+        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%audio%' AND ( title LIKE '%$query%' OR artist LIKE '%$query%' OR genre LIKE '%$query%'  ) ORDER BY created_at DESC"); // where('mime_type', `%audio/%`)->paginate(1);
+    }
+    /**
+     * Pesquisa Vídeos
+     */
+    public function search_videos()
+    {
+        $query = Request::get('searchTerm');
+        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%video%' AND ( title LIKE '%$query%' OR artist LIKE '%$query%' OR genre LIKE '%$query%'  ) ORDER BY created_at DESC"); // where('mime_type', `%audio/%`)->paginate(1);
+    }
+
+    /**
      * Obté os vídeos
      */
     public function get_videos()

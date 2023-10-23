@@ -41,7 +41,7 @@ import { FaSpeakerDeck, FaVoteYea } from 'react-icons/fa';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import { Sidebar } from '@/Components';
 import Sugestoes from './Sugestoes';
-import GallerySwiperSlide from './GallerySwiperSlide';
+import GallerySwiperSlide from '../LiveTV/LiverTV';
 import EffectsCards from './EffectsCards';
 import {
   BsEmojiDizzy,

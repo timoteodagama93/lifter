@@ -166,14 +166,10 @@ export const links = [
     href: '/',
     icon: BiHome,
   },
+ 
   {
-    name: 'Pesquisar',
-    href: 1,
-    icon: BiSearch,
-  },
-  {
-    name: 'Live TV',
-    href: '/livetv',
+    name: 'Liver TV',
+    href: '/livertv',
     icon: MdLiveTv,
   },
   {

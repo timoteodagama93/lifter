@@ -44,7 +44,7 @@ import ContestCard from '@/Components/ContestCard';
 import useTypedPage from '@/Hooks/useTypedPage';
 import route from 'ziggy-js';
 import CommunityDiscussion from '@/Pages/CommunityDiscussion';
-import GallerySwiperSlide from '@/Pages/Jurados/GallerySwiperSlide';
+import GallerySwiperSlide from '@/Pages/LiveTV/LiverTV';
 import EffectsCards from '@/Pages/Musicas/EffectsCards';
 import VideoPlayer from '@/Components/VideoPlayer';
 import NavLink from '@/Components/NavLink';

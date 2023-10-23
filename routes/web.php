@@ -49,42 +49,46 @@ Route::middleware([
             'posts' => DB::select('SELECT * FROM posts ORDER BY created_at DESC')
         ]);
     })->name('/');
-    Route::get('/discover', function () {
-        return Inertia::render('Discover', []);
-    })->name('discover');
-
+    
     Route::get('/musicas', function () {
         return Inertia::render('Musicas/Musicas', []);
     })->name('musicas');
-
+    
     Route::get('/video', function () {
         return Inertia::render('Videos', []);
     })->name('video');
-
+    
     Route::get('/vozactiva', function () {
         return Inertia::render('VozActiva', [
             'activeVoiceArtist' => DB::select('SELECT * FROM artists WHERE active =' . true)[0]
         ]);
     })->name('vozactiva');
-
+    
     Route::get('/concursos', function () {
         return Inertia::render('Concursos/Concursos', [
             'contests' => Contest::all()
         ]);
     })->name('concursos');
-
+    
     Route::get('/comunidade', function () {
         return Inertia::render('CommunityDiscussion', [
             'contests' => Contest::all()
         ]);
     })->name('comunidade');
-
+    
     Route::get('/noticias', function () {
         return Inertia::render('Noticias', []);
     })->name('noticias');
 
-   
-
+    //ROUTAS DO SIDEBAR
+    Route::get('/discover', function () {
+        return Inertia::render('Discover', []);
+    })->name('discover');
+    Route::get('/livertv', function () {
+        return Inertia::render('LiveTV/LiverTV', []);
+    })->name('livertv');
+    
+    
 
     /**Uploading files */
     Route::controller(UploadController::class)->group(function () {
@@ -109,6 +113,9 @@ Route::middleware([
      *  Routas das Músicas
      */
     Route::controller(SongsController::class)->group(function () {
+        Route::post('/search-songs',  'search_songs')->name('search-songs');
+        Route::post('/search-videos',  'search_videos')->name('search-videos');
+        
         Route::post('/feedback',  'store_feedback')->name('feedback');
         Route::post('/feedbacks',  'get_feedbacks')->name('feedbacks');
         Route::post('/get-my-valluation',  'minha_avaliacao')->name('get-my-valluation');
