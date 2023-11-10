@@ -2,12 +2,12 @@ import AppLayout from '@/Layouts/AppLayout';
 import React, { useState } from 'react';
 import { BiSearch } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
-import { generos, songs } from '../../data/dummy';
 import SongCard from './SongCard';
 import TopArtists from './TopArtists';
 import { useGetSongsQuery } from '@/redux/services/coreApi';
 import Loader from './Loader';
 import Error from './Error';
+import { generos } from '@/assets/constants';
 
 function Artistas() {
   const { data, isFetching, error } =

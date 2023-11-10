@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Contest;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -22,7 +23,6 @@ class ContestController extends Controller
             'descricao' => ['required'],
         ])->validateWithBag('contestCreationCoverFails');
 
-        $file = Request::file('cover')->store('contests', 'public');
         $user_id = Auth::id();
         $contest = Contest::create(
             [
@@ -30,10 +30,12 @@ class ContestController extends Controller
                 'designacao' => Request::get('designacao'),
                 'descricao' => Request::get('descricao'),
                 'estilo_musical' => Request::get('estilo'),
-                'url_cover' => Storage::url($file),
             ]
         );
 
+        $file = Request::file('cover')->store("contests/$contest->id", 'public');
+        $contest->url_cover = Storage::url($file);
+        $contest->save();
         echo response(['new_contest' => $contest]);
     }
 
@@ -143,5 +145,19 @@ class ContestController extends Controller
     public function details($contestId)
     {
         return Inertia::render('Concursos/Details', ['contest' => Contest::all()->where('id', $contestId)->first()]);
+    }
+
+    public function contest_images($contestId)
+    {
+        return response()->json(
+            Storage::allFiles("public/contests/$contestId")
+        );
+    }
+
+    public function contest_videos($contestId)
+    {
+        return response()->json(
+            DB::select('SELECT * FROM contests WHERE id= ? ', [$contestId])
+        );
     }
 }

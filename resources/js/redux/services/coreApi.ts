@@ -17,28 +17,53 @@ export const coreApi = createApi({
     }),
     endpoints: (builder) => ({
         getSongs: builder.query({ query: (query) => '/get-songs' }),
-        getVideos: builder.query({ query: (query) => query }),
+        getVideos: builder.query({ query: (query) => '/get-videos' }),
+        getDestaqueSongs: builder.query({ query: (query) => '/get-songs-destaques' }),
+        getDestaqueVideos: builder.query({ query: (query) => '/get-videos-destaques' }),
+
+        getSongDetails: builder.query({ query: (songId) => `/tracks/details/${songId}` }),
+        getSongRelated: builder.query({ query: (songId) => `/tracks/related/${songId}` }),
+
+
+        /**ACTIVE VOICE */
         getActiveVoice: builder.query({ query: (artistId) => artistId }),
         getActiveVoiceSongs: builder.query({ query: (artistId) => `get-activevoice-songs/${artistId}` }),
         getActiveVoiceVideos: builder.query({ query: (artistId) => `get-activevoice-videos/${artistId}` }),
         getActiveVoiceImages: builder.query({ query: (artistId) => `get-activevoice-images/${artistId}` }),
-        getSongDetails: builder.query({ query: (songId) => `/tracks/details/${songId}` }),
-        getSongRelated: builder.query({ query: (songId) => `/tracks/related/${songId}` }),
-        getArtistDetails: builder.query({ query: (artistId) => `/ artists/details/${artistId}` }),
+
+        /**CONTEST */
+        getContestVideo: builder.query({ query: (contestId) => `get-contest-videos/${contestId}` }),
+        getContestImages: builder.query({ query: (contestId) => `get-contest-images/${contestId}` }),
+
+        /** ARTIST */
+        getArtistStats: builder.query({ query: (artistId) => `/artist-stats/${artistId}` }),
+        getArtistDetails: builder.query({ query: (artistId) => `/artists/details/${artistId}` }),
+        getArtistSongs: builder.query({ query: (artistId) => `/get-artist-songs/${artistId}` }),
         getArtistRelatedSongs: builder.query({ query: (artistId) => `/artists/related/${artistId}` }),
     }),
 });
 
 export const {
     useGetSongsQuery,
+    useGetSongDetailsQuery,
+    useGetSongRelatedQuery,
+    useGetArtistStatsQuery,
+    useGetDestaqueSongsQuery,
+    useGetDestaqueVideosQuery,
+
+
     useGetVideosQuery,
+
     useGetActiveVoiceSongsQuery,
     useGetActiveVoiceVideosQuery,
     useGetActiveVoiceImagesQuery,
     useGetActiveVoiceQuery,
-    useGetSongDetailsQuery,
-    useGetSongRelatedQuery,
+
+    useGetContestImagesQuery,
+    useGetContestVideoQuery,
+
     useGetArtistDetailsQuery,
+    useGetArtistSongsQuery,
     useGetArtistRelatedSongsQuery
 } = coreApi;
 

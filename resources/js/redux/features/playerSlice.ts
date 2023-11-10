@@ -12,6 +12,8 @@ const initialState = {
   isVideoActive: false,
   isPlayingVideo: false,
   activeVideo: {},
+
+  isFullScreenPlayer: false,
 };
 
 
@@ -19,6 +21,8 @@ const playerSlice = createSlice({
   name: 'player',
   initialState,
   reducers: {
+
+
     setActiveSong: (state, action) => {
       state.activeSong = action.payload.song;
 
@@ -106,9 +110,14 @@ const playerSlice = createSlice({
     selectGenreListId: (state, action) => {
       state.genreListId = action.payload;
     },
+
+    setFullScreenPlayer: (state, action) => {
+      state.isFullScreenPlayer = action.payload;
+    },
+
   },
 });
 
-export const { setActiveSong, setActiveVideo, nextSong, nextVideo, prevSong, prevVideo, playPause, playPauseVideo, selectGenreListId } = playerSlice.actions;
+export const { setActiveSong, setActiveVideo, nextSong, nextVideo, prevSong, prevVideo, playPause, playPauseVideo, selectGenreListId, setFullScreenPlayer } = playerSlice.actions;
 
 export default playerSlice.reducer;

@@ -1,5 +1,5 @@
+import { generos } from '@/assets/constants'
 import React from 'react'
-import { generos } from '../../data/dummy'
 
 function SelectGenre({className}) {
   return (

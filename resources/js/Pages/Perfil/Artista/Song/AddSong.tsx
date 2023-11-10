@@ -15,7 +15,7 @@ import { router } from '@inertiajs/core';
 import SecondaryButton from '../../../../Components/SecondaryButton';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-export default function AddSong({ artist }) {
+export default function AddSong({ artist, from = '' }) {
   const [successOnAdd, setSuccessOnAdd] = useState(false);
 
   const formSong = useForm({
@@ -94,9 +94,12 @@ export default function AddSong({ artist }) {
           </PrimaryButton>
         </>
       ) : (
-        <div className="p-5  m-5 shadow-lg shadow-black">
-          <p className="w-full text-xl flex justify-center uppercase gap-1">
-            Adicionar música de <strong> {artist.name}</strong>
+        <div className="p-1 md:p-5 shadow-lg shadow-black w-full h-full overflow-y-auto overflow-x-hidden flex flex-col">
+          <p className="w-full text-xl flex flex-row justify-center uppercase gap-1">
+            <strong>
+              {artist.name}
+              {', '} Nova música{' '}
+            </strong>
           </p>
           <SectionBorder></SectionBorder>
           <form onSubmit={onSubmit} className="">
@@ -196,7 +199,6 @@ export default function AddSong({ artist }) {
                 onChange={e =>
                   formSong.setData('gravadora', e.currentTarget.value)
                 }
-                
                 autoComplete="new-password"
               />
               <InputError
@@ -215,8 +217,8 @@ export default function AddSong({ artist }) {
                 onChange={e =>
                   formSong.setData('participacoes', e.currentTarget.value)
                 }
-                />
-                
+              />
+
               <InputError
                 className="mt-2"
                 message={formSong.errors.participacoes}

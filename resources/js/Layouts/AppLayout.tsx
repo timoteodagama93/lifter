@@ -19,7 +19,10 @@ import { BiSearch } from 'react-icons/bi';
 import Player from '@/Components/VideoPlayer/Player';
 import VideoPlayer from '@/Components/VideoPlayer';
 import Modal from '@/Components/Modal';
-import { playPauseVideo } from '@/redux/features/playerSlice';
+import {
+  playPauseVideo,
+  setFullScreenPlayer,
+} from '@/redux/features/playerSlice';
 import axios from 'axios';
 import VideoCard from '@/Components/VideoCard';
 import { Swiper } from 'swiper/react';
@@ -54,9 +57,13 @@ export default function AppLayout({
   //f0f0f0
   //f8f8f8
 
-  const { activeSong, isPlaying, isPlayingVideo, activeVideo } = useSelector(
-    state => state.player,
-  );
+  const {
+    activeSong,
+    isPlaying,
+    isPlayingVideo,
+    activeVideo,
+    isFullScreenPlayer,
+  } = useSelector(state => state.player);
 
   const { openMobileMenu, setOpenMobileMenu } = useStateContext();
   const [openSearch, setOpenSearch] = useState(false);
@@ -115,7 +122,7 @@ export default function AppLayout({
       </div>
       {}
       <Modal
-        isOpen={isPlayingVideo}
+        isOpen={isPlayingVideo && false}
         onClose={() => dispatch(playPauseVideo(false))}
       >
         <div className="flex flex-col animate-slideup bg-gradient-to-br from-white/10 to-[#2a2a80] backdrop-blur-lg rounded gap-1 ">
@@ -131,10 +138,8 @@ export default function AppLayout({
         </div>
       </Modal>
       {}
-      {activeSong?.title?.after && isPlaying && (
-        <div className="absolute h-28 bottom-0 left-0 right-0 flex animate-slideup bg-gradient-to-br from-white/10 to-[#2a2a80] backdrop-blur-lg rounded-t-3xl z-10">
-          <MusicPlayer />
-        </div>
+      {isFullScreenPlayer && (
+        <PlayerFullScreen close={setFullScreenPlayer(false)} />
       )}
     </>
   );
@@ -198,33 +203,31 @@ function Search({ close }) {
           <div className="w-full h-[80%] overflow-y-auto px-14">
             {videos && (
               <div className="w-full relative flex flex-row">
-              
-                  <Swiper
-                    loop={true}
-                    spaceBetween={15}
-                    navigation={true}
-                    modules={[Navigation, EffectCube]}
-                    effect=""
-                    slidesPerView="auto"
-                    centeredSlides
-                    centeredSlidesBounds
-                    className="w-full relative flex flex-wrap "
-                  >
-                    {videos?.map((video, i) => (
-                      <SwiperSlide key={video.id + video.id}>
-                        <VideoCard
-                          w="w-full "
-                          video={video}
-                          i={i}
-                          key={video.id + i + video.id}
-                          activeVideo={activeVideo}
-                          isPlayingVideo={isPlayingVideo}
-                          videos={videos}
-                        />
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
-                
+                <Swiper
+                  loop={true}
+                  spaceBetween={15}
+                  navigation={true}
+                  modules={[Navigation, EffectCube]}
+                  effect=""
+                  slidesPerView="auto"
+                  centeredSlides
+                  centeredSlidesBounds
+                  className="w-full relative flex flex-wrap "
+                >
+                  {videos?.map((video, i) => (
+                    <SwiperSlide key={video.id + video.id}>
+                      <VideoCard
+                        w="w-full "
+                        video={video}
+                        i={i}
+                        key={video.id + i + video.id}
+                        activeVideo={activeVideo}
+                        isPlayingVideo={isPlayingVideo}
+                        videos={videos}
+                      />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
               </div>
             )}
             {songs && (
@@ -250,6 +253,76 @@ function Search({ close }) {
               <MusicPlayer />
             </div>
           )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PlayerFullScreen({ close }) {
+  const { activeSong, isPlaying } = useSelector(state => state.player);
+  const { activeVideo, isPlayingVideo } = useSelector(state => state.player);
+
+  const [songs, setSongs] = useState();
+  const [videos, setVideos] = useState();
+  const [error, setError] = useState(false);
+
+  const performSearch = e => {
+    const searchTerm = e.target.value;
+    if (searchTerm.length < 0) return;
+    searchSongs(searchTerm);
+    searchVideos(searchTerm);
+  };
+  const dispatch = useDispatch();
+  const searchSongs = searchTerm => {
+    axios
+      .post('search-songs', { searchTerm: searchTerm })
+      .then(response => {
+        setSongs(response.data);
+      })
+      .catch(error => {
+        setError(true);
+      });
+  };
+  const searchVideos = searchTerm => {
+    axios
+      .post('search-videos', { searchTerm: searchTerm })
+      .then(response => {
+        setVideos(response.data);
+      })
+      .catch(error => {
+        setError(true);
+      });
+  };
+
+  return (
+    <div className="absolute h-screen w-screen top-0 left-0 flex animate-slideup bg-gradient-to-br from-white/10 to-[#2a2a80] backdrop-blur-lg rounded-t-3xl z-10 justify-center ">
+      <div className="w-[90%] md:w-10/12 h-[90%]  px-1 md:px-5 bg-[#4c88c4] rounded">
+        <div className="w-full  h-[10%] flex flex-row justify-between items-center">
+          <form className="flex justify-center items-center ">
+            <input
+              onChange={performSearch}
+              type="search"
+              className="text-black border-b-4 w-full focus:border-[#543889] mt-1 border-[#222d84] rounded-lg"
+              placeholder="Pesquisar"
+            />
+          </form>
+          <button
+            onClick={() => dispatch(setFullScreenPlayer(false))}
+            className=" justify-center items-center bg-red-500 p-2 flex flex-col transform-effect"
+          >
+            <MdClose className="w-5 h-5" />
+          </button>
+        </div>
+        <div className="w-full h-full flex flex-col justify-center ">
+          <div className="w-full h-[50%] border overflow-y-auto px-14"></div>
+
+          <div
+            className="relative border bg-black w-full h-[30%] p-2 transition-5s "
+            style={{ transition: '5s' }}
+          >
+            <MusicPlayer />
+          </div>
         </div>
       </div>
     </div>

@@ -2,10 +2,9 @@ import PlayPause from '@/Components/PlayPause';
 import TopArtists from '@/Components/TopArtists';
 import axios from 'axios';
 import React, { useState } from 'react';
-import { artists } from '../../../data/dummy';
 
 function Artistas() {
-  const [artistas, setArtistas] = useState([]);
+  const [artists, setArtistas] = useState([]);
   axios.post('ascensao-artists').then(response => {
     if (response.status === 200) {
       setArtistas(response.data.artists);

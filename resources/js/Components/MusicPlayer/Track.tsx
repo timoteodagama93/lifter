@@ -7,7 +7,9 @@ const Track = ({ isPlaying, isActive, activeSong }) => (
     {activeSong?.mime_type?.includes('audio/') && (
       <div
         className={`${
-          isPlaying && isActive && activeSong.cover ? 'animate-[spin_3s_linear_infinite]' : ''
+          isPlaying && isActive && activeSong.cover
+            ? 'animate-[spin_3s_linear_infinite]'
+            : ''
         } hidden sm:block h-16 w-16 mr-4`}
       >
         {activeSong.cover ? (
@@ -31,8 +33,8 @@ const Track = ({ isPlaying, isActive, activeSong }) => (
           isPlaying && isActive ? '' : ''
         } hidden sm:block h-16 w-16 mr-4`}
       >
-        <video>
-          <source className="w-full h-full" src={activeSong?.url} />
+        <video autoPlay muted className="h-16 w-16">
+          <source className=" w-full h-full" src={activeSong?.url} />
         </video>
       </div>
     )}

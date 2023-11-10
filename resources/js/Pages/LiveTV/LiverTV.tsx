@@ -29,7 +29,7 @@ export default function LiverTV() {
   if (error) return <Error />;
   return (
     <AppLayout title="Liver TV">
-      <h1 className="font-bold text-center w-full flex flex-row justify-center items-center backdrop-blur-lg">
+      <h1 className="font-bold w-full flex flex-row justify-start items-center backdrop-blur-lg">
         <img src={smalLogo} className="w-10 h-10" />
         <span>Liver TV</span>
       </h1>

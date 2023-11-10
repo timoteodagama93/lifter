@@ -5,8 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Timóteo Da Gama, Lifter CEO">
-    <meta name="about" content="Lifter is a musical classification plataform">
-
+    <meta name="about" content="Lifter é uma plataforma de avaliação, sugestão e classificação musical.">
     <link rel="icon" type="image/x-icon" href="img/logo/lifter.svg">
 
     <title inertia>{{ config('app.name', 'Lifter') }}</title>

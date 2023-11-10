@@ -26,46 +26,49 @@ function Lifter() {
       </div>
       {show === 'about' && (
         <div className="flex">
-          <div>
-            <h1 className="text-4xl">O que é LIFTER?</h1>
-            <p className="">
-              Lifter đe uma plataforma de avaliačžao, sugestžao e classificačžao
-              musical. A Lifter permite que seja o pđublico a criar e a promover
-              as tendŽencias que possam se manter no mercado.
-            </p>
+          <div className="my-1 w-full text-base text-black   bg-[#fff] rounded relative flex flex-col gap-1 p-2 shadow">
+            <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
+              Mais sobre a Lifter.
+            </h1>
             <p>
-              Lifter đe um ponto de entrada para novas mđusicas e uma ponte que
-              liga os mđusicos Đa audiŽencia, somos uma comunidade engajada em
-              promover boa mđusica, partilhar emočžoes atravđes dela.
+              Lifter đe uma plataforma de avaliação, sugestão e classificação
+              musical. A Lifter permite que seja o público a criar e a promover
+              as tendências que possam se manter no mercado.
             </p>
           </div>
-          <div>
-            <h1 className="text-4xl">Quem faz a comunidade?</h1>
-            <p className="">
-              A comunidade Lifter đe feita do pđublico amante de mđusicos, de
-              artistas e de profissionais do sector musical. Todos aqueles que
-              vivenciam emočžoes atravđes da mđusica sžao sempre bem-vindos.{' '}
-            </p>
+          <div className="my-1 w-full text-base text-black   bg-[#fff] rounded relative flex flex-col gap-1 p-2 shadow">
+            <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
+              Quem faz a comunidade?
+            </h1>
             <p>
-              Lifter đe um ponto de entrada para novas mđusicas e uma ponte que
-              liga os mđusicos Đa audiŽencia, somos uma comunidade engajada em
-              promover boa mđusica, partilhar emočžoes atravđes dela.
+              A comunidade Lifter đe feita do público amante de música, de
+              artistas e de profissionais do sector musical. Todos aqueles que
+              vivenciam emoções através da música sempre bem-vindos.{' '}
             </p>
+          </div>
+
+          <div>
+            <h1 className="text-4xl"></h1>
+            <p className=""></p>
           </div>
         </div>
       )}
       {show === 'join' && (
         <div className="flex">
-          <div>
-            <h1 className="text-4xl">Vagas</h1>
-            <p className="">
+          <div className="my-1 w-full text-base text-black   bg-[#fff] rounded relative flex flex-col gap-1 p-2 shadow">
+            <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
+              Vagas
+            </h1>
+            <p>
               Você pode juntar-se a equipa Lifter candidatando-se às vagas em
               aberto.
             </p>
           </div>
-          <div>
-            <h1 className="text-4xl">Outras formas</h1>
-            <p className="">
+          <div className="my-1 w-full text-base text-black   bg-[#fff] rounded relative flex flex-col gap-1 p-2 shadow">
+            <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
+              Outras formas
+            </h1>
+            <p>
               Caso queira juntar-se de outra forma ou através de um projecto em
               mente, sinta-se livre em enviar um e-mail para{' '}
               <strong>join@lifter.net</strong> para a nossa equipa detalhando o
@@ -76,17 +79,21 @@ function Lifter() {
       )}
       {show === 'vagas' && (
         <div className="flex flex-col p-2 spce-y-5">
-          <div>
-            <h1 className="text-4xl">Gestor de Marketing e vendas</h1>
-            <p className="">
+          <div className="my-1 w-full text-base text-black   bg-[#fff] rounded relative flex flex-col gap-1 p-2 shadow">
+            <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
+              Gestor de Marketing e vendas
+            </h1>
+            <p>
               Procuramos por um profissional no sector de Marketing e vendas.
               Possuir experiência em Marketing Musical e/ou Digital pode ser um
               diferencial.
             </p>
           </div>
-          <div>
-            <h1 className="text-4xl">Programador</h1>
-            <p className="">
+          <div className="my-1 w-full text-base text-black   bg-[#fff] rounded relative flex flex-col gap-1 p-2 shadow">
+            <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
+              Programador
+            </h1>
+            <p>
               Procuramos um desenvolvedor Web e/ou Mobile para integrar o nosso
               time.
             </p>

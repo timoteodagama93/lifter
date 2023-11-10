@@ -58,7 +58,7 @@ function SongCard({
       </div>
 
       <div className="flex flex-col">
-        <p className="font-semibold text-lg  truncate">
+        <p className="font-semibold text-lg  truncate ">
           <Link href={`/song-details/${song?.id}`}>{song.title}</Link>
         </p>
         <p className="text-sm truncate  mt-1">

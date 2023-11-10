@@ -13,8 +13,8 @@ import AddSongCover from './AddSongCover';
 import ButtonWraper from '@/Components/Button';
 
 export default function ShowMusics({ artist }) {
-  const [songs, setsongs] = useState([]);
   const [pagina, setPagina] = useState(<h1>Gerencie suas músicas aqui!</h1>);
+  const [songs, setsongs] = useState([]);
   function getSongs() {
     axios.post('/get-artist-songs', artist).then(response => {
       console.log('ARTIST SONGS:');

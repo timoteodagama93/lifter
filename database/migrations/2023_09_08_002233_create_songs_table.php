@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('genre');
             $table->string('artist');
             $table->string('gravadora')->nullable();
+            $table->boolean('destaque')->default(false);
+            $table->boolean('active')->default(false);
             $table->string('mime_type');
             $table->string('extension');
             $table->string('participacoes')->nullable();
@@ -26,6 +28,7 @@ return new class extends Migration
             $table->string('url');
             $table->string('path')->nullable();
             $table->integer('stars')->default(0);
+            $table->integer('plays')->default(0);
             $table->integer('downloads')->default(0);
             $table->integer('shares')->default(0);
             $table->timestamps();

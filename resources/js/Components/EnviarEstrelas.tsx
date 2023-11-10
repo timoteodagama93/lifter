@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { songs } from '../../data/dummy';
 import { BiSave, BiStar } from 'react-icons/bi';
 
 import { BsStar, BsStarFill } from 'react-icons/bs';
@@ -51,7 +50,7 @@ function EnviarEstrelas({ song, wich_flex }) {
   useEffect(getUserValuation, []);
 
   return (
-    <div className="bg-[#2e2c2e30] text-white justify-center items-center flex flex-col relative">
+    <div className=" text-black justify-start items-center flex flex-col relative">
       <span className="text-xs animate-bounce">Avalie</span>
       <div className={`w-full justify-center items-center flex ${wich_flex}`}>
         {stars.map(stars => (

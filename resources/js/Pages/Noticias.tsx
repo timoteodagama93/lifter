@@ -16,7 +16,7 @@ import {
   BsImage,
   BsSearchHeart,
 } from 'react-icons/bs';
-import { useForm } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import useTypedPage from '@/Hooks/useTypedPage';
 import useRoute from '@/Hooks/useRoute';
 import InputLabel from '@/Components/InputLabel';
@@ -39,7 +39,6 @@ import Comment from '@/Components/Comment';
 import AppLayout from '@/Layouts/AppLayout';
 
 function Noticias({}) {
-  const [openNewImagePost, setOpenNewImagePost] = useState(false);
   const page = useTypedPage();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -68,32 +67,17 @@ function Noticias({}) {
   const [detailsPost, setDetailsPost] = useState(false);
 
   return (
-    <AppLayout title='Notícias'>
+    <AppLayout title="Notícias">
       <div className="w-full h-full md:px-2 flex flex-col">
-        <div className=" flex flex-col-reverse md:flex-row  justify-center items-center gap-1">
-          <div className=" md:mb-2 w-full flex flex-row justify-between items-center ">
-            <div className="w-full md:px-2 flex flex-row">
-              <PulseButton
-                onClick={() => setOpenNewImagePost(true)}
-                className="pulsating-button  shadow shadow-white border flex flex-col text-4xl  justify-start items-center p- rounded "
-              >
-                <BiNews className="animate-bounce" />
-                <span className="text-xs">Publicar</span>
-              </PulseButton>
-            </div>
-            <FiltrarNoticias
-              setPosts={setPosts}
-              setLoading={setLoading}
-              setError={setError}
-              setFilter={setFilter}
-            />
-          </div>
+        <div className="w-full flex flex-col-reverse md:flex-row  justify-center items-center">
+          <FiltrarNoticias
+            setPosts={setPosts}
+            setLoading={setLoading}
+            setError={setError}
+            setFilter={setFilter}
+          />
         </div>
-        <NewPost
-          isOpen={openNewImagePost}
-          loadPosts={loadPosts}
-          onClose={setOpenNewImagePost}
-        />
+
         {loading && <Loader title="Carregando Posts & Notícias" />}
         {error && <Error />}
         {!loading && !error && posts && (
@@ -120,21 +104,23 @@ function DisplayNew({ posts }) {
 
   const [comments, setComments] = useState([
     { text: 'Great post!' },
-    { text: 'I have a question about the second post.' },
+    {
+      text: 'I have a question about the second post. Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident veniam corrupti architecto nostrum nisi iusto, animi ad deserunt sed, accusamus aperiam minima suscipit eum numquam illo dolores inventore ex similique.',
+    },
   ]);
 
+  useEffect(() => {
+    if (postToComment) {
+      setSeeComments(true);
+    }
+  }, [postToComment]);
   return (
-    <>
-      {postToComment && seeComments && (
-        <div
-        style={{ transition: '1.5s' }}
-        className={`w-full h-full flex justify-center items-center absolute top-0 left-0 bg-[#4c88c4] ${
-          seeComments ? 'flex z-20' : 'hidden'
-        }`}
+    <div className="w-full h-full flex justify-center">
+      <Modal
+        isOpen={seeComments && postToComment ? true : false}
+        onClose={() => setSeeComments(false)}
       >
-        <div
-          className={`w-full md:w-[70%] h-full flex flex-col justify-center items-center`}
-        >
+        <div className="w-full h-full flex flex-col bg-[#4c88c4] ">
           <div className="w-full flex float-right justify-end">
             <button
               onClick={() => setSeeComments(false)}
@@ -143,198 +129,76 @@ function DisplayNew({ posts }) {
               <MdCloseFullscreen className="w-5 h-5 font-bold text-4xl" />
             </button>
           </div>
-          <div
-              className={`w-full md:w-[70%] h-full flex flex-col justify-center items-center`}
-            >
-              <div className="w-full flex justify-center">
-                <CartaoNoticia
-                  key={postToComment?.id}
-                  post={postToComment}
-                  setSeeComments={setSeeComments}
-                  setPostToComment={setPostToComment}
-                />
-              </div>
-              <CommentsSection
-                key={postToComment?.id}
-                item={postToComment}
-                itemType="discussion"
-              />
-              <div className="comments">
-                <h2>Comments</h2>
-                {comments.map((comment, index) => (
-                  <Comment
-                    key={index}
-                    comment={comment.text}
-                    user={''}
-                    text={comment.text}
+          <div className="w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg">
+            <div className="w-full  relative p-5">
+              <div className="flex w-full h-full flex-col relative">
+                <div
+                  className="w-full flex flex-row justify-between
+             items-center"
+                >
+                  <h2 className=" font-bold text-base md:text-4xl text-[#]">
+                    Preview
+                  </h2>
+                  <Link href="/videos">
+                    <p className="text-sm md:text-base cursor-pointer transform-effect p-2 text-white font-bold ">
+                      Ler publicação completa
+                    </p>
+                  </Link>
+                </div>
+                <div className="w-full relative flex flex-row px-5">
+                  <CartaoNoticia
+                    key={postToComment?.id}
+                    post={postToComment}
+                    setPostToComment={setPostToComment}
                   />
-                ))}
+                </div>
+              </div>
+            </div>
+            <div className="w-full p-5">
+              <div className="flex w-full h-full flex-col relative  ">
+                <div
+                  className="w-full h-[10%] flex flex-row justify-between
+             items-center"
+                >
+                  <h2 className=" font-bold text-base md:text-2xl text-[#]">
+                    Comentários
+                  </h2>
+                  <Link href="top-charts">
+                    <p className="text-sm md:text-base cursor-pointer">
+                      Ver mais
+                    </p>
+                  </Link>
+                </div>
+                <CommentsSection
+                  key={postToComment?.id}
+                  item={postToComment}
+                  itemType="news"
+                />
+                
               </div>
             </div>
           </div>
         </div>
-      )}
+      </Modal>
+
       <div className="w-full md:w-[60%] ">
         <div className="community-discussion">
           <div className="posts">
-            {posts.map((post) => (
+            {posts.map(post => (
               <CartaoNoticia
                 key={post.id}
                 post={post}
-                setSeeComments={setSeeComments}
                 setPostToComment={setPostToComment}
               />
             ))}
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
 export default Noticias;
-
-function NewPost({ isOpen, onClose, loadPosts }) {
-  const page = useTypedPage();
-  const route = useRoute();
-  const { data, setData, progress, post, errors } = useForm({
-    text: '',
-    community: 'musica',
-    file: null as File | null,
-  });
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
-  const photoRef = useRef<HTMLInputElement>(null);
-  function saveNewPost(e) {
-    e.preventDefault();
-    post('/post', {
-      onSuccess: () => {
-        loadPosts();
-        setData('text', '');
-        clearPhotoFileInput();
-      },
-      onFinish: () => {},
-    });
-  }
-  function selectNewPhoto() {
-    photoRef.current?.click();
-  }
-
-  function updatePhotoPreview() {
-    const photo = photoRef.current?.files?.[0];
-
-    if (!photo) {
-      return;
-    }
-
-    setData('file', photo);
-
-    const reader = new FileReader();
-
-    reader.onload = e => {
-      setPhotoPreview(e.target?.result as string);
-    };
-
-    reader.readAsDataURL(photo);
-  }
-  function clearPhotoFileInput() {
-    if (photoRef.current?.value) {
-      photoRef.current.value = '';
-      setData('file', null);
-    }
-  }
-
-  return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="w-full h-full flex flex-col text-xs justify-center bg-white border-[#2e2c2e] border shadow-lg shadow-black p-5 rounded-lg items-center">
-        <form
-          method="Post"
-          onSubmit={e => saveNewPost(e)}
-          className="w-full h-full justify-center items-center flex flex-col"
-          encType="multipart/form-data"
-        >
-          {photoPreview ? (
-            // <!-- New Profile Photo Preview -->
-            <div className="">
-              <span
-                className="block rounded-lg w-36 h-36 "
-                style={{
-                  backgroundSize: 'cover',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center center',
-                  backgroundImage: `url('${photoPreview}')`,
-                }}
-              ></span>
-            </div>
-          ) : (
-            ''
-          )}
-
-          {progress && (
-            <progress value={progress.percentage} max={100}>
-              {progress.percentage}%
-            </progress>
-          )}
-
-          <div className="col-span-6 sm:col-span-4">
-            {/* <!-- Profile Photo File Input --> */}
-            <input
-              type="file"
-              className="hidden"
-              ref={photoRef}
-              onChange={updatePhotoPreview}
-            />
-
-            <InputLabel htmlFor="file" value="Ficheiro" />
-
-            <SecondaryButton
-              className="m-2"
-              type="button"
-              onClick={selectNewPhoto}
-            >
-              Selecionar Ficheiro
-            </SecondaryButton>
-
-            <InputError message={errors.file} className="mt-2" />
-          </div>
-          <div>
-            <label>Escolha uma categoria</label>
-            <select
-              required
-              value={data.community}
-              onChange={e => setData('community', e.target.value)}
-              className="rounded"
-            >
-              <option value="musica">Universo musical</option>
-              <option value="gospel">Comunidade de Gospel</option>
-              <option value="figuras">Figuras públicas</option>
-              <option value="cinema">Universo Cinematográfico</option>
-              <option value="moda">Comunidade de Moda</option>
-              <option value="artes">Comunidade de Artes plásticas</option>
-            </select>
-            <InputError message={errors.community} className="mt-2" />
-          </div>
-
-          <textarea
-            value={data.text}
-            onChange={e => {
-              setData('text', e.currentTarget.value);
-            }}
-            required
-            maxLength={500}
-            minLength={5}
-            placeholder="Conte a história..."
-            className="w-full p-2 border border-[#2e2c2e] rounded shadow-sm"
-          ></textarea>
-          <InputError message={errors.text} className="mt-2" />
-          <button className="h-full text-2xl flex justify-center items-center gap-1 shadow-lg shadow-black rounded p-1  ">
-            <BiSend />
-            <span className="text-base">Partilhar poste</span>
-          </button>
-        </form>
-      </div>
-    </Modal>
-  );
-}
 
 function FiltrarNoticias({ setPosts, setLoading, setError, setFilter }) {
   function loadPostsByFilter(e) {
@@ -358,9 +222,9 @@ function FiltrarNoticias({ setPosts, setLoading, setError, setFilter }) {
       });
   }
   return (
-    <div className="flex justify-end w-full items-center gap-1 text-black ">
-      <label>Filtrar</label>
-      <select onChange={e => loadPostsByFilter(e)} className="rounded">
+    <div className="w-full flex justify-center items-center  text-black ">
+      <select onChange={e => loadPostsByFilter(e)} className="rounded-lg shadow-xl shadow-black">
+
         <option value="tudo">Tudo</option>
         <option value="lifter">Redação Lifter</option>
         <option value="gospel">Comunidade de Gospel</option>

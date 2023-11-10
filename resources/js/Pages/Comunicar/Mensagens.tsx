@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { BiDotsHorizontal, BiSearch } from 'react-icons/bi';
 import { BsCameraVideo, BsPencilSquare } from 'react-icons/bs';
 import { FaRandom } from 'react-icons/fa';
-import { chats_notifications, messages } from '../../../data/dummy';
 import { Link } from '@inertiajs/react';
 import { MdCall } from 'react-icons/md';
 import { useStateContext } from '@/contexts/PaginaActualContext';
@@ -12,6 +11,7 @@ import ChatItemList from '@/Components/ChatItemList';
 import ConversationReader from '@/Components/ConversationReader';
 
 function Mensagens() {
+  const chats_notifications = [];
   const [activar, setActivar] = useState('musicas');
   const { currentPage } = useStateContext();
   const { setHideSider } = useStateContext();

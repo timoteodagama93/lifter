@@ -1,39 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PostCard from '../Components/PostCard';
 import Comment from '../Components/Comment';
-import { artists } from '../../data/dummy';
 import CommentsSection from '../Components/CommentsSection';
 import { MdCloseFullscreen } from 'react-icons/md';
 import AppLayout from '@/Layouts/AppLayout';
+import { Link } from '@inertiajs/react';
+import Modal from '@/Components/Modal';
 
-const CommunityDiscussion = () => {
-  const [posts, setPosts] = useState([
-    {
-      title: 'First Post',
-      content:
-        'This is the first post. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam sequi, beatae enim itaque sint cum nihil ea reprehenderit expedita, laborum modi! Praesentium, laborum ex magnam commodi minima quas ducimus unde. ',
-      imageUrl: artists[0].images.artistImage,
-      created_at: 20 / 10 / 2023,
-    },
-    {
-      title: 'Second Post',
-      content: 'Another post for discussion.',
-      imageUrl: artists[1].images.artistImage,
-      created_at: 20 / 10 / 2023,
-    },
-    {
-      title: ' Post',
-      content: 'Another post for discussion.',
-      imageUrl: artists[2].images.artistImage,
-      created_at: 20 / 10 / 2023,
-    },
-    {
-      title: 'Other Post',
-      content: 'Another post for discussion.',
-      imageUrl: artists[3].images.artistImage,
-      created_at: 20 / 10 / 2023,
-    },
-  ]);
+const CommunityDiscussion = ({posts}) => {
+
 
   const [comments, setComments] = useState([
     { text: 'Great post!' },
@@ -42,67 +17,110 @@ const CommunityDiscussion = () => {
 
   const [seeComments, setSeeComments] = useState(false);
   const [postToComment, setPostToComment] = useState(null);
-
+  useEffect(() => {
+    if (postToComment) {
+      setSeeComments(true);
+    }
+  }, [postToComment]);
   return (
     <AppLayout title="Comunidade">
       <div className="w-full h-full flex flex-col">
-        {postToComment && seeComments && (
-          <div
-            style={{ transition: '1.5s' }}
-            className={`w-full h-full  z-20 justify-center items-center absolute top-0 left-0 bg-[#4c88c4] ${
-              seeComments ? 'flex ' : 'hidden'
-            }`}
-          >
-            <div
-              className={`w-full md:w-[70%] h-full flex flex-col justify-center items-center`}
-            >
-              <div className="w-full flex float-right justify-end">
-                <button
-                  onClick={() => setSeeComments(false)}
-                  className="p-5 transform-effect w-fit right-1 text-black"
-                >
-                  <MdCloseFullscreen className="w-5 h-5 font-bold text-4xl" />
-                </button>
-              </div>
-              <div
-                className={`w-full md:w-[70%] h-full flex flex-col justify-center items-center`}
+        <Modal
+          isOpen={seeComments && postToComment ? true : false}
+          onClose={() => setSeeComments(false)}
+        >
+          <div className="w-full h-full flex flex-col bg-[#4c88c4] ">
+            <div className="w-full flex float-right justify-end">
+              <button
+                onClick={() => setSeeComments(false)}
+                className="p-5 transform-effect w-fit right-1 text-black"
               >
-                <div className="w-full flex justify-center">
-                  <PostCard
-                    key={postToComment.id}
-                    post={postToComment}
-                    setSeeComments={setSeeComments}
-                    setPostToComment={setPostToComment}
-                  />
-                </div>
-                <CommentsSection
-                  key={postToComment?.id}
-                  item={postToComment}
-                  itemType="discussion"
-                />
-                <div className="comments">
-                  <h2>Comments</h2>
-                  {comments.map((comment, index) => (
-                    <Comment
-                      key={index}
-                      comment={comment.text}
-                      user={''}
-                      text={comment.text}
+                <MdCloseFullscreen className="w-5 h-5 font-bold text-4xl" />
+              </button>
+            </div>
+            <div className="w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg">
+              <div className="w-full  relative p-5">
+                <div className="flex w-full h-full flex-col relative">
+                  <div
+                    className="w-full flex flex-row justify-between
+             items-center"
+                  >
+                    <h2 className=" font-bold text-base md:text-4xl text-[#]">
+                      Preview
+                    </h2>
+                    <Link href="/videos">
+                      <p className="text-sm md:text-base cursor-pointer transform-effect p-2 text-white font-bold ">
+                        Publicar discussão
+                      </p>
+                    </Link>
+                  </div>
+                  <div className="w-full relative flex flex-row">
+                    <PostCard
+                      className="w-full h-full"
+                      imgClassName="w-full h-full"
+                      key={postToComment?.id}
+                      post={postToComment}
+                      setPostToComment={setPostToComment}
                     />
-                  ))}
+                  </div>
+                </div>
+              </div>
+              <div className="w-full p-5">
+                <div className="flex w-full h-full flex-col relative  ">
+                  <div
+                    className="w-full h-[10%] flex flex-row justify-between
+             items-center"
+                  >
+                    <h2 className=" font-bold text-base md:text-2xl text-[#]">
+                      Comentários
+                    </h2>
+                    <Link href="top-charts">
+                      <p className="text-sm md:text-base cursor-pointer">
+                        Ver mais
+                      </p>
+                    </Link>
+                  </div>
+                  <CommentsSection
+                    key={postToComment?.id}
+                    item={postToComment}
+                    itemType="discussion"
+                  />
+                  <div className="w-full h-[90%] overflow-y-auto relative flex flex-col gap-5 p-5">
+                    <p className="text-justify p-5  transform-effect">
+                      Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                      Libero, pariatur? Facilis et, incidunt culpa minima fuga
+                      dolores, aspernatur nobis accusantium beatae debitis
+                      officiis repellendus placeat earum ipsam repellat sunt
+                      labore?
+                    </p>
+                    <p className="text-justify p-2 transform-effect">
+                      Lorem ipsum dolor sit amet consectetur?
+                    </p>
+
+                    <div className="comments">
+                      <h2>Comments</h2>
+                      {comments.map((comment, index) => (
+                        <Comment
+                          key={index}
+                          comment={comment.text}
+                          user={''}
+                          text={comment.text}
+                        />
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        )}
+        </Modal>
         <div className="w-full md:w-[50%] ">
           <div className="community-discussion">
             <div className="posts">
-              {posts.map((post, index) => (
+              {posts?.map((post) => (
                 <PostCard
                   key={post.title}
                   post={post}
-                  setSeeComments={setSeeComments}
                   setPostToComment={setPostToComment}
                 />
               ))}

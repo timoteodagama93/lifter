@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { BiDotsHorizontal, BiSearch } from 'react-icons/bi';
 import { BsCameraVideo, BsPencilSquare } from 'react-icons/bs';
 import { FaRandom } from 'react-icons/fa';
-import { chats_notifications, messages } from '../../../data/dummy';
 import { Link } from '@inertiajs/react';
 import { MdCall } from 'react-icons/md';
 import { useStateContext } from '@/contexts/PaginaActualContext';
@@ -15,6 +14,7 @@ function Comunicar() {
   const [activar, setActivar] = useState('musicas');
   const { currentPage } = useStateContext();
   const { setHideSider } = useStateContext();
+  const chats_notifications = [];
   //TODO: How to hide and show the sider -> setHideSider(true);
 
   return (

@@ -1,7 +1,6 @@
 import React from 'react';
 import AppLayout from '@/Layouts/AppLayout';
 import route from 'ziggy-js';
-import { songs } from '../../data/dummy';
 import { useDispatch, useSelector } from 'react-redux';
 import { DetailsHeader, Error, Loader, RelatedSongs } from '@/Components';
 import {

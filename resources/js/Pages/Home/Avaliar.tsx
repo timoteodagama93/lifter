@@ -10,7 +10,7 @@ import 'swiper/css/thumbs';
 //import './stylesGalery.css';
 
 // import required modules
-import InteracoesMusical from '@/Components/InteracoesMusical';
+import Interagir from '@/Components/Interagir';
 import AppLayout from '@/Layouts/AppLayout';
 import AudioPlayer from '@/Components/AudioPlayer';
 import VideoPlayer from '@/Components/VideoPlayer';

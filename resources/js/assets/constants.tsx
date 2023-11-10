@@ -10,6 +10,7 @@ import {
 } from 'react-icons/hi';
 import { FaCog, FaCogs, FaHandshake, FaNewspaper } from 'react-icons/fa';
 import {
+  MdBusinessCenter,
   MdExplore,
   MdLiveTv,
   MdMessage,
@@ -18,8 +19,19 @@ import {
 } from 'react-icons/md';
 import { GiTrophyCup } from 'react-icons/gi';
 import { BsInfoCircle, BsStars, BsTrophy } from 'react-icons/bs';
-import { BiHome, BiLibrary, BiMicrophone, BiSearch, BiUserVoice } from 'react-icons/bi';
-import { RiContactsBook2Fill, RiProfileLine, RiTeamLine, RiUserStarFill } from 'react-icons/ri';
+import {
+  BiHome,
+  BiLibrary,
+  BiMicrophone,
+  BiSearch,
+  BiUserVoice,
+} from 'react-icons/bi';
+import {
+  RiContactsBook2Fill,
+  RiProfileLine,
+  RiTeamLine,
+  RiUserStarFill,
+} from 'react-icons/ri';
 import React from 'react';
 
 /**
@@ -166,7 +178,7 @@ export const links = [
     href: '/',
     icon: BiHome,
   },
- 
+
   {
     name: 'Liver TV',
     href: '/livertv',
@@ -179,13 +191,13 @@ export const links = [
   },
   {
     name: 'Artistas',
-    href: '/ranking',
+    href: '/artistas',
     icon: RiUserStarFill,
   },
   {
-    name: 'Avaliações',
-    href: '/concursos',
-    icon: BsStars,
+    name: 'Comunidade',
+    href: '/comunidade',
+    icon: HiUserGroup,
   },
   {
     name: 'Descobrir',
@@ -193,16 +205,22 @@ export const links = [
     icon: MdOutlineExplore,
   },
   {
+    name: 'Serviços',
+    href: '/services',
+    icon: MdBusinessCenter,
+  },
+  /*{
     name: 'Configurações',
-    href: '/noticias',
+    href: '/configuracoes',
     icon: FaCog,
   },
   {
     name: 'Políticas',
-    href: '/noticias',
+    href: '/politicas',
     icon: FaHandshake,
   },
-/**
+  */
+  /**
   {
     name: 'Imediações',
     href: '/imediacoes',
@@ -232,3 +250,15 @@ export const zela_orange = '#d17734';
 export const zela_green = '#6ba976';
 export const zela_blue = '#4c88c4';
 export const zela_bg_green = '#377377';
+
+export const generos = [
+  { title: 'Kuduro', value: 'KUDURO' },
+  { title: 'Getto Zouk', value: 'Getto_Zouk' },
+  { title: 'Pop', value: 'POP' },
+  { title: 'Hip-Hop', value: 'HIP_HOP_RAP' },
+  { title: 'Semba', value: 'SEMBA' },
+  { title: 'Kizomba', value: 'KIZOMBA' },
+  { title: 'Naija', value: 'NAIJA' },
+  { title: 'Zouk', value: 'ZOUK' },
+  { title: 'Afro-House', value: 'AFRO_HOUSE' },
+];

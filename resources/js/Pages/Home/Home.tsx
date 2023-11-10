@@ -20,22 +20,20 @@ import Destaques from './Destaques';
 import AppLayout from '@/Layouts/AppLayout';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import Avaliar from './Avaliar';
-import { LiveTV } from './';
-import { BiHome, BiLike } from 'react-icons/bi';
-import { BsNewspaper, BsTrophy } from 'react-icons/bs';
+import { Lifter } from './';
+import { BiHome } from 'react-icons/bi';
+import { BsTrophy } from 'react-icons/bs';
 import { FaMusic } from 'react-icons/fa';
 import Sobre from '../Concursos/Sobre';
-import Container from '@/Layouts/Container';
-import { MdLiveTv } from 'react-icons/md';
-import { HiUserGroup } from 'react-icons/hi';
-import { GrUserExpert } from 'react-icons/gr';
-import CommunityDiscussion from '@/Pages/CommunityDiscussion';
-import { useGetSongsQuery, useGetVideosQuery } from '@/redux/services/coreApi';
+import {
+  useGetDestaqueSongsQuery,
+  useGetDestaqueVideosQuery,
+} from '@/redux/services/coreApi';
 import { useSelector } from 'react-redux';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Navigation } from 'swiper/modules';
 import { SongCard } from '@/Components';
-import VideoCard from '@/Components/VideoCard';
+import VideoCardGrelha from '@/Components/VideoCardGrelha';
 
 interface Props {
   pagina: string;
@@ -67,14 +65,14 @@ export default function Home({ posts }: Props) {
   const [sidebarList, setSidebarList] = useState(<></>);
 
   useEffect(setDefaultPage, []);
-  const { data: songs, isFetching, error } = useGetSongsQuery('/get-songs');
+  const { data: songs, isFetching, error } = useGetDestaqueSongsQuery('');
   const { activeSong, isPlaying } = useSelector(state => state.player);
 
   const {
     data: videos,
     isFetching: fetchV,
     error: errorV,
-  } = useGetVideosQuery('/get-videos');
+  } = useGetDestaqueVideosQuery('');
   const { activeVideo, isPlayingVideo } = useSelector(state => state.player);
 
   return (
@@ -169,7 +167,7 @@ export default function Home({ posts }: Props) {
                 <h2 className=" font-bold text-base md:text-4xl text-[#]">
                   Vídeos em Destaques{' '}
                 </h2>
-                <Link href="/videos">
+                <Link href="/video">
                   <p className="text-sm md:text-base cursor-pointer">
                     Ver mais
                   </p>
@@ -196,7 +194,7 @@ export default function Home({ posts }: Props) {
                 >
                   {videos?.map((video, i) => (
                     <SwiperSlide key={video.id + video.id + i}>
-                      <VideoCard
+                      <VideoCardGrelha
                         w="w-full"
                         video={video}
                         i={i}
@@ -226,7 +224,7 @@ export default function Home({ posts }: Props) {
                 <h2 className=" font-bold text-base md:text-4xl text-[#]">
                   Músicas em Destaques{' '}
                 </h2>
-                <Link href="top-charts">
+                <Link href="musicas">
                   <p className="text-sm md:text-base cursor-pointer">
                     Ver mais
                   </p>
@@ -274,7 +272,7 @@ export default function Home({ posts }: Props) {
               </h1>
             </div>
           )}
-          <div className="flex w-full h-full flex-col relative  ">
+          <div className="flex w-full h-full flex-col relative  p-5 shadow-inner shadow-black my-5">
             <div
               className="w-full flex flex-row justify-between
              items-center"
@@ -282,24 +280,115 @@ export default function Home({ posts }: Props) {
               <h2 className=" font-bold text-base md:text-4xl text-[#]">
                 Sobre a Lifter{' '}
               </h2>
-              <Link href="top-charts">
-                <p className="text-sm md:text-base cursor-pointer">
-                  Saiba mais...
+              <a target="_blank" href={route('policy.show')}>
+                <p className="text-base cursor-pointer p-2 transform-effect">
+                  Políticas de privacidades
                 </p>
-              </Link>
+              </a>
             </div>
-            <div className="w-full relative flex flex-col gap-1">
-              <h1 className="text-xl">
+            <div className="my-1 w-full text-base text-black   bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
+              <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
                 Lifter é uma plataforma de avaliação, sugestão e classificação
                 musical.
               </h1>
               <p>
-                Com isso queremos dizer que a Lifter existe para criar conexões
-                através da partilha da paixão individual, do talento querendo
-                emergir e do bom gosto musical.
+                Lifter existe para criar conexões através da partilha da paixão
+                individual, do talento querendo emergir e do bom gosto musical.
+              </p>
+            </div>
+            <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
+              <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
+                Missão.
+              </h1>
+              <p>
+                <ul>
+                  <ol className="list-decimal">
+                    1. Valorizar artistas e culturas;
+                  </ol>
+                  <ol className="list-decimal">
+                    2. Originar emoções positivas nas pessoas através da música;
+                  </ol>
+                  <ol className="list-decimal">
+                    2. Conectar artistas e o público amante de boa música
+                    através da partilha.
+                  </ol>
+                </ul>
               </p>
             </div>
           </div>
+          <div className="flex w-full h-full flex-col relative p-5 shadow-inner shadow-black  ">
+            <div
+              className="w-full flex flex-row justify-between
+             items-center"
+            >
+              <h2 className=" font-bold text-base md:text-4xl text-[#]">
+                Core Business{' '}
+              </h2>
+              <Link href="/services">
+                <p className="text-base cursor-pointer transform-effect p-2 ">
+                  Veja todos os serviços
+                </p>
+              </Link>
+            </div>
+            <div className="my-1 w-full text-base text-black   bg-[#fff] rounded relative flex flex-col gap-1 p-2 shadow">
+              <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
+                Marketing e Publicidade.
+              </h1>
+              <p>
+                A Lifter é uma resposta a necessidade de conectar-se pessoas e
+                produtos que vai muito além de simplesmente querer-se vender uma
+                mercadoria para uma pessoas sem entender-se as suas
+                necessidades. Actuamos em Marketing pensando nas dores de cabeça
+                local e desenvolvemos as soluções que se precisem. Finalmente
+                através da publicidade levamos ao seu conhecimento soluções que
+                resolvem e acabam com as necessidades.
+              </p>
+            </div>
+            <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-2 shadow">
+              <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
+                Marketing Musical
+              </h1>
+              <p>
+                O Marketing Musical é nosso principal foco, isso nos permite
+                pensar em formas de conectar as pessoas e os artistas de modos
+                que músicas se tornem emoções e as emoções experiências que
+                mudem seu estado mental e de espírito e sua qualidade de vida.
+              </p>
+            </div>
+            <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-2 shadow">
+              <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
+                Organização de feiras, congressos e eventos
+              </h1>
+              <p>
+                Nosso lema é "CRIAR CONEXÕES ATRAVÉS DA PARTILHA", através de
+                nossos eventos procuramos criar um ambiente de networking e
+                colaboração que visam mudar a visão dos participantes.
+              </p>
+            </div>
+            <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-2 shadow">
+              <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
+                Estudos de mercado e Sondagens{' '}
+              </h1>
+              <p>
+                Condução de estudos de mercado e sondagens através de feedbacks
+                do público com o objectivo de mensurar diferentes fenomenos
+                sociais, culturais e económicos.
+              </p>
+            </div>
+            <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-2 shadow">
+              <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
+                Formação Profissional
+              </h1>
+              <p>
+                Nossas formações são um complemento aos nossos objectivos de
+                impactar as comunidades locais. Como parte de nossa missão
+                queremos que os artísticas e as comunidades sejam cada vez mais
+                auto-suficientes e possam contribuir para o crescimento cultural
+                local e não só.
+              </p>
+            </div>
+          </div>
+          <Lifter />
         </div>
       </div>
     </AppLayout>

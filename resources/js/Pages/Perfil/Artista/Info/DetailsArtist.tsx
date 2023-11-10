@@ -7,9 +7,18 @@ import SectionBorder from '@/Components/SectionBorder';
 import TextInput from '@/Components/TextInput';
 import { Link, useForm } from '@inertiajs/react';
 import axios from 'axios';
-import { BiEdit, BiPhotoAlbum, BiUpload, BiUserVoice } from 'react-icons/bi';
-import { BsEye } from 'react-icons/bs';
-import { MdOutlineAppRegistration } from 'react-icons/md';
+import {
+  BiEdit,
+  BiInfoCircle,
+  BiMessage,
+  BiNote,
+  BiPhotoAlbum,
+  BiStar,
+  BiUpload,
+  BiUserVoice,
+} from 'react-icons/bi';
+import { BsEye, BsStars } from 'react-icons/bs';
+import { MdMusicNote, MdOutlineAppRegistration, MdPhoto } from 'react-icons/md';
 
 import React, { useRef, useState } from 'react';
 import useTypedPage from '@/Hooks/useTypedPage';
@@ -18,6 +27,10 @@ import AddSong from '@/Pages/Perfil/Artista/Song/AddSong';
 import EditArtist from './EditArtist';
 import { HiPhotograph } from 'react-icons/hi';
 import ButtonWraper from '@/Components/Button';
+import { ShowMusics } from '../Song';
+import { GrAnnounce } from 'react-icons/gr';
+import ArtistSongsFeedbacks from '../ArtistSongsFeedbacks/ArtistSongsFeedbacks';
+import Marketing from '../Marketing';
 
 function DetailsArtist({ artist }) {
   const [uploadCover, setUploadCover] = useState(false);
@@ -31,10 +44,7 @@ function DetailsArtist({ artist }) {
       if (songs.length <= 0) {
         setPagina(
           <>
-            <h1 className="text-xl px-5">
-              Você ainda não registrou-se como artista. Nem registrou qualquer
-              músico sob-sua tutela.{' '}
-            </h1>
+            <h1 className="text-xl px-5">Não adicionou músicas ou músicos. </h1>
             <SectionBorder />
             {all_songs.map(song => (
               <>
@@ -80,40 +90,115 @@ function DetailsArtist({ artist }) {
   }
 
   return (
-    <div className="relative w-full h-full flex flex-col md:flex-row">
-      <div className="w-full md:w-1/3 p-2 gap-2 flex border flex-row md:flex-col rounded-lg shadow-lg pb-1 justify-start">
-        <ButtonWraper className="w-full">
+    <>
+      <div
+        className="relative w-full flex-col rounded-lg shadow-lg shadow-black p-5 justify-center items-center mb-5 hidden"
+        style={{
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center center',
+          backgroundImage: `url(${artist?.url_cover})`,
+        }}
+      >
+        <div className="w-20 h-20 m-2 flex relative">
+          <img
+            src={artist?.url_cover}
+            className=" rounded-full w-full h-full border border-black transform-effect "
+          />
+          <ButtonWraper className="absolute bottom-1 right-1  ">
+            <button className="">
+              <MdPhoto className="w-2 h-2" />
+            </button>
+          </ButtonWraper>
+        </div>
+        <div className="w-full flex flex-col justify-center items-center">
+          <h2 className="text-xl md:text-2xl text-bold">{artist?.name}</h2>
+          <div className="w-full flex flex-row justify-center items-center">
+            <span className="p-1 shadow-sm shadow-white gap-1 mb-2 justify-center items-center mr-2 flex">
+              {' '}
+              <BiNote /> 0{' '}
+            </span>
+            <span className="p-1 shadow-sm shadow-white gap-1 mb-2 justify-center items-center mr-2 flex">
+              {' '}
+              <BiMessage /> 0{' '}
+            </span>
+            <span className="p-1 shadow-sm shadow-white gap-1 mb-2 justify-center items-center flex">
+              {' '}
+              <BiStar /> 0{' '}
+            </span>
+          </div>
+        </div>
+
+        <div className="w-full flex justify-center gap-2">
           <button
-            onClick={() => setPagina(<AboutArtist artist={artist} />)}
-            className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
+            onClick={() => setPagina(<DetailsArtist artist={artist} />)}
+            className="transform-effect border border-b-4 hover:bg-[#2e2c2e] border-[#4c88c4] rounded text-xs items-center justify-center flex flex-col md:flex-row p-1"
           >
-            <MdOutlineAppRegistration className="text-xl mr-3" />
-            Detalhes
+            <BiInfoCircle className="text-xl mr-1" />
+            Informações
           </button>
-        </ButtonWraper>
-        <ButtonWraper className="w-full">
+          <button
+            onClick={() => setPagina(<Marketing artist={artist} />)}
+            className="transform-effect border border-b-4 hover:bg-[#2e2c2e]   border-[#4c88c4] rounded text-xs items-center justify-center flex flex-col md:flex-row p-1"
+          >
+            <GrAnnounce className="text-xl mr-1" />
+            Marketing
+          </button>
           <button
             onClick={() =>
-              setPagina(<EditArtist artist={artist} setPagina={setPagina} />)
+              setPagina(
+                <ArtistSongsFeedbacks artist={artist} setPagina={setPagina} />,
+              )
             }
-            className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
+            className="transform-effect border border-b-4 hover:bg-[#2e2c2e]  border-[#4c88c4] rounded text-xs items-center justify-center flex flex-col md:flex-row p-1"
           >
-            <BiUpload className="text-xl mr-3" />
-            Editar Perfil
+            <BsStars className="text-xl mr-1" />
+            Avaliações
           </button>
-        </ButtonWraper>
-        <ButtonWraper className="w-full">
           <button
-            onClick={() => setPagina(<AddArtistCover artist={artist} />)}
-            className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
+            onClick={() => setPagina(<ShowMusics artist={artist} />)}
+            className="transform-effect border border-b-4 hover:bg-[#2e2c2e]  border-[#4c88c4] rounded text-xs items-center justify-center flex flex-col md:flex-row p-1"
           >
-            <HiPhotograph className="mr-3 text-xl" />
-            Adicionar capa
+            <MdMusicNote className="text-xl mr-1" />
+            Músicas
           </button>
-        </ButtonWraper>
+        </div>
       </div>
-      <div className="w-full md:w-2/3">{pagina}</div>
-    </div>
+      <div className="relative w-full h-full flex flex-col md:flex-row">
+        <div className="w-full md:w-1/3 p-2 gap-2 flex border flex-row md:flex-col rounded-lg shadow-lg pb-1 justify-start">
+          <ButtonWraper className="w-full">
+            <button
+              onClick={() => setPagina(<AboutArtist artist={artist} />)}
+              className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
+            >
+              <MdOutlineAppRegistration className="text-xl mr-3" />
+              Detalhes
+            </button>
+          </ButtonWraper>
+          <ButtonWraper className="w-full">
+            <button
+              onClick={() =>
+                setPagina(<EditArtist artist={artist} setPagina={setPagina} />)
+              }
+              className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
+            >
+              <BiUpload className="text-xl mr-3" />
+              Editar Perfil
+            </button>
+          </ButtonWraper>
+          <ButtonWraper className="w-full">
+            <button
+              onClick={() => setPagina(<AddArtistCover artist={artist} />)}
+              className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
+            >
+              <HiPhotograph className="mr-3 text-xl" />
+              Adicionar capa
+            </button>
+          </ButtonWraper>
+        </div>
+        <div className="w-full md:w-2/3">{pagina}</div>
+      </div>
+    </>
   );
 }
 

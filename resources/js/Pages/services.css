@@ -1,0 +1,62 @@
+/* ServicesPage.css */
+
+.services-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .service {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .service h2 {
+    font-size: 24px;
+    margin: 0;
+    color: #333;
+  }
+  
+  .service p {
+    font-size: 16px;
+    margin: 10px 0;
+  }
+  
+  /* Estilize mais seções ou elementos conforme necessário. */
+  
+  /* ServicesPage.css */
+.services-page {
+    text-align: center;
+    margin: 20px;
+  }
+  
+  .service {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .request-button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+  
+  .request-button:hover {
+    background-color: #e74c3c;
+  }
+  
+  /* Customize the styles as needed. */
+  

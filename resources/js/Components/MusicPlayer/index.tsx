@@ -5,18 +5,31 @@ import {
   nextSong,
   prevSong,
   playPause,
+  setFullScreenPlayer,
 } from '../../redux/features/playerSlice';
 import Controls from './Controls';
 import Player from './Player';
 import Seekbar from './Seekbar';
 import Track from './Track';
 import VolumeBar from './VolumeBar';
-import { BsStarFill, BsStar } from 'react-icons/bs';
+import { BsStarFill, BsStar, BsArrowUp } from 'react-icons/bs';
 import axios from 'axios';
+import { BiUpArrow, BiUpvote } from 'react-icons/bi';
+import {
+  MdArrowDropDown,
+  MdArrowDropUp,
+  MdOutlineArrowDropUp,
+} from 'react-icons/md';
 
 const MusicPlayer = () => {
-  const { activeSong, currentSongs, currentIndex, isActive, isPlaying } =
-    useSelector(state => state.player);
+  const {
+    activeSong,
+    currentSongs,
+    currentIndex,
+    isActive,
+    isPlaying,
+    isFullScreenPlayer,
+  } = useSelector(state => state.player);
   const [duration, setDuration] = useState(0);
   const [seekTime, setSeekTime] = useState(0);
   const [appTime, setAppTime] = useState(0);
@@ -101,6 +114,17 @@ const MusicPlayer = () => {
           activeSong={activeSong}
         />
         <div className="flex-1 flex flex-col items-center justify-center">
+        <Player
+            activeSong={activeSong}
+            volume={volume}
+            isPlaying={isPlaying}
+            seekTime={seekTime}
+            repeat={repeat}
+            //currentIndex={currentIndex}
+            onEnded={handleNextSong}
+            onTimeUpdate={event => setAppTime(event.target.currentTime)}
+            onLoadedData={event => setDuration(event.target.duration)}
+          />
           <Controls
             isPlaying={isPlaying}
             repeat={repeat}
@@ -120,20 +144,22 @@ const MusicPlayer = () => {
             setSeekTime={setSeekTime}
             appTime={appTime}
           />
-          <Player
-            activeSong={activeSong}
-            volume={volume}
-            isPlaying={isPlaying}
-            seekTime={seekTime}
-            repeat={repeat}
-            //currentIndex={currentIndex}
-            onEnded={handleNextSong}
-            onTimeUpdate={event => setAppTime(event.target.currentTime)}
-            onLoadedData={event => setDuration(event.target.duration)}
-          />
+          
         </div>
 
-        <button></button>
+        <span>
+          {isFullScreenPlayer ? (
+            <MdArrowDropDown
+              className="w-10 h-10 transform-effect hover:cursor-pointer font-bold text-white"
+              onClick={() => dispatch(setFullScreenPlayer(false))}
+            />
+          ) : (
+            <MdArrowDropUp
+              className="w-10 h-10 transform-effect hover:cursor-pointer font-bold text-white"
+              onClick={() => dispatch(setFullScreenPlayer(true))}
+            />
+          )}
+        </span>
 
         <div className="hidden">
           <VolumeBar

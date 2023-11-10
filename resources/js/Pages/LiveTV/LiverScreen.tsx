@@ -27,7 +27,7 @@ function LiverScreen({
 
   return (
     <div
-      className={`flex flex-col ${w} p-4 bg-white/5 ng-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer shadow-lg border`}
+      className={`flex flex-col ${w} w-full h-full  p-4 bg-white/5 ng-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer shadow-lg border`}
     >
       <div className=" relative w-full h-full group">
         <div

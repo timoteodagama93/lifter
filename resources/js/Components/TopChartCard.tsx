@@ -10,6 +10,7 @@ import { HiHeart, HiStar } from 'react-icons/hi';
 import { BiStar } from 'react-icons/bi';
 import { AiOutlineLike } from 'react-icons/ai';
 import { smalLogo } from '../../img';
+import Interagir from './Interagir';
 
 function TopChartCard({ song, i, isPlaying, activeSong, songs }) {
   const dispatch = useDispatch();
@@ -35,13 +36,21 @@ function TopChartCard({ song, i, isPlaying, activeSong, songs }) {
           isAudio ? 'flex-row' : 'flex-col'
         } justify-between items-center`}
       >
-         {song.mime_type.includes('audio/') && song.cover && (
-          <img className="flex w-10 h-10 rounded-lg" alt={song.title} src={song.cover} />
+        {song.mime_type.includes('audio/') && song.cover && (
+          <img
+            className="flex w-10 h-10 rounded-lg"
+            alt={song.title}
+            src={song.cover}
+          />
         )}
         {song.mime_type.includes('audio/') && !song.cover && (
-          <img className="flex w-10 h-10 rounded-lg" alt={song.title} src={smalLogo} />
+          <img
+            className="flex w-10 h-10 rounded-lg"
+            alt={song.title}
+            src={smalLogo}
+          />
         )}
-        
+
         {song.mime_type.includes('video/') && (
           <div className="w-ful">
             <video controls>
@@ -53,28 +62,17 @@ function TopChartCard({ song, i, isPlaying, activeSong, songs }) {
             </video>
           </div>
         )}
-        <div className="flex-1 flex flex-col justify-center mx-1">
+        <div className="flex flex-col flex-1 justify-start md:mx-1 ">
           <Link href={`song-details/${song.id}`} className="">
-            <p className="text-sm md:text-xl font-bold "> {song.title} </p>
+            <p className="text-sm md:text-xl font-bold"> {song.title} </p>
           </Link>
           <Link href={`artists-details/${song.artist_id}`} className="">
             <p className="text-xs md:text-base text-"> {song.artist} </p>
           </Link>
         </div>
       </div>
-      <div className="flex flex-row mx-5">
-        <HiHeart
-          size={35}
-          className={`text-gray-300 cursor-pointer hover:text-red-300 `}
-        />
-        <HiStar
-          size={35}
-          className={`text-gray-300 cursor-pointer hover:text-red-300 `}
-        />
-        <AiOutlineLike
-          size={35}
-          className={`text-gray-300 cursor-pointer hover:text-red-300 `}
-        />
+      <div className="">
+        <Interagir song={song} />
       </div>
       {song.mime_type.includes('audio/') && (
         <PlayPause

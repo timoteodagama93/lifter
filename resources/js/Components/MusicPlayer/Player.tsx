@@ -41,15 +41,16 @@ const Player = ({
         />
       )}
       {activeSong.mime_type.includes('video/') && (
-        <video>
-          <source
+        <>
+          <video
             src={activeSong?.url}
             ref={ref}
             onEnded={onEnded}
             onTimeUpdate={onTimeUpdate}
             onLoadedData={onLoadedData}
+            className='w-14 h-14'
           />
-        </video>
+        </>
       )}
     </>
   );

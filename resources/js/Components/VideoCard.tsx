@@ -8,6 +8,8 @@ import {
 import { useDispatch } from 'react-redux';
 import PlayPauseVideo from './PlayPauseVideo.js';
 import VideoPlayer from './VideoPlayer/index.js';
+import { useStateContext } from '@/contexts/PaginaActualContext.js';
+import VideoShow from './PlayingVideo/Index.js';
 
 function VideoCard({
   video,
@@ -15,7 +17,7 @@ function VideoCard({
   activeVideo,
   isPlayingVideo,
   videos,
-  w = 'w-full lg:w-1/2',
+  w = 'w-full',
 }) {
   const dispatch = useDispatch();
 
@@ -30,16 +32,16 @@ function VideoCard({
 
   return (
     <div
-      className={`flex flex-col ${w} p-4 bg-white/5 ng-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer shadow-lg border`}
+      className={`flex flex-row gap-1 ${w} p-10 bg-white/5 ng-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer shadow-lg my-1  mx-10`}
     >
-      <div className=" relative w-full h-full group">
+      <div className=" relative w-1/2 h-full group">
         <div
           style={{ transition: '1s' }}
-          className={`absolute z-10 inset-0 justify-center items-center bg-black bg-opacity-50 group-hover:${
-            isPlayingVideo && activeVideo?.id === video.id ? 'flex' : 'flex'
+          className={`absolute z-10 inset-0 justify-center items-center bg-black bg-opacity-50 ${
+            isPlayingVideo && activeVideo?.id == video.id ? 'hidden' : 'flex'
           } ${
             activeVideo?.id === video.id
-              ? 'hidden'
+              ? 'flex'
               : ' flex bg-black bg-opacity-70'
           } `}
         >
@@ -51,21 +53,21 @@ function VideoCard({
             handlePause={handlePauseClick}
           />
         </div>
-        {
-          /*isPlayingVideo && activeVideo.id === video.id ? (
+        
+        {isPlayingVideo && activeVideo.id === video.id ? (
           <VideoPlayer />
-        ) :*/
-        }
+        ) : (
           <video className="w-full h-full">
             <source src={video.url} type={video.mime_type} />
           </video>
+        )}
       </div>
 
-      <div className="flex flex-col">
-        <p className="font-semibold text-lg  truncate">
+      <div className="w-1/2 flex flex-col justify-center ">
+        <p className="font-bold text-2xl  truncate">
           <Link href={`/song-details/${video?.id}`}>{video.title}</Link>
         </p>
-        <p className="text-sm truncate  mt-1">
+        <p className="text-xl truncate  mt-1">
           <Link
             href={
               video.artist
@@ -74,8 +76,11 @@ function VideoCard({
             }
           >
             {video.artist}{' '}
-            {!(video.participacoes === '') ? ' ft ' + video.participacoes : ''}
+            {video?.participacoes ? ' ft ' + video.participacoes : ''}
           </Link>
+        </p>
+        <p className="font-bold text-xs  truncate">
+          {' '} {video.genre}
         </p>
       </div>
     </div>

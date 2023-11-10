@@ -87,6 +87,18 @@ class PostController extends Controller
         );
         return response()->json($valuation);
     }
+    public function comment_on_post()
+    {
+        $valuation = Comment::create(
+            [
+                'user_id' => auth()->id(),
+                'post_id' => Request::get('post_id'),
+                'comment' => Request::get('comment'),
+                'public' => Request::get('public'),
+            ]
+        );
+        return response()->json($valuation);
+    }
 
      /**
      * Obtém os comentários de uma música

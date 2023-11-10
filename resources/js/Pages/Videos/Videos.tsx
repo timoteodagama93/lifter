@@ -1,85 +1,121 @@
+import React, { useEffect, useRef, useState } from 'react';
+import PlayPause from '../../Components/PlayPause';
+import { Link } from '@inertiajs/react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  useGetArtistsQuery,
+  useGetDestaqueVideosQuery,
+  useGetSongsQuery,
+  useGetVideosQuery,
+} from '@/redux/services/coreApi';
+import Loader from '../../Components/Loader';
+import Error from '../../Components/Error';
+import { playPause, setActiveSong } from '@/redux/features/playerSlice';
+import TopChartCard from '../../Components/TopChartCard';
 import AppLayout from '@/Layouts/AppLayout';
-import React, { useState } from 'react';
-import { generos, songs } from '../../../data/dummy';
-import SelectGenre from '@/Components/SelectGenre';
-import { FaRandom } from 'react-icons/fa';
-import CardVideo from '../../Components/CardVideo';
-import Galeria from '../../Components/Galeria';
-function Videos() {
-  const [activar, setActivar] = useState('todos');
+import Container from '@/Layouts/Container';
+import SongCard1 from '@/Components/SongCard1';
+import { SongCard } from '@/Components';
+import { EffectCube, FreeMode, Navigation } from 'swiper/modules';
+import VideoCard from '@/Components/VideoCard';
+
+// import Swiper core and required modules
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/pagination';
+import VideoCardGrelha from '@/Components/VideoCardGrelha';
+import { useStateContext } from '@/contexts/PaginaActualContext';
+import VideoShow from '@/Components/PlayingVideo/Index';
+
+function Videos({}) {
+  const { data: videos, isFetching, error } = useGetVideosQuery('/get-videos');
+  const {
+    data: videosDestaques,
+    isFetching: isGetingDes,
+    error: errorDest,
+  } = useGetDestaqueVideosQuery('');
+  const { activeVideo, isPlayingVideo } = useSelector(state => state.player);
+  if (isFetching) return <Loader title="Carregando músicas..." />;
+  if (error) return <Error />;
+
+  const { currentPage, setCurrentPage } = useStateContext();
+
   return (
-    <AppLayout title="Biblioteca de videos">
-      <div className="pb-1">
-        <div className="flex flex-col">
-          <div className="w-full hidden md:flex justify-between items-center sm:flex-row flex-col mt-0">
-            <h2 className="font-bold text-3xl text-white text-left">
-              Biblioteca de vídeos
+    <AppLayout title="Vídeos">
+      {' '}
+      <div className="w-full relative flex flex-row rounded">
+        <div className="w-full flex flex-col px-4 rounded-lg">
+          <div
+            className="w-full flex flex-row justify-between
+ items-center"
+          >
+            <h2 className=" font-bold text-base md:text-4xl text-[#]">
+              Destaques{' '}
             </h2>
-
-            <div className="justify-center items-center mx-5">
-              <button
-                className="w-auto justify-center items-center text-xl text-bold p-3"
-                onClick={() => setActivar('todos')}
-              >
-                Todos os vídeos
-                {activar === 'todos' ? (
-                  <div className="justify-center mx-auto mt-2 w-5 rounded-lg border-b-4 border-white" />
-                ) : (
-                  ''
-                )}
-              </button>
-              <button
-                className="text-xl text-bold p-3"
-                onClick={() => setActivar('clipes')}
-              >
-                Clipes musicais
-                {activar === 'clipes' ? (
-                  <div className="justify-center mx-auto mt-2 w-5 rounded-lg border-b-4 border-white" />
-                ) : (
-                  ''
-                )}
-              </button>
-              <button
-                className="text-xl text-bold p-3"
-                onClick={() => setActivar('recortes')}
-              >
-                Recortes
-                {activar === 'recortes' ? (
-                  <div className="justify-center mx-auto mt-2 w-5 rounded-lg border-b-4 border-white" />
-                ) : (
-                  ''
-                )}
-              </button>
-            </div>
-
-            <div className="w-auto">
-              <SelectGenre className="" />
-            </div>
+            <Link href="top-charts">
+              <p className="text-sm md:text-base cursor-pointer">Ver mais</p>
+            </Link>
           </div>
-
-          <div className="w-full h-10 hidden md:flex flex-row justify-between items-center text-white">
-            <button className="items-center flex shadow-sm rounded-sm bg-[#2e2c2e] text-white p-2">
-              <FaRandom />
-              <span className="ml-5">Ordem aleatória e reproduzir</span>
-            </button>
-            <span className="text-white">
-              Ordenar por:
-              <select className="m-0 p-0 ml-2 pl-1 h-8 bg-transparent">
-                <option>A - Z</option>
-                <option>Artista</option>
-                <option>Album</option>
-                <option>Ano de lançamento</option>
-              </select>
-            </span>
+          <div className="w-full relative flex flex-row">
+            <Swiper
+              loop={true}
+              spaceBetween={15}
+              navigation={true}
+              modules={[Navigation, EffectCube]}
+              effect=""
+              slidesPerView="auto"
+              centeredSlides
+              centeredSlidesBounds
+              className=" "
+            >
+              {videosDestaques?.map((video, i) => (
+                <SwiperSlide key={video.id + video.id}>
+                  <VideoCardGrelha
+                    w="w-full"
+                    video={video}
+                    i={i}
+                    key={video.id + i + video.id}
+                    activeVideo={activeVideo}
+                    isPlayingVideo={isPlayingVideo}
+                    videos={videos}
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
-
-          <div className="w-full mx-auto sm:px-6 lg:px-8">
-            <div className="w-full h-screen pb-32 flex flex-wrap m-2 dark:bg-gray-800 overflow-auto shadow-xl sm:rounded-lg ">
-              <Galeria nome_colecao='Vídeos' />
-            </div>
+          <div
+            className="w-full flex flex-row justify-between
+ items-center"
+          >
+            <h2 className=" font-bold text-base md:text-4xl text-[#]">
+              Ranking{' '}
+            </h2>
+            <Link href="top-charts">
+              <p className="text-sm md:text-base cursor-pointer">Ver mais</p>
+            </Link>
+          </div>
+          <div className="w-full relative flex flex-wrap ">
+            {videos?.map((video, i) => (
+              <VideoCard
+                videos={videos}
+                video={video}
+                isPlayingVideo={isPlayingVideo}
+                activeVideo={activeVideo}
+                i={i}
+                key={video.id}
+              />
+            ))}
           </div>
         </div>
-      </div>
+      </div>{' '}
     </AppLayout>
   );
 }

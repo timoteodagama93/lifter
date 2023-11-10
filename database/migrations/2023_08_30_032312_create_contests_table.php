@@ -21,12 +21,12 @@ return new class extends Migration
             $table->date('inicio_votacoes')->nullable();
             $table->date('termino_inscricoes')->nullable();
             $table->date('termino_votacoes')->nullable();
-            $table->date('total_premios')->nullable();
-            $table->date('tipo_premio')->nullable();
-            $table->date('lugar_1')->nullable();
-            $table->date('lugar_2')->nullable();
-            $table->date('lugar_3')->nullable();
-            $table->date('premios_extras')->nullable();
+            $table->bigInteger('total_premios')->nullable();
+            $table->string('tipo_premio')->nullable();
+            $table->string('lugar_1')->nullable();
+            $table->string('lugar_2')->nullable();
+            $table->string('lugar_3')->nullable();
+            $table->string('premios_extras')->nullable();
             $table->boolean('activo')->default(true);
             $table->string('estado')->default('PUBLICADO');
             $table->string('url_cover')->nullable();

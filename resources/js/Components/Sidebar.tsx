@@ -10,14 +10,12 @@ import { BsTrophy } from 'react-icons/bs';
 import { FaPray } from 'react-icons/fa';
 import UserAvatar from './UserAvatar';
 import { MdNotifications } from 'react-icons/md';
+import route from 'ziggy-js';
 
-interface Props {
-  
-}
+interface Props {}
 
-function Sidebar({  }) {
+function Sidebar({}) {
   const { openMobileMenu, setOpenMobileMenu } = useStateContext();
-
   const page = useTypedPage();
 
   return (
@@ -62,8 +60,12 @@ function Sidebar({  }) {
           openMobileMenu ? 'left-0' : '-left-full '
         }  `}
       >
-        <Link href="/" className='w-full object-contain flex justify-center'>
-          <img className="w-auto h-24 object-contain" src={smalLogo} alt="logo" />
+        <Link href="/" className="w-full object-contain flex justify-center">
+          <img
+            className="w-auto h-24 object-contain"
+            src={smalLogo}
+            alt="logo"
+          />
         </Link>
         <div className="w-full flex flex-row gap-1 justify-between items-center">
           <div className="w-full h full justify-center items-center flex">
@@ -74,15 +76,13 @@ function Sidebar({  }) {
             href="/comunicar"
             className="h-full flex flex-col justify-center items-center hover:"
           >
-            <MdNotifications className='w-7 h-7' />
-            
+            <MdNotifications className="w-7 h-7" />
           </Link>
           <Link
             href="/comunicar"
             className="h-full flex flex-col justify-center items-center hover:"
           >
-            <BiMessage  className='w-7 h-7' />
-            
+            <BiMessage className="w-7 h-7" />
           </Link>
         </div>
 
@@ -105,7 +105,6 @@ const Footer = () => {
 
 function Links({ links, setOpenMobileMenu }) {
   const { activeMenuItem, setActiveMenuItem } = useStateContext();
-
   return (
     <>
       <div className="mt-0">
@@ -116,14 +115,13 @@ function Links({ links, setOpenMobileMenu }) {
               key={item.name}
               className={`flex flex-row justify-start my-2 text-sm  hover:text-cyan-400
           ${
-            activeMenuItem === item.name
+            route().current()?.includes(item.href)
               ? 'border-l-4 border-[#4c88c4]  bg-[#2e2e2e] text-cyan-400 '
               : ' text-gray-400'
           }   items-center
           `}
               onClick={() => {
                 setOpenMobileMenu(false);
-                setActiveMenuItem(item.name);
               }}
             >
               <item.icon className="w-6 h-6 mr-2" />

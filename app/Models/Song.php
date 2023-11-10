@@ -29,8 +29,11 @@ class Song extends Model
         'participacoes',
         'letra',
         'stars',
+        'plays',
         'downloads',
         'shares',
+        'destaque',
+        'active',
     ];
 
     public function uniqueIds(): array

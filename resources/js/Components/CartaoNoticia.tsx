@@ -7,7 +7,7 @@ import axios from 'axios';
 import { FaComments } from 'react-icons/fa';
 import CommentsSection from './CommentsSection';
 
-const CartaoNoticia = ({ post, setSeeComments, setPostToComment }) => {
+const CartaoNoticia = ({ post, setPostToComment }) => {
   function Like(postId) {
     axios
       .post(`/post-like/${postId}`)
@@ -53,7 +53,6 @@ const CartaoNoticia = ({ post, setSeeComments, setPostToComment }) => {
           </button>
           <button
             onClick={() => {
-              setSeeComments(true);
               setPostToComment(post);
             }}
             className=" mt-1 p-2 flex gap-1 items-center transform-effect"

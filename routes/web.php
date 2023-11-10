@@ -9,8 +9,10 @@ use App\Http\Controllers\UploadController;
 use App\Http\Controllers\ValuationFeedbackCommentController;
 use App\Models\Artist;
 use App\Models\Contest;
+use App\Models\FestivalUser;
 use App\Models\Notification;
 use App\Models\Post;
+use App\Models\ServicesRequest;
 use App\Models\Song;
 use App\Models\User;
 use App\Models\Valuation;
@@ -43,39 +45,50 @@ Route::middleware([
     /**
      * ROUTAS PRINCIPAIS
      */
+    Route::post('/participar-ascensao', function () {
+        $user_id = auth()->id();
+        $as = Request::get('as');
+        $inserted = FestivalUser::updateOrCreate(['festival_id' => 1, 'user_id' => $user_id], ['as' => $as]);
+        return $inserted;
+    })->name('/participar-ascensao');
     Route::get('/', function () {
         return Inertia::render('Home/Home', [
             'songs' => DB::select('SELECT * FROM songs ORDER BY created_at'),
             'posts' => DB::select('SELECT * FROM posts ORDER BY created_at DESC')
         ]);
     })->name('/');
-    
+
     Route::get('/musicas', function () {
         return Inertia::render('Musicas/Musicas', []);
     })->name('musicas');
-    
+
     Route::get('/video', function () {
-        return Inertia::render('Videos', []);
+        return Inertia::render('Videos/Videos', []);
     })->name('video');
-    
+
     Route::get('/vozactiva', function () {
+        $vozactiva = DB::select('SELECT * FROM artists WHERE active =' . true);
+        if (sizeof($vozactiva) > 0)
+            return Inertia::render('VozActiva', [
+                'activeVoiceArtist' => $vozactiva[0]
+            ]);
         return Inertia::render('VozActiva', [
-            'activeVoiceArtist' => DB::select('SELECT * FROM artists WHERE active =' . true)[0]
+            'activeVoiceArtist' => []
         ]);
     })->name('vozactiva');
-    
+
     Route::get('/concursos', function () {
         return Inertia::render('Concursos/Concursos', [
             'contests' => Contest::all()
         ]);
     })->name('concursos');
-    
+
     Route::get('/comunidade', function () {
         return Inertia::render('CommunityDiscussion', [
             'contests' => Contest::all()
         ]);
     })->name('comunidade');
-    
+
     Route::get('/noticias', function () {
         return Inertia::render('Noticias', []);
     })->name('noticias');
@@ -84,11 +97,50 @@ Route::middleware([
     Route::get('/discover', function () {
         return Inertia::render('Discover', []);
     })->name('discover');
+
     Route::get('/livertv', function () {
         return Inertia::render('LiveTV/LiverTV', []);
     })->name('livertv');
-    
-    
+
+    Route::get('/artistas', function () {
+        return Inertia::render('Artistas/Artistas', ['artists' => DB::select("SELECT * FROM artists")]);
+    })->name('artistas');
+
+    Route::get('/avaliacoes', function () {
+        return Inertia::render('Avaliacoes/Avaliacoes', []);
+    })->name('avaliacoes');
+
+    Route::get('/ranking', function () {
+        return Inertia::render('Ranking', []);
+    })->name('ranking');
+
+    Route::get('/services', function () {
+        return Inertia::render('Services', []);
+    })->name('services');
+
+    Route::post('/request-services', function () {
+        $user_id = auth()->id();
+        $name = Request::input('name');
+        $service = Request::input('service');
+        $title = Request::input('title');
+        $phone = Request::input('contact');
+        $email = Request::input('email');
+        $problem = Request::input('problem');
+        ServicesRequest::create(
+            [
+                'user_id' => $user_id,
+                'service' => $service,
+                'name' => $name,
+                'title' => $title,
+                'phone' => $phone,
+                'email' => $email,
+                'problem' => $problem,
+            ]
+        );
+        return;
+    })->name('request-services');
+
+
 
     /**Uploading files */
     Route::controller(UploadController::class)->group(function () {
@@ -115,13 +167,22 @@ Route::middleware([
     Route::controller(SongsController::class)->group(function () {
         Route::post('/search-songs',  'search_songs')->name('search-songs');
         Route::post('/search-videos',  'search_videos')->name('search-videos');
-        
+
+        Route::post('/i-liked',  'i_liked')->name('i-liked');
+        Route::post('/collect-song',  'collect_song')->name('collect-song');
+        Route::post('/like-song',  'like_song')->name('like-song');
         Route::post('/feedback',  'store_feedback')->name('feedback');
         Route::post('/feedbacks',  'get_feedbacks')->name('feedbacks');
+
         Route::post('/get-my-valluation',  'minha_avaliacao')->name('get-my-valluation');
         Route::post('/get-song',  'get_list_songs')->name('get-song');
+
         Route::get('/get-songs',  'get_songs')->name('get-songs');
         Route::get('/get-videos',  'get_videos')->name('get-videos');
+
+        Route::get('/get-songs-destaques',  'get_destaques_songs')->name('get-songs-destaques');
+        Route::get('/get-videos-destaques',  'get_destaques_videos')->name('get-videos-destaques');
+
         Route::post('/get-songs',  'get_songs')->name('get-songs');
         Route::post('/avaliar',  'avaliar')->name('avaliar');
         Route::post('/add-song',  'store')->name('add-song');
@@ -136,14 +197,13 @@ Route::middleware([
         return response()->json(Valuation::where('song_id', Request::get('song_id'))->count());
     })->name('get-valluations');
 
-    Route::post('/get-artist-songs', function () {
+    Route::get('/get-artist-songs/{artistId}', function ($artistId) {
         $data = Request::all();
-        return response()->json([
-            'artist_songs' => DB::select(
-                'SELECT * FROM songs WHERE artist_id = "' . $data['id'] . '"'
+        return response()->json(
+            DB::select(
+                'SELECT * FROM songs WHERE artist_id = "' . $artistId . '"'
             ),
-            'all_songs' => Song::all(),
-        ]);
+        );
     })->name('get-artist-songs');
 
     /**
@@ -168,20 +228,16 @@ Route::middleware([
         Route::post('add-contest-schedule', 'add_schedule')->name('add-contest-schedule');
         Route::post('add-contest-premios', 'add_premios')->name('add-contest-premios');
         Route::post('get-my-contests', 'get_my_contests')->name('get-my-contests');
+
+        Route::post('ascensao-artists', 'get_ascensao_artists')->name('ascensao-artists');
+        Route::get('get-contest-images/{contestId}', 'contest_images')->name('get-contest-images/{contestId}');
+        Route::get('get-contest-videos/{contestId}', 'contest_videos')->name('get-contest-videos/{contestId}');
     });
 
 
     Route::controller(ComunicacaoController::class)->group(function () {
         Route::post('get-unread', 'get_unread')->name('get-unread');
     });
-
-
-
-
-    Route::get('/som_emocao', function () {
-        return Inertia::render('Videos/Videos');
-    })->name('som_emocao');
-
 
     Route::get('/bibliotecas', function () {
         return Inertia::render('Biblioteca/Biblioteca');
@@ -257,6 +313,7 @@ Route::middleware([
         Route::post('/post', 'store');
         Route::post('/post-like/{postId}', 'like');
         Route::post('/comment', 'comment');
+        Route::post('/comment-on-post', 'comment_on_post');
         Route::post('/comments', 'comments');
         Route::post('/posts/{filter?}',  'get');
     });
@@ -314,28 +371,29 @@ Route::middleware([
             DB::select('SELECT * FROM songs WHERE artist_id=?  AND mime_type LIKE ? ', [$artistId, '%audio%'])
         );
     })->name('get-activevoice-songs/{artistId}');
-    
+
     Route::get('get-activevoice-images/{artistId}', function ($artistId) {
         return response()->json(
             Storage::allFiles("public/artists/$artistId/covers")
         );
     })->name('get-activevoice-images/{artistId}');
-    
+
     Route::get('get-activevoice-videos/{artistId}', function ($artistId) {
         return response()->json(
             DB::select('SELECT * FROM songs WHERE artist_id=?  AND mime_type LIKE ? ', [$artistId, '%video%'])
         );
     })->name('get-activevoice-videos/{artistId}');
     Route::controller(ArtistaController::class)->group(function () {
+        Route::get('artistas/{pagina}/{id}', 'index');
+        Route::get('/artist-stats/{artistId}', 'artist_stats')->name('/artist-stats/${artistId}');
     });
-    Route::get('artistas/{pagina}/{id}', [ArtistaController::class, 'index'])->name('index');
     Route::get('artistas/{pagina}/{id}', [ArtistaController::class, 'index'])->name('index');
     Route::post('/new-artist', [ArtistaController::class, 'store'])->name('new-artist');
     Route::post('/covers-artist', [ArtistaController::class, 'get_covers'])->name('covers-artist');
     Route::post('/add-cover', [ArtistaController::class, 'save_cover'])->name('add-cover');
     Route::post('/update-artist', [ArtistaController::class, 'update_info'])->name('update-artist');
     Route::get('/artist-details/{id}', function ($id) {
-        return Inertia::render('Profile/Artist/DetalhesMusico', [
+        return Inertia::render('Artistas/Detalhar', [
             'artist' =>
             Artist::where('id', $id)->first()
         ]);
@@ -343,9 +401,4 @@ Route::middleware([
     Route::get('/get-top-artists', function () {
         return response()->json(Artist::paginate(5));
     })->name('get-top-artists');
-
-    /**
-     * CONTESTS ROUTES
-     */
-    Route::post('ascensao-artists', [SongsController::class, 'get_ascensao_artists'])->name('ascensao-artists');
 });

@@ -4,23 +4,43 @@ import useTypedPage from '@/Hooks/useTypedPage';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import AddArtist from '@/Components/AddArtist';
 import {
+  BiArrowBack,
   BiInfoCircle,
+  BiLibrary,
   BiMessage,
+  BiMusic,
   BiNote,
   BiPhone,
   BiStar,
+  BiStats,
+  BiVideo,
 } from 'react-icons/bi';
 import { GiSpearFeather } from 'react-icons/gi';
 import { GrAnnounce } from 'react-icons/gr';
-import { MdCall, MdEmail, MdMusicNote, MdPhoto, MdPlace } from 'react-icons/md';
+import {
+  MdCall,
+  MdEmail,
+  MdMusicNote,
+  MdOutlineMessage,
+  MdPhoto,
+  MdPlace,
+} from 'react-icons/md';
 import { DetailsArtist } from './Info';
 import Marketing from './Marketing';
-import { ShowMusics } from './Song';
-import { BsWhatsapp } from 'react-icons/bs';
+import { AddSong, ShowMusics } from './Song';
+import { BsShare, BsStars, BsWhatsapp } from 'react-icons/bs';
 import FormSection from '@/Components/FormSection';
 import TextInput from '@/Components/TextInput';
 import InputLabel from '@/Components/InputLabel';
 import ButtonWraper from '@/Components/Button';
+import ArtistSongsFeedbacks from './ArtistSongsFeedbacks/ArtistSongsFeedbacks';
+import { smalLogo } from '../../../../img';
+import { HiHeart, HiMusicNote } from 'react-icons/hi';
+import Swal from 'sweetalert2';
+import { TiMessages } from 'react-icons/ti';
+import { useGetArtistStatsQuery } from '@/redux/services/coreApi';
+import axios from 'axios';
+import { Error, Loader } from '@/Components';
 
 function Perfl() {
   const page = useTypedPage();
@@ -42,6 +62,7 @@ function Perfl() {
     ) : (
       <DetailsArtist artist={artist} />
     );
+
   const [pagina, setPagina] = useState(initialPage);
 
   return (
@@ -78,7 +99,14 @@ function Perfl() {
               </div>
             </div>
           ) : (
-            <HeaderArtist artist={artist} setPagina={setPagina} />
+            <div
+              className={` ${
+                pagina.type.name === 'ArtistSongsFeedbacks' ? 'hidden' : 'flex'
+              }  `}
+              style={{ transition: '1s' }}
+            >
+              <HeaderArtist artist={artist} setPagina={setPagina} />
+            </div>
           )}
           {pagina}
         </div>
@@ -92,71 +120,75 @@ export default Perfl;
 function HeaderArtist({ artist, setPagina }) {
   return (
     <>
-      <div
-        className="relative w-full flex flex-col rounded-lg shadow-lg shadow-black p-5 justify-center items-center mb-5"
-        style={{
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center center',
-          backgroundImage: `url(${artist?.url_cover})`,
-        }}
-      >
-        <div className="w-20 h-20 m-2 flex relative">
-          <img
-            src={artist?.url_cover}
-            className=" rounded-full w-full h-full border border-black transform-effect "
-          />
-          <ButtonWraper className="absolute bottom-1 right-1  ">
-            <button className="">
-              <MdPhoto className='w-2 h-2' />
-            </button>
-          </ButtonWraper>
-        </div>
-        <div className="w-full flex flex-col justify-center items-center">
-          <h2 className="text-xl md:text-2xl text-bold">{artist?.name}</h2>
-          <div className="w-full flex flex-row justify-center items-center">
-            <span className="p-1 shadow-sm shadow-white gap-1 mb-2 justify-center items-center mr-2 flex">
-              {' '}
-              <BiNote /> 0{' '}
-            </span>
-            <span className="p-1 shadow-sm shadow-white gap-1 mb-2 justify-center items-center mr-2 flex">
-              {' '}
-              <BiMessage /> 0{' '}
-            </span>
-            <span className="p-1 shadow-sm shadow-white gap-1 mb-2 justify-center items-center flex">
-              {' '}
-              <BiStar /> 0{' '}
-            </span>
-          </div>
-        </div>
-        <div className="w-full flex justify-center gap-2">
-          <ButtonWraper>
+      <div className="w-full flex flex-col">
+        <div className=" flex flex-row justify-between items-center w-full  gap-1 border-b-2">
+          <div className="flex flex-row gap-2 lg:gap-5 p-1 ">
             <button
               onClick={() => setPagina(<DetailsArtist artist={artist} />)}
-              className="border border-b-4 hover:bg-[#2e2c2e] border-[#4c88c4] rounded text-xs items-center justify-center flex flex-col md:flex-row p-1"
+              className="text-sm md:text-3xl transform-effect p-1 flex flex-col lg:flex-row justify-center items-center"
             >
-              <BiInfoCircle className="text-xl mr-1" />
-              Informações
+              {' '}
+              <BiInfoCircle className="w-7 h-auto font-bold" />
+              <span style={{ fontSize: '1rem' }}>Info</span>
             </button>
-          </ButtonWraper>
-          <ButtonWraper>
+            <button
+              onClick={() => {
+                setPagina(
+                  <ArtistSongsFeedbacks
+                    setPagina={setPagina}
+                    artist={artist}
+                  />,
+                );
+              }}
+              className="text-sm md:text-3xl transform-effect p-1 flex flex-col lg:flex-row justify-center items-center"
+            >
+              <HiMusicNote className="w-7 h-auto font-bold" />
+              <span style={{ fontSize: '1rem' }}>Gerir Músicas</span>
+            </button>
+
+            <button
+              onClick={() =>
+                setPagina(
+                  <ArtistSongsFeedbacks
+                    setPagina={setPagina}
+                    artist={artist}
+                  />,
+                )
+              }
+              className="hidden text-sm md:text-3xl transform-effect p-1 flex flex-col lg:flex-row justify-center items-center"
+            >
+              <BiVideo className="w-7 h-auto font-bold" />
+              <span style={{ fontSize: '1rem' }}>Vídeos</span>
+            </button>
+
             <button
               onClick={() => setPagina(<Marketing artist={artist} />)}
-              className="border border-b-4 hover:bg-[#2e2c2e]   border-[#4c88c4] rounded text-xs items-center justify-center flex flex-col md:flex-row p-1"
+              className="text-sm md:text-3xl transform-effect p-1 flex flex-col lg:flex-row justify-center items-center gap-1 "
             >
-              <GrAnnounce className="text-xl mr-1" />
-              Marketing
+              <GrAnnounce className="w-7 h-auto font-bold" />
+              <span style={{ fontSize: '1rem' }}>Marketing</span>
             </button>
-          </ButtonWraper>
-          <ButtonWraper>
             <button
-              onClick={() => setPagina(<ShowMusics artist={artist} />)}
-              className="border border-b-4 hover:bg-[#2e2c2e]  border-[#4c88c4] rounded text-xs items-center justify-center flex flex-col md:flex-row p-1"
+              onClick={() => setPagina(<Stats artist={artist} />)}
+              className="text-sm md:text-3xl transform-effect p-1 flex flex-col lg:flex-row justify-center items-center gap-1"
             >
-              <MdMusicNote className="text-xl mr-1" />
-              Músicas
+              <BiStats className="w-7 h-auto font-bold" />
+              <span style={{ fontSize: '1rem' }}>Estatísticas</span>
             </button>
-          </ButtonWraper>
+          </div>
+
+          <div className="flex flex-row justify-center items-center gap-1">
+            <span className="hidden md:flex"> {artist?.name} </span>
+            {artist?.url_cover ? (
+              <img
+                src={artist?.url_cover}
+                alt=""
+                className="w-10 h-10 rounded-full"
+              />
+            ) : (
+              <img src={smalLogo} alt="" className="w-10 h-10 rounded-full" />
+            )}
+          </div>
         </div>
       </div>
     </>
@@ -204,3 +236,103 @@ const ContactTeam = () => {
     </div>
   );
 };
+
+function Stats({ artist }) {
+  const { data: stats, isFetching, error } = useGetArtistStatsQuery(artist?.id);
+  useEffect(() => {
+    console.log(stats?.quantidade_musicas?.length);
+  }, [stats]);
+  return (
+    <div className="relative w-full flex flex-col rounded-lg shadow-lg shadow-black p-5 justify-between items-center mb-5">
+      <div className="w-full flex flex-col items-center">
+        <div className="w-20 h-20 m-2 flex relative">
+          <img
+            src={artist?.url_cover}
+            className=" rounded-full w-full h-full border border-black transform-effect "
+          />
+        </div>
+        <h2 className="text-xl md:text-2xl text-bold">{artist?.name}</h2>
+      </div>
+      {isFetching ? (
+        <Loader title="Carregando estatísticas" />
+      ) : (
+        <>
+          {!error && (
+            <div className="w-full flex flex-col justify-end">
+              <span className="p-1 shadow-sm shadow-white gap-1 mb-2  flex justify-start items-center">
+                {' '}
+                Melhor posição alcançada no ranking 1ª lugar
+                <BiMusic /> 0{' '}
+              </span>
+              <span className="p-1 shadow-sm shadow-white gap-1 mb-2  flex justify-start items-center">
+                {' '}
+                Posição actual no ranking 11ª posicão
+                <BiMusic /> 0{' '}
+              </span>
+              <span className="p-1 shadow-sm shadow-white gap-1 mb-2  flex justify-start items-center">
+                {' '}
+                Músicas
+                <BiMusic />{' '}
+                <span className="flex text-bold text-xl justify-center items-center w-10 h-10 rounded-full bg-[#543889] text-white ">
+                  {stats?.quantidade_musicas?.length}
+                </span>
+              </span>
+              <span className="p-1 shadow-sm shadow-white gap-1 mb-2  flex justify-start items-center">
+                {' '}
+                Vídeos
+                <BiVideo />
+                <span className="flex text-bold text-xl justify-center items-center w-10 h-10 rounded-full bg-[#543889] ">
+                  {stats?.quantidade_videos?.length}
+                </span>
+              </span>
+              <span className="p-1 shadow-sm shadow-white gap-1 mb-2  flex justify-start items-center">
+                {' '}
+                Comentários <TiMessages />
+                <span className="flex text-bold text-xl justify-center items-center w-10 h-10 rounded-full bg-[#543889] ">
+                  {stats?.quantidade_comentarios}
+                </span>
+              </span>
+              <span className="p-1 shadow-sm shadow-white gap-1 mb-2  flex justify-start items-center">
+                {' '}
+                Partilhado <BsShare /> 0 vezes
+              </span>
+              <span className="p-1 shadow-sm shadow-white gap-1 mb-2  flex justify-start items-center">
+                {' '}
+                Avaliado <BiStar />
+                <span className="flex text-bold text-xl justify-center items-center w-10 h-10 rounded-full bg-[#543889] ">
+                  {stats?.quantidade_avaliacoes}
+                </span>
+                vezes
+              </span>
+              <span className="p-1 shadow-sm shadow-white gap-1 mb-2  flex justify-start items-center">
+                {' '}
+                Recebidos <MdOutlineMessage />
+                <span className="flex text-bold text-xl justify-center items-center w-10 h-10 rounded-full bg-[#543889] ">
+                  {stats?.quantidade_feedbacks}
+                </span>
+                feedbacks
+              </span>
+              <span className="p-1 shadow-sm shadow-white gap-1 mb-2  flex justify-start items-center">
+                {' '}
+                Em <BiLibrary />{' '}
+                <span className="flex text-bold text-xl justify-center items-center w-10 h-10 rounded-full bg-[#543889] ">
+                  {stats?.quantidade_colecoes}
+                </span>
+                playlists
+              </span>
+              <span className="p-1 shadow-sm shadow-white gap-1 mb-2  flex justify-start items-center">
+                {' '}
+                Favoritado <HiHeart />
+                <span className="flex text-bold text-xl justify-center items-center w-10 h-10 rounded-full bg-[#543889] ">
+                  {stats?.quantidade_gostos}
+                </span>
+                vezes
+              </span>
+            </div>
+          )}
+        </>
+      )}
+      {error && !isFetching && <Error />}
+    </div>
+  );
+}

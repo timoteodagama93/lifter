@@ -13,7 +13,7 @@
 .product .imgbox img {
     display: block;
     width: 80%;
-    height: auto;
+    height: 100%;
     margin: 20px auto 0;
 }
 
@@ -21,7 +21,7 @@
     transition: 1.5s;
     position: absolute;
     width: 100%;
-    bottom: -157px;
+    bottom: -140px;
     background: #fff;
     padding: 10px;
     box-sizing: border-box;
@@ -47,8 +47,6 @@
     bottom: 0;
 }
 
-
-
 .details .identity {
 
     position: absolute;
@@ -56,7 +54,7 @@
     left: 0;
     font-weight: bold;
     right: 0;
-    color: #ff4f2f;
+    color: #4c88c4;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -109,11 +107,12 @@ ul.colors li:nth-child(1) {
     padding: 5px;
     color: #fff;
     margin: 15px 0 0;
-    background: #ff4faf;
+    background: #4c88c4;
     text-decoration: none;
     transition: .3s;
     cursor: pointer;
     text-align: center;
+    border-radius: .3rem;
 }
 
 .link-btn:hover {

@@ -1,6 +1,5 @@
 import AppLayout from '@/Layouts/AppLayout';
 import React, { useState } from 'react';
-import { artists, generos, songs } from '../../data/dummy';
 import SelectGenre from '@/Components/SelectGenre';
 import { FaRandom } from 'react-icons/fa';
 import CardVideo from '../Components/CardVideo';
@@ -8,6 +7,7 @@ import CardArtist from '@/Components/CardArtist';
 import { MdLocationOn } from 'react-icons/md';
 function ArtistsLibrary() {
   const [activar, setActivar] = useState('todos');
+  const artists = [];
   return (
     <AppLayout title="Biblioteca de videos">
       <div className="pb-12">

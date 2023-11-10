@@ -78,7 +78,6 @@ export default function EditSong({ song, setPagina }) {
             value={formArtist.data.artist}
             onChange={e => formArtist.setData('artist', e.currentTarget.value)}
             required
-            autoComplete="new-password"
           />
           <InputError className="mt-2" message={formArtist.errors.artist} />
         </div>
@@ -87,7 +86,7 @@ export default function EditSong({ song, setPagina }) {
           <InputLabel htmlFor="gravadora">Gravadora</InputLabel>
           <TextInput
             id="gravadora"
-            className="mt-1 block w-full"
+            className="p-1 block w-full"
             value={formArtist.data.gravadora}
             onChange={e =>
               formArtist.setData('gravadora', e.currentTarget.value)
@@ -100,7 +99,7 @@ export default function EditSong({ song, setPagina }) {
           <InputLabel htmlFor="participacoes">Participantes</InputLabel>
           <TextInput
             id="participacoes"
-            className="mt-1 block w-full"
+            className="p-1 "
             value={formArtist.data.participacoes}
             onChange={e =>
               formArtist.setData('participacoes', e.currentTarget.value)
@@ -116,13 +115,12 @@ export default function EditSong({ song, setPagina }) {
 
         <div className="mt-4">
           <InputLabel htmlFor="letra">Letra da música</InputLabel>
-          <span>Apresentação artística chamativa. </span>
-          <TextInput
+          <span>Coloque em uma linha cada refrão</span>
+          <textarea
             id="letra"
             className="mt-1 block w-full"
             value={formArtist.data.letra}
             onChange={e => formArtist.setData('letra', e.currentTarget.value)}
-            required
           />
           <InputError className="mt-2" message={formArtist.errors.letra} />
         </div>

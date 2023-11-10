@@ -4,10 +4,8 @@ import './contestCard.css';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import ContestDetails from './Contest/ContestDetails';
 import Swal from 'sweetalert2';
-interface Props {
-  concurso: Object;
-}
-function ContestCard({ concurso }: Props) {
+
+function ContestCard({ concurso, setContestDetails, setDisplayDetails }) {
   const { setCurrentPage } = useStateContext();
   return (
     <div className="relative w-full lg:w-1/2 h-full lg:h-1/2 product  ">
@@ -33,12 +31,15 @@ function ContestCard({ concurso }: Props) {
           <li> {concurso.premios_extras} </li>
         </ul>
 
-        <Link
-          href={`/contest-details/${concurso.id}`}
-          className="link-btn active:animate-ping  "
+        <button
+          onClick={() => {
+            setContestDetails(concurso);
+            setDisplayDetails(true);
+          }}
+          className="link-btn active:animate-ping w-full  "
         >
-          Inscrever-se
-        </Link>
+          Ver todos detalhes
+        </button>
       </div>
     </div>
   );

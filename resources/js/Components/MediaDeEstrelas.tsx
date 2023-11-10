@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { songs } from '../../data/dummy';
 import { BiSave, BiStar } from 'react-icons/bi';
 
 import { BsStar, BsStarFill } from 'react-icons/bs';

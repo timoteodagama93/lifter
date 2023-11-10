@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { BiConversation, BiDotsHorizontal, BiSearch } from 'react-icons/bi';
 import { BsCameraVideo, BsPencilSquare } from 'react-icons/bs';
 import { FaRandom } from 'react-icons/fa';
-import { chats_notifications, messages } from '../../../data/dummy';
 import { Link } from '@inertiajs/react';
 import { MdCall, MdFeedback, MdNotifications } from 'react-icons/md';
 import { useStateContext } from '@/contexts/PaginaActualContext';

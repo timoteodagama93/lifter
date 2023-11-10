@@ -1,10 +1,10 @@
 import React from 'react';
-import { messages } from '../../data/dummy';
 import { BiSearch } from 'react-icons/bi';
 import { MdCall } from 'react-icons/md';
 import { BsCameraVideo } from 'react-icons/bs';
 
 function ConversationReader({ conversation }) {
+  const messages = [];
   return (
     <div className="w-full h-[82vh] overflow-x-auto">
       <div className="w-full border p-5 flex flex-row justify-between items-center">

@@ -1,7 +1,6 @@
 import React from 'react';
 import './style_inicio.css';
 import PlayPause from '@/Components/PlayPause';
-import { artists } from '../../../data/dummy';
 function Inicio({ nome_colecao }) {
   return (
     <div>

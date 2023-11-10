@@ -78,6 +78,7 @@ function AddSongCover({ song }) {
 
   return (
     <div className="w-full h-full relative flex flex-col text-xs justify-center  border-[#2e2c2e] border shadow-lg shadow-black p-5 rounded-lg items-center">
+      <h1 className="text-xl">Adicioar foto de capa</h1>
       <form
         method="Post"
         onSubmit={e => saveNewPost(e)}

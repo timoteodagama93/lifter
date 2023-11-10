@@ -13,7 +13,8 @@ import { MdNotifications } from 'react-icons/md';
 function UserAvatar() {
   const page = useTypedPage();
   const route = useRoute();
-  const { setCurrentPage } = useStateContext();
+  const { setCurrentPage, setOpenMobileMenu } = useStateContext();
+
   function logout(e: React.FormEvent) {
     e.preventDefault();
     router.post(route('logout'));
@@ -164,11 +165,11 @@ function UserAvatar() {
         >
           {/* <!-- Account Management --> */}
           <div className="block px-4 py-2 text-xs text-gray-400">
-            Manage Account
+            Gerir Conta
           </div>
-          <div>
+          <div onClick={() => setOpenMobileMenu(false)}>
             <DropdownLink href={route('comunicar')}>
-              <div className="relative ml-2 md:flex rounded-sm md:rounded-sm p-1 px-2 md:px-2 m-4 cursor-pointer hover:bg-[#f6cc33 shadow-xl shadow-black bg-[#2e2c2e] text-white min-h-10">
+              <div className="hidden relative ml-2 md:flex rounded-sm md:rounded-sm p-1 px-2 md:px-2 m-4 cursor-pointer hover:bg-[#f6cc33 shadow-xl shadow-black bg-[#2e2c2e] text-white min-h-10">
                 {unread > 0 ? (
                   <span className="sticky top-1 p-2  shadow-lg bg-[#000] w-4 h-4 flex justify-center items-center rounded-full text-red-500 text-xs">
                     {unread}
@@ -180,28 +181,36 @@ function UserAvatar() {
                 )}
                 <MdNotifications />
               </div>
-              Comunicações
+              Notificar
             </DropdownLink>
           </div>
-          <div>
+          <div onClick={() => setOpenMobileMenu(false)}>
             <DropdownLink href={route('perfil')}>Perfil</DropdownLink>
           </div>
-          <DropdownLink href={route('perfil-artista')}>
-            Perfil Artistico
-          </DropdownLink>
-          <DropdownLink href={route('profile.show')}>Definições</DropdownLink>
+          <div onClick={() => setOpenMobileMenu(false)}>
+            <DropdownLink href={route('perfil-artista')}>
+              Perfil Artistico
+            </DropdownLink>
+          </div>
+          <div onClick={() => setOpenMobileMenu(false)}>
+            <DropdownLink href={route('profile.show')}>Definições</DropdownLink>
+          </div>
 
           {page.props.jetstream.hasApiFeatures ? (
-            <DropdownLink href={route('api-tokens.index')}>
-              API Tokens
-            </DropdownLink>
+            <div onClick={() => setOpenMobileMenu(false)}>
+              <DropdownLink href={route('api-tokens.index')}>
+                API Tokens
+              </DropdownLink>
+            </div>
           ) : null}
 
           <div className="border-t border-gray-200 dark:border-gray-600"></div>
 
           {/* <!-- Authentication --> */}
           <form onSubmit={logout}>
-            <DropdownLink as="button">Terminar sessão</DropdownLink>
+            <div onClick={() => setOpenMobileMenu(false)}>
+              <DropdownLink as="button">Terminar sessão</DropdownLink>
+            </div>
           </form>
         </Dropdown>
       </div>

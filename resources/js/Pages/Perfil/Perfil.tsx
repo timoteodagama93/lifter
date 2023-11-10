@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import {
   BiEdit,
   BiInfoCircle,
   BiLibrary,
+  BiNews,
+  BiSend,
   BiTrophy,
 } from 'react-icons/bi';
 import useTypedPage from '@/Hooks/useTypedPage';
@@ -15,11 +17,30 @@ import axios from 'axios';
 import NewContest from '@/Components/Contest/Index';
 import { BsEye } from 'react-icons/bs';
 import EditContest from '@/Components/EditContest/Index';
+import PulseButton from '@/Components/PulseButton';
+import InputError from '@/Components/InputError';
+import SecondaryButton from '@/Components/SecondaryButton';
+import InputLabel from '@/Components/InputLabel';
+import Modal from '@/Components/Modal';
+import useRoute from '@/Hooks/useRoute';
+import { useForm } from '@inertiajs/react';
 
 function Perfil({}) {
   const page = useTypedPage();
   const [pagina, setPagina] = useState(<></>);
+  const [posts, setPosts] = useState([]);
 
+  const [openNewImagePost, setOpenNewImagePost] = useState(false);
+  function loadPosts() {
+    axios
+      .post('/posts')
+      .then(response => {
+        if (response.status === 200) {
+          setPosts(response.data);
+        }
+      })
+      .catch(error => {});
+  }
   return (
     <AppLayout title="Perfil">
       <div className="w-full flex flex-col">
@@ -90,18 +111,171 @@ function Perfil({}) {
               <BiInfoCircle className="text-xl mr-1" />
               Contactos
             </button>
+            <PulseButton
+              onClick={() => setOpenNewImagePost(true)}
+              className="pulsating-button  shadow shadow-white border flex flex-col text-4xl  justify-start items-center p- rounded "
+            >
+              <BiNews className="animate-bounce" />
+              <span className="text-xs">Publicar</span>
+            </PulseButton>
           </div>
         </div>
 
         <div className=" w-full relative flex flex-col p-5  rounded-lg ">
           {pagina}
         </div>
+        <NewPost
+          isOpen={openNewImagePost}
+          loadPosts={loadPosts}
+          onClose={setOpenNewImagePost}
+        />
       </div>
     </AppLayout>
   );
 }
 
 export default Perfil;
+function NewPost({ isOpen, onClose, loadPosts }) {
+  const page = useTypedPage();
+  const route = useRoute();
+  const { data, setData, progress, post, errors } = useForm({
+    text: '',
+    community: 'musica',
+    file: null as File | null,
+  });
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const photoRef = useRef<HTMLInputElement>(null);
+  function saveNewPost(e) {
+    e.preventDefault();
+    post('/post', {
+      onSuccess: () => {
+        loadPosts();
+        setData('text', '');
+        clearPhotoFileInput();
+      },
+      onFinish: () => {},
+    });
+  }
+  function selectNewPhoto() {
+    photoRef.current?.click();
+  }
+
+  function updatePhotoPreview() {
+    const photo = photoRef.current?.files?.[0];
+
+    if (!photo) {
+      return;
+    }
+
+    setData('file', photo);
+
+    const reader = new FileReader();
+
+    reader.onload = e => {
+      setPhotoPreview(e.target?.result as string);
+    };
+
+    reader.readAsDataURL(photo);
+  }
+  function clearPhotoFileInput() {
+    if (photoRef.current?.value) {
+      photoRef.current.value = '';
+      setData('file', null);
+    }
+  }
+
+  return (
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <div className="w-full h-full flex flex-col text-xs justify-center bg-white border-[#2e2c2e] border shadow-lg shadow-black p-5 rounded-lg items-center">
+        <form
+          method="Post"
+          onSubmit={e => saveNewPost(e)}
+          className="w-full h-full justify-center items-center flex flex-col"
+          encType="multipart/form-data"
+        >
+          {photoPreview ? (
+            // <!-- New Profile Photo Preview -->
+            <div className="">
+              <span
+                className="block rounded-lg w-36 h-36 "
+                style={{
+                  backgroundSize: 'cover',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center center',
+                  backgroundImage: `url('${photoPreview}')`,
+                }}
+              ></span>
+            </div>
+          ) : (
+            ''
+          )}
+
+          {progress && (
+            <progress value={progress.percentage} max={100}>
+              {progress.percentage}%
+            </progress>
+          )}
+
+          <div className="col-span-6 sm:col-span-4">
+            {/* <!-- Profile Photo File Input --> */}
+            <input
+              type="file"
+              className="hidden"
+              ref={photoRef}
+              onChange={updatePhotoPreview}
+            />
+
+            <InputLabel htmlFor="file" value="Ficheiro" />
+
+            <SecondaryButton
+              className="m-2"
+              type="button"
+              onClick={selectNewPhoto}
+            >
+              Selecionar Ficheiro
+            </SecondaryButton>
+
+            <InputError message={errors.file} className="mt-2" />
+          </div>
+          <div>
+            <label>Escolha uma categoria</label>
+            <select
+              required
+              value={data.community}
+              onChange={e => setData('community', e.target.value)}
+              className="rounded"
+            >
+              <option value="musica">Universo musical</option>
+              <option value="gospel">Comunidade de Gospel</option>
+              <option value="figuras">Figuras públicas</option>
+              <option value="cinema">Universo Cinematográfico</option>
+              <option value="moda">Comunidade de Moda</option>
+              <option value="artes">Comunidade de Artes plásticas</option>
+            </select>
+            <InputError message={errors.community} className="mt-2" />
+          </div>
+
+          <textarea
+            value={data.text}
+            onChange={e => {
+              setData('text', e.currentTarget.value);
+            }}
+            required
+            maxLength={500}
+            minLength={5}
+            placeholder="Conte a história..."
+            className="w-full p-2 border border-[#2e2c2e] rounded shadow-sm"
+          ></textarea>
+          <InputError message={errors.text} className="mt-2" />
+          <button className="h-full text-2xl flex justify-center items-center gap-1 shadow-lg shadow-black rounded p-1  ">
+            <BiSend />
+            <span className="text-base">Partilhar poste</span>
+          </button>
+        </form>
+      </div>
+    </Modal>
+  );
+}
 
 function MyContests({ userId, setPagina }) {
   const [contests, setContests] = useState(null);

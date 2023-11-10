@@ -2,8 +2,6 @@ import AppLayout from '@/Layouts/AppLayout';
 import React, { useState } from 'react';
 
 import CardMusica from '../../Components/CardMusica';
-
-import { generos, songs } from '../../../data/dummy';
 import SelectGenre from '@/Components/SelectGenre';
 import { FaRandom } from 'react-icons/fa';
 import { zela_orange } from '../../assets/constants';
@@ -78,9 +76,9 @@ function Biblioteca() {
           {currentPage === 'videos' && <Videos />}
           {currentPage === 'musicas' && (
             <>
-              {songs.map(song => (
+              {/*songs.map(song => (
                 <CardMusica song={song} />
-              ))}
+              ))*/}
             </>
           )}
         </div>

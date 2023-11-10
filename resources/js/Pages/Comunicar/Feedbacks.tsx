@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { BiDotsHorizontal, BiSearch } from 'react-icons/bi';
 import { BsCameraVideo, BsPencilSquare } from 'react-icons/bs';
-import { chats_notifications, messages } from '../../../data/dummy';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import ChatItemList from '@/Components/ChatItemList';
 import ConversationReader from '@/Components/ConversationReader';
@@ -10,6 +9,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import { useForm } from '@inertiajs/react';
 import axios from 'axios';
 import SweetAlert2 from 'react-sweetalert2';
+import Swal from 'sweetalert2';
 
 function Feedbacks() {
   const { currentPage } = useStateContext();
@@ -17,12 +17,18 @@ function Feedbacks() {
   const form = useForm({
     type: 'erro',
     message: '',
-    error_page: '',
+    error_page: 'none',
   });
   function submit(e) {
     axios
       .post('notification-to-lifter', form.data)
       .then(response => {
+        Swal.fire({
+          title: 'Bem feito!',
+          text: 'Notificação submetida à equipa Lifter',
+          icon: 'success',
+        });
+        form.setData('message', '');
         console.log(response);
       })
       .catch(error => {
@@ -103,8 +109,10 @@ function Feedbacks() {
             </div>
             <div className="w-full justify-center flex">
               <button
-              className={`flex justify-center items-center  bg-gradient-to-br from-white/10 to-[#2a2a80] backdrop-blur-lg p-5 transform-effect text-white font-bold text-xl `}
-              >Enviar Feedback</button>
+                className={`flex justify-center items-center  bg-gradient-to-br from-white/10 to-[#2a2a80] backdrop-blur-lg p-5 transform-effect text-white font-bold text-xl `}
+              >
+                Enviar Feedback
+              </button>
             </div>
           </form>
         </div>

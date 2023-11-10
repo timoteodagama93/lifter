@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coletion;
+use App\Models\Colletion;
 use App\Models\ContestsSong;
+use App\Models\Like;
 use App\Models\Song;
 use App\Models\Valuation;
 use Illuminate\Support\Facades\Auth;
@@ -34,7 +37,7 @@ class SongsController extends Controller
     public function store()
     {
         $artist_id = Request::input('artist_id');
-        $song_url = Request::file("song")->store("artists/{$artist_id}/songs", 'public');
+        $song_url = Request::file("song")->store("public/artists/$artist_id/songs");
 
         Validator::make(Request::all(), [
             'song' => ['required', 'mimes:mp3,mp4', 'max:5120']
@@ -130,7 +133,7 @@ class SongsController extends Controller
         $data = $d::all();
         $artist_id = $data['artist_id'];
         $song_id = $data['id'];
-        $cover = Request::file("cover")->store("artists/{$artist_id}/covers", 'public');
+        $cover = Request::file("cover")->store("public/artists/{$artist_id}/covers");
 
         $song = Song::where('id', $song_id)->first();
 
@@ -182,7 +185,15 @@ class SongsController extends Controller
      */
     public function get_songs()
     {
-        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%audio%' ORDER BY created_at DESC"); // where('mime_type', `%audio/%`)->paginate(1);
+        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%audio%' AND active=true ORDER BY created_at DESC"); // where('mime_type', `%audio/%`)->paginate(1);
+    }
+
+    /**
+     * Obté as músicas em destaques
+     */
+    public function get_destaques_songs()
+    {
+        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%audio%' AND active=true AND destaque=true ORDER BY created_at DESC LIMIT 5"); // where('mime_type', `%audio/%`)->paginate(1);
     }
 
     /**
@@ -191,7 +202,7 @@ class SongsController extends Controller
     public function search_songs()
     {
         $query = Request::get('searchTerm');
-        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%audio%' AND ( title LIKE '%$query%' OR artist LIKE '%$query%' OR genre LIKE '%$query%'  ) ORDER BY created_at DESC"); // where('mime_type', `%audio/%`)->paginate(1);
+        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%audio%' AND ( title LIKE '%$query%' OR artist LIKE '%$query%' OR genre LIKE '%$query%'  ) AND active=true ORDER BY created_at DESC"); // where('mime_type', `%audio/%`)->paginate(1);
     }
     /**
      * Pesquisa Vídeos
@@ -207,7 +218,16 @@ class SongsController extends Controller
      */
     public function get_videos()
     {
-        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%video%' ORDER BY created_at DESC"); // where('mime_type', `%audio/%`)->paginate(1);
+        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%video%' AND active=true AND destaque=false ORDER BY created_at DESC"); // where('mime_type', `%audio/%`)->paginate(1);
+    }
+
+
+    /**
+     * Obté as músicas em destaques
+     */
+    public function get_destaques_videos()
+    {
+        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%video%' AND active=true AND destaque=true ORDER BY created_at DESC LIMIT 15"); // where('mime_type', `%audio/%`)->paginate(1);
     }
 
     /**
@@ -243,6 +263,53 @@ class SongsController extends Controller
         return response()->json($val);
     }
 
+    /**
+     * Curtir musica
+     */
+    public function like_song()
+    {
+        $user_id = Auth::user()->id;
+        $song_id = Request::get('song_id');
+
+        $like = Like::updateOrCreate(
+            [
+                'user_id' => $user_id,
+                'song_id' => $song_id,
+            ]
+        );
+
+        return response()->json($like);
+    }
+
+    public function i_liked()
+    {
+        $user_id = Auth::user()->id;
+        $song_id = Request::get('song_id');
+
+        $like = DB::select(
+            "SELECT * FROM likes WHERE user_id = '$user_id' AND song_id = '$song_id' "
+        );
+
+        return response()->json($like);
+    }
+    /**
+     * Colecionar musica
+     */
+    public function collect_song()
+    {
+        $user_id = Auth::user()->id;
+        $song_id = Request::get('song_id');
+
+        $colecionar = Colletion::updateOrCreate(
+            [
+                'user_id' => $user_id,
+                'song_id' => $song_id,
+            ]
+        );
+
+        return response()->json($colecionar);
+    }
+
 
     /**
      * Obtém a avaliação do usuário em uma música
@@ -273,5 +340,11 @@ class SongsController extends Controller
 
     public function store_feedback()
     {
+    }
+
+    public function get_feedbacks()
+    {
+        $songId = Request::get('song_id');
+        return response()->json(DB::select("SELECT * FROM feedbacks WHERE song_id = ?", [$songId]));
     }
 }

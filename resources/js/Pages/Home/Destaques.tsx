@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { songs } from '../../../data/dummy';
 import { BiSend } from 'react-icons/bi';
 
 import { FaUser } from 'react-icons/fa';
 import PlayPause from '@/Components/PlayPause';
 import './destaques.css';
 import { Link } from '@inertiajs/react';
-import InteracoesMusical from '@/Components/InteracoesMusical';
+import Interagir from '@/Components/Interagir';
 import EnviarEstrelas from '@/Components/EnviarEstrelas';
 import axios from 'axios';
 import { useGetSongsQuery } from '@/redux/services/coreApi';
@@ -121,7 +120,7 @@ function ItemSelecionado({ list_items, selected, isVideo }) {
         </div>
         {/** BOTÕES */}
         <div className="xl:w-[10%] h-full flex justify-center items-center">
-          <InteracoesMusical song={list_items[selected]} />
+          <Interagir song={list_items[selected]} />
         </div>
         {/** COMENTÁRIOS, SOMENTE PARA DISPOSITIVOS GRANDES XL: */}
         <div className="pl-2 h-full border-l-2 border-[#2c2c2c] xl:w-[25%] hidden xl:flex flex-col">

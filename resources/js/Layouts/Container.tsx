@@ -17,7 +17,7 @@ import {
   MdVoiceChat,
 } from 'react-icons/md';
 import { GiJetpack, GiJumpAcross, GiSoundWaves } from 'react-icons/gi';
-import { BsNewspaper, BsTrophy } from 'react-icons/bs';
+import { BsNewspaper, BsStars, BsTrophy } from 'react-icons/bs';
 import RankingIcon from '../Components/RankingIcon';
 import { Link, router } from '@inertiajs/react';
 import MusicPlayer from '../Components/MusicPlayer';
@@ -27,7 +27,7 @@ import { useGetSongsQuery, useGetVideosQuery } from '@/redux/services/coreApi';
 import Loader from '../Components/Loader';
 import { playPause, setActiveSong } from '@/redux/features/playerSlice';
 import EnviarEstrelas from '../Components/EnviarEstrelas';
-import InteracoesMusical from '../Components/InteracoesMusical';
+import Interagir from '../Components/Interagir';
 import { FaDirections, FaPray } from 'react-icons/fa';
 import UserAvatar from '@/Components/UserAvatar';
 import { useStateContext } from '@/contexts/PaginaActualContext';
@@ -37,7 +37,7 @@ import { GrUserExpert } from 'react-icons/gr';
 import { HiUserGroup } from 'react-icons/hi';
 import { RiUserStarFill } from 'react-icons/ri';
 import Songs from '@/Pages/Musicas/Songs';
-import Videos from '@/Pages/Videos';
+import Videos from '@/Pages/Videos/Videos';
 import { Posts } from '@/Pages/Home';
 import ArtistsGalery from '@/Pages/VozActiva';
 import ContestCard from '@/Components/ContestCard';
@@ -59,9 +59,8 @@ function Container({
   renderBottom,
   bg = loader,
 }: PropsWithChildren<Props>) {
-  const { activeSong, isPlaying, isPlayingVideo } = useSelector(
-    state => state.player,
-  );
+  const { activeSong, isPlaying, isPlayingVideo, isFullScreenPlayer } =
+    useSelector(state => state.player);
   const { data, isFetching, error } = useGetVideosQuery('/get-videos');
   const dispatch = useDispatch();
 
@@ -104,7 +103,7 @@ function Container({
           <div
             className={`relative  text-white w-full ${
               isPlaying ? 'h-[85] md:h-[70%]' : 'h-[85%]'
-            }  p-5 overflow-y-auto top-0 left-0 shadow-xl flex flex-wrap shadow-black justify-center items-start`}
+            }  md:px-5 overflow-y-auto top-0 left-0 shadow-xl flex flex-wrap shadow-black justify-center items-start`}
           >
             <>{children}</>
           </div>
@@ -113,7 +112,7 @@ function Container({
             ${isPlaying ? 'h-[15%] md:h-[30%]' : 'h-[15%]'}
                flex flex-col justify-center items-center  bg-gradient-to-br from-white/10 to-[#2a2a80] backdrop-blur-lg `}
           >
-            {isPlaying && (
+            {!isFullScreenPlayer && isPlaying && (
               <div
                 className="relative w-full p-2 transition-5s "
                 style={{ transition: '5s' }}
@@ -127,20 +126,46 @@ function Container({
                   {*/}
               </div>
             )}
-            
 
             <div className="w-full h-full flex flex-row justify-center items-center mb-1 text-white ">
               <>
                 <Link
+                  href="/avaliacoes"
+                  className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
+            ${
+              route().current('avaliacoes')
+                ? 'transform-effect text-cyan-400 font-bold '
+                : ''
+            }
+            `}
+                >
+                  <BsStars className="w-10 h-10" />
+                  <span
+                    className={` ${
+                      route().current('avaliacoes')
+                        ? 'flex text-white font-bold uppercase'
+                        : 'hidden'
+                    }`}
+                  >
+                    Avaliações
+                  </span>
+                </Link>
+                <Link
                   href="/musicas"
-                  className={`transform-effect flex flex-col w-full h-full justify-center items-center text-xs hover:bg-gray-300 first-letter:
-            ${route().current('musicas') ? 'bg-gray-100 text-black' : ''}
+                  className={`flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
+            ${
+              route().current('musicas')
+                ? 'transform-effect text-cyan-400 font-bold'
+                : ''
+            }
             `}
                 >
                   <BiMusic className={`w-10 h-10`} />
                   <span
                     className={` ${
-                      route().current('musicas') ? 'flex' : 'hidden'
+                      route().current('musicas')
+                        ? 'flex text-white font-bold uppercase'
+                        : 'hidden'
                     }`}
                   >
                     Músicas
@@ -148,14 +173,18 @@ function Container({
                 </Link>
                 <Link
                   href="/video"
-                  className={`transform-effect flex flex-col w-full h-full justify-center items-center text-xs hover:bg-gray-300 first-letter: ${
-                    route().current('video') ? 'bg-gray-100 text-black' : ''
+                  className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter: ${
+                    route().current('video')
+                      ? 'transform-effect text-cyan-400 font-bold'
+                      : ''
                   } `}
                 >
                   <BiVideo className="w-10 h-10" />
                   <span
                     className={` ${
-                      route().current('video') ? 'flex' : 'hidden'
+                      route().current('video')
+                        ? 'flex text-white font-bold uppercase'
+                        : 'hidden'
                     }`}
                   >
                     Vídeos
@@ -163,14 +192,20 @@ function Container({
                 </Link>
                 <Link
                   href="/vozactiva"
-                  className={`transform-effect flex flex-col w-full h-full justify-center items-center text-xs hover:bg-gray-300 first-letter:
-            ${route().current('vozactiva') ? 'bg-gray-100 text-black ' : ''}
+                  className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
+            ${
+              route().current('vozactiva')
+                ? 'transform-effect text-cyan-400 font-bold '
+                : ''
+            }
             `}
                 >
                   <GiSoundWaves className="w-10 h-10" />
                   <span
                     className={` ${
-                      route().current('vozactiva') ? 'flex' : 'hidden'
+                      route().current('vozactiva')
+                        ? 'flex text-white font-bold uppercase'
+                        : 'hidden'
                     }`}
                   >
                     Voz Activa
@@ -178,10 +213,10 @@ function Container({
                 </Link>
                 <Link
                   href="/concursos"
-                  className={`transform-effect flex flex-col w-full h-full justify-center items-center text-xs hover:bg-gray-300 first-letter:
+                  className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
             ${
               route().current()?.includes('concursos')
-                ? 'bg-gray-100 text-black '
+                ? 'transform-effect text-cyan-400 font-bold '
                 : ''
             }
             `}
@@ -189,37 +224,31 @@ function Container({
                   <BsTrophy className="w-10 h-10" />
                   <span
                     className={` ${
-                      route().current('concursos') ? 'flex' : 'hidden'
+                      route().current('concursos')
+                        ? 'flex text-white font-bold uppercase'
+                        : 'hidden'
                     }`}
                   >
-                    Concursos
+                    Festivais
                   </span>
                 </Link>
-                <Link
-                  href="/comunidade"
-                  className={`transform-effect flex flex-col w-full h-full justify-center items-center text-xs hover:bg-gray-300 first-letter:
-            ${route().current('comunidade') ? 'bg-gray-100 text-black ' : ''}
-            `}
-                >
-                  <HiUserGroup className="w-10 h-10" />
-                  <span
-                    className={` ${
-                      route().current('comunidade') ? 'flex' : 'hidden'
-                    }`}
-                  >
-                    Comunidade
-                  </span>
-                </Link>
+
                 <Link
                   href="/noticias"
-                  className={`transform-effect flex flex-col w-full h-full justify-center items-center text-xs hover:bg-gray-300 hover:text-black first-letter:
-            ${route().current('noticias') ? 'bg-gray-100 text-black' : ''}
+                  className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
+            ${
+              route().current('noticias')
+                ? 'transform-effect text-cyan-400 font-bold'
+                : ''
+            }
             `}
                 >
                   <BsNewspaper className="w-10 h-10" />
                   <span
                     className={` ${
-                      route().current('noticias') ? 'flex' : 'hidden'
+                      route().current('noticias')
+                        ? 'flex text-white font-bold uppercase'
+                        : 'hidden'
                     }`}
                   >
                     Notícias

@@ -15,7 +15,7 @@ const Comment = ({ comment }) => {
 
   useEffect(() => getUser, [user]);
   return (
-    <div className="comment">
+    <div className="comment transform-effect p-5">
       {/*}
       <div className="users ">
         <User key={user_id} user={user} />

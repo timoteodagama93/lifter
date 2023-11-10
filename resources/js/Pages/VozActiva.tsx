@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './style_gallery.css';
-import { artists } from '../../data/dummy';
 import PlayPause from '@/Components/PlayPause';
 import { HiEye } from 'react-icons/hi';
 import SectionBorder from '@/Components/SectionBorder';
@@ -25,7 +24,6 @@ import Opinar from './Jurados/Opinar';
 import AppLayout from '../Layouts/AppLayout';
 
 function VozActiva({ activeVoiceArtist }) {
-  const a = [1, 2, 3];
   const {
     data: songs,
     isFetching,
@@ -34,9 +32,7 @@ function VozActiva({ activeVoiceArtist }) {
   const { data: videos } = useGetActiveVoiceVideosQuery(activeVoiceArtist.id);
   const { data: images } = useGetActiveVoiceImagesQuery(activeVoiceArtist.id);
   const { activeSong, isPlaying } = useSelector(state => state.player);
-  /**REF for playing and pausing videos */
-  const [refVideo, setRefVideo] = useState(useRef(null));
-
+  
   return (
     <AppLayout title="Voz Activa">
       <div className="w-full h-full">

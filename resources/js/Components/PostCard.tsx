@@ -7,7 +7,12 @@ import axios from 'axios';
 import { FaComments } from 'react-icons/fa';
 import CommentsSection from './CommentsSection';
 
-const PostCard = ({ post, setSeeComments, setPostToComment }) => {
+const PostCard = ({
+  post,
+  setPostToComment,
+  imgClassName = '',
+  className = '',
+}) => {
   function Like(postId) {
     axios
       .post(`/post-like/${postId}`)
@@ -19,12 +24,12 @@ const PostCard = ({ post, setSeeComments, setPostToComment }) => {
   }
 
   return (
-    <div className={`post-card`}>
+    <div className={`post-card ${className}  `}>
       <img
+        className={`${imgClassName}`}
         src={post.imageUrl}
         alt={post.title}
         onClick={() => {
-          setSeeComments(true);
           setPostToComment(post);
         }}
       />
@@ -61,7 +66,6 @@ const PostCard = ({ post, setSeeComments, setPostToComment }) => {
           </button>
           <button
             onClick={() => {
-              setSeeComments(true);
               setPostToComment(post);
             }}
             className=" mt-1 p-2 flex gap-1 items-center transform-effect"
