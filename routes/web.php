@@ -4,6 +4,7 @@ use App\Http\Controllers\ArtistaController;
 use App\Http\Controllers\ComunicacaoController;
 use App\Http\Controllers\ContestController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfissionalController;
 use App\Http\Controllers\SongsController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\ValuationFeedbackCommentController;
@@ -256,9 +257,13 @@ Route::middleware([
         return Inertia::render('Perfil/Perfil');
     })->name('perfil');
 
-    Route::get('/perfil-artista', function () {
-        return Inertia::render('Perfil/Artista/Perfl');
-    })->name('perfil-artista');
+    Route::get('/perfis', function () {
+        return Inertia::render('PerfilProfissional/Index');
+    })->name('perfis');
+
+    Route::get('/perfls', function () {
+        return Inertia::render('PerfilProfissional/Index');
+    })->name('perfil');
 
 
     /**
@@ -383,15 +388,21 @@ Route::middleware([
             DB::select('SELECT * FROM songs WHERE artist_id=?  AND mime_type LIKE ? ', [$artistId, '%video%'])
         );
     })->name('get-activevoice-videos/{artistId}');
+
+
+    Route::controller(ProfissionalController::class)->group(function () {
+        Route::post('register-profissional', 'store');
+    });
+
     Route::controller(ArtistaController::class)->group(function () {
         Route::get('artistas/{pagina}/{id}', 'index');
         Route::get('/artist-stats/{artistId}', 'artist_stats')->name('/artist-stats/${artistId}');
+        Route::get('artistas/{pagina}/{id}', 'index')->name('index');
+        Route::post('/new-artist', 'store')->name('new-artist');
+        Route::post('/covers-artist', 'get_covers')->name('covers-artist');
+        Route::post('/add-cover',  'save_cover')->name('add-cover');
+        Route::post('/update-artist',  'update_info')->name('update-artist');
     });
-    Route::get('artistas/{pagina}/{id}', [ArtistaController::class, 'index'])->name('index');
-    Route::post('/new-artist', [ArtistaController::class, 'store'])->name('new-artist');
-    Route::post('/covers-artist', [ArtistaController::class, 'get_covers'])->name('covers-artist');
-    Route::post('/add-cover', [ArtistaController::class, 'save_cover'])->name('add-cover');
-    Route::post('/update-artist', [ArtistaController::class, 'update_info'])->name('update-artist');
     Route::get('/artist-details/{id}', function ($id) {
         return Inertia::render('Artistas/Detalhar', [
             'artist' =>

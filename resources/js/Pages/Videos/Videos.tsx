@@ -32,8 +32,7 @@ import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import VideoCardGrelha from '@/Components/VideoCardGrelha';
-import { useStateContext } from '@/contexts/PaginaActualContext';
-import VideoShow from '@/Components/PlayingVideo/Index';
+
 
 function Videos({}) {
   const { data: videos, isFetching, error } = useGetVideosQuery('/get-videos');
@@ -43,79 +42,80 @@ function Videos({}) {
     error: errorDest,
   } = useGetDestaqueVideosQuery('');
   const { activeVideo, isPlayingVideo } = useSelector(state => state.player);
-  if (isFetching) return <Loader title="Carregando músicas..." />;
-  if (error) return <Error />;
 
-  const { currentPage, setCurrentPage } = useStateContext();
 
   return (
     <AppLayout title="Vídeos">
-      {' '}
-      <div className="w-full relative flex flex-row rounded">
-        <div className="w-full flex flex-col px-4 rounded-lg">
-          <div
-            className="w-full flex flex-row justify-between
+      {isFetching && !error && <Loader title="Carregando músicas..." />}
+      {error && !isFetching ? (
+        <Error />
+      ) : (
+        <div className="w-full relative flex flex-row rounded">
+          <div className="w-full flex flex-col px-4 rounded-lg">
+            <div
+              className="w-full flex flex-row justify-between
  items-center"
-          >
-            <h2 className=" font-bold text-base md:text-4xl text-[#]">
-              Destaques{' '}
-            </h2>
-            <Link href="top-charts">
-              <p className="text-sm md:text-base cursor-pointer">Ver mais</p>
-            </Link>
-          </div>
-          <div className="w-full relative flex flex-row">
-            <Swiper
-              loop={true}
-              spaceBetween={15}
-              navigation={true}
-              modules={[Navigation, EffectCube]}
-              effect=""
-              slidesPerView="auto"
-              centeredSlides
-              centeredSlidesBounds
-              className=" "
             >
-              {videosDestaques?.map((video, i) => (
-                <SwiperSlide key={video.id + video.id}>
-                  <VideoCardGrelha
-                    w="w-full"
-                    video={video}
-                    i={i}
-                    key={video.id + i + video.id}
-                    activeVideo={activeVideo}
-                    isPlayingVideo={isPlayingVideo}
-                    videos={videos}
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-          <div
-            className="w-full flex flex-row justify-between
+              <h2 className=" font-bold text-base md:text-4xl text-[#]">
+                Destaques{' '}
+              </h2>
+              <Link href="top-charts">
+                <p className="text-sm md:text-base cursor-pointer">Ver mais</p>
+              </Link>
+            </div>
+            <div className="w-full relative flex flex-row">
+              <Swiper
+                loop={true}
+                spaceBetween={15}
+                navigation={true}
+                modules={[Navigation, EffectCube]}
+                effect=""
+                slidesPerView="auto"
+                centeredSlides
+                centeredSlidesBounds
+                className=" "
+              >
+                {videosDestaques?.map((video, i) => (
+                  <SwiperSlide key={video.id + video.id}>
+                    <VideoCardGrelha
+                      w="w-full"
+                      video={video}
+                      i={i}
+                      key={video.id + i + video.id}
+                      activeVideo={activeVideo}
+                      isPlayingVideo={isPlayingVideo}
+                      videos={videos}
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+            <div
+              className="w-full flex flex-row justify-between
  items-center"
-          >
-            <h2 className=" font-bold text-base md:text-4xl text-[#]">
-              Ranking{' '}
-            </h2>
-            <Link href="top-charts">
-              <p className="text-sm md:text-base cursor-pointer">Ver mais</p>
-            </Link>
-          </div>
-          <div className="w-full relative flex flex-wrap ">
-            {videos?.map((video, i) => (
-              <VideoCard
-                videos={videos}
-                video={video}
-                isPlayingVideo={isPlayingVideo}
-                activeVideo={activeVideo}
-                i={i}
-                key={video.id}
-              />
-            ))}
+            >
+              <h2 className=" font-bold text-base md:text-4xl text-[#]">
+                Ranking{' '}
+              </h2>
+              <Link href="top-charts">
+                <p className="text-sm md:text-base cursor-pointer">Ver mais</p>
+              </Link>
+            </div>
+            <div className="w-full relative flex flex-wrap ">
+              {videos?.map((video, i) => (
+                <VideoCard
+                  videos={videos}
+                  video={video}
+                  isPlayingVideo={isPlayingVideo}
+                  activeVideo={activeVideo}
+                  i={i}
+                  key={video.id}
+                />
+              ))}
+            </div>
           </div>
         </div>
-      </div>{' '}
+      )}
     </AppLayout>
   );
 }

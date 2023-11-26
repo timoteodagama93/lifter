@@ -15,6 +15,7 @@ export default function Register() {
   const route = useRoute();
   const form = useForm({
     name: '',
+    phone: '',
     email: '',
     password: '',
     password_confirmation: '',
@@ -46,6 +47,19 @@ export default function Register() {
             autoComplete="name"
           />
           <InputError className="mt-2" message={form.errors.name} />
+        </div>
+
+        <div className="mt-4">
+          <InputLabel htmlFor="phone">Nº de telefone</InputLabel>
+          <TextInput
+            id="phone"
+            type="number"
+            className="mt-1 block w-full"
+            value={form.data.phone}
+            onChange={e => form.setData('phone', e.currentTarget.value)}
+            required
+          />
+          <InputError className="mt-2" message={form.errors.phone} />
         </div>
 
         <div className="mt-4">
@@ -84,12 +98,18 @@ export default function Register() {
             type="password"
             className="mt-1 block w-full"
             value={form.data.password_confirmation}
-            onChange={e =>
-              form.setData('password_confirmation', e.currentTarget.value)
-            }
+            onChange={e => {
+              form.setData('password_confirmation', e.currentTarget.value);
+            }}
             required
             autoComplete="new-password"
           />
+          {form.data.password != form.data.password_confirmation ? (
+            <InputError className="mt-2" message="As senhas não coincidem" />
+          ) : (
+            ''
+          )}
+
           <InputError
             className="mt-2"
             message={form.errors.password_confirmation}
@@ -109,15 +129,15 @@ export default function Register() {
                 />
 
                 <div className="ml-2">
-                  Concordo com os {' '}
+                  Concordo com os{' '}
                   <a
                     target="_blank"
                     href={route('terms.show')}
                     className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                   >
-                    Termos de serviços 
-                  </a>
-                  {' '} e {' '}
+                    Termos de serviços
+                  </a>{' '}
+                  e{' '}
                   <a
                     target="_blank"
                     href={route('policy.show')}
@@ -141,8 +161,15 @@ export default function Register() {
           </Link>
 
           <PrimaryButton
-            className={classNames('ml-4', { 'opacity-25': form.processing })}
-            disabled={form.processing}
+            className={classNames('ml-4', {
+              'opacity-25':
+                form.processing ||
+                form.data.password != form.data.password_confirmation,
+            })}
+            disabled={
+              form.processing ||
+              form.data.password != form.data.password_confirmation
+            }
           >
             Continuar
           </PrimaryButton>

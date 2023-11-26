@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Artist;
+use App\Models\Profissional;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
@@ -40,6 +41,7 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'artist_account' => Artist::all()->where('user_id', auth()->id())->first(),
+            'profissional_account' => Profissional::all()->where('user_id', auth()->id())->first(),
             'my_artists' => [Artist::all()->where('user_id', auth()->id())]
         ]);
     }

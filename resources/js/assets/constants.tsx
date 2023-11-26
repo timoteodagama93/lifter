@@ -17,9 +17,10 @@ import {
   MdNotifications,
   MdOutlineExplore,
 } from 'react-icons/md';
-import { GiTrophyCup } from 'react-icons/gi';
+import { GiSoundWaves, GiTrophyCup } from 'react-icons/gi';
 import { BsInfoCircle, BsStars, BsTrophy } from 'react-icons/bs';
 import {
+  BiDisc,
   BiHome,
   BiLibrary,
   BiMicrophone,
@@ -193,6 +194,16 @@ export const links = [
     name: 'Artistas',
     href: '/artistas',
     icon: RiUserStarFill,
+  },
+  {
+    name: 'Produtoras',
+    href: '/produtoras',
+    icon: GiSoundWaves,
+  },
+  {
+    name: 'DJs',
+    href: '/djs',
+    icon: BiDisc,
   },
   {
     name: 'Comunidade',

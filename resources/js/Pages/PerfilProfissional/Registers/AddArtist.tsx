@@ -1,22 +1,20 @@
 import React, { useRef, useState } from 'react';
-import { Link, useForm, Head } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import classNames from 'classnames';
-import useRoute from '@/Hooks/useRoute';
-import useTypedPage from '@/Hooks/useTypedPage';
-import AuthenticationCard from '@/Components/AuthenticationCard';
-import Checkbox from '@/Components/Checkbox';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import InputError from '@/Components/InputError';
 import SectionBorder from '@/Components/SectionBorder';
-import { BiHappy } from 'react-icons/bi';
 import { router } from '@inertiajs/core';
-import SecondaryButton from './SecondaryButton';
+import SecondaryButton from '../../../Components/SecondaryButton';
 import axios from 'axios';
-import { load } from '@syncfusion/ej2-react-grids';
 import Swal from 'sweetalert2';
-export default function AddArtist({ setPagina }) {
+import { BiArrowBack } from 'react-icons/bi';
+import { useStateContext } from '@/contexts/PaginaActualContext';
+import Welcome from './Welcome';
+import Artist from '../Artista/Index';
+export default function AddArtist({}) {
   const formArtist = useForm({
     name: '',
     genre: 'Kuduro',
@@ -30,41 +28,18 @@ export default function AddArtist({ setPagina }) {
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-
-    const formData = new FormData();
-    formData.append('name', formArtist.data.name);
-    formData.append('genre', formArtist.data.genre);
-    formData.append('contact', formArtist.data.contact);
-    formData.append('about', formArtist.data.about);
-    formData.append('country', formArtist.data.country);
-    formData.append('city', formArtist.data.city);
-    formData.append('terms', false);
-    formData.append('cover', photo);
-
     setIsLoading(true);
-    axios
-      .post('new-artist', formData)
-      .then(r => {
-        setIsLoading(false);
-        formArtist.setData('name', '');
-        formArtist.setData('genre', 'Kuduro');
-        formArtist.setData('contact', '');
-        formArtist.setData('about', '');
-        formArtist.setData('country', 'Angola');
-        formArtist.setData('city', 'Luanda');
-        clearPhotoFileInput();
-        setPhotoPreview(null);
+    formArtist.post('new-artist', {
+      onSuccess: () => {
         Swal.fire({
-          title: 'Sucesso',
-          text: 'Conta criada, recarregue a página.',
+          title: 'Conta criada com sucesso',
+          text: 'Seja bem-vindo à comunidade Lifter, a arte é sua e a felicidade é toda nossa, obrigado.',
           icon: 'success',
         });
-        router.reload();
-      })
-      .catch(e => {
         setIsLoading(false);
-        console.log('ERRO AO CRIAR ARTISTA: ' + e);
-      });
+        setCurrentPage(<Artist />);
+      },
+    });
   }
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const photoRef = useRef<HTMLInputElement>(null);
@@ -95,6 +70,8 @@ export default function AddArtist({ setPagina }) {
       formArtist.setData('cover', null);
     }
   }
+  const { setCurrentPage } = useStateContext();
+
   const [isLoading, setIsLoading] = useState(false);
   return (
     <>
@@ -104,8 +81,14 @@ export default function AddArtist({ setPagina }) {
         </div>
       ) : (
         <>
-          <div className="p-5 h-full m-1 shadow-lg shadow-black">
-            <p className="w-full text-xl flex justify-center uppercase">
+          <div className="p-5  m-1 shadow-lg shadow-black">
+            <p className="w-full text-xl flex justify-between uppercase gap-5">
+              <button
+                onClick={() => setCurrentPage(<Welcome />)}
+                className="transform-effect px-5 "
+              >
+                <BiArrowBack className="text-xl" />
+              </button>
               Criar novo perfil de artista
             </p>
             <SectionBorder></SectionBorder>

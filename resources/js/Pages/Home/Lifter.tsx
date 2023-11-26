@@ -71,8 +71,8 @@ function Lifter() {
             <p>
               Caso queira juntar-se de outra forma ou através de um projecto em
               mente, sinta-se livre em enviar um e-mail para{' '}
-              <strong>join@lifter.net</strong> para a nossa equipa detalhando o
-              projecto.
+              <strong>contact@lifter.ao</strong> para a nossa equipa detalhando
+              o projecto.
             </p>
           </div>
         </div>
@@ -84,7 +84,12 @@ function Lifter() {
               Gestor de Marketing e vendas
             </h1>
             <p>
+              {' '}
+              <strong>contact@lifter.ao</strong>{' '}
+            </p>
+
               Procuramos por um profissional no sector de Marketing e vendas.
+            <p>
               Possuir experiência em Marketing Musical e/ou Digital pode ser um
               diferencial.
             </p>
@@ -93,6 +98,7 @@ function Lifter() {
             <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
               Programador
             </h1>
+            <strong>contact@lifter.ao</strong>{' '}
             <p>
               Procuramos um desenvolvedor Web e/ou Mobile para integrar o nosso
               time.

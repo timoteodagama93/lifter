@@ -2,7 +2,7 @@ import AppLayout from '@/Layouts/AppLayout';
 import React, { useEffect, useState } from 'react';
 import useTypedPage from '@/Hooks/useTypedPage';
 import { useStateContext } from '@/contexts/PaginaActualContext';
-import AddArtist from '@/Pages/PerfilProfissional/Registers/AddArtist';
+import AddArtist from '@/Components/AddArtist';
 import {
   BiInfoCircle,
   BiLibrary,
@@ -33,92 +33,34 @@ import { HiHeart, HiMusicNote } from 'react-icons/hi';
 import { TiMessages } from 'react-icons/ti';
 import { useGetArtistStatsQuery } from '@/redux/services/coreApi';
 import { Error, Loader } from '@/Components';
-import AddProfissional from '@/Pages/PerfilProfissional/Registers/AddProfissional';
+import AddProfissional from '@/Components/AddProfissional';
 
-function Perfl() {
+function Artist() {
   const page = useTypedPage();
   const { currentPage, setCurrentPage } = useStateContext();
-
   const [artist, setArtist] = useState(page.props.artist_account);
-  const initialPage =
-    page.props.auth.user.is_artist === 0 ? (
-      <>
-        <div className="w-full flex flex-col  rounded-lg shadow-lg">
-          <div className="w-full">
-            <p className="w-full mt-2 p-5 ">
-              Seja bem-vindo, gerencie aqui o perfil artístico. Podes adicionar
-              outros músicos se você é um agente, produtor ou empresário.
-            </p>
-          </div>
-        </div>
-      </>
-    ) : (
-      <DetailsArtist artist={artist} />
-    );
-
-  const [pagina, setPagina] = useState(initialPage);
+  const [pagina, setPagina] = useState(<DetailsArtist artist={artist} />);
 
   return (
     <AppLayout title="Perfil">
       <div className="w-full h-full">
         <div className="relattive w-full h-full flex flex-col">
-          {page.props.auth.user.is_artist === 0 ? (
-            <div className="flex flex-col justify-center ">
-              <h1 className="px-5 text-xl">
-                Você não tem um perfil profissional activo.
-              </h1>
-              <p className="text-base">
-                Se você for um produtor, empresário, agencia, etc e gostaria de
-                gerenciar múltiplos artistas, por favor entre em contacto com a
-                nossa equipa.
-              </p>
-              <div className="flex gap-2 m-1">
-                <ButtonWraper>
-                  <button
-                    onClick={() =>
-                      setPagina(<AddArtist setPagina={setPagina} />)
-                    }
-                  >
-                    <GiSpearFeather className="text-4xl mr-1" />
-                    Criar perfil artístico
-                  </button>
-                </ButtonWraper>
-                <ButtonWraper>
-                  <button
-                    onClick={() =>
-                      setPagina(<AddProfissional setPagina={setPagina} />)
-                    }
-                  >
-                    <MdWork className="text-4xl mr-1" />
-                    Criar perfil profissional
-                  </button>
-                </ButtonWraper>
-                <ButtonWraper>
-                  <button onClick={() => setPagina(<ContactTeam />)}>
-                    <BiPhone className="text-4xl mr-1" />
-                    Contactar equipa
-                  </button>
-                </ButtonWraper>
-              </div>
-            </div>
-          ) : (
-            <div
-              className={` ${
-                pagina.type.name === 'ArtistSongsFeedbacks' ? 'hidden' : 'flex'
-              }  `}
-              style={{ transition: '1s' }}
-            >
-              <HeaderArtist artist={artist} setPagina={setPagina} />
-            </div>
-          )}
-          {pagina}
+          <div
+            className={` ${
+              pagina.type.name === 'ArtistSongsFeedbacks' ? 'hidden' : 'flex'
+            }  `}
+            style={{ transition: '1s' }}
+          >
+            <HeaderArtist artist={artist} setPagina={setPagina} />
+          </div>
+          4{pagina}
         </div>
       </div>
     </AppLayout>
   );
 }
 
-export default Perfl;
+export default Artist;
 
 function HeaderArtist({ artist, setPagina }) {
   return (
@@ -204,48 +146,6 @@ function HeaderArtist({ artist, setPagina }) {
     </>
   );
 }
-
-const ContactTeam = () => {
-  return (
-    <div className="w-full flex flex-col text-xl mt-5 pl-5 border-t-4 pt-5 justify-center items-center">
-      <div className="flex flex-row w-full gap-2 justify-start items-center">
-        <BsWhatsapp />
-        +244 927 678 173
-      </div>
-      <div className="flex flex-row w-full gap-2 justify-start items-center">
-        <MdCall />
-        +244 927 678 173
-      </div>
-      <div className="flex flex-row w-full gap-2 justify-start items-center">
-        <MdEmail />
-        contact@lifter.ao
-      </div>
-      <div className="flex flex-row w-full gap-2 justify-start items-center">
-        <MdPlace />
-        São Paulo, Luanda, Angola
-      </div>
-      <div className="w-full ">
-        <FormSection
-          title="Deixar uma mensagem"
-          description="Envie uma mensagem à equipa Lifter, teremos muito gosto em retornar-lhe."
-          onSubmit={() => {}}
-        >
-          <div className="text-black w-full ">
-            <div className="w-full flex flex-row">
-              <label htmlFor="name">Nome de contacto</label>
-              <TextInput name="name" className="w-full bg-black " />
-            </div>
-            <div className="w-full flex flex-row">
-              <ButtonWraper>
-                <button>Enviar</button>
-              </ButtonWraper>
-            </div>
-          </div>
-        </FormSection>
-      </div>
-    </div>
-  );
-};
 
 function Stats({ artist }) {
   const { data: stats, isFetching, error } = useGetArtistStatsQuery(artist?.id);

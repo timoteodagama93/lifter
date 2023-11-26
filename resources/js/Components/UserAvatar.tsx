@@ -169,8 +169,8 @@ function UserAvatar() {
           </div>
           <div onClick={() => setOpenMobileMenu(false)}>
             <DropdownLink href={route('comunicar')}>
-              <div className="hidden relative ml-2 md:flex rounded-sm md:rounded-sm p-1 px-2 md:px-2 m-4 cursor-pointer hover:bg-[#f6cc33 shadow-xl shadow-black bg-[#2e2c2e] text-white min-h-10">
-                {unread > 0 ? (
+              <div className="hidden relative ml-2 md:flex rounded-sm md:rounded-sm p-1 px-2 md:px-2 m-4 cursor-pointer hover:bg-[#f6cc33 shadow-xl shadow-black bg-[#2e2c2e] text-white min-h-10 justify-center items-center gap-1">
+                {/*unread > 0 ? (
                   <span className="sticky top-1 p-2  shadow-lg bg-[#000] w-4 h-4 flex justify-center items-center rounded-full text-red-500 text-xs">
                     {unread}
                   </span>
@@ -178,18 +178,18 @@ function UserAvatar() {
                   <span className="bottom-1 p-2  shadow-lg  w-4 h-4 flex justify-center items-center rounded-full text-red-500 text-xs">
                     {''}
                   </span>
-                )}
+                )*/}
                 <MdNotifications />
+                Equipa
               </div>
-              Notificar
             </DropdownLink>
           </div>
           <div onClick={() => setOpenMobileMenu(false)}>
-            <DropdownLink href={route('perfil')}>Perfil</DropdownLink>
+            <DropdownLink href={route('perfil')}>Meu Feed</DropdownLink>
           </div>
           <div onClick={() => setOpenMobileMenu(false)}>
-            <DropdownLink href={route('perfil-artista')}>
-              Perfil Artistico
+            <DropdownLink href={route('perfis')}>
+              Gestor de perfís
             </DropdownLink>
           </div>
           <div onClick={() => setOpenMobileMenu(false)}>

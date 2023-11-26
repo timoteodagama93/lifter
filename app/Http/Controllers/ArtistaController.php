@@ -48,14 +48,15 @@ class ArtistaController extends Controller
             ]
         );
 
-        $file = Request::file('cover')->store("public/artists/{$artist->id}/covers");
+        if (Request::file('cover')) {
+            $file = Request::file('cover')->store("public/artists/{$artist->id}/covers");
+            $artist->url_cover = Storage::url($file);
+        }
+        $artist->save();
 
         $user->is_artist = true;
         $user->save();
-
-        $artist->url_cover = Storage::url($file);
-        $artist->save();
-        return $artist;
+        return;
     }
 
     function update_info(Request $request)

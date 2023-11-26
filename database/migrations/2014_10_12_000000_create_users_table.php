@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('phone')->unique();
             $table->boolean('is_artist')->default(false);
             $table->boolean('is_manager')->default(false);
             $table->boolean('is_editor')->default(false);
+            $table->boolean('is_profissional')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

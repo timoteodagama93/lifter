@@ -35,7 +35,7 @@ import { useGetArtistStatsQuery } from '@/redux/services/coreApi';
 import { Error, Loader } from '@/Components';
 import AddProfissional from '@/Pages/PerfilProfissional/Registers/AddProfissional';
 
-function Perfl() {
+function Profissional() {
   const page = useTypedPage();
   const { currentPage, setCurrentPage } = useStateContext();
 
@@ -59,66 +59,62 @@ function Perfl() {
   const [pagina, setPagina] = useState(initialPage);
 
   return (
-    <AppLayout title="Perfil">
-      <div className="w-full h-full">
-        <div className="relattive w-full h-full flex flex-col">
-          {page.props.auth.user.is_artist === 0 ? (
-            <div className="flex flex-col justify-center ">
-              <h1 className="px-5 text-xl">
-                Você não tem um perfil profissional activo.
-              </h1>
-              <p className="text-base">
-                Se você for um produtor, empresário, agencia, etc e gostaria de
-                gerenciar múltiplos artistas, por favor entre em contacto com a
-                nossa equipa.
-              </p>
-              <div className="flex gap-2 m-1">
-                <ButtonWraper>
-                  <button
-                    onClick={() =>
-                      setPagina(<AddArtist setPagina={setPagina} />)
-                    }
-                  >
-                    <GiSpearFeather className="text-4xl mr-1" />
-                    Criar perfil artístico
-                  </button>
-                </ButtonWraper>
-                <ButtonWraper>
-                  <button
-                    onClick={() =>
-                      setPagina(<AddProfissional setPagina={setPagina} />)
-                    }
-                  >
-                    <MdWork className="text-4xl mr-1" />
-                    Criar perfil profissional
-                  </button>
-                </ButtonWraper>
-                <ButtonWraper>
-                  <button onClick={() => setPagina(<ContactTeam />)}>
-                    <BiPhone className="text-4xl mr-1" />
-                    Contactar equipa
-                  </button>
-                </ButtonWraper>
-              </div>
+    <div className="w-full h-full">
+      <div className="relattive w-full h-full flex flex-col">
+        {page.props.auth.user.is_artist === 0 ? (
+          <div className="flex flex-col justify-center ">
+            <h1 className="px-5 text-xl">
+              Você não tem um perfil profissional activo.
+            </h1>
+            <p className="text-base">
+              Se você for um produtor, empresário, agencia, etc e gostaria de
+              gerenciar múltiplos artistas, por favor entre em contacto com a
+              nossa equipa.
+            </p>
+            <div className="flex gap-2 m-1">
+              <ButtonWraper>
+                <button
+                  onClick={() => setPagina(<AddArtist setPagina={setPagina} />)}
+                >
+                  <GiSpearFeather className="text-4xl mr-1" />
+                  Criar perfil artístico
+                </button>
+              </ButtonWraper>
+              <ButtonWraper>
+                <button
+                  onClick={() =>
+                    setPagina(<AddProfissional setPagina={setPagina} />)
+                  }
+                >
+                  <MdWork className="text-4xl mr-1" />
+                  Criar perfil profissional
+                </button>
+              </ButtonWraper>
+              <ButtonWraper>
+                <button onClick={() => setPagina(<ContactTeam />)}>
+                  <BiPhone className="text-4xl mr-1" />
+                  Contactar equipa
+                </button>
+              </ButtonWraper>
             </div>
-          ) : (
-            <div
-              className={` ${
-                pagina.type.name === 'ArtistSongsFeedbacks' ? 'hidden' : 'flex'
-              }  `}
-              style={{ transition: '1s' }}
-            >
-              <HeaderArtist artist={artist} setPagina={setPagina} />
-            </div>
-          )}
-          {pagina}
-        </div>
+          </div>
+        ) : (
+          <div
+            className={` ${
+              pagina.type.name === 'ArtistSongsFeedbacks' ? 'hidden' : 'flex'
+            }  `}
+            style={{ transition: '1s' }}
+          >
+            <HeaderArtist artist={artist} setPagina={setPagina} />
+          </div>
+        )}
+        {pagina}
       </div>
-    </AppLayout>
+    </div>
   );
 }
 
-export default Perfl;
+export default Profissional;
 
 function HeaderArtist({ artist, setPagina }) {
   return (

@@ -113,7 +113,7 @@ function Links({ links, setOpenMobileMenu }) {
             <Link
               href={item.href}
               key={item.name}
-              className={`flex flex-row justify-start my-2 text-sm  hover:text-cyan-400
+              className={`flex flex-row justify-start my-1 text-sm  hover:text-cyan-400
           ${
             route().current()?.includes(item.href)
               ? 'border-l-4 border-[#4c88c4]  bg-[#2e2e2e] text-cyan-400 '
@@ -134,20 +134,5 @@ function Links({ links, setOpenMobileMenu }) {
   );
 }
 
-function Search() {
-  return (
-    <div className="">
-      <form>
-        <input
-          className="rounded-sm"
-          type="search"
-          placeholder="Descobrir"
-          name="search"
-          id="search"
-        />
-      </form>
-    </div>
-  );
-}
 
 export default Sidebar;
