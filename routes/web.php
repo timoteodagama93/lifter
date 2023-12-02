@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\ArtistaController;
+use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\ComunicacaoController;
 use App\Http\Controllers\ContestController;
+use App\Http\Controllers\JuradoController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfissionalController;
 use App\Http\Controllers\SongsController;
@@ -79,7 +81,7 @@ Route::middleware([
     })->name('vozactiva');
 
     Route::get('/concursos', function () {
-        return Inertia::render('Concursos/Concursos', [
+        return Inertia::render('Concursos/Index', [
             'contests' => Contest::all()
         ]);
     })->name('concursos');
@@ -106,6 +108,14 @@ Route::middleware([
     Route::get('/artistas', function () {
         return Inertia::render('Artistas/Artistas', ['artists' => DB::select("SELECT * FROM artists")]);
     })->name('artistas');
+
+    Route::get('/produtoras', function () {
+        return Inertia::render('Produtoras', ['produtoras' => DB::select("SELECT * FROM  profissionals WHERE category='Produtor'")]);
+    })->name('produtoras');
+
+    Route::get('/djs', function () {
+        return Inertia::render('DJs', ['djs' => DB::select("SELECT * FROM profissionals WHERE category='DJ'")]);
+    })->name('djs');
 
     Route::get('/avaliacoes', function () {
         return Inertia::render('Avaliacoes/Avaliacoes', []);
@@ -193,6 +203,8 @@ Route::middleware([
         Route::post('upload.new', 'store')->name('upload.new');
         Route::get('songs/{id}', 'list');
         Route::post('/songs', 'store');
+
+        Route::get('get-valuations-requests', 'get_valuations_requests')->name('get-valuations-requests');
     });
     Route::post('/get-valluations', function () {
         return response()->json(Valuation::where('song_id', Request::get('song_id'))->count());
@@ -228,7 +240,12 @@ Route::middleware([
         Route::put('create-contest', 'store')->name('create-contest');
         Route::post('add-contest-schedule', 'add_schedule')->name('add-contest-schedule');
         Route::post('add-contest-premios', 'add_premios')->name('add-contest-premios');
+
+        Route::post('add-participant', 'contest_new_participant')->name('add-participant');
+        Route::post('am-I-participant', 'am_I_participant')->name('am-I-participant');
+
         Route::post('get-my-contests', 'get_my_contests')->name('get-my-contests');
+        Route::post('get-active-contests', 'ge_active_contests')->name('get-active-contests');
 
         Route::post('ascensao-artists', 'get_ascensao_artists')->name('ascensao-artists');
         Route::get('get-contest-images/{contestId}', 'contest_images')->name('get-contest-images/{contestId}');
@@ -264,6 +281,15 @@ Route::middleware([
     Route::get('/perfls', function () {
         return Inertia::render('PerfilProfissional/Index');
     })->name('perfil');
+
+
+    /** JURADOS */
+    Route::controller(JuradoController::class)->group(function () {
+        Route::get('/jurados', 'index')->name('jurados');
+        Route::post('/jurados', 'get_jury')->name('jurados');
+        Route::post('/jury-requisition', 'store')->name('jury-requisition');
+        Route::get('/get-requisition', 'store')->name('jury-requisition');
+    });
 
 
     /**
@@ -412,4 +438,13 @@ Route::middleware([
     Route::get('/get-top-artists', function () {
         return response()->json(Artist::paginate(5));
     })->name('get-top-artists');
+});
+
+
+/**
+ * CAMPAIGN ROUTES
+ */
+Route::controller(CampaignController::class)->group(function () {
+    Route::post('new-campaign', 'store')->name('new-campaign');
+    Route::post('get-campaigns', 'get_mines')->name('get-campaigns');
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contest;
+use App\Models\ContestUser;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +34,7 @@ class ContestController extends Controller
             ]
         );
 
-        $file = Request::file('cover')->store("contests/$contest->id", 'public');
+        $file = Request::file('cover')->store("public/contests/$contest->id/covers");
         $contest->url_cover = Storage::url($file);
         $contest->save();
         echo response(['new_contest' => $contest]);
@@ -50,7 +51,6 @@ class ContestController extends Controller
                 'descricao' => ['required'],
             ])->validateWithBag('contestCreationCoverFails');
 
-            $file = Request::file('cover')->store('contests', 'public');
             $user_id = Auth::id();
             $contest = Contest::updateOrCreate(
                 [
@@ -58,14 +58,17 @@ class ContestController extends Controller
                     'id' => Request::input('id'),
                 ],
                 [
-                    'url_cover' => Storage::url($file),
                     'cover_mime_type' => Request::file('cover')->getMimeType(),
                     'designacao' => Request::input('designacao'),
                     'descricao' => Request::input('descricao'),
                     'estilo_musical' => Request::input('estilo'),
                 ]
             );
-            echo response(['new_contest' => $contest]);
+
+            $file = Request::file('cover')->store("public/contests/$contest->id/covers");
+            $url_cover = Storage::url($file);
+            $contest->url_cover = $url_cover;
+            $contest->save();
         } else {
             Validator::make(Request::all(), [
                 'designacao' => ['required'],
@@ -84,7 +87,6 @@ class ContestController extends Controller
                     'estilo_musical' => Request::input('estilo'),
                 ]
             );
-            echo response(['new_contest' => $contest]);
         }
         return;
     }
@@ -142,6 +144,11 @@ class ContestController extends Controller
         return response()->json(Contest::all()->where('user_id', auth()->id()));
     }
 
+    public function ge_active_contests()
+    {
+        return response()->json(Contest::all()->where('activo', true));
+    }
+
     public function details($contestId)
     {
         return Inertia::render('Concursos/Details', ['contest' => Contest::all()->where('id', $contestId)->first()]);
@@ -159,5 +166,34 @@ class ContestController extends Controller
         return response()->json(
             DB::select('SELECT * FROM contests WHERE id= ? ', [$contestId])
         );
+    }
+
+    public function contest_new_participant()
+    {
+        $contestId = Request::input('contest_id');
+        $artistId = Request::input('song_id');
+        $songId = Request::input('song_id');
+        $userId = auth()->id();
+
+        $registration = ContestUser::updateOrCreate([
+            'contest_id' => $contestId,
+            'artist_id' => $artistId,
+            'user_id' => $userId
+        ], [
+            'song_id' => $songId,
+        ]);
+        return to_route('concursos');
+    }
+
+    public function am_I_participant()
+    {
+        $artistId = Request::get('artist_id');
+        $contestId = Request::get('contest_id');
+        $userId = auth()->id();
+
+        $sql = "SELECT * FROM contest_users WHERE artist_id='$artistId' AND contest_id='$contestId' AND user_id=$userId";
+
+        $participants =  DB::select($sql);
+        return response()->json($participants);
     }
 }

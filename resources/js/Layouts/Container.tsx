@@ -40,7 +40,7 @@ import Songs from '@/Pages/Musicas/Songs';
 import Videos from '@/Pages/Videos/Videos';
 import { Posts } from '@/Pages/Home';
 import ArtistsGalery from '@/Pages/VozActiva';
-import ContestCard from '@/Components/ContestCard';
+import ContestCard from '@/Pages/Concursos/ContestCard';
 import useTypedPage from '@/Hooks/useTypedPage';
 import route from 'ziggy-js';
 import CommunityDiscussion from '@/Pages/CommunityDiscussion';
@@ -98,7 +98,7 @@ function Container({
         <div
           className={`relative text-gray-900 w-full
           md:w-[75%]
-          h-full top-0 left-0 shadow-xl flex flex-col   bg-[#4c88c4]`}
+          h-full top-0 left-0 shadow-xl flex flex-col   bg-cyan-400`}
         >
           <div
             className={`relative  text-white w-full ${

@@ -33,10 +33,7 @@ export default function AddSong({ artist, from = '' }) {
     e.preventDefault();
     formSong.post('add-song', {
       onSuccess: () => {
-        formSong.setData('gravadora', '');
-        formSong.setData('letra', '');
-        formSong.setData('participacoes', '');
-        formSong.setData('title', '');
+        formSong.reset();
         clearSongFileInput();
         setSuccessOnAdd(true);
         Swal.fire({
@@ -126,13 +123,13 @@ export default function AddSong({ artist, from = '' }) {
               {/* <!-- Profile Photo File Input --> */}
               <input
                 type="file"
-                className=""
-                required
+                className="hidden"
                 ref={photoRef}
                 onChange={updatePhotoPreview}
               />
 
               <InputLabel htmlFor="file" value="Ficheiro" />
+              <InputError className="mt-2" message={formSong.errors.song} />
 
               <SecondaryButton
                 className="m-2"

@@ -28,7 +28,7 @@ function TopChartCard({ song, i, isPlaying, activeSong, songs }) {
     <div
       className={`w-full flex ${
         isAudio ? 'flex-row' : 'flex-col'
-      }  items-center border shadow-lg transform-effect hover:text-white p-0 md:p1 rounded-lg  mb-1 py-2 `}
+      }  items-center border shadow-lg bg-black transform-effect hover:text-white p-0 md:p1 rounded-lg  mb-1 py-2 `}
     >
       <h3 className="flex font-bold text-base  mr-1"> {i + 1}. </h3>
       <div

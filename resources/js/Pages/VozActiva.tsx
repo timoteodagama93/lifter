@@ -1,12 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import './style_gallery.css';
-import PlayPause from '@/Components/PlayPause';
-import { HiEye } from 'react-icons/hi';
-import SectionBorder from '@/Components/SectionBorder';
 import {
   useGetActiveVoiceSongsQuery,
   useGetActiveVoiceVideosQuery,
-  useGetVideosQuery,
   useGetActiveVoiceImagesQuery,
 } from '@/redux/services/coreApi';
 import { useSelector } from 'react-redux';
@@ -14,13 +10,9 @@ import { Link } from '@inertiajs/react';
 import TopChartCard from '@/Components/TopChartCard';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import VideoCard from '@/Components/VideoCard';
-import { EffectCards, FreeMode, Navigation, Pagination } from 'swiper/modules';
+import { EffectCards, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/effect-cards';
-import './effectsCards.css';
-import { nextCellIndex } from '@syncfusion/ej2-react-grids';
-import Jurados from './Jurados/Jurados';
-import Opinar from './Jurados/Opinar';
 import AppLayout from '../Layouts/AppLayout';
 
 function VozActiva({ activeVoiceArtist }) {
@@ -32,7 +24,7 @@ function VozActiva({ activeVoiceArtist }) {
   const { data: videos } = useGetActiveVoiceVideosQuery(activeVoiceArtist.id);
   const { data: images } = useGetActiveVoiceImagesQuery(activeVoiceArtist.id);
   const { activeSong, isPlaying } = useSelector(state => state.player);
-  
+
   return (
     <AppLayout title="Voz Activa">
       <div className="w-full h-full">
@@ -55,9 +47,8 @@ function VozActiva({ activeVoiceArtist }) {
                   >
                     {images?.map((image, i) => (
                       <>
-                        <SwiperSlide key={image} className='swiper-slide'>
+                        <SwiperSlide key={image} className="swiper-slide">
                           <img
-
                             src={image.replace('public', 'storage')}
                             alt=""
                           />

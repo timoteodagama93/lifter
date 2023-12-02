@@ -15,21 +15,21 @@ import {
 import VideoCard from '@/Components/VideoCard';
 import TopChartCard from '@/Components/TopChartCard';
 
-function Detalhar({ artist }) {
+function Detalhar({ type, prof }) {
   const {
     data: songs,
     isFetching,
     error,
-  } = useGetActiveVoiceSongsQuery(artist.id);
-  const { data: videos } = useGetActiveVoiceVideosQuery(artist.id);
-  const { data: images } = useGetActiveVoiceImagesQuery(artist.id);
+  } = useGetActiveVoiceSongsQuery(prof.id);
+  const { data: videos } = useGetActiveVoiceVideosQuery(prof.id);
+  const { data: images } = useGetActiveVoiceImagesQuery(prof.id);
   const { activeSong, isPlaying } = useSelector(state => state.player);
   console.log(images);
 
   return (
     <div className="w-full h-full p-5">
       <h2 className="w-full text-4xl font-bold flex heading-text text-center space-x-2 text-white">
-        <span> </span> <span> {artist.name} </span>
+        <span> </span> <span> {prof.name} </span>
       </h2>
       <div className="w-full h-full flex flex-col">
         <div className="w-full flex flex-col  px-2">
@@ -62,9 +62,9 @@ function Detalhar({ artist }) {
             </div>
             <div className="w-[50%] p-5 shadow-lg">
               <p className="w-full text-xl">
-                Género: <span className="font-bold">{artist.genres} </span>
+                Género: <span className="font-bold">{prof.genres} </span>
               </p>
-              <p className="w-full text-justify"> {artist.about} </p>
+              <p className="w-full text-justify"> {prof.about} </p>
             </div>
           </div>
         </div>

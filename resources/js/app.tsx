@@ -1,5 +1,6 @@
 import './bootstrap';
 import '../css/app.css';
+import '../css/effectsCards.css';
 
 import React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -11,7 +12,6 @@ import store from './redux/store.jsx';
 const appName =
   window.document.getElementsByTagName('title')[0]?.innerText || 'Lifter';
 import { ContextPageProvider } from './contexts/PaginaActualContext';
-
 
 createInertiaApp({
   title: title => `${title} - ${appName}`,

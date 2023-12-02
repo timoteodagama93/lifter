@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 // Import Swiper React components
 
 // Import Swiper styles
@@ -10,50 +10,15 @@ import 'swiper/css/thumbs';
 //import './stylesGalery.css';
 
 // import required modules
-import Interagir from '@/Components/Interagir';
 import AppLayout from '@/Layouts/AppLayout';
-import AudioPlayer from '@/Components/AudioPlayer';
-import VideoPlayer from '@/Components/VideoPlayer';
-import {
-  GiNextButton,
-  GiPauseButton,
-  GiPlayButton,
-  GiPreviousButton,
-} from 'react-icons/gi';
-import Seekbar from '@/Components/MusicPlayer/Seekbar';
-import MediaDeEstrelas from '@/Components/MediaDeEstrelas';
-import Container from '@/Layouts/Container';
-import { BiCalendar, BiDotsHorizontal } from 'react-icons/bi';
-import { useStateContext } from '@/contexts/PaginaActualContext';
 
-import microImage from '../../assets/micro.jpg';
 import { useSelector } from 'react-redux';
-import { useGetSongsQuery, useGetVideosQuery } from '@/redux/services/coreApi';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import VideoCard from '@/Components/VideoCard';
-import {
-  EffectCards,
-  EffectCoverflow,
-  EffectCube,
-  Navigation,
-} from 'swiper/modules';
-import { Link } from '@inertiajs/react';
-import { SongCard } from '@/Components';
+import { useGetSongsQuery } from '@/redux/services/coreApi';
 
 import ValuationReader from './ValuationReader';
 import ValuatedsSongs from './ValuatedsSongs';
-import axios from 'axios';
-import ListSongs from './ListSongs';
-import { transform } from 'lodash';
 
 const Avaliacoes = ({}) => {
-  const [duration, setDuration] = useState(0);
-  const [seekTime, setSeekTime] = useState(0);
-  const [appTime, setAppTime] = useState(0);
-  const [volume, setVolume] = useState(0.3);
-  const [repeat, setRepeat] = useState(true);
-  const [shuffle, setShuffle] = useState(false);
-
   const { data: songs, isFetching, error } = useGetSongsQuery('/get-songs');
   const { activeSong, isPlaying } = useSelector(state => state.player);
 

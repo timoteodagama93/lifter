@@ -16,6 +16,7 @@ class Song extends Model
     use HasFactory;
     use HasUlids;
     protected $fillable = [
+        'id',
         'title',
         'artist_id',
         'genre',

@@ -1,29 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { BiLibrary, BiPencil, BiPhotoAlbum, BiSend } from 'react-icons/bi';
-import {
-  BsEmojiAngry,
-  BsEmojiHeartEyes,
-  BsEmojiKiss,
-  BsShare,
-} from 'react-icons/bs';
-import {
-  HiHeart,
-  HiOutlineEmojiHappy,
-  HiOutlineEmojiSad,
-} from 'react-icons/hi';
+import { BiPencil, BiSend } from 'react-icons/bi';
+import { BsEmojiAngry, BsEmojiHeartEyes, BsEmojiKiss } from 'react-icons/bs';
+import { HiOutlineEmojiHappy, HiOutlineEmojiSad } from 'react-icons/hi';
 import EnviarEstrelas from '@/Components/EnviarEstrelas';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { useForm } from '@inertiajs/react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { smalLogo } from '../../../../../img';
-import { MdOutlineMessage } from 'react-icons/md';
+import { MdOutlineMessage, MdStars } from 'react-icons/md';
 import { TiMessages } from 'react-icons/ti';
-import { AddSongCover, EditSong } from '../Song';
+import { EditSong } from '../Song';
 import { useDispatch, useSelector } from 'react-redux';
 import { playPause, setActiveSong } from '@/redux/features/playerSlice';
 import classNames from 'classnames';
 import { FaPauseCircle, FaPlayCircle } from 'react-icons/fa';
+import Modal from '@/Components/Modal';
+import SongEvaluationSetup from './SongEvaluationSetup';
+import { Loader } from '@/Components';
 
 function ValuationReader({ activeSong: selectedSong }) {
   const [openModal, setOpenModal] = useState(false);
@@ -59,24 +53,17 @@ function ValuationReader({ activeSong: selectedSong }) {
   }, [selectedSong]);
 
   const [localPage, setLocalPage] = useState(
-    <DisplayComments key={selectedSong.id} comments={comments} />,
+    <DisplayComments key={selectedSong.id} song={selectedSong.id} />,
   );
 
   let commentsKey = 0o01;
   let feedbacksKey = 0o10;
-
-  useEffect(() => {
-    commentsKey = comments.length;
-  }, [comments]);
-  useEffect(() => {
-    feedbacksKey = feedbacks.length;
-  }, [feedbacks]);
   return (
     <>
       <div className="w-full h-full flex flex-col overflow-hidden ">
         <div className="w-full h-[35%]  border-b px-1 md:px-5 flex flex-col  justify-between items-center">
           <div className="w-full flex flex-row items-center gap-1 ">
-            {selectedSong.cover ? (
+            {selectedSong?.cover ? (
               <img
                 src={selectedSong?.cover}
                 alt=""
@@ -104,11 +91,13 @@ function ValuationReader({ activeSong: selectedSong }) {
           </div>
           <div className="w-full h-fit flex flex-row justify-end gap-1 ">
             <button
-              onClick={() => setLocalPage(<AddSongCover song={selectedSong} />)}
+              onClick={() => setOpenModal(true)}
               className="transform-effect p-1 justify-center items-center w-full flex flex-col"
             >
-              <BiPhotoAlbum className="w-5 md:w-7 h-auto font-bold" />
-              <span style={{ fontSize: '.5rem' }} className='hidden md:flex'>Add capa</span>
+              <MdStars className="w-5 md:w-7 h-auto font-bold" />
+              <span style={{ fontSize: '.5rem' }} className="hidden md:flex">
+                Avaliar
+              </span>
             </button>
 
             <button
@@ -121,40 +110,38 @@ function ValuationReader({ activeSong: selectedSong }) {
             >
               {' '}
               <BiPencil className="w-4 md:w-7 h-auto font-bold" />{' '}
-              <span style={{ fontSize: '.5rem' }} className='hidden md:flex' >Editar detalhes</span>
+              <span style={{ fontSize: '.5rem' }} className="hidden md:flex">
+                Editar detalhes
+              </span>
             </button>
             <button
               className="transform-effect p-1 justify-center items-center w-full flex flex-col"
               onClick={() => {
                 setLocalPage(
-                  <DisplayFeedbacks feedbacks={comments} key={feedbacksKey} />,
+                  <DisplayFeedbacks song={selectedSong} key={feedbacksKey} />,
                 );
               }}
             >
               <MdOutlineMessage className="w-4 md:w-7 h-auto font-bold" />
-              <span style={{ fontSize: '.5rem' }} className='hidden md:flex' >Feedbacks</span>
+              <span style={{ fontSize: '.5rem' }} className="hidden md:flex">
+                Feedbacks
+              </span>
             </button>
             <button
               className="transform-effect p-1 justify-center items-center w-full flex flex-col"
               onClick={() => {
-                setLocalPage(
-                  <DisplayComments comments={comments} key={commentsKey} />,
-                );
-                setOpenModal(true);
+                setLocalPage(<DisplayComments song={selectedSong} />);
               }}
             >
               <TiMessages className="w-4 md:w-7 h-auto font-bold" />
-              <span style={{ fontSize: '.5rem' }} className='hidden md:flex' >Comentários</span>
+              <span style={{ fontSize: '.5rem' }} className="hidden md:flex">
+                Comentários
+              </span>
             </button>
             <button
               className="transform-effect p-1 justify-center items-center w-full flex flex-col"
               onClick={() =>
-                setLocalPage(
-                  <DisplayComments
-                    comments={comments}
-                    key={comments.length + 0o1}
-                  />,
-                )
+                setLocalPage(<DisplayComments song={selectedSong} />)
               }
             >
               {isPlaying && selectedSong?.title === activeSong.title ? (
@@ -170,50 +157,103 @@ function ValuationReader({ activeSong: selectedSong }) {
                   onClick={() => handlePlayClick(selectedSong, selectedSong, 0)}
                 />
               )}
-              <span style={{ fontSize: '.5rem' }}  className='hidden md:flex'  >Reproduzir</span>
+              <span style={{ fontSize: '.5rem' }} className="hidden md:flex">
+                Reproduzir
+              </span>
             </button>
           </div>
         </div>
 
         <div className="w-full h-[65%] overflow-y-auto px-1"> {localPage} </div>
       </div>
+      {openModal && (
+        <SongEvaluationSetup song={selectedSong} onClose={setOpenModal} />
+      )}
     </>
   );
 }
 
 export default ValuationReader;
 
-function DisplayComments({ comments }) {
+const DisplayComments = ({ song: selectedSong }) => {
+  const [comments, setComments] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .post('get-comments', { song_id: selectedSong.id })
+      .then(response => {
+        setIsLoading(false);
+        setComments(response.data);
+      })
+      .catch(error => {});
+  }, []);
+
+  if (isLoading) return <Loader title="Carregando comentários..." />;
   return (
     <>
       {comments?.map(comment => (
         <div className="py-1 " key={comment.id}>
           <p className="w-full p-2 shadow shadow-black bg-green-50 text-black">
             {comment.comment}
+            {console.log(comment)}
             <br />
-            <span className="justify-end right-5"> {comment.time} </span>
+            <span className="flex justify-end"> {comment.created_at} </span>
           </p>
         </div>
       ))}
+      {comments.length > 0 ? (
+        <></>
+      ) : (
+        <>
+          <h1 className="text-xl text-center">
+            Nenhum comentário até ao momento
+          </h1>
+        </>
+      )}
     </>
   );
-}
+};
 
-function DisplayFeedbacks({ feedbacks }) {
+const DisplayFeedbacks = ({ song: selectedSong }) => {
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .post('feedbacks', { song_id: selectedSong.id })
+      .then(response => {
+        setFeedbacks(response.data);
+        setIsLoading(false);
+      })
+      .catch(error => {});
+  }, []);
+
+  if (isLoading) return <Loader title="Carregando comentários..." />;
   return (
     <>
-      {feedbacks?.map(mensagem => (
-        <div className="py-1 " key={mensagem.id}>
-          <p className="w-full p-2 shadow shadow-black bg-green-50 text-black">
-            {mensagem.comment}
-            <br />
-            <span className="justify-end right-5"> {mensagem.time} </span>
-          </p>
-        </div>
-      ))}
+      {feedbacks.length > 0 ? (
+        <>
+          {feedbacks?.map(comment => (
+            <div className="py-1 " key={comment.id}>
+              <p className="w-full p-2 shadow shadow-black bg-green-50 text-black">
+                {comment.comment}
+                <br />
+                <span className="justify-end right-5"> {comment.time} </span>
+              </p>
+            </div>
+          ))}
+        </>
+      ) : (
+        <>
+          <h1 className="text-xl text-center">
+            Nenhum feedback até ao momento
+          </h1>
+        </>
+      )}
     </>
   );
-}
+};
 
 function Avaliar({ song, setOpenModal }) {
   const form = useForm({

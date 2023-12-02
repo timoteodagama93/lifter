@@ -1,29 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import {
-  BiComment,
-  BiLibrary,
-  BiSearch,
   BiSend,
-  BiShare,
-  BiStar,
 } from 'react-icons/bi';
-import { MdCall, MdOutlineMessage } from 'react-icons/md';
 import {
-  BsCameraVideo,
   BsEmojiAngry,
   BsEmojiHeartEyes,
   BsEmojiKiss,
-  BsShare,
 } from 'react-icons/bs';
 import {
-  HiHeart,
   HiOutlineEmojiHappy,
   HiOutlineEmojiSad,
 } from 'react-icons/hi';
-import { TiMessages } from 'react-icons/ti';
-import MusicPlayer from '@/Components/MusicPlayer copy';
 import { smalLogo } from '../../../img';
-import { Loader } from '@/Components';
 import EnviarEstrelas from '@/Components/EnviarEstrelas';
 import Modal from '@/Components/Modal';
 import PrimaryButton from '@/Components/PrimaryButton';

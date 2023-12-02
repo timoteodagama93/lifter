@@ -43,6 +43,6 @@ class ProfissionalController extends Controller
             $pro->save();
         }
 
-        return response()->redirectTo('/perfil-profissional');
+        return response()->redirectTo('/perfis');
     }
 }

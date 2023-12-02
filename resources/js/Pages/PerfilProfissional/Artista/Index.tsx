@@ -1,68 +1,50 @@
-import AppLayout from '@/Layouts/AppLayout';
 import React, { useEffect, useState } from 'react';
 import useTypedPage from '@/Hooks/useTypedPage';
 import { useStateContext } from '@/contexts/PaginaActualContext';
-import AddArtist from '@/Components/AddArtist';
 import {
   BiInfoCircle,
   BiLibrary,
   BiMusic,
-  BiPhone,
   BiStar,
   BiStats,
   BiVideo,
 } from 'react-icons/bi';
-import { GiSpearFeather } from 'react-icons/gi';
 import { GrAnnounce } from 'react-icons/gr';
 import {
-  MdCall,
-  MdEmail,
   MdOutlineMessage,
-  MdPlace,
-  MdWork,
+  MdStars,
 } from 'react-icons/md';
-import { DetailsArtist } from './Info';
 import Marketing from './Marketing';
-import { BsShare, BsWhatsapp } from 'react-icons/bs';
-import FormSection from '@/Components/FormSection';
-import TextInput from '@/Components/TextInput';
-import ButtonWraper from '@/Components/Button';
+import { BsShare } from 'react-icons/bs';
 import ArtistSongsFeedbacks from './ArtistSongsFeedbacks/ArtistSongsFeedbacks';
 import { smalLogo } from '../../../../img';
 import { HiHeart, HiMusicNote } from 'react-icons/hi';
 import { TiMessages } from 'react-icons/ti';
 import { useGetArtistStatsQuery } from '@/redux/services/coreApi';
 import { Error, Loader } from '@/Components';
-import AddProfissional from '@/Components/AddProfissional';
+import { DetailsArtist } from './Info';
 
 function Artist() {
   const page = useTypedPage();
-  const { currentPage, setCurrentPage } = useStateContext();
+
   const [artist, setArtist] = useState(page.props.artist_account);
   const [pagina, setPagina] = useState(<DetailsArtist artist={artist} />);
 
   return (
-    <AppLayout title="Perfil">
-      <div className="w-full h-full">
-        <div className="relattive w-full h-full flex flex-col">
-          <div
-            className={` ${
-              pagina.type.name === 'ArtistSongsFeedbacks' ? 'hidden' : 'flex'
-            }  `}
-            style={{ transition: '1s' }}
-          >
-            <HeaderArtist artist={artist} setPagina={setPagina} />
-          </div>
-          4{pagina}
-        </div>
+    <div className="w-full h-full">
+      <div className="relattive w-full h-full flex flex-col">
+        <HeaderArtist artist={artist} setPagina={setPagina} />
+        {pagina}
       </div>
-    </AppLayout>
+    </div>
   );
 }
 
 export default Artist;
 
 function HeaderArtist({ artist, setPagina }) {
+  const { currentPage, setCurrentPage } = useStateContext();
+
   return (
     <>
       <div className="w-full flex flex-col">
@@ -78,7 +60,7 @@ function HeaderArtist({ artist, setPagina }) {
             </button>
             <button
               onClick={() => {
-                setPagina(
+                setCurrentPage(
                   <ArtistSongsFeedbacks
                     setPagina={setPagina}
                     artist={artist}
@@ -124,8 +106,8 @@ function HeaderArtist({ artist, setPagina }) {
               onClick={() => setPagina(<Stats artist={artist} />)}
               className="text-sm md:text-3xl transform-effect p-1 flex flex-col lg:flex-row justify-center items-center gap-1"
             >
-              <BiStats className="w-7 h-auto font-bold" />
-              <span style={{ fontSize: '1rem' }}>Avaliações</span>
+              <MdStars className="w-7 h-auto font-bold" />
+              <span style={{ fontSize: '1rem' }}>Avaliar</span>
             </button>
           </div>
 

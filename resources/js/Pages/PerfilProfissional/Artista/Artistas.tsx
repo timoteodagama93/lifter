@@ -1,5 +1,4 @@
 import AddArtist from '@/Pages/PerfilProfissional/Registers/AddArtist';
-import AddArtistCover from '@/Pages/Perfil/Artista/Info/AddArtistCover';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -13,7 +12,6 @@ import { MdOutlineAppRegistration } from 'react-icons/md';
 
 import React, { useState } from 'react';
 import useTypedPage from '@/Hooks/useTypedPage';
-import SecondaryButton from '@/Components/SecondaryButton';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import DetailsArtist from './Info/DetailsArtist';
 

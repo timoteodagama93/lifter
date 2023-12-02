@@ -1,5 +1,5 @@
 import AddArtist from '@/Pages/PerfilProfissional/Registers/AddArtist';
-import AddArtistCover from '@/Pages/Perfil/Artista/Info/AddArtistCover';
+import AddArtistCover from './AddArtistCover';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -23,7 +23,6 @@ import { MdMusicNote, MdOutlineAppRegistration, MdPhoto } from 'react-icons/md';
 import React, { useRef, useState } from 'react';
 import useTypedPage from '@/Hooks/useTypedPage';
 import SecondaryButton from '@/Components/SecondaryButton';
-import AddSong from '@/Pages/Perfil/Artista/Song/AddSong';
 import EditArtist from './EditArtist';
 import { HiPhotograph } from 'react-icons/hi';
 import ButtonWraper from '@/Components/Button';
@@ -205,6 +204,7 @@ function DetailsArtist({ artist }) {
 export default DetailsArtist;
 
 function AboutArtist({ artist }) {
+  console.log(artist.url_cover)
   return (
     <>
       <div className="w-full m-1 justify-start flex flex-row border-[#2e2c2e] border shadow-lg shadow-black p-5 rounded-lg">

@@ -40,6 +40,9 @@ export const coreApi = createApi({
         getArtistDetails: builder.query({ query: (artistId) => `/artists/details/${artistId}` }),
         getArtistSongs: builder.query({ query: (artistId) => `/get-artist-songs/${artistId}` }),
         getArtistRelatedSongs: builder.query({ query: (artistId) => `/artists/related/${artistId}` }),
+
+        /** PROFISSIONALS AND VALUATIONS */
+        getValuationsRequests: builder.query({ query: (category) => `/get-valuations-requests` }),
     }),
 });
 
@@ -64,7 +67,9 @@ export const {
 
     useGetArtistDetailsQuery,
     useGetArtistSongsQuery,
-    useGetArtistRelatedSongsQuery
+    useGetArtistRelatedSongsQuery,
+
+    useGetValuationsRequestsQuery,
 } = coreApi;
 
 

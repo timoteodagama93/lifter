@@ -73,7 +73,7 @@ function Services() {
         ))}
       </div>
       <Modal isOpen={solicitar} onClose={() => setSolicitar(false)}>
-        <SolicitarServico service={serviceSelected} />
+        <SolicitarServico service={serviceSelected} onClose={setSolicitar} />
       </Modal>
     </AppLayout>
   );
@@ -81,7 +81,7 @@ function Services() {
 
 export default Services;
 
-function SolicitarServico({ service }) {
+function SolicitarServico({ service, onClose }) {
   const form = useForm({
     service: service,
     name: '',
@@ -187,6 +187,12 @@ function SolicitarServico({ service }) {
         </div>
 
         <div className="flex items-center justify-end mt-4">
+          <SecondaryButton
+            onClick={() => onClose(false)}
+            className={classNames('ml-4', { 'opacity-25': form.processing })}
+          >
+            Cancelar
+          </SecondaryButton>
           <PrimaryButton
             className={classNames('ml-4', { 'opacity-25': form.processing })}
             disabled={form.processing}

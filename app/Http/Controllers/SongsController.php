@@ -36,12 +36,18 @@ class SongsController extends Controller
 
     public function store()
     {
+        Validator::make(
+            Request::all(),
+            [
+                'song' => ['required', 'mimes:mp3,mp4', 'max:5120'],
+                'title' => ['required', 'string'],
+                'artist' => ['required', 'string'],
+            ]
+        );
+
         $artist_id = Request::input('artist_id');
         $song_url = Request::file("song")->store("public/artists/$artist_id/songs");
 
-        Validator::make(Request::all(), [
-            'song' => ['required', 'mimes:mp3,mp4', 'max:5120']
-        ]);
 
         if ($song_url != false) {
 
@@ -194,6 +200,15 @@ class SongsController extends Controller
     public function get_destaques_songs()
     {
         return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%audio%' AND active=true AND destaque=true ORDER BY created_at DESC LIMIT 5"); // where('mime_type', `%audio/%`)->paginate(1);
+    }
+
+    /**
+     * Pesquisa músicas
+     */
+    public function get_valuations_requests()
+    {
+        $query = Request::get('category');
+        return DB::select("SELECT * FROM `songs`"); // where('mime_type', `%audio/%`)->paginate(1);
     }
 
     /**

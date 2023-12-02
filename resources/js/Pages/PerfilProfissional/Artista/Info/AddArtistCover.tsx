@@ -27,8 +27,6 @@ function AddArtistCover({ artist }) {
     e.preventDefault();
     const formData = new FormData();
     formData.append('artist_id', data.artist_id);
-    console.log('SENDING COVER ' + data.cover);
-    console.log('SENDING Stored PHOTO ' + photo);
     formData.append('cover', photo);
     axios
       .post('/add-cover', formData)

@@ -6,15 +6,17 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import InputError from '@/Components/InputError';
 import SectionBorder from '@/Components/SectionBorder';
-import { router } from '@inertiajs/core';
 import SecondaryButton from '../../../Components/SecondaryButton';
-import axios from 'axios';
 import Swal from 'sweetalert2';
 import { BiArrowBack } from 'react-icons/bi';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import Welcome from './Welcome';
 import Artist from '../Artista/Index';
+import { Loader } from '@/Components';
 export default function AddArtist({}) {
+  const { setCurrentPage } = useStateContext();
+  const [isLoading, setIsLoading] = useState(false);
+
   const formArtist = useForm({
     name: '',
     genre: 'Kuduro',
@@ -30,14 +32,17 @@ export default function AddArtist({}) {
     e.preventDefault();
     setIsLoading(true);
     formArtist.post('new-artist', {
+      onError: () => {
+        setIsLoading(false);
+      },
       onSuccess: () => {
+        setIsLoading(false);
+        setCurrentPage(<Artist />);
         Swal.fire({
           title: 'Conta criada com sucesso',
           text: 'Seja bem-vindo à comunidade Lifter, a arte é sua e a felicidade é toda nossa, obrigado.',
           icon: 'success',
         });
-        setIsLoading(false);
-        setCurrentPage(<Artist />);
       },
     });
   }
@@ -70,14 +75,16 @@ export default function AddArtist({}) {
       formArtist.setData('cover', null);
     }
   }
-  const { setCurrentPage } = useStateContext();
 
-  const [isLoading, setIsLoading] = useState(false);
   return (
     <>
       {isLoading ? (
-        <div className="relative flex justify-center items-center bg-black  z-50 top-0 left-0 w-screen h-full animate-ping">
-          <h1 className="text-xl">Carregando</h1>
+        <div className="relative flex justify-center items-cente text-bold  z-50 top-0 left-0 w-full h-full flex-col">
+          <Loader title="Criando a conta..." />
+          <p className="text-base">
+            Estamos a deixar tudo pronto para si, aguarde enquanto o processo
+            finaliza!
+          </p>
         </div>
       ) : (
         <>
@@ -95,7 +102,7 @@ export default function AddArtist({}) {
             <form onSubmit={onSubmit} className="">
               {photoPreview ? (
                 // <!-- New Profile Photo Preview -->
-                <div className="">
+                <div className="w-full flex justify-center">
                   <span
                     className="block rounded-lg w-36 h-36 "
                     style={{
@@ -116,13 +123,12 @@ export default function AddArtist({}) {
                 </progress>
               )}
 
-              <div className="col-span-6 sm:col-span-4">
+              <div className="col-span-6  sm:col-span-4 flex justify-center">
                 {/* <!-- Profile Photo File Input --> */}
                 <input
                   type="file"
-                  className=""
+                  className="hidden"
                   ref={photoRef}
-                  required
                   onChange={updatePhotoPreview}
                 />
 

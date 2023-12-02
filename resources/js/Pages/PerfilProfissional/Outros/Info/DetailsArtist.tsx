@@ -1,5 +1,5 @@
 import AddArtist from '@/Pages/PerfilProfissional/Registers/AddArtist';
-import AddArtistCover from '@/Pages/Perfil/Artista/Info/AddArtistCover';
+import AddArtistCover from './AddArtistCover';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -23,13 +23,12 @@ import { MdMusicNote, MdOutlineAppRegistration, MdPhoto } from 'react-icons/md';
 import React, { useRef, useState } from 'react';
 import useTypedPage from '@/Hooks/useTypedPage';
 import SecondaryButton from '@/Components/SecondaryButton';
-import AddSong from '@/Pages/Perfil/Artista/Song/AddSong';
 import EditArtist from './EditArtist';
 import { HiPhotograph } from 'react-icons/hi';
 import ButtonWraper from '@/Components/Button';
 import { ShowMusics } from '../Song';
 import { GrAnnounce } from 'react-icons/gr';
-import ArtistSongsFeedbacks from '../ArtistSongsFeedbacks/ArtistSongsFeedbacks';
+import Index from '../Avaliar/Index';
 import Marketing from '../Marketing';
 
 function DetailsArtist({ artist }) {
@@ -147,7 +146,7 @@ function DetailsArtist({ artist }) {
           <button
             onClick={() =>
               setPagina(
-                <ArtistSongsFeedbacks artist={artist} setPagina={setPagina} />,
+                <Index artist={artist} setPagina={setPagina} />,
               )
             }
             className="transform-effect border border-b-4 hover:bg-[#2e2c2e]  border-[#4c88c4] rounded text-xs items-center justify-center flex flex-col md:flex-row p-1"

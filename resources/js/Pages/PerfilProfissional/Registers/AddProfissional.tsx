@@ -1,29 +1,24 @@
 import React, { useRef, useState } from 'react';
-import { Link, useForm, Head } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import classNames from 'classnames';
-import useRoute from '@/Hooks/useRoute';
 import useTypedPage from '@/Hooks/useTypedPage';
-import AuthenticationCard from '@/Components/AuthenticationCard';
-import Checkbox from '@/Components/Checkbox';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import InputError from '@/Components/InputError';
 import SectionBorder from '@/Components/SectionBorder';
-import { BiArrowBack, BiHappy } from 'react-icons/bi';
-import { router } from '@inertiajs/core';
+import { BiArrowBack } from 'react-icons/bi';
 import SecondaryButton from '../../../Components/SecondaryButton';
-import axios from 'axios';
-import { load } from '@syncfusion/ej2-react-grids';
 import Swal from 'sweetalert2';
-import { method } from 'lodash';
 import Loader from '../../../Components/Loader';
-import { DetailsArtist } from '@/Pages/Perfil';
-import Index from '../Index';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import Welcome from './Welcome';
+import Profissional from '../Outros/Index';
 export default function AddProfissional({}) {
   const page = useTypedPage();
+  const { setCurrentPage } = useStateContext();
+  const [isLoading, setIsLoading] = useState(false);
+
   const formProfissional = useForm({
     _method: 'POST',
     name: page?.props?.auth?.user?.name,
@@ -40,7 +35,7 @@ export default function AddProfissional({}) {
     e.preventDefault();
 
     formProfissional.processing ? setIsLoading(true) : setIsLoading(false);
-    console.log(formProfissional.data.cover);
+
     formProfissional.post('register-profissional', {
       onError: errors => {
         Swal.fire({
@@ -50,14 +45,16 @@ export default function AddProfissional({}) {
         });
       },
       onSuccess: response => {
+        formProfissional.reset();
+        clearPhotoFileInput();
+        setIsLoading(false);
+        setCurrentPage(<Profissional />);
         Swal.fire({
           title: 'Sucesso',
           text: 'Conta criada, recarregue a página.',
           icon: 'success',
         });
-        formProfissional.reset();
-        clearPhotoFileInput();
-        setIsLoading(false);
+        window.location.reload();
       },
       onProgress: () => {
         setIsLoading(true);
@@ -96,15 +93,16 @@ export default function AddProfissional({}) {
       formProfissional.setData('cover', null);
     }
   }
-  const { setCurrentPage } = useStateContext();
 
-  const [isLoading, setIsLoading] = useState(false);
-  if (isLoading) return <Loader title="Efectuando registro" />;
   return (
     <>
       {isLoading ? (
-        <div className="relative flex justify-center items-center bg-black  z-50 top-0 left-0 w-screen h-full animate-ping">
-          <h1 className="text-xl">Carregando</h1>
+        <div className="relative flex justify-center items-center bg-gradient-to-br from-[.#f6cc33] to-[.#f6cc33] text-[.#4c88c4] text-bold  z-50 top-0 left-0 w-full h-full flex-col">
+          <Loader title="Criando a conta..." />
+          <p className="text-base">
+            Estamos a deixar tudo pronto para si, aguarde enquanto o processo
+            finaliza!
+          </p>
         </div>
       ) : (
         <>

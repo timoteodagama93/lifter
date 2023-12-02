@@ -1,19 +1,13 @@
-import ContestCard from '@/Components/ContestCard';
-import SectionBorder from '@/Components/SectionBorder';
+import ContestCard from './ContestCard';
 import AppLayout from '@/Layouts/AppLayout';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import React, { useEffect, useState } from 'react';
-import { BsList } from 'react-icons/bs';
-import { MdClose, MdCreate, MdOutlineCloseFullscreen } from 'react-icons/md';
-import NewContest from '@/Components/Contest/Index';
+import { MdOutlineCloseFullscreen } from 'react-icons/md';
 import useTypedPage from '@/Hooks/useTypedPage';
 import { generos } from '@/assets/constants';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import VideoCard from '@/Components/VideoCard';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { Navigation, EffectCube, EffectCards } from 'swiper/modules';
-import TopChartCard from '@/Components/TopChartCard';
+import { Navigation, EffectCards } from 'swiper/modules';
 import { Link } from '@inertiajs/react';
 import 'swiper/css';
 import 'swiper/css/effect-cards';
@@ -22,99 +16,11 @@ import './effectsCards.css';
 import { useGetContestImagesQuery } from '@/redux/services/coreApi';
 import { Loader } from '@/Components';
 import Swal from 'sweetalert2';
-import { icons } from 'react-icons';
 
 interface Props {
-  contests: Array<Object>;
+  concursos: Array<Object>;
 }
-function Concursos({ contests }: Props) {
-  const { currentPage, setCurrentPage } = useStateContext();
-  const [detailsContest, setDetailsContest] = useState();
-  const [displayDetails, setDisplayDetails] = useState(false);
-
-  function setDefaultPage() {
-    setCurrentPage(
-      <ListContests
-        setDisplayDetails={setDisplayDetails}
-        setContestDetails={setDetailsContest}
-        concursos={contests}
-      />,
-    );
-  }
-
-  useEffect(setDefaultPage, []);
-  const page = useTypedPage();
-
-  return (
-    <AppLayout title="Ascensão">
-      <div className="w-full h-full flex flex-col rounded-sm p-1">
-        <div className="w-full flex mx-2 justify-between items-center flex-col md:flex-row shadow-lg">
-          <div className="flexjustify-between">
-            <h2 className="font-bold text-base md:text-xl uppercase">
-              {' '}
-              Festivais e concursos
-            </h2>
-            <select
-              id="select_style"
-              onChange={() => {}}
-              value=""
-              className="flex md:hidden bg-[#000] text-gray-50 font-bold p-1 text-sm rounded-lg outline-none sm:mt-0 mt-0 mr-10"
-            >
-              {generos.map(genero => (
-                <option
-                  key={genero.value}
-                  id={genero.value}
-                  value={genero.value}
-                >
-                  {genero.title}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex justify-center md:justify-between">
-            <select
-              id="select_style"
-              onChange={() => {}}
-              value=""
-              className="hidden md:flex text-black font-bold p-1 text-sm rounded-lg outline-none sm:mt-0 mt-0 mr-10"
-            >
-              {generos.map(genero => (
-                <option
-                  key={genero.value}
-                  id={genero.value}
-                  value={genero.value}
-                >
-                  {genero.title}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        <div className="w-full mx-auto sm:px-1 lg:px-1 dark:bg-gray-800 rounded-lg p-1">
-          <div className="w-full flex flex-col">
-            <div
-              className="w-full flex flex-row flex-wrap"
-              style={{ transition: '5s' }}
-            >
-              {currentPage}
-            </div>
-          </div>
-        </div>
-      </div>
-      {detailsContest && displayDetails && (
-        <ContestDetails
-          key={detailsContest.id}
-          contest={detailsContest}
-          close={setDisplayDetails}
-        />
-      )}
-    </AppLayout>
-  );
-}
-
-export default Concursos;
-
-function ListContests({ concursos, setContestDetails, setDisplayDetails }) {
+function Concursos({ concursos, showAscensao = false }: Props) {
   const participar = participarComo => {
     axios
       .post('participar-ascensao', { as: participarComo })
@@ -134,25 +40,15 @@ function ListContests({ concursos, setContestDetails, setDisplayDetails }) {
         );
       });
   };
+
   return (
     <>
-      {concursos.length > 0 ? (
-        <>
-          {concursos?.map(concurso => (
-            <ContestCard
-              setContestDetails={setContestDetails}
-              setDisplayDetails={setDisplayDetails}
-              key={concurso.id}
-              concurso={concurso}
-            />
-          ))}
-        </>
-      ) : (
+      {showAscensao || concursos.length <= 0 ? (
         <>
           <div className="flex w-full h-full flex-col relative p-5 shadow-inner shadow-black  ">
             <div
               className="w-full flex flex-row justify-between
-             items-center"
+                 items-center"
             >
               <h2 className=" font-bold text-base md:text-4xl text-[#]">
                 Festival Ascensão
@@ -166,8 +62,8 @@ function ListContests({ concursos, setContestDetails, setDisplayDetails }) {
             <div className="my-1 w-full text-base text-black   bg-[#fff] rounded relative flex flex-col gap-1 p-2 shadow">
               <p>
                 Queremos passear por Angola, conhecer e explorar os principais
-                destinos turísticos nacionais e explorar, submergir e viver as culturas locais, podem juntar
-                artistas e o público geral.
+                destinos turísticos nacionais e explorar, submergir e viver as
+                culturas locais, podem juntar artistas e o público geral.
               </p>
               <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
                 Vai juntar-se à viagem? Escolha um papel!
@@ -245,81 +141,19 @@ function ListContests({ concursos, setContestDetails, setDisplayDetails }) {
             </div>
           </div>
         </>
+      ) : (
+        <>
+          {concursos?.map(concurso => (
+            <ContestCard
+              concursos={concursos}
+              key={concurso.id}
+              concurso={concurso}
+            />
+          ))}
+        </>
       )}
     </>
   );
 }
 
-function ContestDetails({ close, contest }) {
-  //const { data: videos } = useGetContestVideoQuery(contest.id);
-  const {
-    data: images,
-    isFetching,
-    error,
-  } = useGetContestImagesQuery(contest.id);
-  //const { activeSong, isPlaying } = useSelector(state => state.player);
-
-  return (
-    <div className="z-30 absolute top-0 left-0 fixed-top flex justify-center items-center w-full h-full  bg-gradient-to-br from-[#222d84] to-[#543889]">
-      <div className="w-full h-full px-5 bg-[#4c88c4] rounded">
-        <button
-          onClick={() => close(false)}
-          className="absolute top-0 right-0 justify-center items-center float-right bg-red-500 p-2 flex flex-col transform-effect"
-        >
-          <MdOutlineCloseFullscreen className="w-7 h-7" />
-        </button>
-        <div className="w-full h-full ">
-          <p>Designação do concurso</p>
-          <h1 className="text-xl"> {contest.designacao} </h1>
-          <div className="w-full h-full flex flex-col md:flex-row">
-            <div className="w-full md:w-1/2 flex flex-col md:flex-row px-2">
-              <div className="w-[320px] md:mx-16">
-                <div className="effectsCardSwiper h-full w-full">
-                  {isFetching ? (
-                    <Loader title="Carregando Imagens" />
-                  ) : (
-                    <>
-                      {images?.length > 0 && (
-                        <Swiper
-                          effect={'cards'}
-                          grabCursor={false}
-                          modules={[EffectCards, Navigation]}
-                          className="mySwiper swiper-card"
-                          loop={true}
-                          navigation={true}
-                          autoplay={true}
-                        >
-                          {images?.map((image, i) => (
-                            <>
-                              <SwiperSlide key={image} className="swiper-slide">
-                                <img
-                                  src={image.replace('public', 'storage')}
-                                  alt=""
-                                />
-                              </SwiperSlide>
-                            </>
-                          ))}
-                        </Swiper>
-                      )}
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="w-full flex flex-col">
-              <p className="text-xl">
-                Género:{' '}
-                <span className="font-bold">{contest.estilo_musical} </span>
-              </p>
-              Descrição:
-              <p className="w-full text-justify text-xl font-bold">
-                {contest.descricao}{' '}
-              </p>
-            </div>
-            <div className="w-full md:w-1/2"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+export default Concursos;

@@ -12,26 +12,24 @@ import 'swiper/css/thumbs';
 // import required modules
 
 import { useSelector } from 'react-redux';
-import {
-  useGetArtistSongsQuery,
-} from '@/redux/services/coreApi';
+import { useGetValuationsRequestsQuery } from '@/redux/services/coreApi';
 
 import ValuationReader from './ValuationReader';
-import OwnSongsList from './OwnSongsList';
+import ValuationsRequestsList from './ValuationsRequestsList';
 import { smalLogo } from '../../../../../img';
-import {
-  BiArrowBack,
-  BiUpload,
-  BiVideo,
-} from 'react-icons/bi';
+import { BiArrowBack, BiUpload, BiVideo } from 'react-icons/bi';
 import Swal from 'sweetalert2';
 import { AddSong } from '../Song';
 import { useStateContext } from '@/contexts/PaginaActualContext';
-import Artist from '../Index';
+import Profissional from '../Index';
+import { Loader } from '@/Components';
 
-const ArtistSongsFeedbacks = ({ artist, setPagina }) => {
-
-  const { data: songs, isFetching, error } = useGetArtistSongsQuery(artist.id);
+const Index = ({ artist: profissional, setPagina }) => {
+  const {
+    data: songs,
+    isFetching,
+    error,
+  } = useGetValuationsRequestsQuery(profissional.category);
   const { activeSong, isPlaying } = useSelector(state => state.player);
 
   const [selectedValuation, setSelectedValuation] = useState();
@@ -69,23 +67,27 @@ const ArtistSongsFeedbacks = ({ artist, setPagina }) => {
           <div className="flex flex-row gap-1 justify-center items-center">
             <button
               className="transform-effect border"
-              onClick={() => setCurrentPage(<Artist />)}
+              onClick={() => setCurrentPage(<Profissional />)}
             >
               {' '}
               <BiArrowBack className="w-5 md:w-12 h-10" />
             </button>
-            <h1 className="text-base md:text-2xl uppercase">Músicas</h1>
+            <h1 className="text-base md:text-xl uppercase">
+              Pedidos de avaliações
+            </h1>
           </div>
           <div className="flex flex-row gap-1">
             <button
               onClick={() => {
-                setPaginaDetalhes(<AddSong artist={artist} from="Storage" />);
+                setPaginaDetalhes(
+                  <AddSong artist={profissional} from="Storage" />,
+                );
                 setIsAddinSong(true);
               }}
               className="text-sm md:text-base transform-effect p-1 flex flex-col md:flex-row md:gap-1 justify-center items-center"
             >
               <BiUpload className="w-5 md:w-7 h-auto font-bold" />
-              <span className="">Add música</span>
+              <span className="">Em produção</span>
             </button>
 
             <button
@@ -104,10 +106,10 @@ const ArtistSongsFeedbacks = ({ artist, setPagina }) => {
           </div>
 
           <div className="flex flex-row justify-center items-center gap-1">
-            <span className="hidden md:flex"> {artist.name} </span>
-            {artist.url_cover ? (
+            <span className="hidden md:flex"> {profissional.name} </span>
+            {profissional.url_cover ? (
               <img
-                src={artist?.url_cover}
+                src={profissional?.url_cover}
                 alt=""
                 className="w-10 h-10 rounded-full"
               />
@@ -122,18 +124,18 @@ const ArtistSongsFeedbacks = ({ artist, setPagina }) => {
           isPlaying ? 'h-[100%] ' : 'h-[100%]'
         }`}
       >
-        {/**Lista de músicas avaliadas pelo usuário */}
-
-        <OwnSongsList
-          setIsAddinSong={setIsAddinSong}
-          artist={artist}
-          setPaginaDetalhes={setPaginaDetalhes}
-          valuatedSongs={songs}
-          songs={songs}
-          selectedValuation={selectedValuation}
-          setSelectedValuation={setSelectedValuation}
-        />
-
+        {
+          /**Lista de músicas avaliadas pelo usuário */
+          isFetching && <Loader title="Carregando requisições de avaliações" />
+        }
+        {!isFetching && (
+          <ValuationsRequestsList
+            valuatedSongs={songs}
+            songs={songs}
+            selectedValuation={selectedValuation}
+            setSelectedValuation={setSelectedValuation}
+          />
+        )}
         <div className="w-full h-[80%] overflow-y-auto px-1">
           {isAddinSong && (
             <>
@@ -183,11 +185,28 @@ const ArtistSongsFeedbacks = ({ artist, setPagina }) => {
           <div
             className={`w-full h-full flex flex-col overflow-hidden smooth-transition  `}
           >
-            {selectedValuation && paginaDetalhes && !isAddinSong && (
+            {selectedValuation && paginaDetalhes && !isAddinSong ? (
               <ValuationReader
                 key={selectedValuation.id}
                 activeSong={selectedValuation}
               />
+            ) : (
+              <>
+                <div className="my-1 w-full  text-base text-black  bg-[#fff] rounded relative flex flex-col  gap-1 p-5 shadow justify-center items-center">
+                  <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
+                    Nenhuma música selecionada.
+                  </h1>
+                  <p>
+                    Selecione uma das requisições na lista a esquerda, caso não
+                    tenha nenhuma música disponível significaca que nenhuma
+                    avaliação foi requisitada no momento na sua categoria.{' '}
+                    <strong>
+                      Participe da comunidade, vamos criar conexões através da
+                      partilha, da paixão, do talento e do bom gosto musical.
+                    </strong>
+                  </p>
+                </div>
+              </>
             )}
           </div>
         </div>
@@ -196,4 +215,4 @@ const ArtistSongsFeedbacks = ({ artist, setPagina }) => {
   );
 };
 
-export default ArtistSongsFeedbacks;
+export default Index;

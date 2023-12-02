@@ -49,7 +49,7 @@ class ArtistaController extends Controller
         );
 
         if (Request::file('cover')) {
-            $file = Request::file('cover')->store("public/artists/{$artist->id}/covers");
+            $file = Request::file('cover')->store("storage/artists/{$artist->id}/covers");
             $artist->url_cover = Storage::url($file);
         }
         $artist->save();
@@ -82,7 +82,7 @@ class ArtistaController extends Controller
     {
 
         $artist = Artist::where('id', Request::get('artist_id'))->first();
-        $file = Request::file('cover')->store("public/artists/$artist->id/covers");
+        $file = Request::file('cover')->store("storage/artists/$artist->id/covers");
         $artist->url_cover = $file;
         $artist->save();
         return  response()->json($artist);

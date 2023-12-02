@@ -180,17 +180,18 @@ function UserAvatar() {
                   </span>
                 )*/}
                 <MdNotifications />
-                Equipa
+                Notificar equipa
               </div>
             </DropdownLink>
+          </div>
+          <div onClick={() => setOpenMobileMenu(false)}>
+            <DropdownLink href={route('jurados')}>Jurados</DropdownLink>
           </div>
           <div onClick={() => setOpenMobileMenu(false)}>
             <DropdownLink href={route('perfil')}>Meu Feed</DropdownLink>
           </div>
           <div onClick={() => setOpenMobileMenu(false)}>
-            <DropdownLink href={route('perfis')}>
-              Gestor de perfís
-            </DropdownLink>
+            <DropdownLink href={route('perfis')}>Gestor de perfís</DropdownLink>
           </div>
           <div onClick={() => setOpenMobileMenu(false)}>
             <DropdownLink href={route('profile.show')}>Definições</DropdownLink>

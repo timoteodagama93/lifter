@@ -5,7 +5,7 @@ import Modal from '@/Components/Modal';
 import { MdCloseFullscreen } from 'react-icons/md';
 import Detalhar from './Detalhar';
 
-function Artistas({ artists }) {
+function DJs({ djs }) {
   const [seeArtistDetails, setSeeArtistDetails] = useState(false);
   const [artistTDetail, setArtistTDetail] = useState(null);
   return (
@@ -24,13 +24,13 @@ function Artistas({ artists }) {
             </button>
           </div>
           <div className="w-full flex float-right justify-end">
-            <Detalhar artist={artistTDetail} />
+            <Detalhar prof={artistTDetail} type="djs" />
           </div>
         </div>
       </Modal>
-      <h1 className="text-center font-bold text-2xl">Artistas</h1>
+      <h1 className="text-center font-bold text-2xl">DJs</h1>
       <div className="w-full flex flex-wrap">
-        {artists?.map(artist => (
+        {djs?.map(artist => (
           <>
             <div className="w-full md:w-1/2 xl:w-1/3 h-1/2 flex flex-col items-center overflow-hidden shadow-lg p-1">
               <div className="w-full h-[320px] object-contain ">
@@ -62,7 +62,4 @@ function Artistas({ artists }) {
   );
 }
 
-export default Artistas;
-
-
-
+export default DJs;
