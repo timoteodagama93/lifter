@@ -3,11 +3,12 @@ import React, { useEffect } from 'react';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 
 import Welcome from './Registers/Welcome';
+import Artist from './Artista/Index';
 
-function Index() {
+function Index({ isArtist }) {
   const { currentPage, setCurrentPage } = useStateContext();
   useEffect(() => {
-    setCurrentPage(<Welcome />);
+    isArtist ? setCurrentPage(<Artist />) : setCurrentPage(<Welcome />);
   }, []);
   return (
     <AppLayout title="Perfil">

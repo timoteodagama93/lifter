@@ -31,7 +31,7 @@ class PostController extends Controller
                 'community' => ['required'],
             ])->validate();
 
-            $file = Request::file('file')->store('posts', 'public');
+            $file = Request::file('file')->store('public/posts');
 
             $user = Auth::user();
             $user_id = $user->id;
@@ -150,7 +150,7 @@ class PostController extends Controller
     }
     public function post_song()
     {
-        $file = Request::file('file')->store('posts/songs', 'public');
+        $file = Request::file('file')->store('public/posts/songs');
         $post = Post::create(
             [
                 'post_text' => Request::input('text'),

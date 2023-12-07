@@ -1,53 +1,18 @@
 import React, { PropsWithChildren, useEffect, useState } from 'react';
 import loader from '../assets/loader.svg';
-import logo from '../../img/logo.svg';
-import {
-  BiDownload,
-  BiHome,
-  BiLike,
-  BiMap,
-  BiMusic,
-  BiNews,
-  BiVideo,
-} from 'react-icons/bi';
-import {
-  MdEmojiSymbols,
-  MdExplore,
-  MdLiveTv,
-  MdVoiceChat,
-} from 'react-icons/md';
-import { GiJetpack, GiJumpAcross, GiSoundWaves } from 'react-icons/gi';
+import { BiHome, BiMusic, BiVideo } from 'react-icons/bi';
+import { GiSoundWaves } from 'react-icons/gi';
 import { BsNewspaper, BsStars, BsTrophy } from 'react-icons/bs';
-import RankingIcon from '../Components/RankingIcon';
-import { Link, router } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import MusicPlayer from '../Components/MusicPlayer';
 import { useDispatch, useSelector } from 'react-redux';
-import PlayPause from '../Components/PlayPause';
-import { useGetSongsQuery, useGetVideosQuery } from '@/redux/services/coreApi';
-import Loader from '../Components/Loader';
-import { playPause, setActiveSong } from '@/redux/features/playerSlice';
-import EnviarEstrelas from '../Components/EnviarEstrelas';
-import Interagir from '../Components/Interagir';
-import { FaDirections, FaPray } from 'react-icons/fa';
+import { useGetVideosQuery } from '@/redux/services/coreApi';
+import { FaPray } from 'react-icons/fa';
 import UserAvatar from '@/Components/UserAvatar';
 import { useStateContext } from '@/contexts/PaginaActualContext';
-import Descobrir from '@/Pages/Musicas/Descobrir';
-import Ranking from '@/Pages/Ranking';
-import { GrUserExpert } from 'react-icons/gr';
-import { HiUserGroup } from 'react-icons/hi';
-import { RiUserStarFill } from 'react-icons/ri';
 import Songs from '@/Pages/Musicas/Songs';
-import Videos from '@/Pages/Videos/Videos';
-import { Posts } from '@/Pages/Home';
-import ArtistsGalery from '@/Pages/VozActiva';
-import ContestCard from '@/Pages/Concursos/ContestCard';
 import useTypedPage from '@/Hooks/useTypedPage';
 import route from 'ziggy-js';
-import CommunityDiscussion from '@/Pages/CommunityDiscussion';
-import GallerySwiperSlide from '@/Pages/LiveTV/LiverTV';
-import EffectsCards from '@/Pages/Musicas/EffectsCards';
-import VideoPlayer from '@/Components/VideoPlayer';
-import NavLink from '@/Components/NavLink';
 
 interface Props {
   renderBottom?(): JSX.Element;
@@ -64,16 +29,7 @@ function Container({
   const { data, isFetching, error } = useGetVideosQuery('/get-videos');
   const dispatch = useDispatch();
 
-  const { background, setBackground } = useStateContext();
-
-  useEffect(function () {
-    background != undefined ? setBackground(background) : setBackground(loader);
-  }, []);
-
   const [pageBG, setPageBG] = useState(bg);
-  useEffect(() => {
-    setPageBG(background);
-  }, [background]);
 
   const { currentPage, setCurrentPage } = useStateContext();
 

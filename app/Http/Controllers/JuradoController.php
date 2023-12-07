@@ -37,19 +37,21 @@ class JuradoController extends Controller
 
     public function store()
     {
-
+        $contestId = Request::input('contest_id');
         $join = Jurado::updateOrCreate(
             [
+
                 'user_id' => auth()->id(),
-                'contest_id' => Request::input('contest_id'),
+                'contest_id' => $contestId,
             ],
             [
                 'name' => Request::input('name'),
                 'contact' => Request::input('contact'),
                 'ocupation' => Request::input('ocupation'),
+                'bio' => Request::input('bio'),
 
             ]
         );
-        return $join;
+        return to_route('jurados', ['jury' => DB::select("SELECT * FROM jurados WHERE contest_id='$contestId'")]);
     }
 }

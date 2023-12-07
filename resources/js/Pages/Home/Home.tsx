@@ -313,7 +313,7 @@ export default function Home({ posts }: Props) {
                     através da partilha.
                   </ol>
                 </ul>
-              </p>
+              </p> <a href=""></a>
             </div>
           </div>
           <div className="flex w-full h-full flex-col relative p-5 shadow-inner shadow-black  ">

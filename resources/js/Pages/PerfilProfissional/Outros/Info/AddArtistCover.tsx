@@ -15,7 +15,7 @@ import axios from 'axios';
 function AddArtistCover({ artist }) {
   const page = useTypedPage();
   const route = useRoute();
-  const { data, setData, progress, post } = useForm({
+  const { data, setData, progress, post, errors } = useForm({
     artist_id: artist.id,
     cover: null as File | null,
   });
@@ -30,14 +30,14 @@ function AddArtistCover({ artist }) {
     console.log('SENDING COVER ' + data.cover);
     console.log('SENDING Stored PHOTO ' + photo);
     formData.append('cover', photo);
-    axios
-      .post('/add-cover', formData)
-      .then(response => {
+    post('/add-cover', {
+      onSuccess: response => {
         console.log(response);
-      })
-      .catch(e => {
+      },
+      onError: e => {
         console.log(e);
-      });
+      },
+    });
   }
   clearPhotoFileInput();
   function selectNewPhoto() {
@@ -110,6 +110,7 @@ function AddArtistCover({ artist }) {
 
           <InputLabel htmlFor="file" value="Ficheiro" />
 
+          <InputError message={errors.cover} className="mt-2" />
           <SecondaryButton
             className="m-2"
             type="button"
@@ -117,8 +118,6 @@ function AddArtistCover({ artist }) {
           >
             Selecione a Imagem
           </SecondaryButton>
-
-          <InputError message="" className="mt-2" />
         </div>
         <button className="text-2xl flex justify-center items-center gap-1 shadow-lg shadow-black rounded p-1  ">
           <BiSave />

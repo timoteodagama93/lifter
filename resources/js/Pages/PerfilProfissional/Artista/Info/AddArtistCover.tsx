@@ -1,21 +1,19 @@
 import React, { useState, useRef } from 'react';
-import { BiMusic, BiSave, BiSend } from 'react-icons/bi';
-import { Musica } from '../../../img';
-import { BsArrowBarRight, BsCameraVideo, BsImage } from 'react-icons/bs';
+import { BiSend } from 'react-icons/bi';
 import { useForm } from '@inertiajs/react';
 import useTypedPage from '@/Hooks/useTypedPage';
 import useRoute from '@/Hooks/useRoute';
 import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import SecondaryButton from '@/Components/SecondaryButton';
-import Modal from '@/Components/Modal';
-import { router } from '@inertiajs/core';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 function AddArtistCover({ artist }) {
   const page = useTypedPage();
   const route = useRoute();
-  const { data, setData, progress, post } = useForm({
+
+  const { data, setData, reset, progress, post } = useForm({
     artist_id: artist.id,
     cover: null as File | null,
   });
@@ -26,12 +24,18 @@ function AddArtistCover({ artist }) {
   function saveNewPost(e) {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('artist_id', data.artist_id);
+    formData.append('artist_id', artist.id);
+    formData.append('id', artist.id);
     formData.append('cover', photo);
     axios
       .post('/add-cover', formData)
       .then(response => {
-        console.log(response);
+        reset();
+        Swal.fire({
+          title: 'Bem feito',
+          text: 'A capa foi carregada e associada à música.',
+          icon: 'success',
+        });
       })
       .catch(e => {
         console.log(e);
@@ -44,12 +48,13 @@ function AddArtistCover({ artist }) {
   const [photo, setPhoto] = useState(photoRef.current?.files?.[0]);
   function updatePhotoPreview() {
     setPhoto(photoRef.current?.files?.[0]);
+    const pic = photoRef.current?.files?.[0];
 
-    if (!photo) {
+    if (!pic) {
       return;
     }
 
-    setData('cover', photo);
+    setData('cover', pic);
 
     const reader = new FileReader();
 
@@ -57,7 +62,7 @@ function AddArtistCover({ artist }) {
       setPhotoPreview(e.target?.result as string);
     };
 
-    reader.readAsDataURL(photo);
+    reader.readAsDataURL(pic);
   }
   function clearPhotoFileInput() {
     if (photoRef.current?.value) {
@@ -67,7 +72,8 @@ function AddArtistCover({ artist }) {
   }
 
   return (
-    <div className="w-full h-full relative flex flex-col text-xs justify-center border-[#2e2c2e] border shadow-lg shadow-black p-5 rounded-lg items-center">
+    <div className="w-full h-full relative flex flex-col text-xs justify-center  border-[#2e2c2e] border shadow-lg shadow-black p-5 rounded-lg items-center">
+      <h1 className="text-xl">Adicioar foto de capa</h1>
       <form
         method="Post"
         onSubmit={e => saveNewPost(e)}
@@ -113,13 +119,13 @@ function AddArtistCover({ artist }) {
             type="button"
             onClick={selectNewPhoto}
           >
-            Selecione a Imagem
+            Selecionar Imagem
           </SecondaryButton>
 
           <InputError message="" className="mt-2" />
         </div>
         <button className="text-2xl flex justify-center items-center gap-1 shadow-lg shadow-black rounded p-1  ">
-          <BiSave />
+          <BiSend />
           <span className="text-base">Guardar</span>
         </button>
       </form>

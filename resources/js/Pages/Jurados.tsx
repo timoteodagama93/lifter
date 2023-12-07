@@ -21,8 +21,8 @@ import { useSelector } from 'react-redux';
 import { EffectCards, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-function Jurados({ amIJury }) {
-  const [jurados, setJurados] = useState([]);
+function Jurados({ amIJury, jury }) {
+  const [jurados, setJurados] = useState(jury ? jury : []);
 
   const [seeArtistDetails, setSeeArtistDetails] = useState(false);
 
@@ -334,9 +334,7 @@ const JoinJury = ({ onClose, concursos }) => {
                           id="bio"
                           required
                           value={form.data.bio}
-                          onChange={e =>
-                            form.setData('bio', e.target.value)
-                          }
+                          onChange={e => form.setData('bio', e.target.value)}
                         />
                         <InputError message={form.errors.bio} />
                       </div>

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ArtistaController;
+use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\ComunicacaoController;
 use App\Http\Controllers\ContestController;
@@ -97,6 +97,10 @@ Route::middleware([
     })->name('noticias');
 
     //ROUTAS DO SIDEBAR
+    Route::get('/eventos', function () {
+        return Inertia::render('Eventos', []);
+    })->name('eventos');
+
     Route::get('/discover', function () {
         return Inertia::render('Discover', []);
     })->name('discover');
@@ -242,7 +246,10 @@ Route::middleware([
         Route::post('add-contest-premios', 'add_premios')->name('add-contest-premios');
 
         Route::post('add-participant', 'contest_new_participant')->name('add-participant');
+
         Route::post('am-I-participant', 'am_I_participant')->name('am-I-participant');
+
+        Route::post('filter-contest', 'filter_contest')->name('filter-contest');
 
         Route::post('get-my-contests', 'get_my_contests')->name('get-my-contests');
         Route::post('get-active-contests', 'ge_active_contests')->name('get-active-contests');
@@ -274,13 +281,10 @@ Route::middleware([
         return Inertia::render('Perfil/Perfil');
     })->name('perfil');
 
+
     Route::get('/perfis', function () {
         return Inertia::render('PerfilProfissional/Index');
     })->name('perfis');
-
-    Route::get('/perfls', function () {
-        return Inertia::render('PerfilProfissional/Index');
-    })->name('perfil');
 
 
     /** JURADOS */
@@ -420,7 +424,7 @@ Route::middleware([
         Route::post('register-profissional', 'store');
     });
 
-    Route::controller(ArtistaController::class)->group(function () {
+    Route::controller(ArtistController::class)->group(function () {
         Route::get('artistas/{pagina}/{id}', 'index');
         Route::get('/artist-stats/{artistId}', 'artist_stats')->name('/artist-stats/${artistId}');
         Route::get('artistas/{pagina}/{id}', 'index')->name('index');

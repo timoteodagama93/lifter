@@ -3,14 +3,12 @@ import {
   HiArrowUp,
   HiArrowDown,
   HiOutlineUpload,
-  HiOutlinePhotograph,
   HiUserGroup,
-  HiOutlineHashtag,
-  HiOutlineVideoCamera,
 } from 'react-icons/hi';
-import { FaCog, FaCogs, FaHandshake, FaNewspaper } from 'react-icons/fa';
+import { FaHandshake } from 'react-icons/fa';
 import {
   MdBusinessCenter,
+  MdEvent,
   MdExplore,
   MdLiveTv,
   MdMessage,
@@ -18,13 +16,12 @@ import {
   MdOutlineExplore,
 } from 'react-icons/md';
 import { GiSoundWaves, GiTrophyCup } from 'react-icons/gi';
-import { BsInfoCircle, BsStars, BsTrophy } from 'react-icons/bs';
+import { BsInfoCircle, BsTrophy } from 'react-icons/bs';
 import {
   BiDisc,
   BiHome,
   BiLibrary,
   BiMicrophone,
-  BiSearch,
   BiUserVoice,
 } from 'react-icons/bi';
 import {
@@ -184,6 +181,11 @@ export const links = [
     name: 'Liver TV',
     href: '/livertv',
     icon: MdLiveTv,
+  },
+  {
+    name: 'Eventos',
+    href: '/eventos',
+    icon: MdEvent,
   },
   {
     name: 'Ranking',

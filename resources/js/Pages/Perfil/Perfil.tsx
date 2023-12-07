@@ -25,9 +25,11 @@ import Modal from '@/Components/Modal';
 import useRoute from '@/Hooks/useRoute';
 import { useForm } from '@inertiajs/react';
 
-function Perfil({}) {
+function Perfil({ contest_edition, contest }) {
   const page = useTypedPage();
-  const [pagina, setPagina] = useState(<></>);
+  const [pagina, setPagina] = useState(
+    contest_edition ? <NewContest contest={contest} /> : <></>,
+  );
   const [posts, setPosts] = useState([]);
 
   const [openNewImagePost, setOpenNewImagePost] = useState(false);
@@ -81,14 +83,16 @@ function Perfil({}) {
               </span>
             </div>
           </div>
-          <div className="w-full flex justify-center items-center ">
+          <div className="w-full flex justify-center items-center gap-2 ">
             <button className="border border-b-4 hover:bg-[#2e2c2e] border-[#4c88c4] rounded text-xs items-center justify-center flex flex-col md:flex-row p-1">
               <BiInfoCircle className="text-xl mr-1" />
               Informações
             </button>
             <button
               onClick={() => setPagina(<NewContest />)}
-              className=" shadow-lg shadow-black border flex flex-col text-4xl  justify-start items-center p-1 rounded "
+              className={`shadow-lg shadow-black border ${
+                page.props.auth.user?.is_manager ? 'flex' : 'hidden'
+              }  flex-col text-4xl  justify-start items-center p-1 rounded `}
             >
               <BiTrophy className="animate-bounce" />
               <span className="text-xs">Criar concurso</span>
@@ -111,13 +115,15 @@ function Perfil({}) {
               <BiInfoCircle className="text-xl mr-1" />
               Contactos
             </button>
-            <PulseButton
+            <button
               onClick={() => setOpenNewImagePost(true)}
-              className="pulsating-button  shadow shadow-white border flex flex-col text-4xl  justify-start items-center p- rounded "
+              className={`shadow-lg shadow-black border ${
+                page.props.auth.user?.is_editor ? 'flex' : 'hidden'
+              }  flex-col text-4xl  justify-start items-center p-1 rounded `}
             >
               <BiNews className="animate-bounce" />
               <span className="text-xs">Publicar</span>
-            </PulseButton>
+            </button>
           </div>
         </div>
 

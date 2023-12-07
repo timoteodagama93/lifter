@@ -1,16 +1,11 @@
-import React, { useEffect, useRef } from 'react';
-import PlayPause from '../Components/PlayPause';
+import React, {  } from 'react';
 import { Link } from '@inertiajs/react';
-import Swiper, { SwiperSlide } from 'swiper/react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useGetArtistsQuery, useGetSongsQuery } from '@/redux/services/coreApi';
+import { useSelector } from 'react-redux';
+import { useGetSongsQuery } from '@/redux/services/coreApi';
 import Loader from '../Components/Loader';
 import Error from '../Components/Error';
-import { playPause, setActiveSong } from '@/redux/features/playerSlice';
 import TopChartCard from '../Components/TopChartCard';
 import AppLayout from '@/Layouts/AppLayout';
-import Container from '@/Layouts/Container';
-import SongCard1 from '@/Components/SongCard1';
 
 function Ranking({ }) {
   const { data, isFetching, error } = useGetSongsQuery('/get-songs');

@@ -36,14 +36,15 @@ class SongsController extends Controller
 
     public function store()
     {
+
         Validator::make(
             Request::all(),
             [
-                'song' => ['required', 'mimes:mp3,mp4', 'max:5120'],
-                'title' => ['required', 'string'],
-                'artist' => ['required', 'string'],
+                'song' => ['required', 'mimes:mp3,mp4', 'max:50120'],
+                'title' => ['required'],
+                'artist' => ['required'],
             ]
-        );
+        )->validate();
 
         $artist_id = Request::input('artist_id');
         $song_url = Request::file("song")->store("public/artists/$artist_id/songs");
@@ -59,7 +60,7 @@ class SongsController extends Controller
             $file_path = Request::file('song')->getPath();
             $file_pathname = Request::file('song')->getPathname();
 
-            $artist = Song::create([
+            $song = Song::create([
                 'artist_id' => $artist_id,
                 'title' => Request::input('title'),
                 'genre' => Request::input('genre'),
@@ -72,16 +73,16 @@ class SongsController extends Controller
                 'url' => Storage::url($song_url),
                 //'cover' => $cover_url,
             ]);
-            return;
+            return to_route('perfis');
         } else {
-            return 'Alguma coisa deu errado...';
+            return to_route('perfis');
         }
     }
 
     public function store_from_youtube()
     {
         $artist_id = Request::input('artist_id');
-        $song_url = Request::file("song")->store("artists/{$artist_id}/songs", 'public');
+        $song_url = Request::file("song")->store("public/artists/{$artist_id}/songs");
 
 
 
@@ -146,15 +147,7 @@ class SongsController extends Controller
         $song->cover = Storage::url($cover);
 
         $song->save();
-        return response()->json($song);
-    }
-
-    public function song_validator()
-    {
-        return [
-            'required',
-            File::types(['mp3', 'mp4'])->max(1024),
-        ];
+        return to_route("perfis", ["isArtist" => true]);
     }
 
     /**

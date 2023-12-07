@@ -1,4 +1,4 @@
-import { Loader } from '@/Components';
+import { Loader, SongCard } from '@/Components';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import Modal from '@/Components/Modal';
@@ -26,58 +26,47 @@ import { BiArrowBack } from 'react-icons/bi';
 import Swal from 'sweetalert2';
 
 function ContestDetails({ contest, contests }) {
-  const [artists, setartists] = useState([]);
+  
 
   const [seeArtistDetails, setSeeArtistDetails] = useState(false);
 
   const [artistTDetail, setArtistTDetail] = useState(null);
   const [joinContest, setJoinContest] = useState(false);
 
-  const [loadingContests, setLoadingContests] = useState(false);
-  const [loadingArtists, setLoadingArtists] = useState(false);
-  const [concursos, setConcursos] = useState([]);
+  const [dataToShow, setDataToShow] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const { activeSong, isPlaying } = useSelector(state => state.player);
+
 
   useEffect(() => {
-    setLoadingContests(true);
-    setLoadingArtists(true);
-    axios
-      .post('get-active-contests')
-      .then(response => {
-        setLoadingContests(false);
-        setConcursos(response.data);
-      })
-      .catch(errors => {
-        setLoadingContests(false);
-      });
-    axios
-      .post('jurados')
-      .then(response => {
-        setLoadingArtists(false);
-        setartists(response.data);
-      })
-      .catch(errors => {
-        setLoadingArtists(false);
-      });
+    setLoading(true);
+    filterFromContest('songs');
   }, []);
 
   const [show, setShow] = useState('Músicas');
-  const getJuryByContest = mediaType => {
-    if (mediaType == 'songs') {
+  const filterFromContest = filterType => {
+    if (filterType == 'songs') {
       setShow('Músicas');
-    } else if (mediaType == 'videos') {
+    } else if (filterType == 'videos') {
       setShow('Vídeos');
-    } else if (mediaType == 'artists') {
+    } else if (filterType == 'artists') {
       setShow('Artistas');
+    } else if (filterType == 'jury') {
+      setShow('Jurís');
     }
-    setLoadingArtists(true);
+    setLoading(true);
     axios
-      .post('jurados', { contest_id: mediaType })
+      .post('filter-contest', {
+        contest_id: contest.id,
+        filter: filterType,
+      })
       .then(response => {
-        setLoadingArtists(false);
-        setConcursos(response.data);
+        setLoading(false);
+        setDataToShow(response.data);
       })
       .catch(errors => {
-        setLoadingArtists(false);
+        setLoading(false);
       });
   };
 
@@ -136,11 +125,12 @@ function ContestDetails({ contest, contests }) {
             name="contest_id"
             id="contest_id"
             className="text-black"
-            onChange={e => getJuryByContest(e.target.value)}
+            onChange={e => filterFromContest(e.target.value)}
           >
             <option value="songs">Músicas do concurso</option>
             <option value="videos">Vídeos do concurso</option>
             <option value="artists">Artistas do concurso</option>
+            <option value="jury">Jurados do concurso</option>
           </select>
         </div>
         <h1 className="text-center font-bold text-xl">
@@ -148,18 +138,18 @@ function ContestDetails({ contest, contests }) {
         </h1>
       </div>
 
-      {loadingArtists ? (
-        <Loader title="Carregando júris..." />
+      {loading ? (
+        <Loader title="Carregando..." />
       ) : (
         <>
           {/** EXIBIR LISTA DE ARTISTAS DO CONCURSO */}
           {show == 'Artistas' && (
             <>
               <div className="w-full flex flex-col">
-                {artists.length > 0 ? (
+                {dataToShow.length > 0 ? (
                   <>
                     <div className="w-full flex flex-wrap">
-                      {artists?.map(jurado => (
+                      {dataToShow?.map(jurado => (
                         <>
                           <div className="w-full md:w-1/2 xl:w-1/3 h-1/2 flex flex-col items-center overflow-hidden shadow-lg p-1">
                             <div className="w-full h-[320px] object-contain ">
@@ -191,6 +181,28 @@ function ContestDetails({ contest, contests }) {
                             </button>
                           </div>
                         </>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <h1 className="text-center font-bold text-xl">
+                      Nenhum artista encontrado para a seleção.
+                    </h1>
+                  </>
+                )}
+              </div>
+            </>
+          )}
+          {/** EXIBIR LISTA DE ARTISTAS DO CONCURSO */}
+          {show == 'Jurís' && (
+            <>
+              <div className="w-full flex flex-col">
+                {dataToShow.length > 0 ? (
+                  <>
+                    <div className="w-full flex flex-wrap">
+                      {dataToShow?.map(jurado => (
+                      <></>
                       ))}
                     </div>
                   </>
@@ -208,48 +220,26 @@ function ContestDetails({ contest, contests }) {
           {show == 'Músicas' && (
             <>
               <div className="w-full flex flex-col">
-                {artists.length > 0 ? (
                   <>
                     <div className="w-full flex flex-wrap">
-                      {artists?.map(jurado => (
-                        <>
-                          <div className="w-full md:w-1/2 xl:w-1/3 h-1/2 flex flex-col items-center overflow-hidden shadow-lg p-1">
-                            <div className="w-full h-[320px] object-contain ">
-                              <img
-                                src={jurado.profile_photo_path}
-                                alt="name artist"
-                                onClick={() => {
-                                  setArtistTDetail(jurado);
-                                  setSeeArtistDetails(true);
-                                }}
-                                className=" hover:cursor-pointer w-full h-full rounded-sm rounded-t-lg border-t-2  object-cover"
-                              />
-                            </div>
-                            <button
-                              onClick={() => {
-                                setArtistTDetail(jurado);
-                                setSeeArtistDetails(true);
-                              }}
-                              className="transform-effect w-full h-[10%] first-letter: rounded-lg flex-1 space-x-1 flex flex-col justify-start items-center mx-3 border-b-2 backdrop-blur-lg p-1 "
-                            >
-                              <p className="text-xl font-bold text-white">
-                                {' '}
-                                {jurado.name}{' '}
-                              </p>
-                              <p className="text-xs text-gray-300">
-                                {' '}
-                                {jurado.ocupation}
-                              </p>
-                            </button>
-                          </div>
-                        </>
+                      {dataToShow?.map(song => (
+                           <div className="w-full relative flex flex-col ">
+                           <TopChartCard
+                               songs={dataToShow}
+                               song={song}
+                               isPlaying={isPlaying}
+                               activeSong={activeSong}
+                               i={song?.id}
+                               key={song?.id}
+                             />
+                             </div>
                       ))}
                     </div>
                   </>
                 ) : (
                   <>
                     <h1 className="text-center font-bold text-xl">
-                      Nenhum júri encontrado para a seleção.
+                      Nenhuma ,úsica encontrada para a seleção.
                     </h1>
                   </>
                 )}
@@ -260,10 +250,10 @@ function ContestDetails({ contest, contests }) {
           {show == 'Vídeos' && (
             <>
               <div className="w-full flex flex-col">
-                {artists.length > 0 ? (
+                {dataToShow.length > 0 ? (
                   <>
                     <div className="w-full flex flex-wrap">
-                      {artists?.map(jurado => (
+                      {dataToShow?.map(jurado => (
                         <>
                           <div className="w-full md:w-1/2 xl:w-1/3 h-1/2 flex flex-col items-center overflow-hidden shadow-lg p-1">
                             <div className="w-full h-[320px] object-contain ">

@@ -18,11 +18,11 @@ class ContestController extends Controller
     public function store()
     {
         Validator::make(Request::all(), [
-            'cover' => ['required', 'mimes:jpg,jpeg,png', 'max:5120'],
+            'cover' => ['required', 'mimes:jpg,jpeg,png'], //TODO: Delimitar tamanho
             'designacao' => ['required'],
             'estilo' => ['required'],
             'descricao' => ['required'],
-        ])->validateWithBag('contestCreationCoverFails');
+        ])->validate();
 
         $user_id = Auth::id();
         $contest = Contest::create(
@@ -65,7 +65,7 @@ class ContestController extends Controller
                 ]
             );
 
-            $file = Request::file('cover')->store("public/contests/$contest->id/covers");
+            $file = Request::file('cover')->store("contests/$contest->id/covers");
             $url_cover = Storage::url($file);
             $contest->url_cover = $url_cover;
             $contest->save();
@@ -96,10 +96,10 @@ class ContestController extends Controller
         $isUpdating = false;
 
         Validator::make(Request::all(), [
-            'url_schedule' => ['required', 'mimes:jpg,jpeg,png', 'max:5120'],
+            'url_schedule' => ['required', 'mimes:jpg,jpeg,png'], //TODO: Size limitation
         ])->validateWithBag('contestCreationCoverFails');
 
-        $file = Request::file('url_schedule')->store('contests', 'public');
+        $file = Request::file('url_schedule')->store('public/contests');
         $contest = Contest::where('id', Request::get('id'))->first();
 
         $contest->inicio_inscricoes = Request::get('inicio_inscricoes');
@@ -109,7 +109,7 @@ class ContestController extends Controller
         $contest->url_schedule = Storage::url($file);
         $contest->save();
 
-        return; //  response()->json($contest);
+        return to_route('perfil', ['contest_edition' => true]); //  response()->json($contest);
     }
 
     public function add_premios()
@@ -119,7 +119,7 @@ class ContestController extends Controller
             'photo' => ['required', 'mimes:jpg,jpeg,png', 'max:5120'],
         ])->validateWithBag('contestCreationCoverFails');
 
-        $file = Request::file('photo')->store('contests', 'public');
+        $file = Request::file('photo')->store('public/contests');
         $contest = Contest::where('id', Request::get('id'))->first();
 
         $contest->total_premios = Request::get('total_premios');
@@ -171,7 +171,7 @@ class ContestController extends Controller
     public function contest_new_participant()
     {
         $contestId = Request::input('contest_id');
-        $artistId = Request::input('song_id');
+        $artistId = Request::input('artist_id');
         $songId = Request::input('song_id');
         $userId = auth()->id();
 
@@ -195,5 +195,24 @@ class ContestController extends Controller
 
         $participants =  DB::select($sql);
         return response()->json($participants);
+    }
+
+    public function filter_contest(Request $request)
+    {
+        $data = [];
+        $filter = $request::get('filter');
+        if ($filter == 'songs') {
+
+            $data = DB::select("SELECT * FROM songs Join contest_users WHERE songs.id=contest_users.song_id AND songs.mime_type LIKE '%audio%' ");
+        } else if ($filter == 'videos') {
+            $data = DB::select("SELECT * FROM songs Join contest_users WHERE songs.id=contest_users.song_id AND songs.mime_type LIKE '%video%' ");
+        } else if ($filter == 'artists') {
+            $data = DB::select("SELECT * FROM `artists` JOIN contest_users WHERe contest_users.artist_id=artists.id");
+        } else if ($filter == 'jury') {
+            $data = DB::select("SELECT * FROM users JOIN contest_users WHERE contest_users.user_id=users.id;
+            ");
+        }
+
+        return response()->json($data);
     }
 }

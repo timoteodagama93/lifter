@@ -204,7 +204,6 @@ function DetailsArtist({ artist }) {
 export default DetailsArtist;
 
 function AboutArtist({ artist }) {
-  console.log(artist.url_cover)
   return (
     <>
       <div className="w-full m-1 justify-start flex flex-row border-[#2e2c2e] border shadow-lg shadow-black p-5 rounded-lg">

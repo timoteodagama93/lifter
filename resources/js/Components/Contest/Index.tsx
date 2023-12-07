@@ -5,8 +5,8 @@ import ContestInfo from './ContestInfo';
 import ContestSchedule from './ContestSchedule';
 import ContestWinners from './ContestWinners';
 
-export default function NewContest({}) {
-  const [contestId, setContestId] = useState('');
+export default function NewContest({ contest = null }) {
+  const [contestId, setContestId] = useState(contest == null ? '' : contest.id);
   const page = useTypedPage();
 
   return (

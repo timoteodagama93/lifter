@@ -15,6 +15,7 @@ import { router } from '@inertiajs/core';
 import SecondaryButton from '../../../../Components/SecondaryButton';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { Loader } from '@/Components';
 export default function AddSong({ artist, from = '' }) {
   const [successOnAdd, setSuccessOnAdd] = useState(false);
 
@@ -41,6 +42,7 @@ export default function AddSong({ artist, from = '' }) {
           text: 'A música foi carregada.',
           icon: 'success',
         });
+//        window.location.reload();
       },
       onError: e => {},
       onFinish: r => {
@@ -81,6 +83,19 @@ export default function AddSong({ artist, from = '' }) {
     }
   }
 
+  if (formSong.processing)
+    return (
+      <div className="flex flex-col justify-center w-full h-full">
+        <Loader title="Enviando a música..." />
+        <progress value={formSong.progress?.percentage}>
+          {' '}
+          {formSong.progress?.percentage}{' '}
+        </progress>
+        <p className="text-base">
+          Dependendo da sua Internet, o processo pode demorar.
+        </p>
+      </div>
+    );
   return (
     <>
       {successOnAdd === true ? (
@@ -123,7 +138,7 @@ export default function AddSong({ artist, from = '' }) {
               {/* <!-- Profile Photo File Input --> */}
               <input
                 type="file"
-                className="hidden"
+                className=""
                 ref={photoRef}
                 onChange={updatePhotoPreview}
               />
