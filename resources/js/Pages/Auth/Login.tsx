@@ -112,6 +112,17 @@ export default function Login({ canResetPassword, status }: Props) {
           </div>
         </div>
       </form>
+
+      <div
+        className="fb-login-button"
+        data-width=""
+        data-size=""
+        data-button-type=""
+        data-layout=""
+        data-auto-logout-link="false"
+        data-use-continue-as="true"
+      ></div>
+      
     </AuthenticationCard>
   );
 }

@@ -40,20 +40,37 @@ function Songs({}) {
   return (
     <div className="w-full relative flex flex-row rounded">
       <div className="w-full flex flex-col px-4 rounded-lg">
-      <div className="w-full flex justify-between items-center p-1 md:px-5 border-b">
-        <h1 className="text-center font-bold text-4xl">Ranking musical</h1>
+        <div className="w-full flex justify-between items-center p-1 md:px-5 border-b">
+          <h1 className="text-center font-bold text-4xl">Ranking musical</h1>
 
-        <div className="flex flex-row justify-center items-center">
-          <button
-            onClick={() => setJoinJury(true)}
-            className="transform-effect p-1 justify-center items-center w-full flex flex-col"
-          >
-            {' '}
-            <BiMusic className="w-10 h-auto font-bold" />{' '}
-            <span className="flex">Adicionar música</span>
-          </button>
+          <div className="flex flex-row justify-center items-center">
+            <button
+              onClick={() => setJoinJury(true)}
+              className="transform-effect p-1 justify-center items-center w-full flex flex-col"
+            >
+              {' '}
+              <BiMusic className="w-10 h-auto font-bold" />{' '}
+              <span className="flex">Adicionar música</span>
+            </button>
+            <div
+              className="fb-like"
+              data-share="true"
+              data-width="450"
+              data-show-faces="true"
+            ></div>
+
+            <div
+              class="fb-login-button"
+              data-width=""
+              data-size=""
+              data-button-type=""
+              data-layout=""
+              data-auto-logout-link="false"
+              data-
+              use-continue-as="falso"
+            ></div>
+          </div>
         </div>
-      </div>
 
         <div
           className="w-full flex flex-row justify-between

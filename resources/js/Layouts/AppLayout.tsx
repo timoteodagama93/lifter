@@ -74,6 +74,14 @@ export default function AppLayout({
 
   return (
     <>
+      <div id="fb-root" />
+      <script
+        async
+        defer
+        crossorigin="anonymous"
+        src="https://connect.facebook.net/pt_PT/sdk.js#xfbml=1&version=v18.0&appId= 1588022325068116"
+        nonce="JTz0V4E4"
+      ></script>
       <div className="w-screen h-screen flex bg-gradient-to-br from-[#222d84] to-[#543889] __dark:from-[#282728] __dark:to-[#2e2525w] fixed top-0 left-0 right-0 p-1 __bg-white text-white">
         {openSearch && <Search close={setOpenSearch} />}
         {openSongRandom && <Search close={setOpenSongRandom} />}
