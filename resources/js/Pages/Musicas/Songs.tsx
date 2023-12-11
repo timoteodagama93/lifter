@@ -23,6 +23,8 @@ import {
   Pagination,
 } from 'swiper/modules';
 import VideoCard from '@/Components/VideoCard';
+import { GiTribunalJury } from 'react-icons/gi';
+import { BiMusic } from 'react-icons/bi';
 
 function Songs({}) {
   const { data: songs, isFetching, error } = useGetSongsQuery('/get-songs');
@@ -34,10 +36,25 @@ function Songs({}) {
   const { activeSong, isPlaying } = useSelector(state => state.player);
 
   if (isFetching) return <Loader title="Carregando músicas..." />;
-  if (error) return <Error />;
+  //if (error) return <Error />;
   return (
     <div className="w-full relative flex flex-row rounded">
       <div className="w-full flex flex-col px-4 rounded-lg">
+      <div className="w-full flex justify-between items-center p-1 md:px-5 border-b">
+        <h1 className="text-center font-bold text-4xl">Ranking musical</h1>
+
+        <div className="flex flex-row justify-center items-center">
+          <button
+            onClick={() => setJoinJury(true)}
+            className="transform-effect p-1 justify-center items-center w-full flex flex-col"
+          >
+            {' '}
+            <BiMusic className="w-10 h-auto font-bold" />{' '}
+            <span className="flex">Adicionar música</span>
+          </button>
+        </div>
+      </div>
+
         <div
           className="w-full flex flex-row justify-between
              items-center"

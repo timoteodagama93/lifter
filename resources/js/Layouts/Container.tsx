@@ -44,21 +44,21 @@ function Container({
   const page = useTypedPage();
   return (
     <div
-      className="w-full h-[90%] backdrop-blur-lg"
+      className="w-full h-full min-h-full min-w-full backdrop-blur-lg"
       style={{ background: `url({pageBG})` }}
     >
       <div
-        className={`relative backdrop-blur w-full  h-[90vh]
+        className={`relative backdrop-blur w-full  h-full min-h-full
           flex justify-center items-center`}
       >
         <div
           className={`relative text-gray-900 w-full
-          md:w-[75%]
+          lg:w-[75%]
           h-full top-0 left-0 shadow-xl flex flex-col   bg-cyan-400`}
         >
           <div
             className={`relative  text-white w-full ${
-              isPlaying ? 'h-[85] md:h-[70%]' : 'h-[85%]'
+              isPlaying ? 'h-[85%] lg:h-[70%]' : 'h-[85%]'
             }  md:px-5 overflow-y-auto top-0 left-0 shadow-xl flex flex-wrap shadow-black justify-center items-start`}
           >
             <>{children}</>
@@ -75,7 +75,7 @@ function Container({
               >
                 <MusicPlayer />
 
-                {/*}
+                {/*}  php artisan serve --host=192.168.250.61
                 <div className="w-full flex flex-row gap-1 px-5 justify-center items-center mt-2 border-t">
                   <InteracoesMusical song={activeSong} orientation="flex-row" />
                 </div>
@@ -83,7 +83,7 @@ function Container({
               </div>
             )}
 
-            <div className="w-full h-full flex flex-row justify-center items-center mb-1 text-white ">
+            <div className="w-full h-full flex flex-row justify-center items-center mb-1 text-white text-xl ">
               <>
                 <Link
                   href="/avaliacoes"
@@ -95,7 +95,7 @@ function Container({
             }
             `}
                 >
-                  <BsStars className="w-10 h-10" />
+                  <BsStars className="w-14 lg:w-10 h-14 lg:h-10" />
                   <span
                     className={` ${
                       route().current('avaliacoes')

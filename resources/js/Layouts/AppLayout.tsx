@@ -80,9 +80,9 @@ export default function AppLayout({
         <Head title={title} />
         <Banner />
         <Sidebar />
-        <div className="relative w-full h-full flex flex-col">
+        <div className="relative w-full h-full min-h-full min-w-full flex flex-col">
           <header className=" relative w-full h-[10%] flex flex-col justify-center items-center  shadow-sm  rounded shadow-black pb-1 px-5">
-            <div className="w-full h-16 flex justify-between py-1">
+            <div className="w-full h-full flex justify-between py-1">
               <button
                 onClick={() => setOpenSearch(true)}
                 className=" flex text-bold text-xl  justify-center items-center bg-[#4c88c4] p-2 rounded-lg"
@@ -115,7 +115,7 @@ export default function AppLayout({
             </div>
           </header>
           {/* <!-- Page Content --> */}
-          <main className="relative h-full w-full  flex mx-auto justify-start items-start  p-1 rounded overflow-y-hidden ">
+          <main className="relative h-[90%] w-full  flex mx-auto justify-start items-start  p-1 rounded overflow-y-hidden ">
             <Container>{children}</Container>
           </main>
         </div>

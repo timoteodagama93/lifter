@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Coletion;
 use App\Models\Colletion;
 use App\Models\ContestsSong;
 use App\Models\Like;
@@ -10,21 +9,18 @@ use App\Models\Song;
 use App\Models\Valuation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules\File;
 use Inertia\Inertia;
-use Symfony\Component\Console\Input\Input;
 
-class SongsController extends Controller
+class VideoController extends Controller
 {
     //
 
     public function index()
     {
-        return Inertia::render('Inicio/Inicio', []);
+        return Inertia::render('Videos/Videos', []);
     }
 
     public function list()
@@ -40,18 +36,17 @@ class SongsController extends Controller
         Validator::make(
             Request::all(),
             [
-                'video' => ['required', 'mimes:mp3,mp4'], //, 'max:50120'
+                'video' => ['required', 'mimes:mp4'],
                 'title' => ['required'],
-                'category' => ['required'],
                 'description' => ['required'],
             ]
         )->validate();
 
-        $user_id = auth()->id();
-        $video_url = Request::file("song")->store("public/users/$user_id/videos");
+        $artist_id = Request::input('artist_id');
+        $song_url = Request::file("song")->store("public/artists/$artist_id/songs");
 
 
-        if ($video_url != false) {
+        if ($song_url != false) {
 
             //$cover_url = Request::file("cover")->store("artists/{$artist_id}/songs/covers", 'public');
 
@@ -62,18 +57,21 @@ class SongsController extends Controller
             $file_pathname = Request::file('song')->getPathname();
 
             $song = Song::create([
-                'user_id' => $user_id,
+                'artist_id' => $artist_id,
                 'title' => Request::input('title'),
-                'category' => Request::input('category'),
-                'description' => Request::input('description'),
+                'genre' => Request::input('genre'),
+                'artist' => Request::input('artist'),
+                'gravadora' => Request::input('gravadora'),
+                'participacoes' => Request::input('participacoes'),
+                'letra' => Request::input('letra'),
                 'mime_type' => $file_mime,
                 'extension' => $file_extension,
-                'url' => Storage::url($video_url),
+                'url' => Storage::url($song_url),
                 //'cover' => $cover_url,
             ]);
-            return to_route('video');
+            return to_route('perfis');
         } else {
-            return to_route('video');
+            return to_route('perfis');
         }
     }
 

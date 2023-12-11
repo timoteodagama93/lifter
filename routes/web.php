@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfissionalController;
 use App\Http\Controllers\SongsController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\ValuationFeedbackCommentController;
+use App\Http\Controllers\VideoController;
 use App\Models\Artist;
 use App\Models\Contest;
 use App\Models\FestivalUser;
@@ -65,9 +66,7 @@ Route::middleware([
         return Inertia::render('Musicas/Musicas', []);
     })->name('musicas');
 
-    Route::get('/video', function () {
-        return Inertia::render('Videos/Videos', []);
-    })->name('video');
+
 
     Route::get('/vozactiva', function () {
         $vozactiva = DB::select('SELECT * FROM artists WHERE active =' . true);
@@ -156,6 +155,10 @@ Route::middleware([
     })->name('request-services');
 
 
+    Route::controller(VideoController::class)->group(function () {
+        Route::get('/video', 'index')->name('video');
+        Route::post('/add-video', 'store')->name('add-video');
+    });
 
     /**Uploading files */
     Route::controller(UploadController::class)->group(function () {
