@@ -1,13 +1,13 @@
 import React, { PropsWithChildren, useEffect, useState } from 'react';
 import loader from '../assets/loader.svg';
 import { BiHome, BiMusic, BiVideo } from 'react-icons/bi';
-import { GiSoundWaves } from 'react-icons/gi';
+import { GiJerusalemCross, GiPrayer, GiSoundWaves } from 'react-icons/gi';
 import { BsNewspaper, BsStars, BsTrophy } from 'react-icons/bs';
 import { Link } from '@inertiajs/react';
 import MusicPlayer from '../Components/MusicPlayer';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetVideosQuery } from '@/redux/services/coreApi';
-import { FaPray } from 'react-icons/fa';
+import { FaArtstation, FaCross, FaPray } from 'react-icons/fa';
 import UserAvatar from '@/Components/UserAvatar';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import Songs from '@/Pages/Musicas/Songs';
@@ -58,15 +58,15 @@ function Container({
         >
           <div
             className={`relative  text-white w-full ${
-              isPlaying ? 'h-[85%] lg:h-[70%]' : 'h-[85%]'
+              isPlaying ? 'h-[85%] lg:h-[70%]' : 'h-full md:h-[85%]'
             }  md:px-5 overflow-y-auto top-0 left-0 shadow-xl flex flex-wrap shadow-black justify-center items-start`}
           >
             <>{children}</>
           </div>
           <div
             className={`w-full 
-            ${isPlaying ? 'h-[15%] md:h-[30%]' : 'h-[15%]'}
-               flex flex-col justify-center items-center  bg-gradient-to-br from-white/10 to-[#2a2a80] backdrop-blur-lg `}
+            ${isPlaying ? 'h-[15%] md:h-[30%] flex' : 'h-0 md:h-[15%] hidden '}
+               md:flex flex-col justify-center items-center  bg-gradient-to-br from-white/10 to-[#2a2a80] backdrop-blur-lg `}
           >
             {!isFullScreenPlayer && isPlaying && (
               <div
@@ -83,7 +83,7 @@ function Container({
               </div>
             )}
 
-            <div className="w-full h-full flex flex-row justify-center items-center mb-1 text-white text-xl ">
+            <div className="w-full h-full hidden md:flex flex-row justify-center items-center mb-1 text-white text-xl ">
               <>
                 <Link
                   href="/avaliacoes"
@@ -100,7 +100,7 @@ function Container({
                     className={` ${
                       route().current('avaliacoes')
                         ? 'flex text-white font-bold uppercase'
-                        : 'hidden'
+                        : 'jhidden'
                     }`}
                   >
                     Avaliações
@@ -121,7 +121,7 @@ function Container({
                     className={` ${
                       route().current('musicas')
                         ? 'flex text-white font-bold uppercase'
-                        : 'hidden'
+                        : 'lhidden'
                     }`}
                   >
                     Músicas
@@ -140,7 +140,7 @@ function Container({
                     className={` ${
                       route().current('video')
                         ? 'flex text-white font-bold uppercase'
-                        : 'hidden'
+                        : 'nhidden'
                     }`}
                   >
                     Vídeos
@@ -161,7 +161,7 @@ function Container({
                     className={` ${
                       route().current('vozactiva')
                         ? 'flex text-white font-bold uppercase'
-                        : 'hidden'
+                        : 'nhidden'
                     }`}
                   >
                     Voz Activa
@@ -182,7 +182,7 @@ function Container({
                     className={` ${
                       route().current('concursos')
                         ? 'flex text-white font-bold uppercase'
-                        : 'hidden'
+                        : 'nhidden'
                     }`}
                   >
                     Festivais
@@ -190,24 +190,46 @@ function Container({
                 </Link>
 
                 <Link
-                  href="/noticias"
+                  href="/arts"
                   className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
             ${
-              route().current('noticias')
+              route().current('arts')
                 ? 'transform-effect text-cyan-400 font-bold'
                 : ''
             }
             `}
                 >
-                  <BsNewspaper className="w-10 h-10" />
+                  <FaArtstation className="w-10 h-10" />
                   <span
                     className={` ${
-                      route().current('noticias')
+                      route().current('arts')
                         ? 'flex text-white font-bold uppercase'
-                        : 'hidden'
+                        : 'nhidden'
                     }`}
                   >
-                    Notícias
+                    +Artes
+                  </span>
+                </Link>
+                
+                <Link
+                  href="/gospel"
+                  className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
+            ${
+              route().current('gospel')
+                ? 'transform-effect text-cyan-400 font-bold'
+                : ''
+            }
+            `}
+                >
+                  <FaCross className="w-10 h-10" />
+                  <span
+                    className={` ${
+                      route().current('gospel')
+                        ? 'flex text-white font-bold uppercase'
+                        : 'nhidden'
+                    }`}
+                  >
+                    Gospel
                   </span>
                 </Link>
               </>

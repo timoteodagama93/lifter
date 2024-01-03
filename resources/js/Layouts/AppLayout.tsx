@@ -15,7 +15,7 @@ import './style.css';
 import { Logo } from '../../img';
 import { smalLogo } from '../../img';
 import Container from './Container';
-import { BiSearch } from 'react-icons/bi';
+import { BiMusic, BiSearch, BiVideo } from 'react-icons/bi';
 import Player from '@/Components/VideoPlayer/Player';
 import VideoPlayer from '@/Components/VideoPlayer';
 import Modal from '@/Components/Modal';
@@ -30,6 +30,9 @@ import { EffectCube, Navigation } from 'swiper/modules';
 import { SwiperSlide } from 'swiper/react';
 import SectionBorder from '@/Components/SectionBorder';
 import TopChartCard from '@/Components/TopChartCard';
+import { BsStars, BsTrophy, BsNewspaper } from 'react-icons/bs';
+import { GiSoundWaves } from 'react-icons/gi';
+import { FaArtstation, FaCross } from 'react-icons/fa';
 interface Props {
   title: string;
   bg?: string;
@@ -89,24 +92,24 @@ export default function AppLayout({
         <Banner />
         <Sidebar />
         <div className="relative w-full h-full min-h-full min-w-full flex flex-col">
-          <header className=" relative w-full h-[10%] flex flex-col justify-center items-center  shadow-sm  rounded shadow-black pb-1 px-5">
-            <div className="w-full h-full flex justify-between py-1">
-              <button
-                onClick={() => setOpenSearch(true)}
-                className=" flex text-bold text-xl  justify-center items-center bg-[#4c88c4] p-2 rounded-lg"
-              >
-                <BiSearch className="mx-1 text-3xl text-center" />
-              </button>
+          <header className=" relative w-full h-28 md:h-[10%] flex flex-col justify-center items-center  shadow-lg  rounded shadow-black pb-5 md:pb-1 px-1 md:px-5">
+            <div className="w-full h-12 border-b md:border-b-0 md:h-full flex justify-between items-center py-1">
               {/**LOGO */}
               <Link href="/">
                 <img
-                  className="w-auto h-16 object-contain"
+                  className="w-auto h-16 object-contain flex"
                   src={Logo}
                   alt="logo"
                 />
               </Link>
+              <button
+                onClick={() => setOpenSearch(true)}
+                className=" md:flex text-bold text-xl  justify-center items-center bg-[#4c88c4] p-2 rounded-lg hidden"
+              >
+                <BiSearch className="mx-1 text-3xl text-center" />
+              </button>
 
-              <div className="flex justify-center items-center cursor-pointer ">
+              <div className="flex  justify-center items-center cursor-pointer ">
                 {openMobileMenu ? (
                   <MdClose
                     className="w-6 h-6 text-[#4c88c4] transform-effect transition "
@@ -119,11 +122,165 @@ export default function AppLayout({
                   />
                 )}
               </div>
+            </div>
+            <div className="w-full h-14 flex justify-between py-1">
+              <div className="w-full h-full flex md:hidden flex-row justify-center items-center mb-1 text-white text-xl ">
+                <>
+                  <Link
+                    href="/avaliacoes"
+                    className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect
+                    
+            ${
+              route().current('avaliacoes')
+                ? 'transform-effect text-cyan-400 font-bold icon-link'
+                : ''
+            }
+            `}
+                  >
+                    <BsStars className="icon w-10 h-10" />
+                    <span
+                      className={` ${
+                        route().current('avaliacoes')
+                          ? 'flex text-white font-bold uppercase'
+                          : 'hidden'
+                      }`}
+                    >
+                      Avaliações
+                    </span>
+                  </Link>
+                  <Link
+                    href="/musicas"
+                    className={`flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
+            ${
+              route().current('musicas')
+                ? 'transform-effect text-cyan-400 font-bold icon-link'
+                : ''
+            }
+            `}
+                  >
+                    <BiMusic className={`icon w-10 h-10`} />
+                    <span
+                      className={` ${
+                        route().current('musicas')
+                          ? 'flex text-white font-bold uppercase'
+                          : 'hidden'
+                      }`}
+                    >
+                      Músicas
+                    </span>
+                  </Link>
+                  <Link
+                    href="/video"
+                    className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter: ${
+                      route().current('video')
+                        ? 'transform-effect text-cyan-400 font-bold icon-link'
+                        : ''
+                    } `}
+                  >
+                    <BiVideo className="icon w-10 h-10" />
+                    <span
+                      className={` ${
+                        route().current('video')
+                          ? 'flex text-white font-bold uppercase'
+                          : 'hidden'
+                      }`}
+                    >
+                      Vídeos
+                    </span>
+                  </Link>
+                  <Link
+                    href="/vozactiva"
+                    className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
+            ${
+              route().current('vozactiva')
+                ? 'transform-effect text-cyan-400 font-bold icon-link'
+                : ''
+            }
+            `}
+                  >
+                    <GiSoundWaves className="icon w-10 h-10" />
+                    <span
+                      className={` ${
+                        route().current('vozactiva')
+                          ? 'flex text-white font-bold uppercase'
+                          : 'hidden'
+                      }`}
+                    >
+                      VozActiva
+                    </span>
+                  </Link>
+                  <Link
+                    href="/concursos"
+                    className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
+            ${
+              route().current()?.includes('concursos')
+                ? 'transform-effect text-cyan-400 font-bold icon-link'
+                : ''
+            }
+            `}
+                  >
+                    <BsTrophy className="icon w-10 h-10" />
+                    <span
+                      className={` ${
+                        route().current('concursos')
+                          ? 'flex text-white font-bold uppercase'
+                          : 'hidden'
+                      }`}
+                    >
+                      Festivais
+                    </span>
+                  </Link>
+
+                  <Link
+                    href="/arts"
+                    className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
+            ${
+              route().current('arts')
+                ? 'transform-effect text-cyan-400 font-bold icon-link'
+                : ''
+            }
+            `}
+                  >
+                    <FaArtstation className="icon w-10 h-10" />
+                    <span
+                      className={` ${
+                        route().current('arts')
+                          ? 'flex text-white font-bold uppercase'
+                          : 'hidden'
+                      }`}
+                    >
+                      +Artes
+                    </span>
+                  </Link>
+                  <Link
+                    href="/gospel"
+                    className={`flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
+            ${
+              route().current('gospel')
+                ? 'transform-effect text-cyan-400 font-bold icon-link'
+                : ''
+            }
+            `}
+                  >
+                    <FaCross className={`icon w-10 h-10`} />
+                    <span
+                      className={` ${
+                        route().current('gospel')
+                          ? 'flex text-white font-bold uppercase'
+                          : 'hidden'
+                      }`}
+                    >
+                      Gospel
+                    </span>
+                  </Link>
+                </>
+              </div>
+
               {renderHeader ? renderHeader() : null}
             </div>
           </header>
           {/* <!-- Page Content --> */}
-          <main className="relative h-[90%] w-full  flex mx-auto justify-start items-start  p-1 rounded overflow-y-hidden ">
+          <main className="relative h-[88%] md:h-[90%] w-full  flex mx-auto justify-start items-start  p-1 rounded overflow-y-hidden ">
             <Container>{children}</Container>
           </main>
         </div>

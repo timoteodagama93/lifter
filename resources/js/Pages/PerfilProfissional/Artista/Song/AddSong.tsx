@@ -39,10 +39,10 @@ export default function AddSong({ artist, from = '' }) {
         setSuccessOnAdd(true);
         Swal.fire({
           title: 'Bem feito',
-          text: 'A música foi carregada.',
+          text: 'A música foi carregada. Ela fica disponível na plataforma tão logo que a aprovarmos.',
           icon: 'success',
         });
-//        window.location.reload();
+        //        window.location.reload();
       },
       onError: e => {},
       onFinish: r => {

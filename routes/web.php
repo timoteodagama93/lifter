@@ -7,6 +7,7 @@ use App\Http\Controllers\ContestController;
 use App\Http\Controllers\JuradoController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfissionalController;
+use App\Http\Controllers\SocialMediaController;
 use App\Http\Controllers\SongsController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\ValuationFeedbackCommentController;
@@ -40,6 +41,7 @@ use Inertia\Inertia;
 |
 */
 
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -65,6 +67,15 @@ Route::middleware([
     Route::get('/musicas', function () {
         return Inertia::render('Musicas/Musicas', []);
     })->name('musicas');
+
+
+    Route::get('/gospel', function () {
+        return Inertia::render('Gospel/Index', []);
+    })->name('gospel');
+
+    Route::get('/arts', function () {
+        return Inertia::render('Arts/Index', []);
+    })->name('arts');
 
 
 
@@ -207,9 +218,16 @@ Route::middleware([
         Route::post('/add-song-cover',  'add_cover')->name('add-song-cover');
         Route::post('/update-song',  'update_info')->name('update-song');
 
+        Route::get('/download/song/{songId}',  'download')->name('download/song/{songId}');
+
         Route::post('upload.new', 'store')->name('upload.new');
         Route::get('songs/{id}', 'list');
         Route::post('/songs', 'store');
+
+        //Actualiza quantidade de reproduções
+        Route::post("new-play", "new_play")->name("new-play");
+        //Actualiza o tempo de reprodução toda vez que finaliza uma reprodução.
+        Route::post("update-reprodution-time", "update_reprodution_time")->name("update-reprodution-time");
 
         Route::get('get-valuations-requests', 'get_valuations_requests')->name('get-valuations-requests');
     });
@@ -249,8 +267,11 @@ Route::middleware([
         Route::post('add-contest-premios', 'add_premios')->name('add-contest-premios');
 
         Route::post('add-participant', 'contest_new_participant')->name('add-participant');
+        Route::post('vote-on-participant', 'new_vote_on_participante')->name('vote-on-participant');
 
+        Route::post('participant-votes', 'participant_votes')->name('participant-votes');
         Route::post('am-I-participant', 'am_I_participant')->name('am-I-participant');
+        Route::post('i-voted-on-this', 'i_voted_on_this')->name('i-voted-on-this');
 
         Route::post('filter-contest', 'filter_contest')->name('filter-contest');
 
@@ -424,10 +445,13 @@ Route::middleware([
 
 
     Route::controller(ProfissionalController::class)->group(function () {
-        Route::post('register-profissional', 'store');
+        Route::post('register-profissional', 'store')->name("register-profissional");
+        Route::post('add-profissional-cover', 'save_cover')->name("add-profissional-cover");
     });
 
     Route::controller(ArtistController::class)->group(function () {
+        Route::post('get-artist', 'get_artist')->name('get-artist');
+
         Route::get('artistas/{pagina}/{id}', 'index');
         Route::get('/artist-stats/{artistId}', 'artist_stats')->name('/artist-stats/${artistId}');
         Route::get('artistas/{pagina}/{id}', 'index')->name('index');
@@ -448,10 +472,21 @@ Route::middleware([
 });
 
 
+
+
 /**
  * CAMPAIGN ROUTES
  */
 Route::controller(CampaignController::class)->group(function () {
     Route::post('new-campaign', 'store')->name('new-campaign');
     Route::post('get-campaigns', 'get_mines')->name('get-campaigns');
+});
+
+
+/**
+ * Social Medias COntroller: Facebook, Google, TikTok
+ */
+Route::controller(SocialMediaController::class)->group(function () {
+    Route::get('auth/facebook', 'facebookpage')->name('auth/facebook');
+    Route::get('auth/facebook/callback', 'facebookredirect')->name('auth/facebook/callback');
 });

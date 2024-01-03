@@ -16,6 +16,9 @@ import './effectsCards.css';
 import { useGetContestImagesQuery } from '@/redux/services/coreApi';
 import { Loader } from '@/Components';
 import Swal from 'sweetalert2';
+import { BiBible, BiPlay } from 'react-icons/bi';
+import { GiVote } from 'react-icons/gi';
+import { BsEye } from 'react-icons/bs';
 
 interface Props {
   concursos: Array<Object>;

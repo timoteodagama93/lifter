@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 const initialState = {
   currentSongs: [],
   currentIndex: 0,
+  totalTime: 0,
   isActive: false,
   isPlaying: false,
   activeSong: {},
@@ -38,6 +40,9 @@ const playerSlice = createSlice({
       state.isActive = true;
 
     },
+    setTotalTime: (state, action) => {
+      state.totalTime = action.payload;
+    },
     setActiveVideo: (state, action) => {
       state.activeVideo = action.payload.video;
       if (action.payload?.videos) {
@@ -54,6 +59,15 @@ const playerSlice = createSlice({
     },
 
     nextSong: (state, action) => {
+      //Actualizar a quantidade de reproduções de uma música
+      axios
+        .post('update-reprodution-time', {
+          song_id: state.activeSong.id,
+          duration: state.totalTime,
+        })
+        .then(response => { })
+        .catch(error => { });
+
       if (state.currentSongs[action.payload]?.track) {
         state.activeSong = state.currentSongs[action.payload]?.track;
       } else {
@@ -65,6 +79,15 @@ const playerSlice = createSlice({
     },
 
     prevSong: (state, action) => {
+      //Actualizar a quantidade de reproduções de uma música
+      axios
+        .post('update-reprodution-time', {
+          song_id: state.activeSong.id,
+          duration: state.totalTime,
+        })
+        .then(response => { })
+        .catch(error => { });
+
       if (state.currentSongs[action.payload]?.track) {
         state.activeSong = state.currentSongs[action.payload]?.track;
       } else {
@@ -76,6 +99,15 @@ const playerSlice = createSlice({
     },
 
     nextVideo: (state, action) => {
+      //Actualizar a quantidade de reproduções de uma música
+      axios
+        .post('update-reprodution-time', {
+          song_id: state.activeVideo.id,
+          duration: state.totalTime,
+        })
+        .then(response => { })
+        .catch(error => { });
+
       if (state.currentVideos[action.payload]?.track) {
         state.activeVideo = state.currentVideos[action.payload]?.track;
       } else {
@@ -87,6 +119,15 @@ const playerSlice = createSlice({
     },
 
     prevVideo: (state, action) => {
+      //Actualizar a quantidade de reproduções de uma música
+      axios
+        .post('update-reprodution-time', {
+          song_id: state.activeVideo.id,
+          duration: state.totalTime,
+        })
+        .then(response => { })
+        .catch(error => { });
+
       if (state.currentVideos[action.payload]?.track) {
         state.activeVideo = state.currentVideos[action.payload]?.track;
       } else {
@@ -98,11 +139,51 @@ const playerSlice = createSlice({
     },
 
     playPause: (state, action) => {
-      if (state.isPlayingVideo) state.isPlayingVideo = false;
+      if (action.payload == true) {
+        //Actualizar a quantidade de reproduções de uma música
+        axios
+          .post('new-play', { song_id: state.activeSong.id })
+          .then(response => { })
+          .catch(error => { });
+      } else {
+        //Actualizar a quantidade de reproduções de uma música
+        axios
+          .post('update-reprodution-time', {
+            song_id: state.activeSong.id,
+            duration: state.totalTime,
+          })
+          .then(response => { })
+          .catch(error => { });
+
+      }
+      if (state.isPlayingVideo) {
+        state.isPlayingVideo = false;
+      }
       state.isPlaying = action.payload;
+
+
     },
 
     playPauseVideo: (state, action) => {
+      if (action.payload == true) {
+        //Actualizar a quantidade de reproduções de uma música
+        axios
+          .post('new-play', { song_id: state.activeVideo.id })
+          .then(response => { })
+          .catch(error => { });
+      } else {
+        //Actualizar a quantidade de reproduções de uma música
+        axios
+          .post('update-reprodution-time', {
+            song_id: state.activeVideo.id,
+            duration: state.totalTime,
+          })
+          .then(response => { })
+          .catch(error => { });
+
+      }
+
+
       if (state.isPlaying) state.isPlaying = false;
       state.isPlayingVideo = action.payload;
     },
@@ -118,6 +199,6 @@ const playerSlice = createSlice({
   },
 });
 
-export const { setActiveSong, setActiveVideo, nextSong, nextVideo, prevSong, prevVideo, playPause, playPauseVideo, selectGenreListId, setFullScreenPlayer } = playerSlice.actions;
+export const { setActiveSong, setActiveVideo, setTotalTime, nextSong, nextVideo, prevSong, prevVideo, playPause, playPauseVideo, selectGenreListId, setFullScreenPlayer } = playerSlice.actions;
 
 export default playerSlice.reducer;

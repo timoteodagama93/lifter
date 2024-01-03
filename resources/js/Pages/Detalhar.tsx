@@ -15,7 +15,7 @@ import {
 import VideoCard from '@/Components/VideoCard';
 import TopChartCard from '@/Components/TopChartCard';
 
-function Detalhar({ type, prof }) {
+function Detalhar({ type='Artist', prof }) {
   const {
     data: songs,
     isFetching,

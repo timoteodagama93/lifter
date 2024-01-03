@@ -22,7 +22,7 @@ import { useStateContext } from '@/contexts/PaginaActualContext';
 import Avaliar from './Avaliar';
 import { Lifter } from './';
 import { BiHome } from 'react-icons/bi';
-import { BsTrophy } from 'react-icons/bs';
+import { BsNewspaper, BsTrophy } from 'react-icons/bs';
 import { FaMusic } from 'react-icons/fa';
 import Sobre from '../Concursos/Sobre';
 import {
@@ -158,6 +158,20 @@ export default function Home({ posts }: Props) {
 
       <div className="w-full relative sm:flex flex-col sm:justify-center sm:items-center  bg-dots-darker bg-center dark:bg-dots-lighter  selection:bg-red-500 selection:text-white">
         <div className="w-full h-full overflow-y-hidden flex flex-col gap-1 justify-cebter items-center rounded-lg">
+          <div className="w-full flex justify-between items-center p-1 md:px-5 border-b">
+            <h1 className="text-center font-bold text-4xl"></h1>
+
+            <div className="flex flex-row justify-center items-center">
+              <Link
+                href="noticias"
+                className="transform-effect p-1 justify-center items-center w-full flex flex-col"
+              >
+                {' '}
+                <BsNewspaper className="w-10 h-auto font-bold" />{' '}
+                <span className="flex">Ver as notícias</span>
+              </Link>
+            </div>
+          </div>
           {videos ? (
             <div className="flex w-full h-full flex-col relative  ">
               <div
@@ -313,7 +327,8 @@ export default function Home({ posts }: Props) {
                     através da partilha.
                   </ol>
                 </ul>
-              </p> <a href=""></a>
+              </p>{' '}
+              <a href=""></a>
             </div>
           </div>
           <div className="flex w-full h-full flex-col relative p-5 shadow-inner shadow-black  ">

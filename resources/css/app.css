@@ -185,9 +185,11 @@
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.9);
   }
+
   100% {
     transform: scale(1);
   }
@@ -207,9 +209,11 @@
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.9);
   }
+
   100% {
     transform: scale(1);
   }
@@ -293,7 +297,30 @@
   transition: 0.3s;
   border-radius: 5px;
 }
+
 .transform-effect:hover {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.4);
   transform: scale(1.05);
+}
+
+.icon-link {
+  margin: .2rem;
+  padding: 0;
+  box-shadow: 0 4px 8px 0 #000;
+  transition: all 2s ease-out 5s;
+
+  /*
+  transform: scale(.2, .5);
+  animation: spin 1s linear infinite;
+*/
+border-radius: 5%;
+}
+
+.icon {
+  border-radius: 1%;
+  padding: .2rem;
+  transition: all 1s;
+  /* transform: scale(2, 0.5);
+  animation: spin 1s linear infinite;
+  */
 }

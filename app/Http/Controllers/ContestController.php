@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contest;
 use App\Models\ContestUser;
+use App\Models\ContestUserVote;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -37,8 +38,9 @@ class ContestController extends Controller
         $file = Request::file('cover')->store("public/contests/$contest->id/covers");
         $contest->url_cover = Storage::url($file);
         $contest->save();
-        echo response(['new_contest' => $contest]);
+        return  Inertia::render('Perfil/Perfil', ['contest' => $contest]); //->json(['new_contest' => $contest]);//to_route('perfil', ['new_contest' => $contest]); 
     }
+
 
     public function update()
     {
@@ -185,6 +187,18 @@ class ContestController extends Controller
         return to_route('concursos');
     }
 
+    public function new_vote_on_participante()
+    {
+        $userId = auth()->id();
+        $contestId = Request::get('contest_id');
+        $done = ContestUserVote::updateOrCreate(['user_id' => $userId,  'contest_id' => $contestId], ['song_id' => Request::get('song_id'),]);
+        if ($done) {
+            return Inertia::render('Concursos/Index', ['contest' => Contest::find($contestId)]); // response(true, 200);
+        } else {
+            return Inertia::render('Concursos/Index', ['contest' => Contest::find($contestId)]);
+        }
+    }
+
     public function am_I_participant()
     {
         $artistId = Request::get('artist_id');
@@ -197,19 +211,45 @@ class ContestController extends Controller
         return response()->json($participants);
     }
 
+    public function participant_votes()
+    {
+        $songId = Request::get('song_id');
+        $contestId = Request::get('contest_id');
+        $userId = auth()->id();
+
+        $sql = "SELECT id FROM contest_user_votes COUNT where song_id='$songId' AND contest_id='$contestId'";
+        return response()->json(DB::select($sql));
+    }
+
+    public function i_voted_on_this()
+    {
+        $songId = Request::get('song_id');
+        $contestId = Request::get('contest_id');
+        $userId = auth()->id();
+
+        $sql = "SELECT id FROM contest_user_votes COUNT where song_id='$songId' AND user_id =$userId AND contest_id='$contestId'";
+        $participant = DB::select($sql);
+        if ($participant) {
+            return response($participant);
+        } else {
+            return response([]);
+        }
+    }
+
     public function filter_contest(Request $request)
     {
         $data = [];
         $filter = $request::get('filter');
+        $contestId = $request::get('contest_id');
         if ($filter == 'songs') {
 
-            $data = DB::select("SELECT * FROM songs Join contest_users WHERE songs.id=contest_users.song_id AND songs.mime_type LIKE '%audio%' ");
+            $data = DB::select("SELECT * FROM songs Join contest_users WHERE songs.id=contest_users.song_id  AND contest_id= '$contestId' ");
         } else if ($filter == 'videos') {
-            $data = DB::select("SELECT * FROM songs Join contest_users WHERE songs.id=contest_users.song_id AND songs.mime_type LIKE '%video%' ");
+            $data = DB::select("SELECT * FROM songs Join contest_users WHERE songs.id=contest_users.song_id AND songs.mime_type LIKE '%video%'  AND contest_id= '$contestId' ");
         } else if ($filter == 'artists') {
-            $data = DB::select("SELECT * FROM `artists` JOIN contest_users WHERe contest_users.artist_id=artists.id");
+            $data = DB::select("SELECT * FROM `artists` JOIN contest_users WHERe contest_users.artist_id=artists.id  AND contest_id= '$contestId'");
         } else if ($filter == 'jury') {
-            $data = DB::select("SELECT * FROM users JOIN contest_users WHERE contest_users.user_id=users.id;
+            $data = DB::select("SELECT * FROM users JOIN contest_users WHERE contest_users.user_id=users.id  AND contest_id= '$contestId';
             ");
         }
 

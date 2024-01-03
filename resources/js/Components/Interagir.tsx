@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BiLibrary, BiSend, BiShare, BiStar } from 'react-icons/bi';
+import { BiDownload, BiLibrary, BiSend, BiShare, BiStar } from 'react-icons/bi';
 import { MdEmojiEmotions, MdOutlineMessage } from 'react-icons/md';
 import { TiMessages } from 'react-icons/ti';
 import PrimaryButton from './PrimaryButton';
@@ -18,7 +18,7 @@ import Modal from './Modal';
 import Checkbox from './Checkbox';
 import InputLabel from './InputLabel';
 import EnviarEstrelas from './EnviarEstrelas';
-import { useForm } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import Loader from './Loader';
@@ -80,11 +80,55 @@ function Interagir({ song, orientation = 'flex-row' }) {
       });
   }
 
+  const handleDownload = async () => {
+    try {
+      Swal.fire({
+        title: 'Baixando música',
+        text: 'A música está sendo baixada, mantenha a conexão a Internet, enquanto isso podes continuar a navegar, assim que o download for concluido você será notificado(a).',
+        icon: 'info',
+      });
+      const response = await axios.get(`/download/song/${song.id}`, {
+        responseType: 'blob',
+      });
+
+      const blob = new Blob([response.data], {
+        type: response.headers['Tontent-Type'],
+      });
+
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = song.original_name;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      Swal.fire({
+        title: 'Download concluido',
+        text: 'A música foi salva no seu disopositivo.',
+        icon: 'success',
+      });
+    } catch (error) {
+      console.log('ERROR DE DOWNLOAD: ' + error);
+      console.log(error);
+      Swal.fire({
+        title: 'Erro de download da música',
+        text: 'Houve uma falha da tentativa de download da música, tente novamente se persistir o problema entre em contacto com a nossa equipa técnica.',
+        icon: 'error',
+      });
+    }
+  };
+
   return (
     <div>
       <div
         className={`w-full flex ${orientation} justify-center items-center smooth-transition gap-1 p-1`}
       >
+        <button
+          className="text-sm md:text-3xl transform-effect p-1"
+          onClick={handleDownload}
+        >
+          <BiDownload />
+        </button>
         <button
           className="text-sm md:text-3xl transform-effect p-1"
           onClick={() => {
@@ -98,7 +142,7 @@ function Interagir({ song, orientation = 'flex-row' }) {
         <button
           onClick={() => curtir()}
           className={`text-sm md:text-3xl transform-effect p-1 ${
-            liked ? 'bg-purple-400 text-red-600 ' : ''
+            liked ? 'bg-purple-400 text-white ' : ''
           } `}
         >
           {' '}
@@ -122,6 +166,7 @@ function Interagir({ song, orientation = 'flex-row' }) {
         >
           <TiMessages />
         </button>
+
         <button
           className="text-sm md:text-3xl transform-effect p-1"
           onClick={() => {

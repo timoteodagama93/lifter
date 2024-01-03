@@ -5,6 +5,7 @@ import {
   nextSong,
   prevSong,
   playPause,
+  setTotalTime,
   setFullScreenPlayer,
 } from '../../redux/features/playerSlice';
 import Controls from './Controls';
@@ -114,7 +115,7 @@ const MusicPlayer = () => {
           activeSong={activeSong}
         />
         <div className="flex-1 flex flex-col items-center justify-center">
-        <Player
+          <Player
             activeSong={activeSong}
             volume={volume}
             isPlaying={isPlaying}
@@ -122,7 +123,10 @@ const MusicPlayer = () => {
             repeat={repeat}
             //currentIndex={currentIndex}
             onEnded={handleNextSong}
-            onTimeUpdate={event => setAppTime(event.target.currentTime)}
+            onTimeUpdate={event => {
+              setAppTime(event.target.currentTime);
+              dispatch(setTotalTime(appTime));
+            }}
             onLoadedData={event => setDuration(event.target.duration)}
           />
           <Controls
@@ -144,7 +148,6 @@ const MusicPlayer = () => {
             setSeekTime={setSeekTime}
             appTime={appTime}
           />
-          
         </div>
 
         <span>

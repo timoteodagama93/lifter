@@ -13,7 +13,7 @@ axios.post('get-songs')
 export const coreApi = createApi({
     reducerPath: 'coreApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://lifter.ao'
+        baseUrl: 'http://127.0.0.1:8000'
     }),
     endpoints: (builder) => ({
         getSongs: builder.query({ query: (query) => '/get-songs' }),

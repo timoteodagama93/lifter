@@ -6,6 +6,7 @@ use App\Models\Profissional;
 use App\Models\User;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ProfissionalController extends Controller
 {
@@ -44,5 +45,25 @@ class ProfissionalController extends Controller
         }
 
         return response()->redirectTo('/perfis');
+    }
+
+    /**
+     * @param artist_id
+     * @param cover
+     */
+    public function save_cover()
+    {
+        $valideted = Validator::make(
+            Request::all(),
+            [
+                'cover' => ['required', 'mimes:png,jpeg,jpg,gif'] //TODO: Delimitar o arquivo ao tamanho
+            ]
+        )->validate();
+
+        $pro = Profissional::where('id', Request::input('profissional_id'))->first();
+        $file = Request::file('cover')->store("public/profissionals/$pro->id/covers");
+        $pro->url_cover = Storage::url($file);
+        $pro->save();
+        return  to_route('perfis', ['isProfissional' => true]);
     }
 }

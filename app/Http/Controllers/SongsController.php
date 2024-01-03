@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\File;
 use Inertia\Inertia;
 use Symfony\Component\Console\Input\Input;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class SongsController extends Controller
 {
@@ -36,44 +37,46 @@ class SongsController extends Controller
 
     public function store()
     {
-
         Validator::make(
             Request::all(),
             [
-                'video' => ['required', 'mimes:mp3,mp4'], //, 'max:50120'
+                'song' => ['required', 'mimes:mp3,mp4'], //, 'max:50120'
                 'title' => ['required'],
-                'category' => ['required'],
-                'description' => ['required'],
+                'genre' => ['required'],
             ]
         )->validate();
 
-        $user_id = auth()->id();
-        $video_url = Request::file("song")->store("public/users/$user_id/videos");
+        $artist_id = Request::input('artist_id');
+        $song_url = Request::file("song")->store("public/artists/$artist_id/songs");
 
-
-        if ($video_url != false) {
+        if ($song_url != false) {
 
             //$cover_url = Request::file("cover")->store("artists/{$artist_id}/songs/covers", 'public');
 
             $file_extension = Request::file('song')->getClientOriginalExtension();
-            $file_name = Request::file('song')->getFilename();
+            $file_hasname = Request::file('song')->hashName();
             $file_mime = Request::file('song')->getMimeType();
             $file_path = Request::file('song')->getPath();
             $file_pathname = Request::file('song')->getPathname();
 
             $song = Song::create([
-                'user_id' => $user_id,
+                'artist_id' => $artist_id,
                 'title' => Request::input('title'),
-                'category' => Request::input('category'),
-                'description' => Request::input('description'),
+                'genre' => Request::input('genre'),
+                'artist' => Request::input('artist'),
+                'gravadora' => Request::input('gravadora'),
+                'participacoes' => Request::input('participacoes'),
+                'letra' => Request::input('letra'),
+                'saved_name' => $file_hasname,
+                'original_name' => Request::file('song')->getClientOriginalName(),
                 'mime_type' => $file_mime,
                 'extension' => $file_extension,
-                'url' => Storage::url($video_url),
+                'url' => Storage::url($song_url),
                 //'cover' => $cover_url,
             ]);
-            return to_route('video');
+            return; // to_route('musicas');
         } else {
-            return to_route('video');
+            return response()->json(['Alguma coisa correu mal, não se preocupe que deve ser nossa culpa. Recarregue a página, se persistir reporte o problema. ']);
         }
     }
 
@@ -182,7 +185,7 @@ class SongsController extends Controller
      */
     public function get_songs()
     {
-        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%audio%' AND active=true ORDER BY created_at DESC"); // where('mime_type', `%audio/%`)->paginate(1);
+        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%audio%' AND active=true AND destaque=false ORDER BY created_at DESC"); // where('mime_type', `%audio/%`)->paginate(1);
     }
 
     /**
@@ -276,6 +279,15 @@ class SongsController extends Controller
     {
         $user_id = Auth::user()->id;
         $song_id = Request::get('song_id');
+        $song = Song::find($song_id);
+
+        $liked = Like::find([$song_id, $user_id]);
+        if (!$liked) {
+            $song->likes = $song->likes + 1;
+            $song->save();
+        } else {
+            //TODO: Quando implementar o descurtir deve reduzir aqui os likes
+        }
 
         $like = Like::updateOrCreate(
             [
@@ -352,5 +364,41 @@ class SongsController extends Controller
     {
         $songId = Request::get('song_id');
         return response()->json(DB::select("SELECT * FROM feedbacks WHERE song_id = ?", [$songId]));
+    }
+
+    public function new_play()
+    {
+        $song_id = Request::get('song_id');
+        $result = DB::update("UPDATE songs SET plays=plays+1 WHERE id = '$song_id' ");
+        return $result;
+    }
+
+    public function update_reprodution_time()
+    {
+        $song_id = Request::get('song_id');
+        $duration = Request::get('duration');
+
+        DB::update("UPDATE songs SET reprodution_time=reprodution_time+$duration WHERE id = '$song_id' ");
+        return;
+    }
+
+    public function download($songId)
+    {
+        $song = Song::find($songId);
+
+        if (!$song)
+            abort(404, 'Música não encontrada');
+
+        $song->downloads = $song->downloads + 1;
+        $song->save();
+        $path = storage_path("app\\public\\artists\\$song->artist_id\\songs\\$song->saved_name");
+
+        //dd($path);
+
+        $headers = [
+            'Content-Type' => $song->mime_type,
+            'Content-Disposition' => 'attach; filename="' . $song->original_name . '"'
+        ];
+        return response()->download($path, $song->original_name, $headers);
     }
 }

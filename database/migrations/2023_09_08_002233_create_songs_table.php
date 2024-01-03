@@ -15,6 +15,11 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->foreignUlid('artist_id')->constrained(table: 'artists', column: 'id');
             $table->string('title');
+
+            $table->string('saved_name');
+            $table->string('original_name');
+            $table->integer('likes')->default(0);
+
             $table->string('genre');
             $table->string('artist');
             $table->string('gravadora')->nullable();
@@ -28,6 +33,9 @@ return new class extends Migration
             $table->string('url');
             $table->string('path')->nullable();
             $table->integer('stars')->default(0);
+
+            $table->bigInteger('reprodution_time')->default(0);
+
             $table->integer('plays')->default(0);
             $table->integer('downloads')->default(0);
             $table->integer('shares')->default(0);

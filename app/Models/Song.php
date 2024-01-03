@@ -18,6 +18,8 @@ class Song extends Model
     protected $fillable = [
         'id',
         'title',
+        'saved_name',
+        'original_name',
         'artist_id',
         'genre',
         'artist',
@@ -31,6 +33,8 @@ class Song extends Model
         'letra',
         'stars',
         'plays',
+        'likes',
+        'reprodution_time',
         'downloads',
         'shares',
         'destaque',

@@ -67,7 +67,7 @@ function Services() {
               }}
               className="request-button"
             >
-              Solicitar orçamento
+              Solicitar Serviço
             </button>
           </div>
         ))}
@@ -181,7 +181,7 @@ function SolicitarServico({ service, onClose }) {
             value={form.data.problem}
             onChange={e => form.setData('problem', e.currentTarget.value)}
             required
-            placeholder="Para melhor o servirmos, descreva brevemente que necessidade precisa resolver."
+            placeholder="Para melhor o servirmos, descreva brevemente a necessidade que precisa ver resolvida."
           />
           <InputError className="mt-2" message={form.errors.problem} />
         </div>

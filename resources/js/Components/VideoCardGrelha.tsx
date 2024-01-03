@@ -8,6 +8,7 @@ import {
 import { useDispatch } from 'react-redux';
 import PlayPauseVideo from './PlayPauseVideo.js';
 import VideoPlayer from './VideoPlayer/index.js';
+import Interagir from './Interagir.js';
 
 function VideoCardGrelha({
   video,
@@ -34,14 +35,14 @@ function VideoCardGrelha({
     >
       <div className=" relative w-2/3 h-full group">
         <div
-           style={{ transition: '1s' }}
-           className={`absolute z-10 inset-0 justify-center items-center bg-black bg-opacity-50 ${
-             isPlayingVideo && activeVideo?.id == video.id ? 'hidden' : 'flex'
-           } ${
-             activeVideo?.id === video.id
-               ? 'flex'
-               : ' flex bg-black bg-opacity-70'
-           } `}
+          style={{ transition: '1s' }}
+          className={`absolute z-10 inset-0 justify-center items-center bg-black bg-opacity-50 ${
+            isPlayingVideo && activeVideo?.id == video.id ? 'hidden' : 'flex'
+          } ${
+            activeVideo?.id === video.id
+              ? 'flex'
+              : ' flex bg-black bg-opacity-70'
+          } `}
         >
           <PlayPauseVideo
             isPlayingVideo={isPlayingVideo}
@@ -76,6 +77,7 @@ function VideoCardGrelha({
             {!(video.participacoes === '') ? ' ft ' + video.participacoes : ''}
           </Link>
         </p>
+        
       </div>
     </div>
   );

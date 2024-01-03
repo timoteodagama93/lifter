@@ -28,7 +28,7 @@ import { HiPhotograph } from 'react-icons/hi';
 import ButtonWraper from '@/Components/Button';
 import { ShowMusics } from '../Song';
 import { GrAnnounce } from 'react-icons/gr';
-import ArtistSongsFeedbacks from '../ArtistSongsFeedbacks/ArtistSongsFeedbacks';
+import ArtistSongsManager from '../ArtistSongsManager/ArtistSongsManager';
 import Marketing from '../Marketing';
 
 function DetailsArtist({ artist }) {
@@ -146,7 +146,7 @@ function DetailsArtist({ artist }) {
           <button
             onClick={() =>
               setPagina(
-                <ArtistSongsFeedbacks artist={artist} setPagina={setPagina} />,
+                <ArtistSongsManager artist={artist} setPagina={setPagina} />,
               )
             }
             className="transform-effect border border-b-4 hover:bg-[#2e2c2e]  border-[#4c88c4] rounded text-xs items-center justify-center flex flex-col md:flex-row p-1"

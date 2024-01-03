@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   playPauseVideo,
   nextVideo,
+  setTotalTime,
   prevVideo,
 } from '../../redux/features/playerSlice';
 import { BsStarFill, BsStar } from 'react-icons/bs';
@@ -108,7 +109,10 @@ const VideoPlayer = () => {
           repeat={repeat}
           //currentVideoIndex={currentVideoIndex}
           onEnded={handleNextVideo}
-          onTimeUpdate={event => setAppTime(event.target.currentTime)}
+          onTimeUpdate={event => {
+            setAppTime(event.target.currentTime);
+            dispatch(setTotalTime(appTime));
+          }}
           onLoadedData={event => setDuration(event.target.duration)}
         />
 

@@ -18,7 +18,7 @@
 }
 
 .details {
-    transition: 1.5s;
+    transition: .5s;
     position: absolute;
     width: 100%;
     bottom: -140px;

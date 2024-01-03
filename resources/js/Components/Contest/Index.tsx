@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useTypedPage from '@/Hooks/useTypedPage';
 import SectionBorder from '@/Components/SectionBorder';
 import ContestInfo from './ContestInfo';
@@ -6,8 +6,15 @@ import ContestSchedule from './ContestSchedule';
 import ContestWinners from './ContestWinners';
 
 export default function NewContest({ contest = null }) {
-  const [contestId, setContestId] = useState(contest == null ? '' : contest.id);
+  const [contestId, setContestId] = useState('');
   const page = useTypedPage();
+
+  
+  useEffect(() => {
+    contest != null ? setContestId(contest.id) : '';
+    console.log('CONTEST: ');
+    console.log(contest);
+  }, [contest]);
 
   return (
     <div>

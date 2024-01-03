@@ -15,19 +15,24 @@ import {
 import { Link, useForm } from '@inertiajs/react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { GiTribunalJury } from 'react-icons/gi';
-import { MdCloseFullscreen } from 'react-icons/md';
+import { GiSing, GiTeacher, GiTribunalJury, GiVote } from 'react-icons/gi';
+import {
+  MdCloseFullscreen,
+  MdGroups,
+  MdOutlineMotionPhotosOn,
+} from 'react-icons/md';
 import { useSelector } from 'react-redux';
 
 import { EffectCards, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Concursos from './Concursos';
-import { BiArrowBack } from 'react-icons/bi';
+import { BiArrowBack, BiBible, BiPlay } from 'react-icons/bi';
 import Swal from 'sweetalert2';
+import { FaPray } from 'react-icons/fa';
+import ArtistCard from '@/Components/ArtistCard';
+import ParticipantCard from '@/Components/ParticipantCard';
 
 function ContestDetails({ contest, contests }) {
-  
-
   const [seeArtistDetails, setSeeArtistDetails] = useState(false);
 
   const [artistTDetail, setArtistTDetail] = useState(null);
@@ -35,13 +40,26 @@ function ContestDetails({ contest, contests }) {
 
   const [dataToShow, setDataToShow] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [songs, setSongs] = useState([]);
+  const [artists, setArtists] = useState([]);
 
   const { activeSong, isPlaying } = useSelector(state => state.player);
 
-
   useEffect(() => {
     setLoading(true);
-    filterFromContest('songs');
+    axios
+      .post('filter-contest', {
+        contest_id: contest.id,
+        filter: 'songs',
+      })
+      .then(response => {
+        setSongs(response.data);
+        setDataToShow(response.data);
+        setLoading(false);
+      })
+      .catch(errors => {
+        setLoading(false);
+      });
   }, []);
 
   const [show, setShow] = useState('Músicas');
@@ -71,6 +89,8 @@ function ContestDetails({ contest, contests }) {
   };
 
   const { setCurrentPage } = useStateContext();
+
+  if (loading) return <Loader title="Carregando detalhes do concurso..." />;
 
   return (
     <>
@@ -118,7 +138,8 @@ function ContestDetails({ contest, contests }) {
           </button>
         </div>
       </div>
-      <div className="flex flex-row justify-between w-full items-center p-1">
+
+      <div className="hidden flex flex-row justify-between w-full items-center p-1">
         <div>
           <InputLabel htmlFor="contest_id">Escolha o que deseja ver</InputLabel>
           <select
@@ -138,110 +159,65 @@ function ContestDetails({ contest, contests }) {
         </h1>
       </div>
 
+      {!loading && show == 'Músicas' && songs.length > 0 ? (
+        <>
+          <div className="w-full h-full flex flex-wrap">
+            {songs?.map((song, i) => (
+              <div className="w-full md:w-1/2 h-full flex items-center overflow-hidden .shadow-lg border p-1">
+                <ParticipantCard song={song} songs={songs} i={i} />
+              </div>
+            ))}
+          </div>
+        </>
+      ) : (
+        <div className='w-full h-full flex justify-center items-center '>
+          <h1 className="text-center font-bold text-xl">
+            O concurso não tem ainda nenhum participante inscrito.
+          </h1>
+        </div>
+      )}
+      {!loading && show == 'Músicas' && songs.length < 0 && <></>}
+
       {loading ? (
         <Loader title="Carregando..." />
       ) : (
         <>
           {/** EXIBIR LISTA DE ARTISTAS DO CONCURSO */}
           {show == 'Artistas' && (
-            <>
-              <div className="w-full flex flex-col">
-                {dataToShow.length > 0 ? (
-                  <>
-                    <div className="w-full flex flex-wrap">
-                      {dataToShow?.map(jurado => (
-                        <>
-                          <div className="w-full md:w-1/2 xl:w-1/3 h-1/2 flex flex-col items-center overflow-hidden shadow-lg p-1">
-                            <div className="w-full h-[320px] object-contain ">
-                              <img
-                                src={jurado.profile_photo_path}
-                                alt="name artist"
-                                onClick={() => {
-                                  setArtistTDetail(jurado);
-                                  setSeeArtistDetails(true);
-                                }}
-                                className=" hover:cursor-pointer w-full h-full rounded-sm rounded-t-lg border-t-2  object-cover"
-                              />
-                            </div>
-                            <button
-                              onClick={() => {
-                                setArtistTDetail(jurado);
-                                setSeeArtistDetails(true);
-                              }}
-                              className="transform-effect w-full h-[10%] first-letter: rounded-lg flex-1 space-x-1 flex flex-col justify-start items-center mx-3 border-b-2 backdrop-blur-lg p-1 "
-                            >
-                              <p className="text-xl font-bold text-white">
-                                {' '}
-                                {jurado.name}{' '}
-                              </p>
-                              <p className="text-xs text-gray-300">
-                                {' '}
-                                {jurado.ocupation}
-                              </p>
-                            </button>
-                          </div>
-                        </>
-                      ))}
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <h1 className="text-center font-bold text-xl">
-                      Nenhum artista encontrado para a seleção.
-                    </h1>
-                  </>
-                )}
-              </div>
-            </>
+            <div className="w-full h-full flex flex-col">
+              {dataToShow.length > 0 ? (
+                <>
+                  <div className="w-full h-full flex flex-wrap">
+                    {dataToShow?.map(artista => (
+                      <div className="w-full md:w-1/2 h-96 flex items-center overflow-hidden .shadow-lg border p-1">
+                        <ArtistCard artist={artista} />
+                      </div>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h1 className="text-center font-bold text-xl">
+                    Nenhum artista encontrado para a seleção.
+                  </h1>
+                </>
+              )}
+            </div>
           )}
           {/** EXIBIR LISTA DE ARTISTAS DO CONCURSO */}
           {show == 'Jurís' && (
             <>
               <div className="w-full flex flex-col">
                 {dataToShow.length > 0 ? (
-                  <>
-                    <div className="w-full flex flex-wrap">
-                      {dataToShow?.map(jurado => (
+                  <div className="w-full flex flex-wrap">
+                    {dataToShow?.map(jurado => (
                       <></>
-                      ))}
-                    </div>
-                  </>
+                    ))}
+                  </div>
                 ) : (
-                  <>
-                    <h1 className="text-center font-bold text-xl">
-                      Nenhum júri encontrado para a seleção.
-                    </h1>
-                  </>
-                )}
-              </div>
-            </>
-          )}
-          {/** EXIBIR LISTA DE MÙSICAS DO CONCURSO */}
-          {show == 'Músicas' && (
-            <>
-              <div className="w-full flex flex-col">
-                  <>
-                    <div className="w-full flex flex-wrap">
-                      {dataToShow?.map(song => (
-                           <div className="w-full relative flex flex-col ">
-                           <TopChartCard
-                               songs={dataToShow}
-                               song={song}
-                               isPlaying={isPlaying}
-                               activeSong={activeSong}
-                               i={song?.id}
-                               key={song?.id}
-                             />
-                             </div>
-                      ))}
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <h1 className="text-center font-bold text-xl">
-                      Nenhuma ,úsica encontrada para a seleção.
-                    </h1>
-                  </>
+                  <h1 className="text-center font-bold text-xl">
+                    Nenhum júri encontrado para a seleção.
+                  </h1>
                 )}
               </div>
             </>

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PlayPause from './PlayPause.tsx';
 import { Link } from '@inertiajs/react';
 
@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { FaPauseCircle, FaPlayCircle } from 'react-icons/fa';
 import { smalLogo } from '../../img';
+import axios from 'axios';
 
 function SongCard({
   song,
@@ -25,6 +26,17 @@ function SongCard({
     dispatch(setActiveSong({ song, songs, i }));
     dispatch(playPause(true));
   };
+
+  const [artist, setArtist] = useState(null);
+
+  useEffect(() => {
+    axios
+      .post('get-artist', { artist_id: song.artist_id })
+      .then(response => {
+        setArtist(response.data);
+      })
+      .catch(error => {});
+  }, []);
 
   return (
     <div
@@ -50,11 +62,22 @@ function SongCard({
         {song.mime_type.includes('audio/') && song.cover && (
           <img className="w-full h-full" alt={song.title} src={song.cover} />
         )}
-        {song.mime_type.includes('audio/') && !song.cover && (
-          <div className="w-[50%] h-[50%] flex justify-center">
-            <img className="w-full h-full" alt={song.title} src={smalLogo} />
-          </div>
-        )}
+        {song.mime_type.includes('audio/') &&
+          artist?.url_cover &&
+          !song.cover && (
+            <img
+              className="w-full h-full"
+              alt={artist?.name}
+              src={artist?.url_cover}
+            />
+          )}
+        {song.mime_type.includes('audio/') &&
+          !artist?.url_cover &&
+          !song.cover && (
+            <div className="w-full h-full flex justify-center">
+              <img className="w-full h-full" alt={song.title} src={smalLogo} />
+            </div>
+          )}
       </div>
 
       <div className="flex flex-col">

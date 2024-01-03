@@ -10,6 +10,7 @@ import PlayPauseVideo from './PlayPauseVideo.js';
 import VideoPlayer from './VideoPlayer/index.js';
 import { useStateContext } from '@/contexts/PaginaActualContext.js';
 import VideoShow from './PlayingVideo/Index.js';
+import Interagir from './Interagir.js';
 
 function VideoCard({
   video,
@@ -82,6 +83,7 @@ function VideoCard({
         <p className="font-bold text-xs  truncate">
           {' '} {video.genre}
         </p>
+        <Interagir song={video} />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import AddArtist from '@/Pages/PerfilProfissional/Registers/AddArtist';
-import AddArtistCover from './AddArtistCover';
+import AddProfissionalCover from './AddProfissionalCover';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -187,7 +187,7 @@ function DetailsArtist({ artist }) {
           </ButtonWraper>
           <ButtonWraper className="w-full">
             <button
-              onClick={() => setPagina(<AddArtistCover artist={artist} />)}
+              onClick={() => setPagina(<AddProfissionalCover artist={artist} />)}
               className="w-full flex flex-row justify-star items-center space-x-2 p-2 rounded-md  hover:bg-[#2e2c2e] hover:text-white "
             >
               <HiPhotograph className="mr-3 text-xl" />

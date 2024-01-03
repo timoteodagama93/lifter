@@ -22,9 +22,13 @@ const Avaliacoes = ({}) => {
   const { data: songs, isFetching, error } = useGetSongsQuery('/get-songs');
   const { activeSong, isPlaying } = useSelector(state => state.player);
 
-  const [selectedValuation, setSelectedValuation] = useState();
+  const [selectedValuation, setSelectedValuation] = useState(
+    isPlaying ? activeSong : null,
+  );
 
-  useEffect(() => {}, [songs]);
+  useEffect(() => {
+    if (!isPlaying) setSelectedValuation(null);
+  }, [isPlaying]);
 
   return (
     <AppLayout title="Avaliações">

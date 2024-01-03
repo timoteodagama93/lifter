@@ -50,7 +50,7 @@ createInertiaApp({
       <RouteContext.Provider value={(window as any).route}>
         <Provider store={store}>
           <ContextPageProvider>
-            <App {...props} />
+            <App {...props}  />
           </ContextPageProvider>
         </Provider>
         ,

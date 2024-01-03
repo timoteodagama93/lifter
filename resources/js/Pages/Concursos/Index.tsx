@@ -21,7 +21,7 @@ import Concursos from './Concursos';
 interface Props {
   contests: Array<Object>;
 }
-function Index({ contests }: Props) {
+function Index({ contests, contest }: Props) {
   const { currentPage, setCurrentPage } = useStateContext();
   const [detailsContest, setDetailsContest] = useState();
   const [displayDetails, setDisplayDetails] = useState(false);
@@ -29,14 +29,19 @@ function Index({ contests }: Props) {
   const [showAscensao, setShowAscensao] = useState(false);
 
   function setDefaultPage() {
-    setCurrentPage(
-      <Concursos
-        showAscensao={showAscensao}
-        setDisplayDetails={setDisplayDetails}
-        setContestDetails={setDetailsContest}
-        concursos={contests}
-      />,
-    );
+    if (contest) {
+      setDetailsContest(contest);
+      setDisplayDetails(true);
+    } else {
+      setCurrentPage(
+        <Concursos
+          showAscensao={showAscensao}
+          setDisplayDetails={setDisplayDetails}
+          setContestDetails={setDetailsContest}
+          concursos={contests}
+        />,
+      );
+    }
   }
 
   useEffect(setDefaultPage, []);

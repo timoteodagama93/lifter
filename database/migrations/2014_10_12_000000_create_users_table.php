@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('facebook_id')->nullable();
             $table->string('tiktok_id')->nullable();
             $table->string('google_id')->nullable();
-            $table->string('phone')->unique();
+            $table->string('phone')->unique()->nullable();
             $table->boolean('is_artist')->default(false);
             $table->boolean('is_manager')->default(false);
             $table->boolean('is_editor')->default(false);

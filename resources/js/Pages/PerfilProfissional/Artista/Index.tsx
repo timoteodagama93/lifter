@@ -16,7 +16,7 @@ import {
 } from 'react-icons/md';
 import Marketing from './Marketing';
 import { BsShare } from 'react-icons/bs';
-import ArtistSongsFeedbacks from './ArtistSongsFeedbacks/ArtistSongsFeedbacks';
+import ArtistSongsManager from './ArtistSongsManager/ArtistSongsManager';
 import { smalLogo } from '../../../../img';
 import { HiHeart, HiMusicNote } from 'react-icons/hi';
 import { TiMessages } from 'react-icons/ti';
@@ -61,7 +61,7 @@ function HeaderArtist({ artist, setPagina }) {
             <button
               onClick={() => {
                 setCurrentPage(
-                  <ArtistSongsFeedbacks
+                  <ArtistSongsManager
                     setPagina={setPagina}
                     artist={artist}
                   />,
@@ -76,7 +76,7 @@ function HeaderArtist({ artist, setPagina }) {
             <button
               onClick={() =>
                 setPagina(
-                  <ArtistSongsFeedbacks
+                  <ArtistSongsManager
                     setPagina={setPagina}
                     artist={artist}
                   />,

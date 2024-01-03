@@ -153,4 +153,10 @@ class ArtistController extends Controller
             'quantidade_feedbacks' => $qtd_feedbacks,
         ]);
     }
+
+    function get_artist()
+    {
+        $artistId = Request::get('artist_id');
+        return Artist::where(['id' => $artistId])->first();
+    }
 }

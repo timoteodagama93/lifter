@@ -13,12 +13,14 @@ import { useStateContext } from '@/contexts/PaginaActualContext';
 import Welcome from './Welcome';
 import Artist from '../Artista/Index';
 import { Loader } from '@/Components';
+import useTypedPage from '@/Hooks/useTypedPage';
 export default function AddArtist({}) {
+  const page = useTypedPage();
   const { setCurrentPage } = useStateContext();
   const [isLoading, setIsLoading] = useState(false);
 
   const formArtist = useForm({
-    name: '',
+    name: page.props.auth.user?.name,
     genre: 'Kuduro',
     contact: '',
     about: '',
