@@ -53,7 +53,7 @@ function VideoCardGrelha({
           />
         </div>
         {isPlayingVideo && activeVideo.id === video.id ? (
-          <VideoPlayer />
+          <></>
         ) : (
           <video className="w-full h-full">
             <source src={video.url} type={video.mime_type} />
@@ -65,7 +65,7 @@ function VideoCardGrelha({
         <p className="font-semibold text-lg  truncate">
           <Link href={`/song-details/${video?.id}`}>{video.title}</Link>
         </p>
-        <p className="text-sm truncate  mt-1">
+        <p className="text-xl truncate  mt-1">
           <Link
             href={
               video.artist
@@ -73,11 +73,9 @@ function VideoCardGrelha({
                 : 'top-artists'
             }
           >
-            {video.artist}{' '}
-            {!(video.participacoes === '') ? ' ft ' + video.participacoes : ''}
+            {video.producer}{' '}
           </Link>
         </p>
-        
       </div>
     </div>
   );

@@ -19,7 +19,8 @@ export default function ContestInfo({ setContestId }) {
     _method: 'PUT',
     designacao: '',
     descricao: '',
-    estilo: 'TODOS',
+    categoria: 'Música',
+    subcategoria: '',
     cover: null as File | null,
   });
   const route = useRoute();
@@ -53,35 +54,6 @@ export default function ContestInfo({ setContestId }) {
         });
       },
     });
-
-    /*
-    const data = new FormData();
-    data.append('designacao', form.data.designacao);
-    data.append('descricao', form.data.descricao);
-    data.append('estilo', form.data.estilo);
-    data.append('cover', form.data.cover);
-    
-    setProcessing(true);
-    axios
-      .post(route('create-contest'), data)
-      .then(response => {
-        console.log(response.data.id);
-        setContestId(response.data.id);
-        Swal.fire({
-          title: 'Salvo',
-          text: 'Informações salvas. Adicione os demais detalhes.',
-          icon: 'success',
-        });
-        setProcessing(false);
-      })
-      .catch(error => {
-        Swal.fire({
-          title: 'Ooops, algo correu mal.',
-          text: 'Parece que houve um problema ao salvar as informações. Reenvie.',
-          icon: 'error',
-        });
-        console.log(error);
-      });*/
   }
 
   function selectNewPhoto() {
@@ -212,24 +184,92 @@ export default function ContestInfo({ setContestId }) {
         <InputError message={form.errors.descricao} className="mt-2" />
       </div>
 
-      {/* <!-- Contest Description--> */}
+      {/* <!-- Contest TYPE--> */}
       <div className="col-span-6 sm:col-span-4">
-        <InputLabel htmlFor="estilo" value="Estilo musical da competição" />
+        <InputLabel htmlFor="tipo" value="Categoria do concurso" />
+        
+        
         <select
-          id="estilo"
+          id="categoria"
           className="mt-1 block w-full text-gray-900"
-          value={form.data.estilo}
-          onChange={e => form.setData('estilo', e.currentTarget.value)}
+          value={form.data.categoria}
+          onChange={e => form.setData('categoria', e.currentTarget.value)}
+          defaultValue="Música"
         >
-          <option>TODOS</option>
-          <option>GOSPEL</option>
-          <option>KUDURO</option>
-          <option>RAP</option>
-          <option>HOUSE</option>
-          <option>SEMBA</option>
-          <option>KIZOMBA</option>
+          <option value="Música">Música</option>
+          <option value="Dança">Dança</option>
+          <option value="Artes Mistas">Artes mistas</option>
+          <option value="Literatura">Literatura</option>
+          <option value="Artes Visuais">Artes visuais</option>
         </select>
-        <InputError message={form.errors.estilo} className="mt-2" />
+        <InputError message={form.errors.categoria} className="mt-2" />
+      </div>
+
+      {/* <!-- Contest SUBCATEGORIA--> */}
+      <div className="col-span-6 sm:col-span-4">
+        <InputLabel htmlFor="subcategoria" value="Sub-categoria" />
+        <select
+          id="subcategoria"
+          className="mt-1 block w-full text-gray-900"
+          value={form.data.subcategoria}
+          onChange={e => form.setData('subcategoria', e.currentTarget.value)}
+          defaultValue="TODOS"
+        >
+          <option value="">Selecione a subcategoria</option>
+
+          {form.data.categoria == 'Música' && (
+            <>
+              <option>TODOS</option>
+              <option>GOSPEL</option>
+              <option>KUDURO</option>
+              <option>RAP</option>
+              <option>HOUSE</option>
+              <option>SEMBA</option>
+              <option>KIZOMBA</option>
+            </>
+          )}
+
+          {form.data.categoria == 'Dança' && <option>TODOS</option>}
+
+          {form.data.categoria == 'Artes Mistas' && (
+            <>
+              <option>TODAS SUBCATEGORIAS</option>
+              <option>Cinema</option>
+              <option>Teatro</option>
+              <option>Comédia</option>
+              <option>Ópera</option>
+            </>
+          )}
+
+          {form.data.categoria == 'Literatura' && (
+            <>
+              <option>TODAS SUBCATEGORIAS</option>
+              <option>Poesia</option>
+              <option>Romances</option>
+              <option>Ficção</option>
+              <option>Drama</option>
+              <option>Conto</option>
+            </>
+          )}
+
+          {form.data.categoria == 'Artes Visuais' && (
+            <>
+              <option>TODAS SUBCATEGORIAS</option>
+              <option>Fotografia</option>
+              <option>Pintura</option>
+              <option>Desenho</option>
+              <option>Escultura</option>
+              <option>Arquitectura</option>
+            </>
+          )}
+
+          {form.data.categoria == 'Artes Úteis' && (
+            <>
+              <option>Artes Úteis</option>
+            </>
+          )}
+        </select>
+        <InputError message={form.errors.categoria} className="mt-2" />
       </div>
     </FormSection>
   );

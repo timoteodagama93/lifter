@@ -100,7 +100,7 @@ const VideoPlayer = () => {
   useEffect(getUserValuation, [activeVideo]);
   return (
     <div className="w-full h-full flex  flex-col md:flex-row justify-center items-center">
-      <div className="sm:px-4 px-8 w-full flex flex-col items-center justify-between">
+      <div className="px-4 md:px-8 w-full flex flex-col items-center justify-between">
         <Player
           activeVideo={activeVideo}
           volume={volume}

@@ -34,7 +34,6 @@ function VideoCardGrelhaContest({
 
   const [votes, setVotes] = useState(0);
 
-
   useEffect(() => {
     axios
       .post('participant-votes', {
@@ -71,7 +70,7 @@ function VideoCardGrelhaContest({
           />
         </div>
         {isPlayingVideo && activeVideo.id === video.id ? (
-          <VideoPlayer />
+          <></>
         ) : (
           <video className="w-full h-full">
             <source src={video.url} type={video.mime_type} />
@@ -91,8 +90,7 @@ function VideoCardGrelhaContest({
                 : 'top-artists'
             }
           >
-            {video.artist}{' '}
-            {!(video.participacoes === '') ? ' ft ' + video.participacoes : ''}
+            {video.producer}{' '}
           </Link>
         </p>
 
@@ -118,7 +116,6 @@ function VideoCardGrelhaContest({
             <span>{video.stars}</span>
           </span>
         </p>
-        
       </div>
     </div>
   );

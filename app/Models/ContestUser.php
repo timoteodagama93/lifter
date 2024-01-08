@@ -12,8 +12,8 @@ class ContestUser extends Model
     protected $fillable = [
         'id',
         'contest_id',
-        'song_id',
-        'artist_id',
+        'collection_id',
+        'owner_collection_id',
         'user_id',
     ];
 }

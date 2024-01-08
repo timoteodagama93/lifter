@@ -86,7 +86,7 @@ ul li {
     color: #000;
     border-width: 1px;
     box-shadow: inset;
-    padding: 2px;
+    padding: 1px;
 }
 
 ul li:first-child {

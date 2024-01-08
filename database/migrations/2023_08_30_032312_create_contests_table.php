@@ -13,28 +13,20 @@ return new class extends Migration
     {
         Schema::create('contests', function (Blueprint $table) {
             $table->ulid('id');
-            $table->foreignId('user_id')->constrained(table: 'users', column: 'id');
+            $table->foreignId('user_id')->constrained(table: 'users', column: 'id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('designacao');
+            $table->string('categoria');
+            $table->string('subcategoria');
             $table->string('descricao');
-            $table->string('estilo_musical');
-            $table->date('inicio_inscricoes')->nullable();
-            $table->date('inicio_votacoes')->nullable();
-            $table->date('termino_inscricoes')->nullable();
-            $table->date('termino_votacoes')->nullable();
-            $table->bigInteger('total_premios')->nullable();
-            $table->string('tipo_premio')->nullable();
-            $table->string('lugar_1')->nullable();
-            $table->string('lugar_2')->nullable();
-            $table->string('lugar_3')->nullable();
-            $table->string('premios_extras')->nullable();
-            $table->boolean('activo')->default(true);
+            $table->date('inicio')->nullable();
+            $table->date('fim')->nullable();
+            $table->boolean('activo')->default(false);
             $table->string('estado')->default('PUBLICADO');
             $table->string('url_cover')->nullable();
             $table->string('cover_mime_type')->nullable();
-            $table->string('url_schedule')->nullable();
+            $table->string('cover_extension')->nullable();
             $table->string('url_beneficios')->nullable();
-            $table->string('url_terms')->nullable();
-            $table->string('url_conditions')->nullable();
+            $table->string('url_termos_condicoes')->nullable();
             $table->timestamps();
         });
     }

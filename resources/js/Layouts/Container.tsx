@@ -13,6 +13,7 @@ import { useStateContext } from '@/contexts/PaginaActualContext';
 import Songs from '@/Pages/Musicas/Songs';
 import useTypedPage from '@/Hooks/useTypedPage';
 import route from 'ziggy-js';
+import RestCountries from '@/Components/RestCountries';
 
 interface Props {
   renderBottom?(): JSX.Element;
@@ -44,7 +45,7 @@ function Container({
   const page = useTypedPage();
   return (
     <div
-      className="w-full h-full min-h-full min-w-full backdrop-blur-lg"
+      className="w-full h-full min-h-full min-w-full backdrop-blur-lg mb-16"
       style={{ background: `url({pageBG})` }}
     >
       <div
@@ -210,10 +211,10 @@ function Container({
                     +Artes
                   </span>
                 </Link>
-                
+
                 <Link
                   href="/gospel"
-                  className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
+                  className={` hidden flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
             ${
               route().current('gospel')
                 ? 'transform-effect text-cyan-400 font-bold'
@@ -234,6 +235,8 @@ function Container({
                 </Link>
               </>
             </div>
+
+            
           </div>
         </div>
       </div>

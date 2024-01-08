@@ -35,7 +35,7 @@ export default function ContestSchedule({ contestId }: Props) {
 
   function updateProfileInformation() {
     form.setData('id', contestId);
-    form.post(route('add-contest-schedule'), {
+    form.post(route('update-contest'), {
       errorBag: 'contestCreationCoverFails',
       preserveScroll: true,
       onSuccess: () => {

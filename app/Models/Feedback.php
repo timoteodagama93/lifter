@@ -12,7 +12,8 @@ class Feedback extends Model
 
     protected $fillable = [
         'user_id',
-        'song_id',
+        'collection_id',
+        'collection_type',
         'message',
         'public',
         'status_read',

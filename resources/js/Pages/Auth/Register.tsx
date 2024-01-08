@@ -9,6 +9,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import InputError from '@/Components/InputError';
+import RestCountries from '@/Components/RestCountries';
 
 export default function Register() {
   const page = useTypedPage();
@@ -49,16 +50,24 @@ export default function Register() {
           <InputError className="mt-2" message={form.errors.name} />
         </div>
 
-        <div className="mt-4">
+        <div className="mt-4 flex  w-full ">
           <InputLabel htmlFor="phone">Nº de telefone</InputLabel>
-          <TextInput
-            id="phone"
-            type="number"
-            className="mt-1 block w-full"
-            value={form.data.phone}
-            onChange={e => form.setData('phone', e.currentTarget.value)}
-            required
-          />
+          <div className="mt-4 flex  w-full ">
+            <select>
+              {' '}
+              <RestCountries />
+            </select>
+          </div>
+          <div className="flex  w-full ">
+            <input
+              id="phone"
+              type="number"
+              className="mt-1 block "
+              value={form.data.phone}
+              onChange={e => form.setData('phone', e.currentTarget.value)}
+              required
+            />
+          </div>
           <InputError className="mt-2" message={form.errors.phone} />
         </div>
 

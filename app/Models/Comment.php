@@ -12,8 +12,8 @@ class Comment extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'song_id',
-        'post_id',
+        'collection_id',
+        'collection_type',
         'comment',
         'public',
         'status_saw',

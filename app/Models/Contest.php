@@ -19,21 +19,19 @@ class Contest extends Model
 
     protected $fillable = [
         'user_id',
+        'categoria',
+        'subcategoria',
         'designacao',
         'descricao',
-        'estilo_musical',
-        'inicio_inscricoes',
-        'inicio_votacoes',
-        'termino_inscricoes',
-        'termino_votacoes',
+        'inicio',
+        'fim',
         'activo',
         'estado',
         'url_cover',
         'cover_mime_type',
-        'url_schedule',
+        'cover_extension',
         'url_beneficios',
-        'url_terms',
-        'url_conditions',
+        'url_termos_condicoes',
     ];
 
     public function uniqueIds()

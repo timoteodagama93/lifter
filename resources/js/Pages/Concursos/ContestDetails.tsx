@@ -31,6 +31,7 @@ import Swal from 'sweetalert2';
 import { FaPray } from 'react-icons/fa';
 import ArtistCard from '@/Components/ArtistCard';
 import ParticipantCard from '@/Components/ParticipantCard';
+import AddContestParticipant from './AddContestParticipant';
 
 function ContestDetails({ contest, contests }) {
   const [seeArtistDetails, setSeeArtistDetails] = useState(false);
@@ -40,7 +41,7 @@ function ContestDetails({ contest, contests }) {
 
   const [dataToShow, setDataToShow] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [songs, setSongs] = useState([]);
+  const [participants, setParticipants] = useState([]);
   const [artists, setArtists] = useState([]);
 
   const { activeSong, isPlaying } = useSelector(state => state.player);
@@ -48,12 +49,12 @@ function ContestDetails({ contest, contests }) {
   useEffect(() => {
     setLoading(true);
     axios
-      .post('filter-contest', {
+      .post('contest-participants', {
         contest_id: contest.id,
-        filter: 'songs',
+        filter: contest.category,
       })
       .then(response => {
-        setSongs(response.data);
+        setParticipants(response.data);
         setDataToShow(response.data);
         setLoading(false);
       })
@@ -113,7 +114,7 @@ function ContestDetails({ contest, contests }) {
         </div>
       </Modal>
       <Modal isOpen={joinContest} onClose={() => setJoinContest(false)}>
-        <ArtistJoinContest onClose={setJoinContest} concurso={contest} />
+        <AddContestParticipant contest={contest} />
       </Modal>
       <div className="w-full flex justify-between items-center p-1 md:px-5 border-b">
         <button
@@ -159,24 +160,29 @@ function ContestDetails({ contest, contests }) {
         </h1>
       </div>
 
-      {!loading && show == 'Músicas' && songs.length > 0 ? (
+      {!loading && show == 'Músicas' && participants.length > 0 ? (
         <>
           <div className="w-full h-full flex flex-wrap">
-            {songs?.map((song, i) => (
+            {participants?.map((participant, i) => (
               <div className="w-full md:w-1/2 h-full flex items-center overflow-hidden .shadow-lg border p-1">
-                <ParticipantCard song={song} songs={songs} i={i} />
+                <ParticipantCard
+                  contest={contest}
+                  song={participant}
+                  songs={participants}
+                  i={i}
+                />
               </div>
             ))}
           </div>
         </>
       ) : (
-        <div className='w-full h-full flex justify-center items-center '>
+        <div className="w-full h-full flex justify-center items-center ">
           <h1 className="text-center font-bold text-xl">
             O concurso não tem ainda nenhum participante inscrito.
           </h1>
         </div>
       )}
-      {!loading && show == 'Músicas' && songs.length < 0 && <></>}
+      {!loading && show == 'Músicas' && participants.length < 0 && <></>}
 
       {loading ? (
         <Loader title="Carregando..." />
@@ -281,250 +287,6 @@ function ContestDetails({ contest, contests }) {
 }
 
 export default ContestDetails;
-
-const ArtistJoinContest = ({ onClose, concurso }) => {
-  const page = useTypedPage();
-  const [jaInscrito, setJaInscrito] = useState(false);
-  const [amIArtist, setamIArtist] = useState(
-    page.props.artist_account == null ? false : true,
-  );
-  const artist = page.props.artist_account;
-
-  const [loading, setLoading] = useState(false);
-
-  const form = useForm({
-    contest_id: concurso.id,
-    song_id: '',
-    artist_id: artist?.id,
-    contact: artist?.contact,
-    bio: artist?.about,
-  });
-
-  const { data: songs, isFetching, error } = useGetArtistSongsQuery(artist?.id);
-
-  const joinToContest = () => {
-    setLoading(true);
-    form.post('add-participant', {
-      onSuccess: () => {
-        setLoading(false);
-        setJaInscrito(true);
-        Swal.fire({
-          title: 'Inscrito',
-          text: 'Sua participação foi registrada, agora é um usuário inscrito.',
-          icon: 'success',
-        });
-      },
-      onError: () => {},
-    });
-  };
-
-  useEffect(() => {
-    setLoading(true);
-    axios
-      .post('am-I-participant', {
-        contest_id: concurso.id,
-        artist_id: artist?.id,
-      })
-      .then(response => {
-        setLoading(false);
-        console.log(response.data);
-      })
-      .catch(errors => {});
-  }, []);
-
-  return (
-    <>
-      {loading ? (
-        <div className="p-5">
-          <Loader title="Verificação..." />
-          <p>
-            Estamos a verificar sua conta artística e alguns dados adicionais
-          </p>
-        </div>
-      ) : (
-        <>
-          <div className="w-full ">
-            <button
-              onClick={() => onClose(false)}
-              className="p-5 transform-effect w-fit right-1 top-1 text-black"
-            >
-              <MdCloseFullscreen className="w-5 h-5 font-bold text-4xl" />
-            </button>
-          </div>
-          {!jaInscrito ? (
-            <>
-              <h1 className="text-center font-bold text-4xl">
-                Juntar-se ao concurso
-              </h1>
-              {amIArtist ? (
-                <>
-                  {!form.processing ? (
-                    <>
-                      <form
-                        onSubmit={joinToContest}
-                        action=""
-                        className="w-full flex flex-col p-5"
-                      >
-                        <p className="text-base">
-                          Por favor, confirme os seus detalhes da participação
-                          ao concurso.
-                        </p>
-                        <div className="flex flex-col p-1">
-                          <label htmlFor="contest_id">
-                            Está prestes a inscrever-se no seguinte concurso
-                          </label>
-                          <input
-                            type="text"
-                            name="contest_id"
-                            id="contest_id"
-                            disabled
-                            className="hidden"
-                            value={concurso.id}
-                            onChange={e =>
-                              form.setData('contest_id', e.target.value)
-                            }
-                          />
-                          <input
-                            type="text"
-                            name="contest_id"
-                            id="contest_id"
-                            disabled
-                            value={concurso.designacao}
-                          />
-
-                          <InputError message={form.errors.contest_id} />
-                        </div>
-
-                        {form.data.contest_id !== '' ? (
-                          <>
-                            <div className="flex flex-col p-1">
-                              <label htmlFor="contest_id">Nome artístico</label>
-                              <input
-                                type="text"
-                                name="contest_id"
-                                id="contest_id"
-                                className="hidden"
-                                value={form.data.contest_id}
-                              />
-                              <input type="text" disabled value={artist.name} />
-                              <InputError message={form.errors.contest_id} />
-                            </div>
-                            <div className="flex flex-col p-1">
-                              <label htmlFor="contact">
-                                O seu contacto é o:
-                              </label>
-                              <input
-                                type="text"
-                                name="contact"
-                                id="contact"
-                                value={form.data.contact}
-                                required
-                                disabled
-                              />
-                              <InputError message={form.errors.contact} />
-                            </div>
-
-                            {isFetching ? (
-                              <Loader title="Carregando suas músicas" />
-                            ) : (
-                              <div className="flex flex-col p-1">
-                                <label htmlFor="song_id">
-                                  Selecione a música com a qual deseja
-                                  concorrer.
-                                </label>
-                                <select
-                                  name="song_id"
-                                  id="song_id"
-                                  required
-                                  value={form.data.song_id}
-                                  onChange={e => {
-                                    form.setData(
-                                      'song_id',
-                                      e.currentTarget.value,
-                                    );
-                                  }}
-                                >
-                                  <option value="">Selecione a música</option>
-                                  {songs.map(song => (
-                                    <option value={song.id}>
-                                      {' '}
-                                      {song.title}
-                                      {' - '} {song.genre}
-                                    </option>
-                                  ))}
-                                </select>
-                                <InputError message={form.errors.song_id} />
-                                <InputError
-                                  message={
-                                    form.data.song_id == ''
-                                      ? 'Não é possível inscrever-se sem selecionar uma música.'
-                                      : ''
-                                  }
-                                />
-                              </div>
-                            )}
-                            <div className="flex flex-col p-1">
-                              <label htmlFor="ocupation">
-                                Apresentação adicional
-                              </label>
-                              <textarea
-                                name="bio"
-                                id="bio"
-                                required
-                                value={form.data.bio}
-                                onChange={e =>
-                                  form.setData('bio', e.target.value)
-                                }
-                              />
-                              <InputError message={form.errors.bio} />
-                            </div>
-                            <div className="w-full p-2 flex justify-center items-center ">
-                              <button
-                                disabled={
-                                  form.data.song_id == '' ? true : false
-                                }
-                                className=" bg-cyan-300 text-white font-bold p-4 transform-effect text-xl "
-                              >
-                                Juntar-se ao concurso
-                              </button>
-                            </div>
-                          </>
-                        ) : (
-                          ''
-                        )}
-                      </form>
-                    </>
-                  ) : (
-                    <Loader title="Enviando requisição..." />
-                  )}
-                </>
-              ) : (
-                <>
-                  <h1 className="text-xl text-center">
-                    Apenas artistas podem inscrever-se, você não possui um
-                    perfil artístico activo. Visite a área de gestão de perfís e
-                    crie um perfil caso ainda não o tenha feito.
-                  </h1>
-                </>
-              )}
-            </>
-          ) : (
-            <>
-              <h1 className="text-center font-bold text-4xl">
-                Já é um participante desta competição.
-              </h1>
-              <p className="text-base justify-normal p-2">
-                Podes começar a promover a sua participação, já és um dos
-                candidatos. Vá para o seu perfil e visualize o seu desempenho no
-                concurso.
-              </p>
-            </>
-          )}
-        </>
-      )}
-    </>
-  );
-};
 
 function Detalhar({ artist }) {
   const {

@@ -17,21 +17,31 @@ import Swal from 'sweetalert2';
 import VideoCard from './VideoCard';
 import VideoCardGrelha from './VideoCardGrelha';
 import VideoCardGrelhaContest from './VideoCardGrelhaContest';
+import ExpositionRoom from '@/Pages/Arts/ExpositionRoom';
+import CardObra from './CardObra';
 
-const ParticipantCard = ({ song: participant, songs, i }) => {
+const ParticipantCard = ({ song: participant, songs, i, contest }) => {
   const [seeArtistDetails, setSeeArtistDetails] = useState(false);
   const { activeSong, activeVideo, isPlaying, isPlayingVideo } = useSelector(
     state => state.player,
   );
-  const [artist, setArtist] = useState(null);
-
+  const [owner, setOwner] = useState(null);
   useEffect(() => {
-    axios
-      .post('get-artist', { artist_id: participant.artist_id })
-      .then(response => {
-        setArtist(response.data);
-      })
-      .catch(error => {});
+    if (contest.categoria == 'Música') {
+      axios
+        .post('get-artist', { artist_id: participant.artist_id })
+        .then(response => {
+          setOwner(response.data);
+        })
+        .catch(error => {});
+    } else {
+      axios
+        .post('get-contestant-details', { user_id: participant.user_id })
+        .then(response => {
+          setOwner(response.data);
+        })
+        .catch(error => {});
+    }
   }, []);
 
   const dispatch = useDispatch();
@@ -61,7 +71,7 @@ const ParticipantCard = ({ song: participant, songs, i }) => {
   const handleVote = () => {
     axios
       .post('vote-on-participant', {
-        song_id: participant.song_id,
+        collection_id: participant.song_id,
         contest_id: participant.contest_id,
       })
       .then(response => {
@@ -98,30 +108,37 @@ const ParticipantCard = ({ song: participant, songs, i }) => {
             </button>
           </div>
           <div className="w-full flex float-right justify-end">
-            <Detalhar prof={artist} />
+            <Detalhar prof={owner} />
           </div>
         </div>
       </Modal>
 
       <div className="w-full h-full flex flex-col items-center overflow-hidden shadow-lg p-1">
-        {participant?.mime_type.includes('audio/') ? (
-          <ContestSongCard
-            w="w-full"
-            song={participant}
-            isPlaying={isPlaying}
-            activeSong={activeSong}
-            songs={songs}
-            i={i}
-          />
-        ) : (
-          <VideoCardGrelhaContest
-            w="w-full"
-            video={participant}
-            isPlayingVideo={isPlayingVideo}
-            activeVideo={activeVideo}
-            videos={songs}
-            i={i}
-          />
+        {contest.categoria == 'Música' && (
+          <>
+            {participant?.mime_type.includes('audio/') ? (
+              <ContestSongCard
+                w="w-full"
+                song={participant}
+                isPlaying={isPlaying}
+                activeSong={activeSong}
+                songs={songs}
+                i={i}
+              />
+            ) : (
+              <VideoCardGrelhaContest
+                w="w-full"
+                video={participant}
+                isPlayingVideo={isPlayingVideo}
+                activeVideo={activeVideo}
+                videos={songs}
+                i={i}
+              />
+            )}
+          </>
+        )}
+        {contest.categoria == 'Artes Visuais' && (
+          <CardObra w="w-full" obra={participant} />
         )}
 
         <div className="w-full flex flex-col ">
@@ -134,7 +151,7 @@ const ParticipantCard = ({ song: participant, songs, i }) => {
               disabled={isMyVotedSong ? true : false}
             >
               <FaVoteYea className="w-10 h-10" />
-              {isMyVotedSong ? 'Voto actual' : 'Votar na música'}
+              {isMyVotedSong ? 'Voto actual' : ` Votar`}
             </button>
             <button
               onClick={() => {
@@ -143,7 +160,7 @@ const ParticipantCard = ({ song: participant, songs, i }) => {
               className="transform-effect w-full h-[10%] first-letter: rounded-lg flex-1 space-x-1 flex flex-row text-xl justify-center items-center mx-1 border-b-2 backdrop-blur-lg p-1 my-1 gap-1"
             >
               <BiInfoCircle className="w-10 h-10" />
-              Detalhes artista
+              Sobre
             </button>
           </div>
           <div className="w-full flex flex-row m-1 justify-center items-center gap-1 ">
@@ -155,12 +172,12 @@ const ParticipantCard = ({ song: participant, songs, i }) => {
               song={participant}
               key={i}
             />
-            <Interagir song={participant} />
+            {contest.categoria == 'Música' && <Interagir song={participant} />}
           </div>
           <div className="w-full flex flex-row rounded-lg  object-contain border-b-2 backdrop-blur-lg ">
             <div className="w-12 h-12 rounded-full  object-contain ">
               <img
-                src={artist?.url_cover}
+                src={owner?.url_cover}
                 alt="name artist"
                 onClick={() => {
                   setSeeArtistDetails(true);
@@ -174,8 +191,11 @@ const ParticipantCard = ({ song: participant, songs, i }) => {
               }}
               className=" w-full h-[10%]  rounded-lg flex-1 space-x-1 flex flex-row justify-start items-center mx-3  p-1 gap-2 "
             >
-              <p className="text-xl font-bold text-white"> {artist?.name} </p>|
-              <p className="text-xs text-gray-300"> {artist?.genres}</p>
+              <p className="text-xl font-bold text-white"> {owner?.name} </p>|
+              <p className="text-xs text-gray-300">
+                {' '}
+                {contest.categoria == 'Música' ? owner?.genres : ''}
+              </p>
             </div>
           </div>
         </div>

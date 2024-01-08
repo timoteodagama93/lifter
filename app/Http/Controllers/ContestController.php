@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Contest;
 use App\Models\ContestUser;
 use App\Models\ContestUserVote;
+use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,9 +20,10 @@ class ContestController extends Controller
     public function store()
     {
         Validator::make(Request::all(), [
-            'cover' => ['required', 'mimes:jpg,jpeg,png'], //TODO: Delimitar tamanho
+            'cover' => ['required', 'mimes:jpg,jpeg,png, mp4'], //TODO: Delimitar tamanho
+            'categoria' => ['required'],
+            'subcategoria' => ['required'],
             'designacao' => ['required'],
-            'estilo' => ['required'],
             'descricao' => ['required'],
         ])->validate();
 
@@ -31,12 +33,15 @@ class ContestController extends Controller
                 'user_id' => $user_id,
                 'designacao' => Request::get('designacao'),
                 'descricao' => Request::get('descricao'),
-                'estilo_musical' => Request::get('estilo'),
+                'categoria' => Request::get('categoria'),
+                'subcategoria' => Request::get('subcategoria'),
             ]
         );
 
         $file = Request::file('cover')->store("public/contests/$contest->id/covers");
         $contest->url_cover = Storage::url($file);
+        $contest->cover_mime_type = Request::file('cover')->getClientMimeType();
+        $contest->cover_extension = Request::file('cover')->getClientOriginalExtension();
         $contest->save();
         return  Inertia::render('Perfil/Perfil', ['contest' => $contest]); //->json(['new_contest' => $contest]);//to_route('perfil', ['new_contest' => $contest]); 
     }
@@ -47,9 +52,10 @@ class ContestController extends Controller
         if (Request::file('cover') != null) {
 
             Validator::make(Request::all(), [
-                'cover' => ['nullable', 'mimes:jpg,jpeg,png, mp4', 'max:5120'],
+                'cover' => ['nullable', 'mimes:jpg,jpeg,png, mp4'],
                 'designacao' => ['required'],
-                'estilo' => ['required'],
+                'categoria' => ['required'],
+                'subcategoria' => ['required'],
                 'descricao' => ['required'],
             ])->validateWithBag('contestCreationCoverFails');
 
@@ -60,10 +66,12 @@ class ContestController extends Controller
                     'id' => Request::input('id'),
                 ],
                 [
-                    'cover_mime_type' => Request::file('cover')->getMimeType(),
+                    'cover_mime_type' => Request::file('cover')->getClientMimeType(),
+                    'cover_extension' => Request::file('cover')->getClientOriginalExtension(),
                     'designacao' => Request::input('designacao'),
                     'descricao' => Request::input('descricao'),
-                    'estilo_musical' => Request::input('estilo'),
+                    'categoria' => Request::input('categoria'),
+                    'subcategoria' => Request::input('subcategoria'),
                 ]
             );
 
@@ -85,8 +93,9 @@ class ContestController extends Controller
                 ],
                 [
                     'designacao' => Request::input('designacao'),
-                    'descricao' => Request::get('descricao'),
-                    'estilo_musical' => Request::input('estilo'),
+                    'descricao' => Request::input('descricao'),
+                    'categoria' => Request::input('categoria'),
+                    'subcategoria' => Request::input('subcategoria'),
                 ]
             );
         }
@@ -173,16 +182,16 @@ class ContestController extends Controller
     public function contest_new_participant()
     {
         $contestId = Request::input('contest_id');
-        $artistId = Request::input('artist_id');
-        $songId = Request::input('song_id');
+        $ownerCollectionId = Request::input('owner_collection_id');
+        $collectionId = Request::input('collection_id');
         $userId = auth()->id();
 
         $registration = ContestUser::updateOrCreate([
             'contest_id' => $contestId,
-            'artist_id' => $artistId,
+            'owner_collection_id' => $ownerCollectionId,
             'user_id' => $userId
         ], [
-            'song_id' => $songId,
+            'collection_id' => $collectionId,
         ]);
         return to_route('concursos');
     }
@@ -191,7 +200,7 @@ class ContestController extends Controller
     {
         $userId = auth()->id();
         $contestId = Request::get('contest_id');
-        $done = ContestUserVote::updateOrCreate(['user_id' => $userId,  'contest_id' => $contestId], ['song_id' => Request::get('song_id'),]);
+        $done = ContestUserVote::updateOrCreate(['user_id' => $userId,  'contest_id' => $contestId], ['collection_id' => Request::get('collection_id'),]);
         if ($done) {
             return Inertia::render('Concursos/Index', ['contest' => Contest::find($contestId)]); // response(true, 200);
         } else {
@@ -201,11 +210,10 @@ class ContestController extends Controller
 
     public function am_I_participant()
     {
-        $artistId = Request::get('artist_id');
         $contestId = Request::get('contest_id');
         $userId = auth()->id();
 
-        $sql = "SELECT * FROM contest_users WHERE artist_id='$artistId' AND contest_id='$contestId' AND user_id=$userId";
+        $sql = "SELECT * FROM contest_users WHERE  contest_id='$contestId' AND user_id=$userId";
 
         $participants =  DB::select($sql);
         return response()->json($participants);
@@ -236,23 +244,85 @@ class ContestController extends Controller
         }
     }
 
+    public function contest_participants(Request $request)
+    {
+        $data = [];
+        $contestId = $request::get('contest_id');
+        $contest = Contest::find($contestId);
+
+        $filter = $contest->categoria;
+
+        if ($contest->categoria == 'Música') {
+
+            $data = DB::select("SELECT songs.`id`, `artist_id`, `title`, `saved_name`, `original_name`, `likes`, `genre`, `artist`, `gravadora`, `destaque`, `active`, `mime_type`, `extension`, `participacoes`, `letra`, `cover`, `url`, `path`, `stars`, `reprodution_time`, `plays`, `downloads`, `shares`, songs.`created_at`, songs.`updated_at` FROM `songs` JOIN contest_users WHERE contest_users.collection_id=songs.id AND contest_users.contest_id= '$contest->id' ");
+        } else if ($contest->categoria == 'Dança') {
+            $data = DB::select("SELECT * FROM videos WHERE user_id = '$contest->id' AND  category='dance' ");
+        } else if ($contest->categoria == 'Artes Mistas') {
+            $data = DB::select("SELECT * FROM videos WHERE user_id = '$contest->id' AND category='teatro' OR category='cinema' OR category='humor' ");
+        } else if ($contest->categoria == 'Literatura') {
+            $data = DB::select("SELECT `id`, `estante_id`, `title`, `category`, `resume`, `likes`, `shares`, `downloads`, `comments`, `stars`, `views`, `mime_type`, `extension`, `book_url`, books.`created_at`, books.`updated_at`, contest_users.owner_collection_id FROM books JOIN contest_users WHERE contest_users.collection_id = books.id AND contest_users.contest_id = '$contest->id' ");
+        } else if ($contest->categoria == 'Artes Visuais') {
+            $data = DB::select("SELECT expositions_items.`id`, `exposition_id`, expositions_items.`title`, expositions_items.`category`, expositions_items.`description`, `likes`, `shares`, `downloads`, `comments`, `stars`, expositions_items.`mime_type`, expositions_items.`extension`, `item_url`, expositions_items.`created_at`, expositions_items.`updated_at`, expositions.user_id FROM expositions_items JOIN contest_users JOIN expositions WHERE contest_users.collection_id=expositions_items.id AND contest_users.contest_id='$contest->id' ");
+        }
+
+        return response()->json($data);
+    }
+
     public function filter_contest(Request $request)
     {
         $data = [];
-        $filter = $request::get('filter');
         $contestId = $request::get('contest_id');
-        if ($filter == 'songs') {
+        $contest = Contest::find($contestId);
 
-            $data = DB::select("SELECT * FROM songs Join contest_users WHERE songs.id=contest_users.song_id  AND contest_id= '$contestId' ");
+        $filter = $contest->categoria;
+
+        if ($filter == 'Música') {
+
+            $data = DB::select("SELECT * FROM songs Join contest_users WHERE songs.id=contest_users.collection_id  AND contest_id= '$contestId' ");
         } else if ($filter == 'videos') {
-            $data = DB::select("SELECT * FROM songs Join contest_users WHERE songs.id=contest_users.song_id AND songs.mime_type LIKE '%video%'  AND contest_id= '$contestId' ");
+            $data = DB::select("SELECT * FROM songs Join contest_users WHERE songs.id=contest_users.collection_id AND songs.mime_type LIKE '%video%'  AND contest_id= '$contestId' ");
         } else if ($filter == 'artists') {
-            $data = DB::select("SELECT * FROM `artists` JOIN contest_users WHERe contest_users.artist_id=artists.id  AND contest_id= '$contestId'");
+            $data = DB::select("SELECT * FROM `artists` JOIN contest_users WHERe contest_users.owner_collection_id=artists.id  AND contest_id= '$contestId'");
         } else if ($filter == 'jury') {
             $data = DB::select("SELECT * FROM users JOIN contest_users WHERE contest_users.user_id=users.id  AND contest_id= '$contestId';
             ");
         }
 
         return response()->json($data);
+    }
+
+    public function get_user_collections_for_contest(Request $request)
+    {
+        $data = [];
+        $contestId = $request::get('contest_id');
+        $contest = Contest::find($contestId);
+
+        if ($contest) {
+            $userId = auth()->id();
+
+            if ($contest->categoria == 'Música') {
+
+                $data = DB::select("SELECT songs.id, songs.artist_id,songs.title, songs.genre,songs.artist,songs.active FROM songs Join artists WHERE songs.artist_id=artists.id AND artists.user_id= '$userId' ");
+            } else if ($contest->categoria == 'Dança') {
+                $data = DB::select("SELECT * FROM videos WHERE user_id = $userId AND  category='dance' ");
+            } else if ($contest->categoria == 'Artes Mistas') {
+                $data = DB::select("SELECT * FROM videos WHERE user_id = $userId AND category='teatro' OR category='cinema' OR category='humor' ");
+            } else if ($contest->categoria == 'Literatura') {
+                $data = DB::select("SELECT books.id, books.estante_id, books.title, books.category, books.resume FROM books JOIN estantes WHERE estantes.user_id = $userId AND books.estante_id=estantes.id ");
+            } else if ($contest->categoria == 'Artes Visuais') {
+                $data = DB::select("SELECT expositions_items.id,expositions_items.exposition_id, expositions_items.title, expositions_items.category FROM expositions_items JOIN expositions WHERE expositions.user_id = $userId AND expositions_items.exposition_id=expositions.id; ");
+            }
+
+            return response()->json($data);
+        } else {
+            return response()->json([]);
+        }
+    }
+
+    public function get_contestant_details()
+    {
+        $userId = Request::get('user_id');
+
+        return User::find($userId);
     }
 }

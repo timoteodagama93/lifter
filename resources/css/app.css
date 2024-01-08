@@ -313,7 +313,7 @@
   transform: scale(.2, .5);
   animation: spin 1s linear infinite;
 */
-border-radius: 5%;
+  border-radius: 5%;
 }
 
 .icon {
@@ -323,4 +323,9 @@ border-radius: 5%;
   /* transform: scale(2, 0.5);
   animation: spin 1s linear infinite;
   */
+}
+
+
+.shadow-inner {
+  
 }

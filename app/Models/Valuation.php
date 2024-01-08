@@ -12,7 +12,8 @@ class Valuation extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'song_id',
+        'colletion_id',
+        'colletion_type',
         'stars',
         'points',
         'negative',

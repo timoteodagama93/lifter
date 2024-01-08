@@ -33,6 +33,8 @@ import TopChartCard from '@/Components/TopChartCard';
 import { BsStars, BsTrophy, BsNewspaper } from 'react-icons/bs';
 import { GiSoundWaves } from 'react-icons/gi';
 import { FaArtstation, FaCross } from 'react-icons/fa';
+import VideoSinglePlayer from '@/Pages/Videos/VideoSinglePlayer';
+import { random } from 'lodash';
 interface Props {
   title: string;
   bg?: string;
@@ -86,6 +88,10 @@ export default function AppLayout({
         nonce="JTz0V4E4"
       ></script>
       <div className="w-screen h-screen flex bg-gradient-to-br from-[#222d84] to-[#543889] __dark:from-[#282728] __dark:to-[#2e2525w] fixed top-0 left-0 right-0 p-1 __bg-white text-white">
+        {isPlayingVideo && (
+          <VideoSinglePlayer key={activeVideo.id + Math.floor(random() / 60)} />
+        )}
+
         {openSearch && <Search close={setOpenSearch} />}
         {openSongRandom && <Search close={setOpenSongRandom} />}
         <Head title={title} />
@@ -254,7 +260,7 @@ export default function AppLayout({
                   </Link>
                   <Link
                     href="/gospel"
-                    className={`flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
+                    className={` hidden flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
             ${
               route().current('gospel')
                 ? 'transform-effect text-cyan-400 font-bold icon-link'
@@ -280,7 +286,7 @@ export default function AppLayout({
             </div>
           </header>
           {/* <!-- Page Content --> */}
-          <main className="relative h-[88%] md:h-[90%] w-full  flex mx-auto justify-start items-start  p-1 rounded overflow-y-hidden ">
+          <main className="relative h-[88%] md:h-[90%] w-full  flex mx-auto justify-start items-start  p-1 rounded overflow-y-hidden mb-24 md:mb-4 ">
             <Container>{children}</Container>
           </main>
         </div>

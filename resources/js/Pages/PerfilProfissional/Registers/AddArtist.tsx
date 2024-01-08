@@ -90,7 +90,7 @@ export default function AddArtist({}) {
         </div>
       ) : (
         <>
-          <div className="p-5  m-1 shadow-lg shadow-black">
+          <div className="w-full h-full p-5  m-1 shadow-lg shadow-black">
             <p className="w-full text-xl flex justify-between uppercase gap-5">
               <button
                 onClick={() => setCurrentPage(<Welcome />)}

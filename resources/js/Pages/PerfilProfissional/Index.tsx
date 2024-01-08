@@ -13,7 +13,7 @@ function Index({ isArtist }) {
   return (
     <AppLayout title="Perfil">
       <div className="w-full h-full">
-        <div className="relattive w-full h-full flex flex-col">
+        <div className="relattive w-full h-full flex flex-col mb-96 pb-1">
           {currentPage}
         </div>
       </div>

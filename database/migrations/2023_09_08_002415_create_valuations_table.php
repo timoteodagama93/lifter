@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('valuations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained(table: 'users', column: 'id');
-            $table->string('song_id');
+            $table->string('collection_id');
+            $table->string('collection_type');
             $table->integer('stars')->default(0);
             $table->integer('points')->default(0);
             $table->boolean('negative')->default(false);

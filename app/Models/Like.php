@@ -11,6 +11,7 @@ class Like extends Model
 
     protected $fillable = [
         'user_id',
-        'song_id'
+        'collection_id',
+        'collection_type',
     ];
 }

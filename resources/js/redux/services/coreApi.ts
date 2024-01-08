@@ -17,8 +17,8 @@ export const coreApi = createApi({
     }),
     endpoints: (builder) => ({
         getSongs: builder.query({ query: (query) => '/get-songs' }),
-        getVideos: builder.query({ query: (query) => '/get-videos' }),
-        getDestaqueSongs: builder.query({ query: (query) => '/get-songs-destaques' }),
+        getVideos: builder.query({ query: (category) => `/get-videos/${category}` }),
+        getDestaqueSongs: builder.query({ query: (category) => `/get-songs-destaques/${category}` }),
         getDestaqueVideos: builder.query({ query: (query) => '/get-videos-destaques' }),
 
         getSongDetails: builder.query({ query: (songId) => `/tracks/details/${songId}` }),
@@ -32,8 +32,9 @@ export const coreApi = createApi({
         getActiveVoiceImages: builder.query({ query: (artistId) => `get-activevoice-images/${artistId}` }),
 
         /**CONTEST */
-        getContestVideo: builder.query({ query: (contestId) => `get-contest-videos/${contestId}` }),
+                getContestVideo: builder.query({ query: (contestId) => `get-contest-videos/${contestId}` }),
         getContestImages: builder.query({ query: (contestId) => `get-contest-images/${contestId}` }),
+
 
         /** ARTIST */
         getArtistStats: builder.query({ query: (artistId) => `/artist-stats/${artistId}` }),
@@ -43,6 +44,15 @@ export const coreApi = createApi({
 
         /** PROFISSIONALS AND VALUATIONS */
         getValuationsRequests: builder.query({ query: (category) => `/get-valuations-requests` }),
+
+
+        /** EXPOSITIONS */
+        getExpositions: builder.query({ query: () => `/get-expositions-rooms` }),
+        getExpositionItems: builder.query({ query: (roomId) => `/get-room-items/${roomId}` }),
+
+        /** ESTANTES */
+        getEstantes: builder.query({ query: () => `/get-estantes` }),
+        getEstanteBooks: builder.query({ query: (estanteId) => `/get-estante-books/${estanteId}` }),
     }),
 });
 
@@ -70,6 +80,12 @@ export const {
     useGetArtistRelatedSongsQuery,
 
     useGetValuationsRequestsQuery,
+
+    useGetExpositionsQuery,
+    useGetExpositionItemsQuery,
+
+    useGetEstantesQuery,
+    useGetEstanteBooksQuery,
 } = coreApi;
 
 

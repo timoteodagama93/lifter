@@ -55,7 +55,8 @@ class SongsController extends Controller
 
             $file_extension = Request::file('song')->getClientOriginalExtension();
             $file_hasname = Request::file('song')->hashName();
-            $file_mime = Request::file('song')->getMimeType();
+            $file_originalname = Request::file('song')->getClientOriginalName();
+            $file_mime = Request::file('song')->getClientMimeType();
             $file_path = Request::file('song')->getPath();
             $file_pathname = Request::file('song')->getPathname();
 
@@ -68,13 +69,13 @@ class SongsController extends Controller
                 'participacoes' => Request::input('participacoes'),
                 'letra' => Request::input('letra'),
                 'saved_name' => $file_hasname,
-                'original_name' => Request::file('song')->getClientOriginalName(),
+                'original_name' => $file_originalname,
                 'mime_type' => $file_mime,
                 'extension' => $file_extension,
                 'url' => Storage::url($song_url),
                 //'cover' => $cover_url,
             ]);
-            return; // to_route('musicas');
+            return to_route('musicas');
         } else {
             return response()->json(['Alguma coisa correu mal, não se preocupe que deve ser nossa culpa. Recarregue a página, se persistir reporte o problema. ']);
         }
@@ -185,7 +186,7 @@ class SongsController extends Controller
      */
     public function get_songs()
     {
-        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%audio%' AND active=true AND destaque=false ORDER BY created_at DESC"); // where('mime_type', `%audio/%`)->paginate(1);
+        return DB::select("SELECT * FROM `songs` WHERE active=true AND destaque=false ORDER BY reprodution_time DESC"); // `mime_type` LIKE '%audio%' AND where('mime_type', `%audio/%`)->paginate(1);
     }
 
     /**
@@ -193,7 +194,7 @@ class SongsController extends Controller
      */
     public function get_destaques_songs()
     {
-        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%audio%' AND active=true AND destaque=true ORDER BY created_at DESC LIMIT 5"); // where('mime_type', `%audio/%`)->paginate(1);
+        return DB::select("SELECT * FROM `songs` WHERE active=true AND destaque=true ORDER BY reproddution_time DESC LIMIT 5"); // where('mime_type', `%audio/%`)->paginate(1);
     }
 
     /**
@@ -212,31 +213,6 @@ class SongsController extends Controller
     {
         $query = Request::get('searchTerm');
         return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%audio%' AND ( title LIKE '%$query%' OR artist LIKE '%$query%' OR genre LIKE '%$query%'  ) AND active=true ORDER BY created_at DESC"); // where('mime_type', `%audio/%`)->paginate(1);
-    }
-    /**
-     * Pesquisa Vídeos
-     */
-    public function search_videos()
-    {
-        $query = Request::get('searchTerm');
-        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%video%' AND ( title LIKE '%$query%' OR artist LIKE '%$query%' OR genre LIKE '%$query%'  ) ORDER BY created_at DESC"); // where('mime_type', `%audio/%`)->paginate(1);
-    }
-
-    /**
-     * Obté os vídeos
-     */
-    public function get_videos()
-    {
-        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%video%' AND active=true AND destaque=false ORDER BY created_at DESC"); // where('mime_type', `%audio/%`)->paginate(1);
-    }
-
-
-    /**
-     * Obté as músicas em destaques
-     */
-    public function get_destaques_videos()
-    {
-        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%video%' AND active=true AND destaque=true ORDER BY created_at DESC LIMIT 15"); // where('mime_type', `%audio/%`)->paginate(1);
     }
 
     /**
@@ -281,7 +257,7 @@ class SongsController extends Controller
         $song_id = Request::get('song_id');
         $song = Song::find($song_id);
 
-        $liked = Like::find([$song_id, $user_id]);
+        $liked = Like::where(['collection_id' => $song_id, 'user_id' => $user_id]);
         if (!$liked) {
             $song->likes = $song->likes + 1;
             $song->save();
@@ -292,8 +268,9 @@ class SongsController extends Controller
         $like = Like::updateOrCreate(
             [
                 'user_id' => $user_id,
-                'song_id' => $song_id,
-            ]
+                'collection_id' => $song_id,
+            ],
+            ['collection_type' => 'song']
         );
 
         return response()->json($like);
@@ -301,11 +278,12 @@ class SongsController extends Controller
 
     public function i_liked()
     {
-        $user_id = Auth::user()->id;
-        $song_id = Request::get('song_id');
+        $userId = Auth::user()->id;
+        $collectionId = Request::get('collection_id');
+        $collectionType = Request::get('collection_type');
 
         $like = DB::select(
-            "SELECT * FROM likes WHERE user_id = '$user_id' AND song_id = '$song_id' "
+            "SELECT * FROM likes WHERE user_id = '$userId' AND collection_id = '$collectionId' AND collection_type='$collectionType' "
         );
 
         return response()->json($like);
@@ -315,13 +293,15 @@ class SongsController extends Controller
      */
     public function collect_song()
     {
-        $user_id = Auth::user()->id;
-        $song_id = Request::get('song_id');
+        $userId = Auth::user()->id;
+        $collectionId = Request::get('collection_id');
+        $collectionType = Request::get('collection_type');
 
         $colecionar = Colletion::updateOrCreate(
             [
-                'user_id' => $user_id,
-                'song_id' => $song_id,
+                'user_id' => $userId,
+                'collection_id' => $collectionId,
+                'collection_type' => $collectionType,
             ]
         );
 

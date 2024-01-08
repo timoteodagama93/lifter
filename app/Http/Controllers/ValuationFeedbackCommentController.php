@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Colletion;
 use App\Models\Comment;
 use App\Models\Feedback;
 use App\Models\Playlist;
@@ -24,7 +25,8 @@ class ValuationFeedbackCommentController extends Controller
         $valuation = Valuation::updateOrCreate(
             [
                 'user_id' => auth()->id(),
-                'song_id' => Request::get('song_id'),
+                'collection_id' => Request::get('collection_id'),
+                'collection_type' => Request::get('collection_type'),
             ],
             [
                 'points' => Request::get('points'),
@@ -45,7 +47,8 @@ class ValuationFeedbackCommentController extends Controller
         $feedback = Feedback::updateOrCreate(
             [
                 'user_id' => auth()->id(),
-                'song_id' => Request::get('song_id'),
+                'collection_id' => Request::get('collection_id'),
+                'collection_type' => Request::get('collection_type'),
             ],
             [
                 'message' => Request::get('feedback'),
@@ -77,15 +80,15 @@ class ValuationFeedbackCommentController extends Controller
      */
     public function save_to_collection()
     {
-        $playlist = Playlist::create(
+        $collection = Colletion::updateOrCreate(
             [
                 'user_id' => auth()->id(),
-                'song_id' => Request::get('song_id'),
-                'comment' => Request::get('comment'),
-                'public' => Request::get('public'),
+                'collection_id' => Request::get('collection_id'),
+                'collection_type' => Request::get('collection_type'),
             ]
+
         );
-        return response()->json($playlist);
+        return response()->json($collection);
     }
 
     /**
@@ -93,9 +96,10 @@ class ValuationFeedbackCommentController extends Controller
      */
     public function get_comments()
     {
-        $songId = Request::get('song_id');
+        $collectionId = Request::get('collection_id');
+        $collectionType = Request::get('collection_type');
 
-        return DB::select('SELECT * FROM  comments WHERE song_id=? ORDER BY created_at DESC', [$songId]);
+        return DB::select('SELECT * FROM  comments WHERE collection_id=? AND collection_type=? ORDER BY created_at DESC', [$collectionId, $collectionType]);
     }
 
     /**

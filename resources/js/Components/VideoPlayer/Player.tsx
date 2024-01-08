@@ -31,6 +31,7 @@ const Player = ({
   return (
     <>
       <video
+        className="w-full h-full"
         src={activeVideo?.url}
         ref={ref}
         onEnded={onEnded}

@@ -4,6 +4,9 @@ use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\ComunicacaoController;
 use App\Http\Controllers\ContestController;
+use App\Http\Controllers\EstanteController;
+use App\Http\Controllers\ExpositionsController;
+use App\Http\Controllers\InteragirController;
 use App\Http\Controllers\JuradoController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfissionalController;
@@ -166,10 +169,6 @@ Route::middleware([
     })->name('request-services');
 
 
-    Route::controller(VideoController::class)->group(function () {
-        Route::get('/video', 'index')->name('video');
-        Route::post('/add-video', 'store')->name('add-video');
-    });
 
     /**Uploading files */
     Route::controller(UploadController::class)->group(function () {
@@ -189,17 +188,40 @@ Route::middleware([
     })->name('parceiros');
 
 
+    Route::controller(VideoController::class)->group(function () {
+        Route::get('/video', 'index')->name('video');
+        Route::post('/add-video', 'store')->name('add-video');
+
+
+        Route::post('/search-videos',  'search_videos')->name('search-videos');
+        Route::get('/get-videos/{category}',  'get_videos')->name('get-videos/{category}');
+        Route::get('/get-videos-destaques/{category}',  'get_destaques_videos')->name('get-videos-destaques/{category}');
+
+
+        //Actualiza quantidade de reproduções
+        Route::post("new-video-play", "new_play")->name("new-video-play");
+        //Actualiza o tempo de reprodução toda vez que finaliza uma reprodução.
+        Route::post("update-video-reprodution-time", "update_reprodution_time")->name("update-video-reprodution-time");
+    });
+
+    /**
+     * INTERAGIR CONTROLLER
+     * Controller responsável em gerenciar todas as interações do aplicativo: curtir, partilhar, comentar, gostar, feedbacks, etc.
+     */
+    Route::controller(InteragirController::class)->group(function () {
+    Route::post('like-collection', 'like_collection')->name('like-collection');
+    });
     /**
      * SONGSC CONTROLLER
      *  Routas das Músicas
      */
     Route::controller(SongsController::class)->group(function () {
         Route::post('/search-songs',  'search_songs')->name('search-songs');
-        Route::post('/search-videos',  'search_videos')->name('search-videos');
 
         Route::post('/i-liked',  'i_liked')->name('i-liked');
         Route::post('/collect-song',  'collect_song')->name('collect-song');
         Route::post('/like-song',  'like_song')->name('like-song');
+
         Route::post('/feedback',  'store_feedback')->name('feedback');
         Route::post('/feedbacks',  'get_feedbacks')->name('feedbacks');
 
@@ -207,10 +229,8 @@ Route::middleware([
         Route::post('/get-song',  'get_list_songs')->name('get-song');
 
         Route::get('/get-songs',  'get_songs')->name('get-songs');
-        Route::get('/get-videos',  'get_videos')->name('get-videos');
 
         Route::get('/get-songs-destaques',  'get_destaques_songs')->name('get-songs-destaques');
-        Route::get('/get-videos-destaques',  'get_destaques_videos')->name('get-videos-destaques');
 
         Route::post('/get-songs',  'get_songs')->name('get-songs');
         Route::post('/avaliar',  'avaliar')->name('avaliar');
@@ -269,11 +289,16 @@ Route::middleware([
         Route::post('add-participant', 'contest_new_participant')->name('add-participant');
         Route::post('vote-on-participant', 'new_vote_on_participante')->name('vote-on-participant');
 
+        Route::post('get-user-collections-for-contest', 'get_user_collections_for_contest')->name('get-user-collections-for-contest');
+
+
+        Route::post('get-contestant-details', 'get_contestant_details')->name('get-contestant-details');
         Route::post('participant-votes', 'participant_votes')->name('participant-votes');
         Route::post('am-I-participant', 'am_I_participant')->name('am-I-participant');
         Route::post('i-voted-on-this', 'i_voted_on_this')->name('i-voted-on-this');
 
         Route::post('filter-contest', 'filter_contest')->name('filter-contest');
+        Route::post('contest-participants', 'contest_participants')->name('contest-participants');
 
         Route::post('get-my-contests', 'get_my_contests')->name('get-my-contests');
         Route::post('get-active-contests', 'ge_active_contests')->name('get-active-contests');
@@ -335,6 +360,23 @@ Route::middleware([
     })->name('notification-to-lifter');
 
 
+    Route::controller(ExpositionsController::class)->group(function () {
+        Route::post('save-exposition-room', 'store')->name('save-exposition-room');
+        Route::post('save-room-item', 'store_item')->name('save-room-item');
+
+
+        Route::get('get-expositions-rooms', 'get_expositions_rooms')->name('get-expositions-rooms');
+        Route::get('get-room-items/{roomId}', 'get_room_items')->name('get-room-items/{roomId}');
+    });
+
+
+    Route::controller(EstanteController::class)->group(function () {
+        Route::post('save-estante', 'store')->name('save-estante');
+        Route::post('save-estante-book', 'store_book')->name('save-estante-book');
+
+        Route::get('get-estantes', 'get_estantes')->name('get-estantes');
+        Route::get('get-estante-books/{estanteId}', 'get_estante_books')->name('get-estante-books/{estanteId}');
+    });
 
 
 

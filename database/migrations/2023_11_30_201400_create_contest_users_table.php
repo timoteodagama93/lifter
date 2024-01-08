@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('contest_users', function (Blueprint $table) {
             $table->id();
             $table->string('contest_id');
-            $table->string('song_id');
-            $table->string('artist_id');
+            $table->string('colletion_id');
+            $table->string('owner_collection_id');
             $table->string('user_id');
             $table->timestamps();
         });

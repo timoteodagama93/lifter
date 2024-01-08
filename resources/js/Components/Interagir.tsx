@@ -24,7 +24,11 @@ import Swal from 'sweetalert2';
 import Loader from './Loader';
 import { comment } from 'postcss';
 
-function Interagir({ song, orientation = 'flex-row' }) {
+function Interagir({
+  song: Collection,
+  collectionType = 'song',
+  orientation = 'flex-row',
+}) {
   const [openModal, setOpenModal] = useState(false);
   const [valuateModal, setValuateModal] = useState(false);
   const [feedbackModal, setFeedbackModal] = useState(false);
@@ -33,23 +37,44 @@ function Interagir({ song, orientation = 'flex-row' }) {
   const [liked, setLiked] = useState(false);
 
   function curtir() {
-    axios
-      .post('like-song', { song_id: song.id })
-      .then(response => {
-        setLiked(true);
-      })
-      .catch(error => {
-        Swal.fire({
-          title: 'Erro',
-          text: 'Alguma coisa correu mal, reenvie o seu feedback, nós os amantes de músicas agradecemos sua paciência.',
-          icon: 'error',
+    if (collectionType == 'song') {
+      axios
+        .post('like-song', { song_id: Collection.id })
+        .then(response => {
+          setLiked(true);
+        })
+        .catch(error => {
+          Swal.fire({
+            title: 'Erro',
+            text: 'Alguma coisa correu mal, reenvie o seu feedback, nós os amantes de músicas agradecemos sua paciência.',
+            icon: 'error',
+          });
         });
-      });
+    } else {
+      axios
+        .post('like-collection', {
+          collection_id: Collection.id,
+          collection_type: collectionType,
+        })
+        .then(response => {
+          setLiked(true);
+        })
+        .catch(error => {
+          Swal.fire({
+            title: 'Erro',
+            text: 'Alguma coisa correu mal, reenvie o seu feedback, nós os amantes de músicas agradecemos sua paciência.',
+            icon: 'error',
+          });
+        });
+    }
   }
 
   function isLikedSong() {
     axios
-      .post('i-liked', { song_id: song.id })
+      .post('i-liked', {
+        collection_id: Collection.id,
+        collection_type: collectionType,
+      })
       .then(response => {
         if (response.data.length > 0) {
           setLiked(true);
@@ -59,11 +84,14 @@ function Interagir({ song, orientation = 'flex-row' }) {
   }
   useEffect(() => {
     isLikedSong();
-  }, [song]);
+  }, [Collection]);
 
   function colecionar() {
     axios
-      .post('collect-song', { song_id: song.id })
+      .post('collect-song', {
+        song_id: Collection.id,
+        collection_type: collectionType,
+      })
       .then(response => {
         Swal.fire({
           title: 'Música colecionada',
@@ -87,7 +115,7 @@ function Interagir({ song, orientation = 'flex-row' }) {
         text: 'A música está sendo baixada, mantenha a conexão a Internet, enquanto isso podes continuar a navegar, assim que o download for concluido você será notificado(a).',
         icon: 'info',
       });
-      const response = await axios.get(`/download/song/${song.id}`, {
+      const response = await axios.get(`/download/song/${Collection.id}`, {
         responseType: 'blob',
       });
 
@@ -97,7 +125,7 @@ function Interagir({ song, orientation = 'flex-row' }) {
 
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
-      link.download = song.original_name;
+      link.download = Collection.original_name;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -172,14 +200,22 @@ function Interagir({ song, orientation = 'flex-row' }) {
           onClick={() => {
             setShareModal(false);
             setOpenModal(false);
-            Swal.fire({
-              title: 'Brevemente',
-              text: 'Brevemente vai ser possível partilhar com o Facebook, Youtube e TikTok. Até lá, esteja atento às novidades.',
-              icon: 'info',
-            });
           }}
         >
-          <BsShare />
+          <div
+            className="fb-share-button"
+            data-href="https://developers.facebook.com/docs/plugins/"
+            data-layout=""
+            data-size=""
+          >
+            <a
+              target="_blank"
+              href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse"
+              className="fb-xfbml-parse-ignore"
+            >
+              <BsShare />
+            </a>
+          </div>
         </button>
         <button
           className="text-sm md:text-3xl transform-effect p-1"
@@ -198,24 +234,40 @@ function Interagir({ song, orientation = 'flex-row' }) {
           setValuateModal(false);
         }}
       >
-        {valuateModal && <Avaliar setOpenModal={setOpenModal} song={song} />}
-        {feedbackModal && <Feedback setOpenModal={setOpenModal} song={song} />}
+        {valuateModal && (
+          <Avaliar
+            collectionType={collectionType}
+            setOpenModal={setOpenModal}
+            song={Collection}
+          />
+        )}
+        {feedbackModal && (
+          <Feedback
+            collectionType={collectionType}
+            setOpenModal={setOpenModal}
+            song={Collection}
+          />
+        )}
         {commentsModal && (
           <Comentarios
             setComments={{}}
-            song={song}
+            song={Collection}
+            collectionType={collectionType}
             setOpenModal={setOpenModal}
           />
         )}
-        {shareModal && <Partilhar song={song} />}
+        {shareModal && (
+          <Partilhar collectionType={collectionType} song={Collection} />
+        )}
       </Modal>
     </div>
   );
 }
 
-function Avaliar({ song, setOpenModal }) {
+function Avaliar({ song: collection, setOpenModal, collectionType }) {
   const form = useForm({
-    song_id: song.id,
+    collection_id: collection.id,
+    collection_type: collectionType,
     points: 0,
     emotions: 'HiOutlineEmojiHappy',
     negative: false,
@@ -245,7 +297,7 @@ function Avaliar({ song, setOpenModal }) {
     <div className="w-full justify-start p-2 flex flex-col">
       <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
         <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
-          Jurado, como avalia a música?
+          Como avalia isto?
         </h1>
         <p>
           Faça uma avaliação com base no conteúdo que ouviu. Avalie em termos
@@ -256,9 +308,9 @@ function Avaliar({ song, setOpenModal }) {
 
       <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
         <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
-          Quantas estrelas a música merece?
+          Quantas estrelas merece?
         </h1>
-        <EnviarEstrelas song={song} wich_flex="flex-row " />
+        <EnviarEstrelas song={collection} wich_flex="flex-row " />
       </div>
       <form
         onSubmit={e => submit(e)}
@@ -266,7 +318,7 @@ function Avaliar({ song, setOpenModal }) {
       >
         <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
           <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
-            Qual é a pontuação da música?
+            Qual é a pontuação?
           </h1>
           <label className="mx-5" htmlFor="nota">
             {form.data.points + ' '}pontos
@@ -281,7 +333,7 @@ function Avaliar({ song, setOpenModal }) {
         </div>
         <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
           <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
-            para que tipo de emoção é a música?
+            Gerou-lhe alguma emoção?
           </h1>
           <div className="w-full gap-1 flex flex-row justify-center">
             <span
@@ -372,9 +424,10 @@ function Avaliar({ song, setOpenModal }) {
   );
 }
 
-function Feedback({ song, setOpenModal }) {
+function Feedback({ song: collection, setOpenModal, collectionType }) {
   const form = useForm({
-    song_id: song.id,
+    collection_id: collection.id,
+    collection_type: collectionType,
     feedback: '',
     public: false,
   });
@@ -388,7 +441,7 @@ function Feedback({ song, setOpenModal }) {
 
         Swal.fire({
           title: 'Feedback enviado',
-          text: `Obrigado por seu trabalho. O artista, ${song.artist} , será notificado. Acreditamos que é graças a esses feedbacks que os artistas farão cada vez mais trabalhos melhores. `,
+          text: `Obrigado por seu trabalho. O artista, ${collection.artist} , será notificado. Acreditamos que é graças a esses feedbacks que os artistas farão cada vez mais trabalhos melhores. `,
           icon: 'success',
         });
       })
@@ -406,7 +459,7 @@ function Feedback({ song, setOpenModal }) {
       <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
         <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
           Jurado, que dicas, sugestões e opiniões pode deixar para{' '}
-          <strong>{song.artist}</strong> ?
+          <strong>{collection.artist}</strong> ?
         </h1>
         <p className="justify w-full text-xl my-5">
           Os músicos dedicam seu tempo na criação de trabalhos que nos
@@ -430,7 +483,7 @@ function Feedback({ song, setOpenModal }) {
       >
         <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
           <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
-            Feedback para <strong>{song.artist}</strong>
+            Feedback para <strong>{collection.artist}</strong>
           </h1>
           <label className="mx-5" htmlFor="feedback">
             Deixe um feedback útil e construtivo ao músico, seja sincero.
@@ -469,13 +522,19 @@ function Feedback({ song, setOpenModal }) {
   );
 }
 
-function Comentarios({ song, setOpenModal, setComments }) {
+function Comentarios({
+  song: collection,
+  setOpenModal,
+  setComments,
+  collectionType,
+}) {
   const [loadedComments, setLoadedComments] = useState(true);
   const [errorLoadingComments, setErrorLoadingComments] = useState(false);
 
   function getComments() {
     const data = new FormData();
-    data.append('song_id', song.id);
+    data.append('collection_id', collection.id);
+    data.append('collection_type', collectionType);
     axios
       .post('get-comments', data)
       .then(response => {
@@ -488,7 +547,8 @@ function Comentarios({ song, setOpenModal, setComments }) {
   }
 
   const form = useForm({
-    song_id: song.id,
+    collection_id: collection.id,
+    collection_type: collectionType,
     comment: '',
     public: false,
   });
@@ -514,7 +574,7 @@ function Comentarios({ song, setOpenModal, setComments }) {
   return (
     <div className="w-full justify-start p-2 flex flex-col">
       <h1 className="text-center text-base md:text-2xl">
-        Comentários dos jurados da música <strong>{song.title}</strong>
+        Comentários dos jurados da música <strong>{collection.title}</strong>
       </h1>
       <p className="justify w-full text-xl my-1">
         Partilhe a sua opinião com a comunidade
@@ -565,7 +625,7 @@ function UserComment({ userId }) {
   );
 }
 
-function Partilhar({ song }) {
+function Partilhar({ song, collectionType }) {
   return (
     <div className="w-full">
       <h1 className="texte-center text-xl"></h1>

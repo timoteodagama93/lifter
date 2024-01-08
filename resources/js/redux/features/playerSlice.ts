@@ -101,7 +101,7 @@ const playerSlice = createSlice({
     nextVideo: (state, action) => {
       //Actualizar a quantidade de reproduções de uma música
       axios
-        .post('update-reprodution-time', {
+        .post('update-video-reprodution-time', {
           song_id: state.activeVideo.id,
           duration: state.totalTime,
         })
@@ -121,7 +121,7 @@ const playerSlice = createSlice({
     prevVideo: (state, action) => {
       //Actualizar a quantidade de reproduções de uma música
       axios
-        .post('update-reprodution-time', {
+        .post('update-video-reprodution-time', {
           song_id: state.activeVideo.id,
           duration: state.totalTime,
         })
@@ -168,13 +168,13 @@ const playerSlice = createSlice({
       if (action.payload == true) {
         //Actualizar a quantidade de reproduções de uma música
         axios
-          .post('new-play', { song_id: state.activeVideo.id })
+          .post('new-video-play', { song_id: state.activeVideo.id })
           .then(response => { })
           .catch(error => { });
       } else {
         //Actualizar a quantidade de reproduções de uma música
         axios
-          .post('update-reprodution-time', {
+          .post('update-video-reprodution-time', {
             song_id: state.activeVideo.id,
             duration: state.totalTime,
           })

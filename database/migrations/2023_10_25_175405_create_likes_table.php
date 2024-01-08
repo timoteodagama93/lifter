@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('likes', function (Blueprint $table) {
             $table->id();
             $table->string('user_id');
-            $table->string('song_id');
+            $table->string('collection_id');
+            $table->string('collection_type');
             $table->timestamps();
         });
     }

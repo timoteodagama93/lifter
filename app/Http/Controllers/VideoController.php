@@ -7,6 +7,7 @@ use App\Models\ContestsSong;
 use App\Models\Like;
 use App\Models\Song;
 use App\Models\Valuation;
+use App\Models\Video;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
@@ -32,46 +33,43 @@ class VideoController extends Controller
 
     public function store()
     {
-
         Validator::make(
             Request::all(),
             [
-                'video' => ['required', 'mimes:mp4'],
+                'video' => ['required', 'mimes:mp4'], //, 'max:50120'
                 'title' => ['required'],
-                'description' => ['required'],
+                'category' => ['required'],
             ]
         )->validate();
 
-        $artist_id = Request::input('artist_id');
-        $song_url = Request::file("song")->store("public/artists/$artist_id/songs");
+        $userId = auth()->id();
+        $video_url = Request::file("video")->store("public/users/$userId/videos");
 
+        if ($video_url != false) {
 
-        if ($song_url != false) {
+            $file_extension = Request::file('video')->getClientOriginalExtension();
+            $file_hasname = Request::file('video')->hashName();
+            $file_originalname = Request::file('video')->getClientOriginalName();
+            $file_mime = Request::file('video')->getMimeType();
+            $file_path = Request::file('video')->getPath();
+            $file_pathname = Request::file('video')->getPathname();
 
-            //$cover_url = Request::file("cover")->store("artists/{$artist_id}/songs/covers", 'public');
-
-            $file_extension = Request::file('song')->getClientOriginalExtension();
-            $file_name = Request::file('song')->getFilename();
-            $file_mime = Request::file('song')->getMimeType();
-            $file_path = Request::file('song')->getPath();
-            $file_pathname = Request::file('song')->getPathname();
-
-            $song = Song::create([
-                'artist_id' => $artist_id,
+            $song = Video::create([
+                'user_id' => $userId,
                 'title' => Request::input('title'),
-                'genre' => Request::input('genre'),
-                'artist' => Request::input('artist'),
-                'gravadora' => Request::input('gravadora'),
-                'participacoes' => Request::input('participacoes'),
-                'letra' => Request::input('letra'),
+                'category' => Request::input('category'),
+                'producer' => Request::input('peoducer'),
+                'description' => Request::input('description'),
+                'saved_name' => $file_hasname,
+                'original_name' => $file_originalname,
                 'mime_type' => $file_mime,
                 'extension' => $file_extension,
-                'url' => Storage::url($song_url),
+                'url' => Storage::url($video_url),
                 //'cover' => $cover_url,
             ]);
-            return to_route('perfis');
+            return redirect('video');
         } else {
-            return to_route('perfis');
+            return response()->json(['Alguma coisa correu mal, não se preocupe que deve ser nossa culpa. Recarregue a página, se persistir reporte o problema. ']);
         }
     }
 
@@ -146,92 +144,52 @@ class VideoController extends Controller
         return to_route("perfis", ["isArtist" => true]);
     }
 
-    /**
-     * Obté os artistas inscritos especificamente no concurso ascensão
-     */
-    public function get_ascensao_artists()
-    {
-        return response()->json(
-            ContestsSong::where('contest_name', 'ASCENSAO')
-        );
-    }
 
     /**
      * Obté os artistas inscritos especificamente no concurso ascensão
      */
-    public function get_valuation_songs()
+    public function get_all_videos()
     {
-        return response()->json(
-            Song::paginate(1)
-        );
+        return response()->json(Video::all());
     }
 
-    /**
-     * Obté os artistas inscritos especificamente no concurso ascensão
-     */
-    public function get_all_songs()
-    {
-        return response()->json(Song::all());
-    }
-
-
-    /**
-     * Obté as músicas
-     */
-    public function get_songs()
-    {
-        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%audio%' AND active=true ORDER BY created_at DESC"); // where('mime_type', `%audio/%`)->paginate(1);
-    }
-
-    /**
-     * Obté as músicas em destaques
-     */
-    public function get_destaques_songs()
-    {
-        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%audio%' AND active=true AND destaque=true ORDER BY created_at DESC LIMIT 5"); // where('mime_type', `%audio/%`)->paginate(1);
-    }
-
-    /**
-     * Pesquisa músicas
-     */
-    public function get_valuations_requests()
-    {
-        $query = Request::get('category');
-        return DB::select("SELECT * FROM `songs`"); // where('mime_type', `%audio/%`)->paginate(1);
-    }
-
-    /**
-     * Pesquisa músicas
-     */
-    public function search_songs()
-    {
-        $query = Request::get('searchTerm');
-        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%audio%' AND ( title LIKE '%$query%' OR artist LIKE '%$query%' OR genre LIKE '%$query%'  ) AND active=true ORDER BY created_at DESC"); // where('mime_type', `%audio/%`)->paginate(1);
-    }
     /**
      * Pesquisa Vídeos
      */
     public function search_videos()
     {
         $query = Request::get('searchTerm');
-        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%video%' AND ( title LIKE '%$query%' OR artist LIKE '%$query%' OR genre LIKE '%$query%'  ) ORDER BY created_at DESC"); // where('mime_type', `%audio/%`)->paginate(1);
+        return DB::select("SELECT * FROM `videos` WHERE `mime_type` LIKE '%video%' AND ( title LIKE '%$query%' OR artist LIKE '%$query%' OR category LIKE '%$query%'  ) ORDER BY reprodution_time DESC"); // where('mime_type', `%audio/%`)->paginate(1);
     }
 
     /**
      * Obté os vídeos
      */
-    public function get_videos()
+    public function get_videos($category)
     {
-        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%video%' AND active=true AND destaque=false ORDER BY created_at DESC"); // where('mime_type', `%audio/%`)->paginate(1);
+        if ($category == 'all') {
+            return DB::select("SELECT * FROM `videos` WHERE active=true AND destaque=false ORDER BY  reprodution_time DESC"); // where('mime_type', `%audio/%`)->paginate(1);
+        } else if ($category == 'mistas') {
+            return DB::select("SELECT * FROM `videos` WHERE active=true AND destaque=false AND category='cinema' OR category='teatro' OR category='humor' ORDER BY  reprodution_time DESC"); // where('mime_type', `%audio/%`)->paginate(1);
+        } else {
+            return DB::select("SELECT * FROM `videos` WHERE active=true AND destaque=false AND category='$category' ORDER BY  reprodution_time DESC"); // where('mime_type', `%audio/%`)->paginate(1);
+        }
     }
 
 
     /**
      * Obté as músicas em destaques
      */
-    public function get_destaques_videos()
+    public function get_destaques_videos($category)
     {
-        return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%video%' AND active=true AND destaque=true ORDER BY created_at DESC LIMIT 15"); // where('mime_type', `%audio/%`)->paginate(1);
+
+        if ($category == 'all') {
+            return DB::select("SELECT * FROM `videos` WHERE `mime_type` LIKE '%video%' AND active=true AND destaque=true ORDER BY reprodution_time ASC LIMIT 15"); // where('mime_type', `%audio/%`)->paginate(1);    
+        } else if ($category == 'mistas') {
+            return DB::select("SELECT * FROM `videos` WHERE active=true AND destaque=false AND category='cinema' OR category='teatro' OR category='humor' ORDER BY  reprodution_time DESC");
+        } else {
+            return DB::select("SELECT * FROM `videos` WHERE `mime_type` LIKE '%video%' AND active=true AND destaque=true AND `category`=''$category ORDER BY reprodution_time DESC LIMIT 15"); // where('mime_type', `%audio/%`)->paginate(1);    
+        }
     }
 
     /**
@@ -350,5 +308,40 @@ class VideoController extends Controller
     {
         $songId = Request::get('song_id');
         return response()->json(DB::select("SELECT * FROM feedbacks WHERE song_id = ?", [$songId]));
+    }
+
+    public function new_play()
+    {
+        $song_id = Request::get('song_id');
+        $result = DB::update("UPDATE videos SET plays=plays+1 WHERE id = '$song_id' ");
+        return $result;
+    }
+
+    public function update_reprodution_time()
+    {
+        $song_id = Request::get('song_id');
+        $duration = Request::get('duration');
+
+        DB::update("UPDATE videos SET reprodution_time=reprodution_time+$duration WHERE id = '$song_id' ");
+        return;
+    }
+
+    public function download($songId)
+    {
+        $song = Video::find($songId);
+        if (!$song)
+            abort(404, 'Música não encontrada');
+
+        $song->downloads = $song->downloads + 1;
+        $song->save();
+        $path = storage_path("app\\public\\users\\$song->user_id\\videos\\$song->saved_name");
+
+        //dd($path);
+
+        $headers = [
+            'Content-Type' => $song->mime_type,
+            'Content-Disposition' => 'attach; filename="' . $song->original_name . '"'
+        ];
+        return response()->download($path, $song->original_name, $headers);
     }
 }

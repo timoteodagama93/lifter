@@ -10,7 +10,7 @@ class ContestUserVote extends Model
     use HasFactory;
 
     protected $fillable = [
-        'song_id',
+        'collection_id',
         'contest_id',
         'user_id'
     ];

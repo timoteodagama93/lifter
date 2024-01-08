@@ -138,7 +138,7 @@ export default function AddSong({ artist, from = '' }) {
               {/* <!-- Profile Photo File Input --> */}
               <input
                 type="file"
-                className=""
+                className="hidden"
                 ref={photoRef}
                 onChange={updatePhotoPreview}
               />

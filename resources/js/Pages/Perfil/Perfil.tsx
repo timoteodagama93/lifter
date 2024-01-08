@@ -14,7 +14,7 @@ import { MdPhoto } from 'react-icons/md';
 import { FaCoins } from 'react-icons/fa';
 import { RiContactsBook2Fill } from 'react-icons/ri';
 import axios from 'axios';
-import NewContest from '@/Components/Contest/Index';
+import NewContest from '@/Components/Contest/NewContest';
 import { BsEye } from 'react-icons/bs';
 import EditContest from '@/Components/EditContest/Index';
 import PulseButton from '@/Components/PulseButton';
