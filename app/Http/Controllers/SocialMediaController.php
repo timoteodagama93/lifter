@@ -14,11 +14,6 @@ class SocialMediaController extends Controller
 
     public function facebookpage()
     {
-        $facebook = [
-            'cliente_id' => '1588022325068116',
-            'client_secret' => '098cccaf26575fd1eb35674039ae78ea',
-            'redirect' => 'https://lifter.ao/auth/facebook/callback',
-        ];
 
         return Socialite::driver('facebook')->redirect();
     }

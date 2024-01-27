@@ -32,9 +32,9 @@ return [
     ],
 
     'facebook' => [
-        'cliente_id' => '1588022325068116',
-        'client_secret' =>'098cccaf26575fd1eb35674039ae78ea',
-        'redirect' => 'https://lifter.ao/auth/facebook/callback',
+        'client_id' => env('FACEBOOK_CLIENT_ID'),
+        'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
+        'redirect' => env('FACEBOOK_REDIRECT_URI'),
     ],
 
 ];

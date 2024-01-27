@@ -140,7 +140,7 @@ function ContestDetails({ contest, contests }) {
         </div>
       </div>
 
-      <div className="hidden flex flex-row justify-between w-full items-center p-1">
+      <div className="hidden flex-row justify-between w-full items-center p-1">
         <div>
           <InputLabel htmlFor="contest_id">Escolha o que deseja ver</InputLabel>
           <select

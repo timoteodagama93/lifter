@@ -14,17 +14,23 @@ import Welcome from './Welcome';
 import Artist from '../Artista/Index';
 import { Loader } from '@/Components';
 import useTypedPage from '@/Hooks/useTypedPage';
+import { generos } from '@/assets/constants';
+
+import { countries } from 'countries-list';
+const paises = [...Object.values(countries)];
 export default function AddArtist({}) {
   const page = useTypedPage();
   const { setCurrentPage } = useStateContext();
   const [isLoading, setIsLoading] = useState(false);
+
+  const [indicePais, setIndicePais] = useState(7);
 
   const formArtist = useForm({
     name: page.props.auth.user?.name,
     genre: 'Kuduro',
     contact: '',
     about: '',
-    country: 'Angola',
+    country: paises[indicePais].name,
     city: 'Luanda',
     terms: false,
     cover: null as File | null,
@@ -33,6 +39,10 @@ export default function AddArtist({}) {
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setIsLoading(true);
+    formArtist.setData(
+      'contact',
+      paises[indicePais].phone + ' ' + formArtist.data.contact,
+    );
     formArtist.post('new-artist', {
       onError: () => {
         setIsLoading(false);
@@ -90,7 +100,7 @@ export default function AddArtist({}) {
         </div>
       ) : (
         <>
-          <div className="w-full h-full p-5  m-1 shadow-lg shadow-black">
+          <div className=" p-5 m-1 shadow-lg shadow-black">
             <p className="w-full text-xl flex justify-between uppercase gap-5">
               <button
                 onClick={() => setCurrentPage(<Welcome />)}
@@ -177,14 +187,9 @@ export default function AddArtist({}) {
                   }
                   required
                 >
-                  <option>Kuduro</option>
-                  <option>House</option>
-                  <option>Semba</option>
-                  <option>Kizomba</option>
-                  <option>RnB</option>
-                  <option>Rap</option>
-                  <option>Naija</option>
-                  <option>Hip Hop</option>
+                  {generos.map(genre => (
+                    <option value={genre.value}> {genre.title} </option>
+                  ))}
                 </select>
                 <InputError
                   className="mt-2"
@@ -194,17 +199,17 @@ export default function AddArtist({}) {
 
               <div className="mt-4">
                 <InputLabel htmlFor="contact">Contacto para shows</InputLabel>
-                <span>Indicativo de país, ex: Angola - (+244)</span>
+                <span>Telefone para fins comerciais e profissionais</span>
                 <TextInput
                   id="contact"
-                  type="text"
+                  type="tel"
                   className="mt-1 block w-full"
                   value={formArtist.data.contact}
                   onChange={e =>
                     formArtist.setData('contact', e.currentTarget.value)
                   }
                   required
-                  autoComplete="new-password"
+                  autoComplete="tel"
                 />
                 <InputError
                   className="mt-2"
@@ -218,17 +223,15 @@ export default function AddArtist({}) {
                   id="country"
                   className="mt-1 block w-full text-black"
                   value={formArtist.data.country}
-                  onChange={e =>
-                    formArtist.setData('country', e.currentTarget.value)
-                  }
+                  onChange={e => {
+                    setIndicePais(Number.parseInt(e.currentTarget.value));
+                    formArtist.setData('country', paises[indicePais].name);
+                  }}
                   required
                 >
-                  <option value="angola">Angola</option>
-                  <option value="mocambique">Moçambique</option>
-                  <option value="caboverde">Cabo Verde</option>
-                  <option value="portugal">Portugal</option>
-                  <option value="brasil">Brasil</option>
-                  <option value="outro">Outro</option>
+                  {Object.values(countries).map((pais, i) => (
+                    <option value={i}> {pais.name} </option>
+                  ))}
                 </select>
                 <InputError
                   className="mt-2"
@@ -237,31 +240,16 @@ export default function AddArtist({}) {
               </div>
               <div className="mt-4">
                 <InputLabel htmlFor="city">Cidade</InputLabel>
-                <select
+                <TextInput
                   id="city"
                   className="mt-1 block w-full text-black"
                   value={formArtist.data.city}
                   onChange={e =>
                     formArtist.setData('city', e.currentTarget.value)
                   }
+                  autoComplete="city"
                   required
-                >
-                  <option value="luanda">Luanda</option>
-                  <option value="benguela">Benguela</option>
-                  <option value="malanje">Malanje</option>
-                  <option value="huila">Huila</option>
-                  <option value="bengo">Bengo</option>
-                  <option value="bie">Bíe</option>
-                  <option value="moxico">Moxico</option>
-                  <option value="zaire">Zaire</option>
-                  <option value="uige">Uíge</option>
-                  <option value="cuanza-norte">Cuanza Norte</option>
-                  <option value="cuanza-sul">Cuanza Sul</option>
-                  <option value="lunda-norte">Luanda Norte</option>
-                  <option value="lunda-sul">Lunda Sul</option>
-                  <option value="cunene">Cunene</option>
-                  <option value="cunene">Outra</option>
-                </select>
+                />
                 <InputError
                   className="mt-2"
                   message={formArtist.errors.country}

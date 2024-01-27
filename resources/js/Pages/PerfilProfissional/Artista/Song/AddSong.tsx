@@ -16,6 +16,7 @@ import SecondaryButton from '../../../../Components/SecondaryButton';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { Loader } from '@/Components';
+import { generos } from '@/assets/constants';
 export default function AddSong({ artist, from = '' }) {
   const [successOnAdd, setSuccessOnAdd] = useState(false);
 
@@ -188,13 +189,17 @@ export default function AddSong({ artist, from = '' }) {
 
             <div className="mt-4">
               <InputLabel htmlFor="genre">Estilo Musical</InputLabel>
-              <TextInput
+              <select
                 id="genre"
                 className="mt-1 block w-full"
                 value={formSong.data.genre}
                 onChange={e => formSong.setData('genre', e.currentTarget.value)}
                 required
-              />
+              >
+                {generos.map(genre => (
+                  <option value={genre.value}> {genre.title} </option>
+                ))}
+              </select>
               <InputError className="mt-2" message={formSong.errors.genre} />
             </div>
 

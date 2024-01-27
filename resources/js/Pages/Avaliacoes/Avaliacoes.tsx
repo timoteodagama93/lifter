@@ -13,15 +13,18 @@ import 'swiper/css/thumbs';
 import AppLayout from '@/Layouts/AppLayout';
 
 import { useSelector } from 'react-redux';
-import { useGetSongsQuery } from '@/redux/services/coreApi';
+import {
+  useGetSongsAudiosQuery,
+  useGetSongsQuery,
+} from '@/redux/services/coreApi';
 
 import ValuationReader from './ValuationReader';
 import ValuatedsSongs from './ValuatedsSongs';
 
 const Avaliacoes = ({}) => {
-  const { data: songs, isFetching, error } = useGetSongsQuery('/get-songs');
-  const { activeSong, isPlaying } = useSelector(state => state.player);
+  const { data: songs, isFetching, error } = useGetSongsAudiosQuery('destaque');
 
+  const { activeSong, isPlaying } = useSelector(state => state.player);
   const [selectedValuation, setSelectedValuation] = useState(
     isPlaying ? activeSong : null,
   );
@@ -48,11 +51,11 @@ const Avaliacoes = ({}) => {
           {/**Área de leitura de mensagens */}
           <div
             style={{ transition: '2s' }}
-            className={`w-8/12 h-full flex flex-col overflow-hidden smooth-transition ${
+            className={`h-full hidden  flex-col overflow-hidden smooth-transition ${
               selectedValuation ? 'left-0' : '-rigth-full'
             } `}
           >
-            {selectedValuation ? (
+            {/*selectedValuation  ? (
               <ValuationReader activeValuation={selectedValuation} />
             ) : (
               <>
@@ -71,7 +74,7 @@ const Avaliacoes = ({}) => {
                   </p>
                 </div>
               </>
-            )}
+            )*/}
           </div>
         </div>
       </div>

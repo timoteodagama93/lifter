@@ -10,9 +10,11 @@ const Player = ({
   onTimeUpdate,
   onLoadedData,
   repeat,
+  fullscreen,
+  setFullScreen: setRef,
 }) => {
-  const ref = useRef(null);
   // eslint-disable-next-line no-unused-expressions
+  const ref = useRef(null);
   if (ref.current) {
     if (isPlayingVideo) {
       ref.current.play();
@@ -30,14 +32,27 @@ const Player = ({
   }, [seekTime]);
   return (
     <>
-      <video
-        className="w-full h-full"
-        src={activeVideo?.url}
-        ref={ref}
-        onEnded={onEnded}
-        onTimeUpdate={onTimeUpdate}
-        onLoadedData={onLoadedData}
-      />
+      {activeVideo.mime_type.includes('video/') ? (
+        <video
+          className={` ${
+            fullscreen ? ' w-screen h-screen' : ' w-full h-full'
+          }  `}
+          src={activeVideo?.url}
+          ref={ref}
+          onEnded={onEnded}
+          onTimeUpdate={onTimeUpdate}
+          onLoadedData={onLoadedData}
+        />
+      ) : (
+        <audio
+          className="w-full h-full"
+          src={activeVideo?.url}
+          ref={ref}
+          onEnded={onEnded}
+          onTimeUpdate={onTimeUpdate}
+          onLoadedData={onLoadedData}
+        />
+      )}
     </>
   );
 };

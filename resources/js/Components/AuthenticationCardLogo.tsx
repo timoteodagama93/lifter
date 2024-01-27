@@ -1,6 +1,5 @@
 import { Link } from '@inertiajs/react';
 import React from 'react';
-import smal_logo from '../../img/z00.png';
 import logo from '../../img/logo.png';
 import ApplicationLogo from './ApplicationLogo';
 

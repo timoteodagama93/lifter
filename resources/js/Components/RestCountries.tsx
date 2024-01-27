@@ -12,18 +12,6 @@ import type {
 
 // Main data and utils
 import { continents, countries, languages } from 'countries-list';
-// Utils
-import {
-  getCountryCode,
-  getCountryData,
-  getCountryDataList,
-  getEmojiFlag,
-} from 'countries-list';
-
-// Minimal data in JSON
-import countries2to3 from 'countries-list/minimal/countries.2to3.min.json';
-import countries3to2 from 'countries-list/minimal/countries.3to2.min.json';
-import languageNames from 'countries-list/minimal/languages.native.min';
 
 const RestCountries = () => {
   const [countryPhoneCodes, setCountryPhoneCodes] = useState([]);
@@ -52,13 +40,15 @@ const RestCountries = () => {
   }, []); // O segundo parâmetro vazio garante que a função seja executada apenas uma vez no montar do componente
 
   return (
-    <>
+    <select
+    
+    defaultValue={}>
       {countryPhoneCodes.map(country => (
-        <option>
+        <option value={country.callingCode}>
           {country.name}: {country.callingCode}
         </option>
       ))}
-    </>
+    </select>
   );
 };
 

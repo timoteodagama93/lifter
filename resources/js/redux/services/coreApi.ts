@@ -13,10 +13,14 @@ axios.post('get-songs')
 export const coreApi = createApi({
     reducerPath: 'coreApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://127.0.0.1:8000'
+        baseUrl: 'https://lifter.ao'
     }),
     endpoints: (builder) => ({
+
+        /**SONGS */
         getSongs: builder.query({ query: (query) => '/get-songs' }),
+        getSongsAudios: builder.query({ query: (query) => `/get-songs-audios/${query}` }),
+        getSongsVideos: builder.query({ query: (query) => `/get-songs-videos/${query}` }),
         getVideos: builder.query({ query: (category) => `/get-videos/${category}` }),
         getDestaqueSongs: builder.query({ query: (category) => `/get-songs-destaques/${category}` }),
         getDestaqueVideos: builder.query({ query: (query) => '/get-videos-destaques' }),
@@ -32,7 +36,7 @@ export const coreApi = createApi({
         getActiveVoiceImages: builder.query({ query: (artistId) => `get-activevoice-images/${artistId}` }),
 
         /**CONTEST */
-                getContestVideo: builder.query({ query: (contestId) => `get-contest-videos/${contestId}` }),
+        getContestVideo: builder.query({ query: (contestId) => `get-contest-videos/${contestId}` }),
         getContestImages: builder.query({ query: (contestId) => `get-contest-images/${contestId}` }),
 
 
@@ -63,6 +67,8 @@ export const {
     useGetArtistStatsQuery,
     useGetDestaqueSongsQuery,
     useGetDestaqueVideosQuery,
+    useGetSongsAudiosQuery,
+    useGetSongsVideosQuery,
 
 
     useGetVideosQuery,

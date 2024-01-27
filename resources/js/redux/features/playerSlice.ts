@@ -26,7 +26,12 @@ const playerSlice = createSlice({
 
 
     setActiveSong: (state, action) => {
-      state.activeSong = action.payload.song;
+
+      if (action.payload.song.mime_type.includes('audio/')) {
+        state.activeSong = action.payload.song;
+      } else {
+        state.activeVideo = action.payload.song;
+      }
 
       if (action.payload?.songs) {
         state.currentSongs = action.payload.songs;
@@ -139,6 +144,10 @@ const playerSlice = createSlice({
     },
 
     playPause: (state, action) => {
+
+
+
+
       if (action.payload == true) {
         //Actualizar a quantidade de reproduções de uma música
         axios
@@ -156,12 +165,8 @@ const playerSlice = createSlice({
           .catch(error => { });
 
       }
-      if (state.isPlayingVideo) {
-        state.isPlayingVideo = false;
-      }
+
       state.isPlaying = action.payload;
-
-
     },
 
     playPauseVideo: (state, action) => {

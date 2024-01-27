@@ -7,6 +7,8 @@ import {
   playPause,
   setTotalTime,
   setFullScreenPlayer,
+  playPauseVideo,
+  setActiveVideo,
 } from '../../redux/features/playerSlice';
 import Controls from './Controls';
 import Player from './Player';
@@ -21,6 +23,7 @@ import {
   MdArrowDropUp,
   MdOutlineArrowDropUp,
 } from 'react-icons/md';
+import Swal from 'sweetalert2';
 
 const MusicPlayer = () => {
   const {
@@ -71,45 +74,18 @@ const MusicPlayer = () => {
     }
   };
 
-  const stars = [1, 2, 3, 4, 5];
-  const [selectedStar, setSelectedStar] = useState(0);
-
-  function submitValuation(stars) {
-    setSelectedStar(stars);
-    const data = new FormData();
-    data.append('song_id', activeSong?.id);
-    data.append('stars', stars);
-    console.log(data);
-
-    axios
-      .post('/avaliar', data)
-      .then(response => {
-        setSelectedStar(response.data.stars);
-      })
-      .catch(errors => {
-        console.log(errors);
-      });
-  }
-  /**GET USER VALUATION TO SELECTED SONG */
-  function getUserValuation() {
-    const data = new FormData();
-    data.append('song_id', activeSong?.id);
-
-    axios
-      .post('/get-my-valluation', data)
-      .then(response => {
-        setSelectedStar(response.data);
-      })
-      .catch(errors => {
-        console.log(errors);
-      });
-  }
-
-  useEffect(getUserValuation, [activeSong]);
+  const handlePlayVideo = () => {
+    Swal.fire({
+      title: 'Vídeo desponível',
+      text: 'Para reproduzir o vídeo pause o aúdio actualmente em reprodução e clique no botão play desta música.',
+      icon: 'info',
+    });
+  };
   return (
     <div className="w-full flex  flex-col md:flex-row justify-center items-center">
       <div className="relative sm:px-12 px-8 w-full flex items-center justify-between">
         <Track
+          handleePlayVideo={handlePlayVideo}
           isPlaying={isPlaying}
           isActive={isActive}
           activeSong={activeSong}

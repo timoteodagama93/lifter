@@ -20,14 +20,14 @@ import { EffectCoverflow, Navigation } from 'swiper/modules';
 import { SwiperSlide } from 'swiper/react';
 
 function SS() {
-  const { data: songs, isFetching, error } = useGetSongsQuery('/get-songs');
+  const { data: songs, isFetching, error } = useGetSongsQuery('/all');
   const { activeSong, isPlaying } = useSelector(state => state.player);
 
   const {
     data: videos,
     isFetching: fetchV,
     error: errorV,
-  } = useGetVideosQuery('/get-videos');
+  } = useGetVideosQuery('all');
   const { activeVideo, isPlayingVideo } = useSelector(state => state.player);
   return (
     <>

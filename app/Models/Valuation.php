@@ -25,9 +25,9 @@ class Valuation extends Model
     /**
      * Uma avaliação pertence a uma música
      */
-    public function song(): BelongsTo
+    public function collection(): BelongsTo
     {
-        return $this->belongsTo(Song::class);
+        return $this->belongsTo(Colletion::class);
     }
 
     /**

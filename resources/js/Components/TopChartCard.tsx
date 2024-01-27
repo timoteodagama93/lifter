@@ -1,7 +1,12 @@
-import { playPause, setActiveSong } from '@/redux/features/playerSlice';
+import {
+  playPause,
+  playPauseVideo,
+  setActiveSong,
+  setActiveVideo,
+} from '@/redux/features/playerSlice';
 import { Link } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PlayPause from './PlayPause';
 import EnviarEstrelas from './EnviarEstrelas';
 import axios from 'axios';
@@ -12,7 +17,13 @@ import { AiOutlineLike } from 'react-icons/ai';
 import { smalLogo } from '../../img';
 import Interagir from './Interagir';
 
-function TopChartCard({ song, i, isPlaying, activeSong, songs }) {
+function TopChartCard({
+  song,
+  i,
+  isPlaying,
+  activeSong,
+  songs,
+}) {
   const dispatch = useDispatch();
 
   const handlePauseClick = () => {
@@ -20,20 +31,24 @@ function TopChartCard({ song, i, isPlaying, activeSong, songs }) {
   };
   const handlePlayClick = () => {
     dispatch(setActiveSong({ song, songs, i }));
-    dispatch(playPause(true));
+    if (song.mime_type.includes('audio/')) {
+      dispatch(playPause(true));
+    } else {
+      dispatch(playPauseVideo(true));
+    }
   };
 
   const isAudio = song.mime_type.includes('audio/');
   return (
     <div
       className={`w-full flex ${
-        isAudio ? 'flex-row' : 'flex-col'
+        isAudio ? 'flex-row' : 'flex-row'
       }  items-center border shadow-lg bg-black transform-effect hover:text-white p-0 md:p1 rounded-lg  mb-1 py-2 `}
     >
       <h3 className="flex font-bold text-base  mr-1"> {i + 1}. </h3>
       <div
         className={`flex-1 flex ${
-          isAudio ? 'flex-row' : 'flex-col'
+          isAudio ? 'flex-row' : 'flex-row'
         } justify-between items-center`}
       >
         {song.mime_type.includes('audio/') && song.cover && (
@@ -52,13 +67,9 @@ function TopChartCard({ song, i, isPlaying, activeSong, songs }) {
         )}
 
         {song.mime_type.includes('video/') && (
-          <div className="w-ful">
-            <video controls>
-              <source
-                type={song.mime_type}
-                src={song?.url}
-                className="flex w-10 h-10 rounded-lg"
-              />
+          <div className="flex w-10 h-full ">
+            <video className="flex w-full h-full">
+              <source type={song.mime_type} src={song?.url} />
             </video>
           </div>
         )}
@@ -74,16 +85,15 @@ function TopChartCard({ song, i, isPlaying, activeSong, songs }) {
       <div className="">
         <Interagir song={song} />
       </div>
-      {song.mime_type.includes('audio/') && (
-        <PlayPause
-          classNames=""
-          handlePause={handlePauseClick}
-          handlePlay={handlePlayClick}
-          isPlaying={isPlaying}
-          activeSong={activeSong}
-          song={song}
-        />
-      )}
+
+      <PlayPause
+        classNames=""
+        handlePause={handlePauseClick}
+        handlePlay={handlePlayClick}
+        isPlaying={isPlaying}
+        activeSong={activeSong}
+        song={song}
+      />
     </div>
   );
 }

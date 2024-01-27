@@ -27,7 +27,6 @@ function Container({
 }: PropsWithChildren<Props>) {
   const { activeSong, isPlaying, isPlayingVideo, isFullScreenPlayer } =
     useSelector(state => state.player);
-  const { data, isFetching, error } = useGetVideosQuery('/get-videos');
   const dispatch = useDispatch();
 
   const [pageBG, setPageBG] = useState(bg);
@@ -45,7 +44,7 @@ function Container({
   const page = useTypedPage();
   return (
     <div
-      className="w-full h-full min-h-full min-w-full backdrop-blur-lg mb-16"
+      className="w-full h-full min-h-full min-w-full backdrop-blur-lg mb-16 "
       style={{ background: `url({pageBG})` }}
     >
       <div
@@ -55,7 +54,7 @@ function Container({
         <div
           className={`relative text-gray-900 w-full
           lg:w-[75%]
-          h-full top-0 left-0 shadow-xl flex flex-col   bg-cyan-400`}
+          h-full top-0 left-0 shadow-xl flex flex-col   bg-cyan-400 `}
         >
           <div
             className={`relative  text-white w-full ${
@@ -186,7 +185,7 @@ function Container({
                         : 'nhidden'
                     }`}
                   >
-                    Festivais
+                    Concursos
                   </span>
                 </Link>
 
@@ -235,8 +234,6 @@ function Container({
                 </Link>
               </>
             </div>
-
-            
           </div>
         </div>
       </div>

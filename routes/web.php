@@ -13,7 +13,6 @@ use App\Http\Controllers\ProfissionalController;
 use App\Http\Controllers\SocialMediaController;
 use App\Http\Controllers\SongsController;
 use App\Http\Controllers\UploadController;
-use App\Http\Controllers\ValuationFeedbackCommentController;
 use App\Http\Controllers\VideoController;
 use App\Models\Artist;
 use App\Models\Contest;
@@ -209,7 +208,19 @@ Route::middleware([
      * Controller responsável em gerenciar todas as interações do aplicativo: curtir, partilhar, comentar, gostar, feedbacks, etc.
      */
     Route::controller(InteragirController::class)->group(function () {
-    Route::post('like-collection', 'like_collection')->name('like-collection');
+        Route::post('like-collection', 'like_collection')->name('like-collection');
+        Route::post('/get-my-valluation',  'minha_avaliacao')->name('get-my-valluation');
+        Route::post('/stars-to-collection',  'stars_to_collection')->name('stars-to-collection');
+
+        Route::post('/get-comments', 'get_comments')->name('get-comments');
+        Route::post('/get-feedbacks', 'get_feedbacks')->name('get-feedbacks');
+        Route::post('/get-comment-user', 'get_comments')->name('get-comment-user');
+        Route::post('/save-to-collection', 'save_to_collection')->name('save-to-collection');
+        Route::post('/valuate-colletion', 'valuate_colletion')->name('valuate-colletion');
+        Route::post('/share-feedback', 'share_feedback')->name('share-feedback');
+        Route::post('/share-comment', 'share_comment')->name('share-comment');
+
+        Route::get('/download-collection/{collectionId}/{collectionType}',  'download')->name('download-collection/{collectionId}/{collectionType}');
     });
     /**
      * SONGSC CONTROLLER
@@ -225,15 +236,15 @@ Route::middleware([
         Route::post('/feedback',  'store_feedback')->name('feedback');
         Route::post('/feedbacks',  'get_feedbacks')->name('feedbacks');
 
-        Route::post('/get-my-valluation',  'minha_avaliacao')->name('get-my-valluation');
         Route::post('/get-song',  'get_list_songs')->name('get-song');
 
         Route::get('/get-songs',  'get_songs')->name('get-songs');
+        Route::get('/get-songs-audios/{query}',  'get_audios')->name('get-songs-audios/{query}');
+        Route::get('/get-songs-videos/{query}',  'get_videos')->name('get-songs-videos/{query}');
 
         Route::get('/get-songs-destaques',  'get_destaques_songs')->name('get-songs-destaques');
 
         Route::post('/get-songs',  'get_songs')->name('get-songs');
-        Route::post('/avaliar',  'avaliar')->name('avaliar');
         Route::post('/add-song',  'store')->name('add-song');
         Route::post('/add-song-cover',  'add_cover')->name('add-song-cover');
         Route::post('/update-song',  'update_info')->name('update-song');
@@ -264,17 +275,7 @@ Route::middleware([
         );
     })->name('get-artist-songs');
 
-    /**
-     * VALUATIONFEEDBACKCOMMENT CONTROLLER
-     */
-    Route::controller(ValuationFeedbackCommentController::class)->group(function () {
-        Route::post('/get-comments', 'get_comments')->name('get-comments');
-        Route::post('/get-comment-user', 'get_comments')->name('get-comment-user');
-        Route::post('/save-to-collection', 'save_to_collection')->name('save-to-collection');
-        Route::post('/share-opinion', 'share_opinion')->name('share-opinion');
-        Route::post('/share-feedback', 'share_feedback')->name('share-feedback');
-        Route::post('/share-comment', 'share_comment')->name('share-comment');
-    });
+
 
     /**
      * CONTESTCONTROLLER
@@ -327,7 +328,7 @@ Route::middleware([
      */
 
     Route::get('/perfil', function () {
-        return Inertia::render('Perfil/Perfil');
+        return Inertia::render('Perfil/UserFeed');
     })->name('perfil');
 
 

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('stars')->default(0);
             $table->integer('points')->default(0);
             $table->boolean('negative')->default(false);
-            $table->boolean('why_negative')->nullable();
+            $table->string('why_negative')->nullable();
             $table->string('emotion')->nullable();
             $table->timestamps();
         });

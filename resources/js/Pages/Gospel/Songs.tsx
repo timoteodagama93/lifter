@@ -30,7 +30,7 @@ import { AddSong } from '../PerfilProfissional/Artista/Song';
 import useTypedPage from '@/Hooks/useTypedPage';
 
 function Songs({}) {
-  const { data: songs, isFetching, error } = useGetSongsQuery('/get-songs');
+  const { data: songs, isFetching, error } = useGetSongsQuery('/all');
   const {
     data: destaques,
     isFetching: fetchingDestaques,

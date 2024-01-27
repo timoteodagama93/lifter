@@ -186,7 +186,35 @@ class SongsController extends Controller
      */
     public function get_songs()
     {
-        return DB::select("SELECT * FROM `songs` WHERE active=true AND destaque=false ORDER BY reprodution_time DESC"); // `mime_type` LIKE '%audio%' AND where('mime_type', `%audio/%`)->paginate(1);
+        return DB::select("SELECT * FROM `songs` WHERE active=true  ORDER BY reprodution_time DESC"); // `mime_type` LIKE '%audio%' AND where('mime_type', `%audio/%`)->paginate(1);
+    }
+
+    /**
+     * Obté as músicas
+     */
+    public function get_audios($query)
+    {
+        if ($query == 'all' || $query == '' || !$query) {
+
+            return DB::select("SELECT * FROM `songs` WHERE active=true AND mime_type LIKE '%audio/%'  ORDER BY reprodution_time DESC"); // `mime_type` LIKE '%audio%' AND where('mime_type', `%audio/%`)->paginate(1);
+        } else {
+            return DB::select("SELECT * FROM `songs` WHERE active=true AND destaque=true AND mime_type LIKE '%audio/%'  ORDER BY reprodution_time DESC"); // `mime_type` LIKE '%audio%' AND where('mime_type', `%audio/%`)->paginate(1);
+
+        }
+    }
+
+    /**
+     * Obté as músicas
+     */
+    public function get_videos($query)
+    {
+        if ($query == 'all' || $query == '' || !$query) {
+
+            return DB::select("SELECT * FROM `songs` WHERE active=true AND mime_type LIKE '%video/%' ORDER BY reprodution_time DESC"); // `mime_type` LIKE '%audio%' AND where('mime_type', `%audio/%`)->paginate(1);
+        } else {
+            return DB::select("SELECT * FROM `songs` WHERE active=true AND destaque=true AND mime_type LIKE '%video/%' ORDER BY reprodution_time DESC"); // `mime_type` LIKE '%audio%' AND where('mime_type', `%audio/%`)->paginate(1);
+
+        }
     }
 
     /**
@@ -213,39 +241,6 @@ class SongsController extends Controller
     {
         $query = Request::get('searchTerm');
         return DB::select("SELECT * FROM `songs` WHERE `mime_type` LIKE '%audio%' AND ( title LIKE '%$query%' OR artist LIKE '%$query%' OR genre LIKE '%$query%'  ) AND active=true ORDER BY created_at DESC"); // where('mime_type', `%audio/%`)->paginate(1);
-    }
-
-    /**
-     * Salva uma avaliação musiical
-     */
-    public function avaliar()
-    {
-        $stars = Request::get('stars');
-        $user_id = Auth::user()->id;
-        $song_id = Request::get('song_id');
-        //Obtem a música
-        $song = Song::where('id', $song_id)->first();
-
-        //Verifica se é uma avaliação que ira actualizar uma antiga, para subtrair a quantidade de estrelas.
-        if (Valuation::where(['user_id' => $user_id, 'song_id' => $song_id])->count() > 0) {
-            $older_val = Valuation::where(['user_id' => $user_id, 'song_id' => $song_id])->first()->stars;
-            $song->stars = $song->stars - $older_val;
-        }
-
-        $song->stars = $song->stars + $stars;
-        $song->save();
-
-        $val = Valuation::updateOrCreate(
-            [
-                'user_id' => $user_id,
-                'song_id' => $song_id,
-            ],
-            [
-                'stars' => $stars,
-            ]
-        );
-
-        return response()->json($val);
     }
 
     /**
@@ -294,7 +289,7 @@ class SongsController extends Controller
     public function collect_song()
     {
         $userId = Auth::user()->id;
-        $collectionId = Request::get('collection_id');
+        $collectionId = Request::get('song_id');
         $collectionType = Request::get('collection_type');
 
         $colecionar = Colletion::updateOrCreate(
@@ -309,32 +304,6 @@ class SongsController extends Controller
     }
 
 
-    /**
-     * Obtém a avaliação do usuário em uma música
-     */
-    public function minha_avaliacao()
-    {
-        $stars = 0;
-        $user_id = Auth::user()->id;
-        $song_id = Request::get('song_id');
-
-        //Retorna zero como quantidade de estrelas dadas caso o usuário ainda não tenha votado na música.
-        if (Valuation::where(['user_id' => $user_id, 'song_id' => $song_id])->count() <= 0) {
-            return response()->json($stars);
-        }
-
-
-
-        //Obtém a quantidade de estrelas que o usuário deu a música.
-        $stars = Valuation::where(
-            [
-                'user_id' => $user_id,
-                'song_id' => $song_id,
-            ]
-        )->first()->stars;
-
-        return response()->json($stars);
-    }
 
     public function store_feedback()
     {

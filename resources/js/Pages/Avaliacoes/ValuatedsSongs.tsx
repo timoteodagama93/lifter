@@ -3,7 +3,10 @@ import { BiDotsHorizontal, BiMusic } from 'react-icons/bi';
 import { BsPencilFill, BsPencilSquare } from 'react-icons/bs';
 import SongItemValuationList from './SongItemValuationList';
 import { useDispatch, useSelector } from 'react-redux';
-import { useGetSongsQuery } from '@/redux/services/coreApi';
+import {
+  useGetSongsQuery,
+  useGetSongsVideosQuery,
+} from '@/redux/services/coreApi';
 import { GiPencilRuler } from 'react-icons/gi';
 import { smalLogo } from '../../../img';
 import { Link } from '@inertiajs/react';
@@ -16,6 +19,11 @@ import {
 import PlayPause from '@/Components/PlayPause';
 import classNames from 'classnames';
 import { FaPauseCircle, FaPlayCircle } from 'react-icons/fa';
+import TopChartCard from '@/Components/TopChartCard';
+import { SongCard } from '@/Components';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import VideoCard from '@/Components/VideoCard';
+import { Navigation } from 'swiper/modules';
 
 function ValuatedsSongs({
   valuatedSongs,
@@ -23,6 +31,12 @@ function ValuatedsSongs({
   setSelectedValuation,
   selectedValuation,
 }) {
+  const {
+    data: videos,
+    isFetching: isF,
+    error: errorV,
+  } = useGetSongsVideosQuery('destaque');
+
   const dispatch = useDispatch();
   const [view, setView] = useState('Avaliar');
 
@@ -43,7 +57,7 @@ function ValuatedsSongs({
 
   return (
     <>
-      <div className="w-4/12 h-full overflow-hidden border-r ">
+      <div className="w-full h-full overflow-auto border-r mb-36">
         {/**Área de previsualização de conversas e notificações */}
         <div className="w-full h-[10%] flex flex-col md:flex-row justify-between items-center md:p-1">
           <h1 className=" md:flex md:text-3xl font-bold">{view}</h1>
@@ -64,108 +78,114 @@ function ValuatedsSongs({
             </button>
           </div>
         </div>
+        <div
+          className="w-full flex flex-row justify-between
+             items-center"
+        >
+          <h2 className=" font-bold text-base md:text-4xl text-[#]">Vídeos </h2>
+          <Link href="top-charts">
+            <p className="text-sm md:text-base cursor-pointer">Ver mais</p>
+          </Link>
+        </div>
+        <div className="w-full relative flex">
+          <Swiper
+            spaceBetween={0}
+            navigation={true}
+            modules={[Navigation]} //EffectCoverflow,
+            slidesPerView={1}
+            effect={''} //coverflow
+            coverflowEffect={{
+              rotate: 0,
+              stretch: 0,
+              depth: 0,
+              modifier: 0, //1
+              slideShadows: true,
+            }}
+            centeredSlides
+            //centeredSlidesBounds
+            loop={true}
+            className="mySwiper flex justify-center items-center"
+          >
+            {videos?.map((video, i) => (
+              <SwiperSlide key={video.id + i + i}>
+                <VideoCard
+                  w="w-full"
+                  video={video}
+                  i={i}
+                  key={video.id}
+                  activeVideo={activeSong}
+                  isPlayingVideo={isPlaying}
+                  videos={videos}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+        <div
+          className="w-full flex flex-row justify-between
+             items-center"
+        >
+          <h2 className=" font-bold text-base md:text-4xl text-[#]">Aúdios </h2>
+          <Link href="top-charts">
+            <p className="text-sm md:text-base cursor-pointer">Ver mais</p>
+          </Link>
+        </div>
         <div className="w-full h-[80%] overflow-y-auto flex flex-col md:px-5">
           {view === 'Avaliações' ? (
             <>
-              {valuatedSongs?.map(valuatedItem => (
-                <div
-                  key={valuatedItem?.id}
-                  onClick={() => setSelectedValuation(valuatedItem)}
-                  className={`flex transform-effect flex-row items-center hover:rounded-md ${
-                    selectedValuation?.id === valuatedItem?.id
-                      ? 'bg-[#2e2c2e] text-white'
-                      : 'hover:bg-[#2e2c2e] hover:text-white'
-                  }  p-0 md:p-1 cursor-pointer mb-2`}
-                >
-                  <div className="flex-1 flex flex-row justify-start space-x-2 items-center">
-                    {valuatedItem.cover ? (
-                      <img
-                        src={valuatedItem?.cover}
-                        alt=""
-                        className="w-5 md:w-10 h-5 md:h-10 rounded-sm"
-                      />
-                    ) : (
-                      <img
-                        src={smalLogo}
-                        alt=""
-                        className="w-5 md:w-10 h-5 md:h-10 rounded-sm"
-                      />
-                    )}
-                    <div className="w-full md:flex flex-col justify-start items-center">
-                      <div className="w-full flex flex-col justify-between">
-                        <p className="text-xs md:text-base lg:text-xl font-bold ">
-                          {' '}
-                          {valuatedItem.title}{' '}
-                        </p>
-                        <span className="text-xs">
-                          {' '}
-                          {valuatedItem?.messages?.time}{' '}
-                        </span>
-                      </div>
-                      <span className="w-full flex justify-start text-xs md:text-base">
-                        {' '}
-                        {valuatedItem?.artist}{' '}
-                      </span>
-                    </div>
-                  </div>
+              {valuatedSongs?.map(song => (
+                <div className="w-full relative flex flex-col ">
+                  {songs?.map((song, i) => (
+                    <>
+                      {window.screen.width >= 768 ? (
+                        <TopChartCard
+                          songs={valuatedSongs}
+                          song={song}
+                          isPlaying={isPlaying}
+                          activeSong={activeSong}
+                          i={i}
+                          key={song.id}
+                        />
+                      ) : (
+                        <SongCard
+                          songs={valuatedSongs}
+                          song={song}
+                          isPlaying={isPlaying}
+                          activeSong={activeSong}
+                          i={i}
+                          key={song.id}
+                        />
+                      )}
+                    </>
+                  ))}
                 </div>
               ))}
             </>
           ) : (
             <>
               {songs?.map((song, i) => (
-                <div
-                  key={song?.id}
-                  className={`flex transform-effect flex-row items-center hover:rounded-md ${
-                    activeSong?.id === song?.id
-                      ? 'bg-[#2e2c2e] text-white'
-                      : 'hover:bg-[#2e2c2e] hover:text-white'
-                  }  p-0 md:p-1 cursor-pointer mb-2`}
-                >
-                  <div className="flex-1 flex flex-row justify-start space-x-2 items-center">
-                    {song.cover ? (
-                      <img
-                        src={song?.cover}
-                        alt=""
-                        className="w-5 md:w-10 h-5 md:h-10 rounded-sm"
+                <div className="w-full relative flex flex-col ">
+                  <>
+                    {window.screen.width >= 768 ? (
+                      <TopChartCard
+                        songs={songs}
+                        song={song}
+                        isPlaying={isPlaying}
+                        activeSong={activeSong}
+                        i={i}
+                        key={song.id}
                       />
                     ) : (
-                      <img
-                        src={smalLogo}
-                        alt=""
-                        className="w-5 md:w-10 h-5 md:h-10 rounded-sm"
+                      <SongCard
+                        songs={songs}
+                        song={song}
+                        isPlaying={isPlaying}
+                        activeSong={activeSong}
+                        i={i}
+                        key={song.id}
                       />
                     )}
-                    <div className="w-full md:flex flex-col justify-start items-center ">
-                      <div className="w-full flex flex-col justify-between">
-                        <p className="text-xs md:text-base lg:text-xl font-bold ">
-                          {' '}
-                          {song.title}{' '}
-                        </p>
-                        <span className="text-xs">
-                          {' '}
-                          {song?.messages?.time}{' '}
-                        </span>
-                      </div>
-                      <span className="w-full flex justify-start text-xs md:text-base">
-                        {' '}
-                        {song?.artist}{' '}
-                      </span>
-                    </div>
-                    {isPlaying && activeSong?.title === song.title ? (
-                      <FaPauseCircle
-                        size={35}
-                        className={`text-gray-300 cursor-pointer ${classNames}`}
-                        onClick={handlePauseClick}
-                      />
-                    ) : (
-                      <FaPlayCircle
-                        size={35}
-                        className={`text-gray-300 cursor-pointer ${classNames}`}
-                        onClick={() => handlePlayClick(song, songs, i)}
-                      />
-                    )}
-                  </div>
+                  </>
                 </div>
               ))}
             </>

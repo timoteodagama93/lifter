@@ -2,7 +2,7 @@ import React from 'react';
 
 import { smalLogo } from '../../../img';
 
-const Track = ({ isPlaying, isActive, activeSong }) => (
+const Track = ({ isPlaying, isActive, activeSong, handleePlayVideo: handlePlayVideo }) => (
   <div className="flex-1 flex items-center justify-start">
     {activeSong?.mime_type?.includes('audio/') && (
       <div
@@ -29,12 +29,15 @@ const Track = ({ isPlaying, isActive, activeSong }) => (
     )}
     {activeSong?.mime_type?.includes('video/') && (
       <div
+        onClick={handlePlayVideo}
         className={`${
-          isPlaying && isActive ? '' : ''
+          isPlaying && isActive && activeSong.url
+            ? 'animate-[bounce_5s_linear_infinite] border hover:cursor-pointer'
+            : ''
         } hidden sm:block h-16 w-16 mr-4`}
       >
-        <video autoPlay muted className="h-16 w-16">
-          <source className=" w-full h-full" src={activeSong?.url} />
+        <video className="h-full w-full rounded">
+          <source className=" h-full w-full rounded" src={activeSong?.url} />
         </video>
       </div>
     )}

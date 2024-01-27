@@ -13,17 +13,18 @@ import { useGetSongsQuery } from '@/redux/services/coreApi';
 import { useDispatch } from 'react-redux';
 import { playPause } from '@/redux/features/playerSlice';
 
-function EnviarEstrelas({ song, wich_flex }) {
+function EnviarEstrelas({ collection, wich_flex, collectionType }) {
   const stars = [1, 2, 3, 4, 5];
   const [selectedStar, setSelectedStar] = useState(0);
 
   function submitValuation(stars) {
     setSelectedStar(stars);
     const data = new FormData();
-    data.append('song_id', song?.id);
+    data.append('collection_id', collection?.id);
+    data.append('collection_type', collectionType);
     data.append('stars', stars);
     axios
-      .post('/avaliar', data)
+      .post('/stars-to-collection', data)
       .then(response => {
         console.log(response);
         setSelectedStar(response.data.stars);
@@ -36,7 +37,8 @@ function EnviarEstrelas({ song, wich_flex }) {
   /**GET USER VALUATION TO SELECTED SONG */
   function getUserValuation() {
     const data = new FormData();
-    data.append('song_id', song?.id);
+    data.append('collection_id', collection?.id);
+    data.append('collection_type', collectionType);
     axios
       .post('/get-my-valluation', data)
       .then(response => {

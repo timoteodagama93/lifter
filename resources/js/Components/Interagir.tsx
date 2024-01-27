@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { BiDownload, BiLibrary, BiSend, BiShare, BiStar } from 'react-icons/bi';
-import { MdEmojiEmotions, MdOutlineMessage } from 'react-icons/md';
+import {
+  MdEmojiEmotions,
+  MdOutlineCloseFullscreen,
+  MdOutlineMessage,
+} from 'react-icons/md';
 import { TiMessages } from 'react-icons/ti';
 import PrimaryButton from './PrimaryButton';
 import {
@@ -23,12 +27,15 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import Loader from './Loader';
 import { comment } from 'postcss';
+import FeedbacksSection from './FeedbacksSection';
+import CommentsSection from './CommentsSection';
 
 function Interagir({
   song: Collection,
   collectionType = 'song',
   orientation = 'flex-row',
 }) {
+  
   const [openModal, setOpenModal] = useState(false);
   const [valuateModal, setValuateModal] = useState(false);
   const [feedbackModal, setFeedbackModal] = useState(false);
@@ -109,40 +116,83 @@ function Interagir({
   }
 
   const handleDownload = async () => {
-    try {
-      Swal.fire({
-        title: 'Baixando música',
-        text: 'A música está sendo baixada, mantenha a conexão a Internet, enquanto isso podes continuar a navegar, assim que o download for concluido você será notificado(a).',
-        icon: 'info',
-      });
-      const response = await axios.get(`/download/song/${Collection.id}`, {
-        responseType: 'blob',
-      });
+    if (collectionType == 'song') {
+      try {
+        Swal.fire({
+          title: 'Baixando música',
+          text: 'A música está sendo baixada, mantenha a conexão a Internet, enquanto isso podes continuar a navegar, assim que o download for concluido você será notificado(a).',
+          icon: 'info',
+        });
+        const response = await axios.get(`/download/song/${Collection.id}`, {
+          responseType: 'blob',
+        });
 
-      const blob = new Blob([response.data], {
-        type: response.headers['Tontent-Type'],
-      });
+        const blob = new Blob([response.data], {
+          type: response.headers['Tontent-Type'],
+        });
 
-      const link = document.createElement('a');
-      link.href = window.URL.createObjectURL(blob);
-      link.download = Collection.original_name;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = Collection.original_name;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
 
-      Swal.fire({
-        title: 'Download concluido',
-        text: 'A música foi salva no seu disopositivo.',
-        icon: 'success',
-      });
-    } catch (error) {
-      console.log('ERROR DE DOWNLOAD: ' + error);
-      console.log(error);
-      Swal.fire({
-        title: 'Erro de download da música',
-        text: 'Houve uma falha da tentativa de download da música, tente novamente se persistir o problema entre em contacto com a nossa equipa técnica.',
-        icon: 'error',
-      });
+        Swal.fire({
+          title: 'Download concluido',
+          text: 'A música foi salva no seu disopositivo.',
+          icon: 'success',
+        });
+      } catch (error) {
+        console.log('ERROR DE DOWNLOAD: ' + error);
+        console.log(error);
+        Swal.fire({
+          title: 'Erro de download da música',
+          text: 'Houve uma falha da tentativa de download da música, tente novamente se persistir o problema entre em contacto com a nossa equipa técnica.',
+          icon: 'error',
+        });
+      }
+    } else {
+      try {
+        Swal.fire({
+          title: 'Baixando música',
+          text: 'A música está sendo baixada, mantenha a conexão a Internet, enquanto isso podes continuar a navegar, assim que o download for concluido você será notificado(a).',
+          icon: 'info',
+        });
+        const response = await axios.get(
+          `/download-collection/${Collection.id}/${collectionType}`,
+          {
+            responseType: 'blob',
+          },
+        );
+
+        
+
+        const blob = new Blob([response.data], {
+          type: response.headers['Tontent-Type'],
+        });
+
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = Collection.original_name;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        Swal.fire({
+          title: 'Download concluido',
+          text: 'A música foi salva no seu disopositivo.',
+          icon: 'success',
+        });
+      } catch (error) {
+        console.log('ERROR DE DOWNLOAD: ' + error);
+        console.log(error);
+        Swal.fire({
+          title: 'Erro de download da música',
+          text: 'Houve uma falha da tentativa de download da música, tente novamente se persistir o problema entre em contacto com a nossa equipa técnica.',
+          icon: 'error',
+        });
+      }
     }
   };
 
@@ -152,14 +202,19 @@ function Interagir({
         className={`w-full flex ${orientation} justify-center items-center smooth-transition gap-1 p-1`}
       >
         <button
-          className="text-sm md:text-3xl transform-effect p-1"
+          className="text-lg md:text-3xl transform-effect p-1"
           onClick={handleDownload}
         >
           <BiDownload />
         </button>
         <button
-          className="text-sm md:text-3xl transform-effect p-1"
+          className="text-lg md:text-3xl transform-effect p-1"
           onClick={() => {
+            setOpenModal(false);
+            setShareModal(false);
+            setCommentsModal(false);
+            setFeedbackModal(false);
+
             setValuateModal(true);
             setOpenModal(true);
           }}
@@ -169,7 +224,7 @@ function Interagir({
         </button>
         <button
           onClick={() => curtir()}
-          className={`text-sm md:text-3xl transform-effect p-1 ${
+          className={`text-lg md:text-3xl transform-effect p-1 ${
             liked ? 'bg-purple-400 text-white ' : ''
           } `}
         >
@@ -177,8 +232,13 @@ function Interagir({
           <HiHeart />{' '}
         </button>
         <button
-          className="text-sm md:text-3xl transform-effect p-1"
+          className="text-lg md:text-3xl transform-effect p-1"
           onClick={() => {
+            setOpenModal(false);
+            setShareModal(false);
+            setCommentsModal(false);
+            setValuateModal(false);
+
             setFeedbackModal(true);
             setOpenModal(true);
           }}
@@ -186,8 +246,13 @@ function Interagir({
           <MdOutlineMessage />
         </button>
         <button
-          className="text-sm md:text-3xl transform-effect p-1"
+          className="text-lg md:text-3xl transform-effect p-1"
           onClick={() => {
+            setOpenModal(false);
+            setShareModal(false);
+            setFeedbackModal(false);
+            setValuateModal(false);
+
             setCommentsModal(true);
             setOpenModal(true);
           }}
@@ -196,14 +261,19 @@ function Interagir({
         </button>
 
         <button
-          className="text-sm md:text-3xl transform-effect p-1"
+          className="text-lg md:text-3xl transform-effect p-1"
           onClick={() => {
+            setOpenModal(false);
+            setCommentsModal(false);
+            setFeedbackModal(false);
+            setValuateModal(false);
+
             setShareModal(false);
             setOpenModal(false);
           }}
         >
           <div
-            className="fb-share-button"
+            className="fb-share-button text-lg md:text-3xl"
             data-href="https://developers.facebook.com/docs/plugins/"
             data-layout=""
             data-size=""
@@ -218,7 +288,7 @@ function Interagir({
           </div>
         </button>
         <button
-          className="text-sm md:text-3xl transform-effect p-1"
+          className="text-lg md:text-3xl transform-effect p-1"
           onClick={() => colecionar()}
         >
           <BiLibrary />
@@ -234,31 +304,44 @@ function Interagir({
           setValuateModal(false);
         }}
       >
-        {valuateModal && (
-          <Avaliar
-            collectionType={collectionType}
-            setOpenModal={setOpenModal}
-            song={Collection}
-          />
-        )}
-        {feedbackModal && (
-          <Feedback
-            collectionType={collectionType}
-            setOpenModal={setOpenModal}
-            song={Collection}
-          />
-        )}
-        {commentsModal && (
-          <Comentarios
-            setComments={{}}
-            song={Collection}
-            collectionType={collectionType}
-            setOpenModal={setOpenModal}
-          />
-        )}
-        {shareModal && (
-          <Partilhar collectionType={collectionType} song={Collection} />
-        )}
+        <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
+          <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4] flex justify-between  ">
+            <button
+              onClick={() => setOpenModal(false)}
+              className="transform-effect p-1 justify-center items-center flex flex-col"
+            >
+              {' '}
+              <MdOutlineCloseFullscreen className="w-10 h-auto font-bold" />{' '}
+            </button>
+            <span>Interagir com conteúdo</span>
+          </h1>
+
+          {valuateModal && (
+            <Avaliar
+              collectionType={collectionType}
+              setOpenModal={setOpenModal}
+              song={Collection}
+            />
+          )}
+          {feedbackModal && (
+            <Feedback
+              collectionType={collectionType}
+              setOpenModal={setOpenModal}
+              song={Collection}
+            />
+          )}
+          {commentsModal && (
+            <Comentarios
+              setComments={{}}
+              song={Collection}
+              collectionType={collectionType}
+              setOpenModal={setOpenModal}
+            />
+          )}
+          {shareModal && (
+            <Partilhar collectionType={collectionType} song={Collection} />
+          )}
+        </div>
       </Modal>
     </div>
   );
@@ -271,27 +354,27 @@ function Avaliar({ song: collection, setOpenModal, collectionType }) {
     points: 0,
     emotions: 'HiOutlineEmojiHappy',
     negative: false,
-    why_negative: '',
+    why_negative: 'NULL',
   });
   function submit(e) {
     e.preventDefault();
-    axios
-      .post('share-opinion', form.data)
-      .then(response => {
+    form.post('valuate-colletion', {
+      onSuccess: response => {
         setOpenModal(false);
         Swal.fire({
           title: 'Avaliação enviada',
-          text: 'Obrigado por seu trabalho. Os músicos e os demais usuários agradecem. ',
+          text: 'Obrigado por seu trabalho. O criador e os demais usuários agradecem. ',
           icon: 'success',
         });
-      })
-      .catch(error => {
+      },
+      onError: error => {
         Swal.fire({
           title: 'Erro',
           text: 'Alguma coisa correu mal, reenvie o seu feedback, nós os amantes de músicas agradecemos sua paciência.',
           icon: 'error',
         });
-      });
+      },
+    });
   }
   return (
     <div className="w-full justify-start p-2 flex flex-col">
@@ -310,7 +393,11 @@ function Avaliar({ song: collection, setOpenModal, collectionType }) {
         <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
           Quantas estrelas merece?
         </h1>
-        <EnviarEstrelas song={collection} wich_flex="flex-row " />
+        <EnviarEstrelas
+          collection={collection}
+          collectionType={collectionType}
+          wich_flex="flex-row "
+        />
       </div>
       <form
         onSubmit={e => submit(e)}
@@ -425,46 +512,16 @@ function Avaliar({ song: collection, setOpenModal, collectionType }) {
 }
 
 function Feedback({ song: collection, setOpenModal, collectionType }) {
-  const form = useForm({
-    collection_id: collection.id,
-    collection_type: collectionType,
-    feedback: '',
-    public: false,
-  });
-  function submit(e) {
-    e.preventDefault();
-    axios
-      .post('share-feedback', form.data)
-      .then(response => {
-        form.reset('feedback');
-        setOpenModal(false);
-
-        Swal.fire({
-          title: 'Feedback enviado',
-          text: `Obrigado por seu trabalho. O artista, ${collection.artist} , será notificado. Acreditamos que é graças a esses feedbacks que os artistas farão cada vez mais trabalhos melhores. `,
-          icon: 'success',
-        });
-      })
-      .catch(error => {
-        Swal.fire({
-          title: 'Erro',
-          text: 'Alguma coisa correu mal, reenvie o seu feedback, nós os amantes de músicas agradecemos sua paciência.',
-          icon: 'error',
-        });
-      });
-  }
-
   return (
     <div className="w-full justify-start p-2 flex flex-col bg-[#4c88c4] ">
       <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
         <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
-          Jurado, que dicas, sugestões e opiniões pode deixar para{' '}
-          <strong>{collection.artist}</strong> ?
+          Feedback: que dicas, sugestões e opiniões
         </h1>
-        <p className="justify w-full text-xl my-5">
-          Os músicos dedicam seu tempo na criação de trabalhos que nos
-          acompanham em diferentes momentos de nossas vidas
-        </p>
+        <span className="text-xs">
+          Só é possóvel deixar um feedback por cada coleção (música, arte,
+          vídeo, etc. )podes reenviar um feedback, o anterior será substituido.
+        </span>
       </div>
       <div className="my-1 hidden w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
         <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
@@ -472,52 +529,15 @@ function Feedback({ song: collection, setOpenModal, collectionType }) {
         </h1>
         <p className="justify w-full text-xl mb-2">
           O artista precisar possuir como parte de sua criatividade empatia e a
-          experiência que os possibilitam nos entender (ouvintes) em nossas
-          complexidades e finalmente nos emocionar. Agora temos a oportunidade
-          de contribuir nessa jornada e acelerar o progresso.
+          experiência que os possibilitam nos entender em nossas complexidades e
+          finalmente nos emocionar. Agora temos a oportunidade de contribuir
+          nessa jornada e acelerar o progresso.
         </p>
       </div>
-      <form
-        onSubmit={e => submit(e)}
-        className="w-full flex flex-col justify-start text-base items-center p-5 space-y-2"
-      >
-        <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
-          <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
-            Feedback para <strong>{collection.artist}</strong>
-          </h1>
-          <label className="mx-5" htmlFor="feedback">
-            Deixe um feedback útil e construtivo ao músico, seja sincero.
-          </label>
-          <textarea
-            className="text-black"
-            value={form.data.feedback}
-            onChange={e => form.setData('feedback', e.target.value)}
-            rows={5}
-            required
-          ></textarea>
-        </div>
-        <div className="my-4 bg-white text-black w-full flex gap-1 items-center rounded p-2">
-          <input
-            value={form.data.public}
-            onChange={e => {
-              if (form.data.public == false) {
-                form.setData('public', true);
-              } else {
-                form.setData('public', false);
-              }
-            }}
-            type="checkbox"
-            className="text-[#4c88c4] p-3 transform-effect"
-          />{' '}
-          <label>
-            Selecione, se gostaria de deixar o seu feedback seja público. Fora o
-            artista, todos os usuários podem lê-lo.
-          </label>
-        </div>
-        <button className="transform-effect p-5 font-bold bg-white">
-          Enviar Feedback
-        </button>
-      </form>
+      <FeedbacksSection
+        collection={collection}
+        collectionType={collectionType}
+      />
     </div>
   );
 }
@@ -528,100 +548,20 @@ function Comentarios({
   setComments,
   collectionType,
 }) {
-  const [loadedComments, setLoadedComments] = useState(true);
-  const [errorLoadingComments, setErrorLoadingComments] = useState(false);
-
-  function getComments() {
-    const data = new FormData();
-    data.append('collection_id', collection.id);
-    data.append('collection_type', collectionType);
-    axios
-      .post('get-comments', data)
-      .then(response => {
-        setComments(response.data);
-        setLoadedComments(false);
-      })
-      .catch(error => {
-        setErrorLoadingComments(true);
-      });
-  }
-
-  const form = useForm({
-    collection_id: collection.id,
-    collection_type: collectionType,
-    comment: '',
-    public: false,
-  });
-
-  function submit(e) {
-    e.preventDefault();
-    axios
-      .post('share-comment', form.data)
-      .then(response => {
-        form.reset('comment');
-        getComments();
-      })
-      .catch(error => {
-        Swal.fire({
-          title: 'Erro',
-          text: 'Alguma coisa correu mal, reenvie o seu feedback, nós os amantes de músicas agradecemos sua paciência. Se persistir, relate o problema.',
-          icon: 'error',
-        });
-      });
-  }
-
-  useEffect(getComments, []);
   return (
     <div className="w-full justify-start p-2 flex flex-col">
       <h1 className="text-center text-base md:text-2xl">
-        Comentários dos jurados da música <strong>{collection.title}</strong>
+        Comentários da comunidade a coleção <strong>{collection.title}</strong>
       </h1>
       <p className="justify w-full text-xl my-1">
         Partilhe a sua opinião com a comunidade
       </p>
-      <form
-        onSubmit={e => submit(e)}
-        className="w-full flex flex-col justify-start text-base items-center p-5"
-      >
-        <div className="w-full p-2 rounded bg-black text-white flex-col ">
-          <h1 className="text-xl">Comentário</h1>
-          <label className="mx-5" htmlFor="comment">
-            Comente ou inicie uma discussão!.
-          </label>
-          <div className="w-full flex flex-row">
-            <textarea
-              className="text-black w-full"
-              value={form.data.comment}
-              onChange={e => form.setData('comment', e.target.value)}
-              rows={2}
-              required
-            ></textarea>
-            <PrimaryButton disabled={form.processing}>
-              <BiSend className="w-10 h-10" />
-            </PrimaryButton>
-          </div>
-        </div>
-      </form>
+
+      <CommentsSection
+        collection={collection}
+        collectionType={collectionType}
+      />
     </div>
-  );
-}
-
-function UserComment({ userId }) {
-  if (userId === null) return;
-  const [user, setuser] = useState();
-
-  function getCommentUser(userId) {
-    const data = new FormData().append('id', userId);
-    axios.post('get-comment-user', data).then(response => {
-      setuser(response.data);
-    });
-  }
-
-  useEffect(getCommentUser(userId), []);
-  return (
-    <>
-      <div>{user?.name}</div>
-    </>
   );
 }
 

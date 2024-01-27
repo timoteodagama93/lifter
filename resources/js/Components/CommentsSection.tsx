@@ -7,16 +7,17 @@ import { useForm } from '@inertiajs/react';
 import PrimaryButton from './PrimaryButton';
 import { BiSend } from 'react-icons/bi';
 
-const CommentsSection = ({ item, itemType }) => {
+const CommentsSection = ({ collection, collectionType }) => {
   const [errorLoadingComments, setErrorLoadingComments] = useState(false);
 
   const [comments, setComments] = useState([]);
   const [loadedComments, setLoadedComments] = useState(true);
   function getComments() {
     const data = new FormData();
-    data.append('post_id', item.id);
+    data.append('collection_id', collection.id);
+    data.append('collection_type', collectionType);
     axios
-      .post('comments', data)
+      .post('get-comments', data)
       .then(response => {
         setComments(response.data);
         setLoadedComments(false);
@@ -27,26 +28,27 @@ const CommentsSection = ({ item, itemType }) => {
   }
 
   const form = useForm({
-    post_id: item.id,
+    collection_id: collection.id,
+    collection_type: collectionType,
     comment: '',
     public: false,
   });
 
   function submit(e) {
     e.preventDefault();
-    axios
-      .post('comment', form.data)
-      .then(response => {
+    form.post('share-comment', {
+      onSuccess: response => {
         form.setData('comment', '');
-        form.setData('public', true);
-      })
-      .catch(error => {
+        getComments();
+      },
+      onError: error => {
         Swal.fire({
           title: 'Erro',
           text: 'Alguma coisa correu mal, reenvie o seu feedback, nós os amantes de músicas agradecemos sua paciência. Se persistir, relate o problema.',
           icon: 'error',
         });
-      });
+      },
+    });
   }
 
   useEffect(getComments, []);
@@ -83,7 +85,7 @@ const CommentsSection = ({ item, itemType }) => {
       <div className="comments-section">
         <div className="comments">
           {comments?.map(comment => (
-            <Comment key={comment.id} {...comment}  />
+            <Comment key={comment.id} {...comment} />
           ))}
         </div>
       </div>

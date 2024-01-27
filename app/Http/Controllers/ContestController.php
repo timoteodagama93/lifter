@@ -202,9 +202,9 @@ class ContestController extends Controller
         $contestId = Request::get('contest_id');
         $done = ContestUserVote::updateOrCreate(['user_id' => $userId,  'contest_id' => $contestId], ['collection_id' => Request::get('collection_id'),]);
         if ($done) {
-            return Inertia::render('Concursos/Index', ['contest' => Contest::find($contestId)]); // response(true, 200);
+            return to_route('concursos', [$done]); // Inertia::render('Concursos/Index', ['contest' => Contest::find($done)]); // response(true, 200);
         } else {
-            return Inertia::render('Concursos/Index', ['contest' => Contest::find($contestId)]);
+            return to_route('concursos', [$done]); // Inertia::render('Concursos/Index', ['contest' => Contest::find($contestId)]);
         }
     }
 
@@ -225,18 +225,19 @@ class ContestController extends Controller
         $contestId = Request::get('contest_id');
         $userId = auth()->id();
 
-        $sql = "SELECT id FROM contest_user_votes COUNT where song_id='$songId' AND contest_id='$contestId'";
+        $sql = "SELECT id FROM contest_user_votes COUNT where collection_id='$songId' AND contest_id='$contestId'";
         return response()->json(DB::select($sql));
     }
 
     public function i_voted_on_this()
     {
-        $songId = Request::get('song_id');
+        $collectionId = Request::get('collection_id');
         $contestId = Request::get('contest_id');
         $userId = auth()->id();
 
-        $sql = "SELECT id FROM contest_user_votes COUNT where song_id='$songId' AND user_id =$userId AND contest_id='$contestId'";
+        $sql = "SELECT id FROM contest_user_votes COUNT where collection_id='$collectionId' AND user_id =$userId AND contest_id='$contestId'";
         $participant = DB::select($sql);
+       return $participant;
         if ($participant) {
             return response($participant);
         } else {

@@ -98,8 +98,8 @@ export default function AppLayout({
         <Banner />
         <Sidebar />
         <div className="relative w-full h-full min-h-full min-w-full flex flex-col">
-          <header className=" relative w-full h-28 md:h-[10%] flex flex-col justify-center items-center  shadow-lg  rounded shadow-black pb-5 md:pb-1 px-1 md:px-5">
-            <div className="w-full h-12 border-b md:border-b-0 md:h-full flex justify-between items-center py-1">
+          <header className="bg-gradient-to-br _from-[#f6cc33] _to-[#f6cc33]  relative w-full h-28 md:h-[12%] flex flex-col justify-center items-center  shadow-lg  rounded shadow-black pb-5 md:pb-1 px-1 md:px-5">
+            <div className="w-full h-12 border-b md:border-b-0 md:h-full flex justify-between items-center">
               {/**LOGO */}
               <Link href="/">
                 <img
@@ -115,15 +115,15 @@ export default function AppLayout({
                 <BiSearch className="mx-1 text-3xl text-center" />
               </button>
 
-              <div className="flex  justify-center items-center cursor-pointer ">
+              <div className=" flex text-bold text-xl  justify-center items-center bg-[#4c88c4] p-2 rounded-lg cursor-pointer transform-effect">
                 {openMobileMenu ? (
                   <MdClose
-                    className="w-6 h-6 text-[#4c88c4] transform-effect transition "
+                    className="text-3xl w-7 h-7 transition-all "
                     onClick={() => setOpenMobileMenu(false)}
                   />
                 ) : (
                   <HiOutlineMenu
-                    className="w-8 h-8 text-[#4c88c4] transform-effect "
+                    className="w-7 h-7 text-3xl  transition-all "
                     onClick={() => setOpenMobileMenu(true)}
                   />
                 )}
@@ -233,7 +233,7 @@ export default function AppLayout({
                           : 'hidden'
                       }`}
                     >
-                      Festivais
+                      Concursos
                     </span>
                   </Link>
 
@@ -286,7 +286,7 @@ export default function AppLayout({
             </div>
           </header>
           {/* <!-- Page Content --> */}
-          <main className="relative h-[88%] md:h-[90%] w-full  flex mx-auto justify-start items-start  p-1 rounded overflow-y-hidden mb-24 md:mb-4 ">
+          <main className="relative h-[88%] md:h-[90%] w-full  flex mx-auto justify-start items-start  p-1 rounded overflow-y-hidden mb-0 pb-0  ">
             <Container>{children}</Container>
           </main>
         </div>

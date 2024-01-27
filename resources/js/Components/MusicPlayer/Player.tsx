@@ -48,12 +48,11 @@ const Player = ({
             onEnded={onEnded}
             onTimeUpdate={onTimeUpdate}
             onLoadedData={onLoadedData}
-            className='w-14 h-14 hidden'
+            className="w-14 h-14 hidden"
+            
           />
         </>
       )}
-
-      
     </>
   );
 };

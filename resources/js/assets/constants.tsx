@@ -266,12 +266,18 @@ export const zela_bg_green = '#377377';
 
 export const generos = [
   { title: 'Kuduro', value: 'KUDURO' },
-  { title: 'Getto Zouk', value: 'Getto_Zouk' },
+  { title: 'Zouk', value: 'Zouk' },
   { title: 'Pop', value: 'POP' },
-  { title: 'Hip-Hop', value: 'HIP_HOP_RAP' },
+  { title: 'Hip-Hop', value: 'HIP_HOP' },
   { title: 'Semba', value: 'SEMBA' },
   { title: 'Kizomba', value: 'KIZOMBA' },
   { title: 'Naija', value: 'NAIJA' },
-  { title: 'Zouk', value: 'ZOUK' },
+  { title: 'Gospel', value: 'GOSPEL' },
   { title: 'Afro-House', value: 'AFRO_HOUSE' },
+  { title: 'Samba', value: 'SAMBA' },
+  { title: 'Funk', value: 'FUNK' },
+  { title: 'Rock', value: 'ROCK' },
+  { title: 'Rebita', value: 'Rebita' },
+  { title: 'RnB', value: 'RNB' },
+  { title: 'RAP', value: 'RAP' },
 ];

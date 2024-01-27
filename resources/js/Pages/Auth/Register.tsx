@@ -1,6 +1,6 @@
 import { Link, useForm, Head } from '@inertiajs/react';
 import classNames from 'classnames';
-import React from 'react';
+import React, { useState } from 'react';
 import useRoute from '@/Hooks/useRoute';
 import useTypedPage from '@/Hooks/useTypedPage';
 import AuthenticationCard from '@/Components/AuthenticationCard';
@@ -11,12 +11,18 @@ import TextInput from '@/Components/TextInput';
 import InputError from '@/Components/InputError';
 import RestCountries from '@/Components/RestCountries';
 
+import { countries } from 'countries-list';
+const paises = [...Object.values(countries)];
+
 export default function Register() {
   const page = useTypedPage();
   const route = useRoute();
+  const [countryIndex, setCountryIndex] = useState(0);
+
   const form = useForm({
     name: '',
     phone: '',
+    country: paises[7].name + ':' + paises[7].phone,
     email: '',
     password: '',
     password_confirmation: '',
@@ -35,6 +41,29 @@ export default function Register() {
       <Head title="Register" />
 
       <form onSubmit={onSubmit}>
+        <div className="mt-4  w-full ">
+          <InputLabel htmlFor="phone">País </InputLabel>
+
+          <select
+            name="code"
+            id="code"
+            defaultValue={paises[8].name}
+            onChange={e => {
+              setCountryIndex(Number.parseInt(e.currentTarget.value));
+              form.setData(
+                'country',
+                paises[countryIndex].name + ':' + paises[countryIndex].phone,
+              );
+            }}
+          >
+            {paises.map(country => (
+              <option value={country.name + ':' + country.phone}>
+                {country.name}
+              </option>
+            ))}
+          </select>
+          <InputError className="mt-2" message={form.errors.phone} />
+        </div>
         <div>
           <InputLabel htmlFor="name">Nome</InputLabel>
           <TextInput
@@ -50,19 +79,13 @@ export default function Register() {
           <InputError className="mt-2" message={form.errors.name} />
         </div>
 
-        <div className="mt-4 flex  w-full ">
+        <div className="mt-4  w-full ">
           <InputLabel htmlFor="phone">Nº de telefone</InputLabel>
-          <div className="mt-4 flex  w-full ">
-            <select>
-              {' '}
-              <RestCountries />
-            </select>
-          </div>
           <div className="flex  w-full ">
-            <input
+            <TextInput
               id="phone"
-              type="number"
-              className="mt-1 block "
+              type="tel"
+              className="mt-1 block w-full "
               value={form.data.phone}
               onChange={e => form.setData('phone', e.currentTarget.value)}
               required

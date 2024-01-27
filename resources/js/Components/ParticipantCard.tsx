@@ -59,8 +59,8 @@ const ParticipantCard = ({ song: participant, songs, i, contest }) => {
   useEffect(() => {
     axios
       .post('i-voted-on-this', {
-        song_id: participant.song_id,
-        contest_id: participant.contest_id,
+        collection_id: participant.id,
+        contest_id: contest.id,
       })
       .then(response => {
         if (response.data.length > 0) setIsMyVotedSong(true);
@@ -69,10 +69,15 @@ const ParticipantCard = ({ song: participant, songs, i, contest }) => {
   }, []);
 
   const handleVote = () => {
+    console.log('DADOS DO PARTICIPANTE:');
+    console.log(participant);
+    console.log(participant.id);
+    console.log(contest.id);
+
     axios
       .post('vote-on-participant', {
-        collection_id: participant.song_id,
-        contest_id: participant.contest_id,
+        collection_id: participant.id,
+        contest_id: contest.id,
       })
       .then(response => {
         console.log('RESPONSE AFTER VOTE:' + response.data);

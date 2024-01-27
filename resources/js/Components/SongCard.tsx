@@ -2,12 +2,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import PlayPause from './PlayPause.tsx';
 import { Link } from '@inertiajs/react';
 
-import { playPause, setActiveSong } from '../redux/features/playerSlice.js';
+import {
+  playPause,
+  playPauseVideo,
+  setActiveSong,
+} from '../redux/features/playerSlice.js';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { FaPauseCircle, FaPlayCircle } from 'react-icons/fa';
 import { smalLogo } from '../../img';
 import axios from 'axios';
+import Interagir from './Interagir.js';
 
 function SongCard({
   song,
@@ -24,7 +29,11 @@ function SongCard({
   };
   const handlePlayClick = () => {
     dispatch(setActiveSong({ song, songs, i }));
-    dispatch(playPause(true));
+    if (song.mime_type.includes('audio/')) {
+      dispatch(playPause(true));
+    } else {
+      dispatch(playPauseVideo(true));
+    }
   };
 
   const [artist, setArtist] = useState(null);
@@ -44,7 +53,7 @@ function SongCard({
     >
       <div className=" relative w-full h-full flex justify-center group">
         <div
-          className={`absolute z-10 inset-0 justify-center items-center bg-black bg-opacity-50 group-hover:flex ${
+          className={`absolute z-20 inset-0 justify-center items-center bg-black bg-opacity-50 group-hover:flex ${
             activeSong?.title === song.title
               ? 'flex bg-black bg-opacity-70'
               : ' hidden'
@@ -93,9 +102,16 @@ function SongCard({
             }
           >
             {song.artist}{' '}
-            {!(song.participacoes === '') ? ' ft ' + song.participacoes : ''}
+            {song?.participacoes ? ' ft ' + song.participacoes : ''}
           </Link>
         </p>
+      </div>
+      <div className="w-full flex">
+        <Interagir
+          collectionType="song"
+          song={song}
+          key={song.id + Math.random() * i}
+        />
       </div>
     </div>
   );

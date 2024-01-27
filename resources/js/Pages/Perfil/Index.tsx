@@ -1,3 +1,3 @@
 
-export { default as Perfil } from './Perfil';
+export { default as UserFeed } from './UserFeed';
 export { default as Contactos } from './Contactos';
