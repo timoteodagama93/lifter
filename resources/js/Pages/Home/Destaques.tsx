@@ -20,7 +20,7 @@ function Destaques({songs}) {
       <div className="mt-1 flex flex-col h-[100vh] pb-36 md:h-[75vh] overflow-auto ">
           {songs?.map((song, id) => (
             <TopChartCard
-              songs={data}
+              songs={songs}
               song={song}
               isPlaying={isPlaying}
               activeSong={activeSong}

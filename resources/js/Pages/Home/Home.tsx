@@ -90,7 +90,7 @@ export default function Home({ posts }: Props) {
                 }  p-2 mx-1 cursor-pointer shadow-sm b-[#4c88c4] hover:bg-[#2e2c2e]  text-gray-400`}
               >
                 <Link
-                  onClick={() => setCurrentPage(<Destaques />)}
+                  onClick={() => setCurrentPage(<Destaques songs={songs} />)}
                   href={route('/')}
                   className="flex flex-col lg:flex-row justify-center items-center gap-1"
                 >

@@ -107,7 +107,7 @@ export default function AppLayout({
               {/**LOGO */}
               <Link href="/">
                 <img
-                  className="w-auto h-16 object-contain flex"
+                  className="w-auto h-48 object-contain flex"
                   src={Logo}
                   alt="logo"
                 />
