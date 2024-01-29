@@ -98,6 +98,7 @@ Route::middleware([
         ]);
     })->name('concursos');
 
+
     Route::get('/comunidade', function () {
         return Inertia::render('CommunityDiscussion', [
             'contests' => Contest::all()

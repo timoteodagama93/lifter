@@ -81,7 +81,7 @@ function Lifter() {
         <div className="flex flex-col p-2 spce-y-5">
           <div className="my-1 w-full text-base text-black   bg-[#fff] rounded relative flex flex-col gap-1 p-2 shadow">
             <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
-              Gestor de Marketing e vendas
+              Técnico de Marketing e vendas
             </h1>
             <p>
               {' '}
