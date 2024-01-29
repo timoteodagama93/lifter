@@ -35,6 +35,7 @@ import { GiSoundWaves } from 'react-icons/gi';
 import { FaArtstation, FaCross } from 'react-icons/fa';
 import VideoSinglePlayer from '@/Pages/Videos/VideoSinglePlayer';
 import { random } from 'lodash';
+import { motion } from 'framer-motion';
 interface Props {
   title: string;
   bg?: string;
@@ -69,6 +70,7 @@ export default function AppLayout({
     activeVideo,
     isFullScreenPlayer,
   } = useSelector(state => state.player);
+  
 
   const { openMobileMenu, setOpenMobileMenu } = useStateContext();
   const [openSearch, setOpenSearch] = useState(false);
@@ -87,7 +89,9 @@ export default function AppLayout({
         src="https://connect.facebook.net/pt_PT/sdk.js#xfbml=1&version=v18.0&appId= 1588022325068116"
         nonce="JTz0V4E4"
       ></script>
-      <div className="w-screen h-screen flex bg-gradient-to-br from-[#222d84] to-[#543889] __dark:from-[#282728] __dark:to-[#2e2525w] fixed top-0 left-0 right-0 p-1 __bg-white text-white">
+      <motion.div
+  animate={{ x: 0 }}
+  transition={{ delay: 1 }} className="w-screen h-screen flex bg-gradient-to-br from-[#222d84] to-[#543889] __dark:from-[#282728] __dark:to-[#2e2525w] fixed top-0 left-0 right-0 p-1 __bg-white text-white">
         {isPlayingVideo && (
           <VideoSinglePlayer key={activeVideo.id + Math.floor(random() / 60)} />
         )}
@@ -290,7 +294,8 @@ export default function AppLayout({
             <Container>{children}</Container>
           </main>
         </div>
-      </div>
+
+      </motion.div>
       {}
       <Modal
         isOpen={isPlayingVideo && false}

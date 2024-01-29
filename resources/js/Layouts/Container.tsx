@@ -14,6 +14,7 @@ import Songs from '@/Pages/Musicas/Songs';
 import useTypedPage from '@/Hooks/useTypedPage';
 import route from 'ziggy-js';
 import RestCountries from '@/Components/RestCountries';
+import { motion } from 'framer-motion';
 
 interface Props {
   renderBottom?(): JSX.Element;
@@ -43,7 +44,7 @@ function Container({
   const [activeBottomButton, setActiveBottomButton] = useState('');
   const page = useTypedPage();
   return (
-    <div
+    <motion.div
       className="w-full h-full min-h-full min-w-full backdrop-blur-lg mb-16 "
       style={{ background: `url({pageBG})` }}
     >
@@ -237,7 +238,7 @@ function Container({
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

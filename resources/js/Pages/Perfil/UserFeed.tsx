@@ -118,7 +118,10 @@ function UserFeed({ contest_edition, contest }) {
             <button
               onClick={() => setOpenNewImagePost(true)}
               className={`shadow-lg shadow-black border ${
-                page.props.auth.user?.is_editor ? 'flex' : 'hidden'
+                page.props.auth.user?.is_editor ||
+                page.props.auth.user?.is_manager
+                  ? 'flex'
+                  : 'hidden'
               }  flex-col text-4xl  justify-start items-center p-1 rounded `}
             >
               <BiNews className="animate-bounce" />

@@ -37,6 +37,7 @@ import PostCard from '@/Components/PostCard';
 import CartaoNoticia from '@/Components/CartaoNoticia';
 import Comment from '@/Components/Comment';
 import AppLayout from '@/Layouts/AppLayout';
+import CardChakraUI from '@/Components/CardChakraUI';
 
 function Noticias({}) {
   const page = useTypedPage();
@@ -174,12 +175,21 @@ function DisplayNew({ posts }) {
                   item={postToComment}
                   itemType="news"
                 />
-                
               </div>
             </div>
           </div>
         </div>
       </Modal>
+      <div className="bg-white p-5">
+
+      {posts.map(post => (
+        <CardChakraUI
+        key={post?.id}
+        post={post}
+        setPostToComment={setPostToComment}
+        />
+        ))}
+        </div>
 
       <div className="w-full md:w-[60%] ">
         <div className="community-discussion">
@@ -223,8 +233,10 @@ function FiltrarNoticias({ setPosts, setLoading, setError, setFilter }) {
   }
   return (
     <div className="w-full flex justify-center items-center  text-black ">
-      <select onChange={e => loadPostsByFilter(e)} className="rounded-lg shadow-xl shadow-black">
-
+      <select
+        onChange={e => loadPostsByFilter(e)}
+        className="rounded-lg shadow-xl shadow-black"
+      >
         <option value="tudo">Tudo</option>
         <option value="lifter">Redação Lifter</option>
         <option value="gospel">Comunidade de Gospel</option>
