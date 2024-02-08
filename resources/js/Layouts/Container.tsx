@@ -55,7 +55,7 @@ function Container({
         <div
           className={`relative text-gray-900 w-full
           lg:w-[75%]
-          h-full top-0 left-0 shadow-xl flex flex-col   bg-cyan-400 `}
+          h-full top-0 left-0 shadow-xl flex flex-col   bg-[#245575] `}
         >
           <div
             className={`relative  text-white w-full ${

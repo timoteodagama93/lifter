@@ -56,7 +56,7 @@ function Sidebar({}) {
       {/**sidebar telefones */}
       <div
         style={{ transition: '1s' }}
-        className={`absolute top-0 h-screen w-2/3 md:w-[240px] bg-gradient-to-tl from-white/10 to-[#483d8b] backdrop-blur z-10 p-3  smooth-transition ${
+        className={`absolute top-0 h-screen w-2/3 md:w-[240px] bg-gradient-to-tl from-white/10 to-[#245575] backdrop-blur z-10 p-3  smooth-transition ${
           openMobileMenu ? 'left-0' : '-left-full '
         }  `}
       >
@@ -117,7 +117,7 @@ function Links({ links, setOpenMobileMenu }) {
           ${
             route().current()?.includes(item.href)
               ? 'border-l-4 border-[#4c88c4]  bg-[#2e2e2e] text-cyan-400 '
-              : ' text-gray-400'
+              : ' text-white'
           }   items-center
           `}
               onClick={() => {

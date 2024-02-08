@@ -64,7 +64,7 @@ function VideoSinglePlayer({}) {
           )}
           <button
             onClick={handleFull}
-            className="absolute top-0 right-0 hidden  transform-effect px-5 text-xl uppercase bg-blue-400 z-50 "
+            className="absolute top-0 right-0 float-right  transform-effect px-5 text-xl uppercase bg-blue-400 z-50 "
           >
             {fullscreen ? (
               <MdOutlineCloseFullscreen className="w-10 h-10" />
@@ -74,7 +74,7 @@ function VideoSinglePlayer({}) {
           </button>
           <div
             className={` relative ${
-              fullscreen ? 'w-full h-full' : ' w-full md:w-1/2'
+              fullscreen ? 'w-screen h-screen' : ' w-full md:w-1/2'
             }  group`}
           >
             <div
@@ -108,7 +108,7 @@ function VideoSinglePlayer({}) {
 
             {fullscreen && (
               <div className="absolute z-40 min-h-screen w-screen h-screen top-0 left-0 bg-black">
-                <video autoPlay className=" min-h-screen w-full h-full">
+                <video autoPlay className=" min-h-screen w-screen h-screen">
                   <source src={activeVideo.url} type={activeVideo.mime_type} />
                 </video>
               </div>

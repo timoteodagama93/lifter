@@ -91,7 +91,7 @@ export default function AppLayout({
       ></script>
       <motion.div
   animate={{ x: 0 }}
-  transition={{ delay: 1 }} className="w-screen h-screen flex bg-gradient-to-br from-[#222d84] to-[#543889] __dark:from-[#282728] __dark:to-[#2e2525w] fixed top-0 left-0 right-0 p-1 __bg-white text-white">
+  transition={{ delay: 1 }} className="w-screen h-screen flex bg-gradient-to-br from-[#e9e9e9] to-[#e9e9e9] __dark:from-[#282728] __dark:to-[#2e2525w] fixed top-0 left-0 right-0 p-1 __bg-white text-white">
         {isPlayingVideo && (
           <VideoSinglePlayer key={activeVideo.id + Math.floor(random() / 60)} />
         )}
@@ -103,11 +103,11 @@ export default function AppLayout({
         <Sidebar />
         <div className="relative w-full h-full min-h-full min-w-full flex flex-col">
           <header className="bg-gradient-to-br _from-[#f6cc33] _to-[#f6cc33]  relative w-full h-28 md:h-[12%] flex flex-col justify-center items-center  shadow-lg  rounded shadow-black pb-5 md:pb-1 px-1 md:px-5">
-            <div className="w-full h-12 border-b md:border-b-0 md:h-full flex justify-between items-center">
+            <div className="w-full h-12 border-[#2689ce] border-b md:border-b-0 md:h-full flex justify-between items-center">
               {/**LOGO */}
               <Link href="/">
                 <img
-                  className="w-auto h-48 object-contain flex"
+                  className="w-auto h-20 md:h-28 object-contain flex"
                   src={Logo}
                   alt="logo"
                 />
