@@ -72,7 +72,8 @@ function Songs({}) {
                 </button>
                 <span>Adicionar música</span>
               </h1>
-              {page.props.auth?.user?.is_artist ? (
+              {page.props.auth?.user?.is_artist &&
+              page?.props?.artist_account ? (
                 <AddSong artist={page.props.artist_account} from="" />
               ) : (
                 <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">

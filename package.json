@@ -25,9 +25,6 @@
     "vite": "^3.2.6"
   },
   "dependencies": {
-    "@chakra-ui/react": "^2.8.2",
-    "@emotion/react": "^11.11.3",
-    "@emotion/styled": "^11.11.0",
     "@headlessui/react": "^1.7.14",
     "@inertiajs/core": "^1.0.6",
     "@inertiajs/react": "^1.0.6",

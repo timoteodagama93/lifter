@@ -4,11 +4,16 @@ import { useStateContext } from '@/contexts/PaginaActualContext';
 
 import Welcome from './Registers/Welcome';
 import Artist from './Artista/Index';
+import useTypedPage from '@/Hooks/useTypedPage';
 
-function Index({ isArtist }) {
+function Index({}) {
+  const page = useTypedPage();
+
   const { currentPage, setCurrentPage } = useStateContext();
   useEffect(() => {
-    isArtist ? setCurrentPage(<Artist />) : setCurrentPage(<Welcome />);
+    page.props.auth?.user?.is_artist && page?.props?.artist_account
+      ? setCurrentPage(<Artist />)
+      : setCurrentPage(<Welcome />);
   }, []);
   return (
     <AppLayout title="Perfil">

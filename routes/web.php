@@ -43,6 +43,13 @@ use Inertia\Inertia;
 |
 */
 
+Route::get('/', function () {
+    return Inertia::render('Home/Welcome', [
+        'songs' => DB::select('SELECT * FROM songs ORDER BY created_at'),
+        'posts' => DB::select('SELECT * FROM posts ORDER BY created_at DESC')
+    ]); 
+})->name('/');
+
 
 Route::middleware([
     'auth:sanctum',
@@ -53,18 +60,21 @@ Route::middleware([
     /**
      * ROUTAS PRINCIPAIS
      */
+    Route::get('/home', function () {
+        return Inertia::render('Home/Home', [
+            'songs' => DB::select('SELECT * FROM songs ORDER BY created_at'),
+            'posts' => DB::select('SELECT * FROM posts ORDER BY created_at DESC')
+        ]);
+    })->name('/home');
+
+
     Route::post('/participar-ascensao', function () {
         $user_id = auth()->id();
         $as = Request::get('as');
         $inserted = FestivalUser::updateOrCreate(['festival_id' => 1, 'user_id' => $user_id], ['as' => $as]);
         return $inserted;
     })->name('/participar-ascensao');
-    Route::get('/', function () {
-        return Inertia::render('Home/Home', [
-            'songs' => DB::select('SELECT * FROM songs ORDER BY created_at'),
-            'posts' => DB::select('SELECT * FROM posts ORDER BY created_at DESC')
-        ]);
-    })->name('/');
+
 
     Route::get('/musicas', function () {
         return Inertia::render('Musicas/Musicas', []);

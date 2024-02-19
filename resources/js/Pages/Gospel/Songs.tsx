@@ -107,7 +107,7 @@ function Songs({}) {
               ></div>
 
               <div
-                class="fb-login-button"
+                className="fb-login-button"
                 data-width=""
                 data-size=""
                 data-button-type=""

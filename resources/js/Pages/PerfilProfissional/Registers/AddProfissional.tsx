@@ -14,10 +14,15 @@ import Loader from '../../../Components/Loader';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import Welcome from './Welcome';
 import Profissional from '../Outros/Index';
+import { countries } from 'countries-list';
+import route from 'ziggy-js';
+import Checkbox from '@/Components/Checkbox';
 export default function AddProfissional({}) {
   const page = useTypedPage();
   const { setCurrentPage } = useStateContext();
   const [isLoading, setIsLoading] = useState(false);
+
+  const paises = [...Object.values(countries)];
 
   const formProfissional = useForm({
     _method: 'POST',
@@ -106,7 +111,7 @@ export default function AddProfissional({}) {
         </div>
       ) : (
         <>
-          <div className="p-5 m-1 shadow-lg shadow-black"> 
+          <div className="p-5 m-1 shadow-lg shadow-black">
             <p className="w-full text-xl flex justify-between uppercase gap-5">
               <button
                 onClick={() => setCurrentPage(<Welcome />)}
@@ -114,11 +119,11 @@ export default function AddProfissional({}) {
               >
                 <BiArrowBack className="text-xl" />
               </button>
-              <span>Criar perfil profissional</span>
+              <span>Juntar-se à rede Lifter</span>
             </p>
 
             <SectionBorder></SectionBorder>
-            <form onSubmit={onSubmit} className="">
+            <form onSubmit={onSubmit} className="text-white">
               {photoPreview ? (
                 // <!-- New Profile Photo Preview -->
                 <div className="">
@@ -189,7 +194,7 @@ export default function AddProfissional({}) {
 
               <div className="mt-4">
                 <InputLabel htmlFor="category">
-                  Categoriaa profissional
+                  Categoria profissional
                 </InputLabel>
                 <select
                   id="category"
@@ -200,10 +205,10 @@ export default function AddProfissional({}) {
                   }
                   required
                 >
-                  <option>Agente</option>
                   <option>Produtor</option>
+                  <option>Agente</option>
                   <option>DJ</option>
-                  <option>Influencer</option>
+                  <option>Influenciador</option>
                   <option>Promotor</option>
                   <option>Blogueiro</option>
                 </select>
@@ -214,7 +219,7 @@ export default function AddProfissional({}) {
               </div>
 
               <div className="mt-4">
-                <InputLabel htmlFor="contact">Contacto para shows</InputLabel>
+                <InputLabel htmlFor="contact">Contacto </InputLabel>
                 <span>Indicativo de país, ex: Angola - (+244)</span>
                 <TextInput
                   id="contact"
@@ -245,12 +250,11 @@ export default function AddProfissional({}) {
                   defaultValue="Angola"
                   required
                 >
-                  <option value="angola">Angola</option>
-                  <option value="mocambique">Moçambique</option>
-                  <option value="caboverde">Cabo Verde</option>
-                  <option value="portugal">Portugal</option>
-                  <option value="brasil">Brasil</option>
-                  <option value="outro">Outro</option>
+                  {paises.map(country => (
+                    <option value={country.name + ':' + country.phone}>
+                      {country.name}
+                    </option>
+                  ))}
                 </select>
                 <InputError
                   className="mt-2"
@@ -306,6 +310,48 @@ export default function AddProfissional({}) {
                   className="mt-2"
                   message={formProfissional.errors.about}
                 />
+              </div>
+
+              <div className="mt-4">
+                <InputLabel htmlFor="terms">
+                  <div className="flex items-center">
+                    <Checkbox
+                      name="terms"
+                      id="terms"
+                      checked={formProfissional.data.terms}
+                      onChange={e =>
+                        formProfissional.setData(
+                          'terms',
+                          e.currentTarget.checked,
+                        )
+                      }
+                      required
+                    />
+
+                    <div className="ml-2  text-gray-100 rounded-md ">
+                      Concordo com os{' '}
+                      <a
+                        target="_blank"
+                        href={route('terms.show')}
+                        className="underline text-sm text-white hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                      >
+                        Termos de serviços
+                      </a>{' '}
+                      e{' '}
+                      <a
+                        target="_blank"
+                        href={route('policy.show')}
+                        className="underline text-sm text-white hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                      >
+                        Politicas de privacidade
+                      </a>
+                    </div>
+                  </div>
+                  <InputError
+                    className="mt-2"
+                    message={formProfissional.errors.terms}
+                  />
+                </InputLabel>
               </div>
 
               <div className="flex items-center justify-end mt-4">

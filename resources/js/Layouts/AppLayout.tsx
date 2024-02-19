@@ -70,7 +70,6 @@ export default function AppLayout({
     activeVideo,
     isFullScreenPlayer,
   } = useSelector(state => state.player);
-  
 
   const { openMobileMenu, setOpenMobileMenu } = useStateContext();
   const [openSearch, setOpenSearch] = useState(false);
@@ -90,8 +89,10 @@ export default function AppLayout({
         nonce="JTz0V4E4"
       ></script>
       <motion.div
-  animate={{ x: 0 }}
-  transition={{ delay: 1 }} className="w-screen h-screen flex bg-gradient-to-br from-[#e9e9e9] to-[#e9e9e9] __dark:from-[#282728] __dark:to-[#2e2525w] fixed top-0 left-0 right-0 p-1 __bg-white text-white">
+        animate={{ x: 0 }}
+        transition={{ delay: 1 }}
+        className="w-screen h-screen flex bg-gradient-to-br from-[#e6e6e6] to-[#fff] __dark:from-[#282728] __dark:to-[#2e2525w] fixed top-0 left-0 right-0 p-1 __bg-white text-white"
+      >
         {isPlayingVideo && (
           <VideoSinglePlayer key={activeVideo.id + Math.floor(random() / 60)} />
         )}
@@ -102,24 +103,24 @@ export default function AppLayout({
         <Banner />
         <Sidebar />
         <div className="relative w-full h-full min-h-full min-w-full flex flex-col">
-          <header className="bg-gradient-to-br _from-[#f6cc33] _to-[#f6cc33]  relative w-full h-28 md:h-[12%] flex flex-col justify-center items-center  shadow-lg  rounded shadow-black pb-5 md:pb-1 px-1 md:px-5">
-            <div className="w-full h-12 border-[#2689ce] border-b md:border-b-0 md:h-full flex justify-between items-center">
+          <header className="bg-gradient-to-br _from-[#f6cc33] _to-[#f6cc33]  relative w-full h-28 md:h-[12%] flex flex-col justify-center items-center  shadow-lg  rounded shadow-black mb-2 md:pb-1 px-0 md:px-5">
+            <div className="w-full h-12 border-[#2689ce] border-b md:border-b-0 md:h-full flex justify-between items-center px-1">
               {/**LOGO */}
               <Link href="/">
                 <img
-                  className="w-auto h-20 md:h-28 object-contain flex"
+                  className="w-auto h-12 md:h-20 object-contain flex"
                   src={Logo}
                   alt="logo"
                 />
               </Link>
               <button
                 onClick={() => setOpenSearch(true)}
-                className=" md:flex text-bold text-xl  justify-center items-center bg-[#4c88c4] p-2 rounded-lg hidden"
+                className=" md:flex text-bold text-xl  justify-center items-center bg-[#0094f8] p-2 rounded-lg hidden"
               >
                 <BiSearch className="mx-1 text-3xl text-center" />
               </button>
 
-              <div className=" flex text-bold text-xl  justify-center items-center bg-[#4c88c4] p-2 rounded-lg cursor-pointer transform-effect">
+              <div className=" flex text-bold text-xl  justify-center items-center bg-[#0094f8] p-2 rounded-lg cursor-pointer transform-effect">
                 {openMobileMenu ? (
                   <MdClose
                     className="text-3xl w-7 h-7 transition-all "
@@ -133,8 +134,8 @@ export default function AppLayout({
                 )}
               </div>
             </div>
-            <div className="w-full h-14 flex justify-between py-1">
-              <div className="w-full h-full flex md:hidden flex-row justify-center items-center mb-1 text-white text-xl ">
+            <div className="w-full h-14 flex md:hidden justify-between py-1 bg-gradient-to-br from-[#00395f] to-[#005792] ">
+              <div className="w-full h-full flex  flex-row justify-center items-center mb-1 text-[#fff] text-xl ">
                 <>
                   <Link
                     href="/avaliacoes"
@@ -142,7 +143,7 @@ export default function AppLayout({
                     
             ${
               route().current('avaliacoes')
-                ? 'transform-effect text-cyan-400 font-bold icon-link'
+                ? 'transform-effect text-cyan-400 font-bold icon-link bg-[#00395f] '
                 : ''
             }
             `}
@@ -163,7 +164,7 @@ export default function AppLayout({
                     className={`flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
             ${
               route().current('musicas')
-                ? 'transform-effect text-cyan-400 font-bold icon-link'
+                ? 'transform-effect text-cyan-400 font-bold icon-link bg-[#00395f]'
                 : ''
             }
             `}
@@ -183,7 +184,7 @@ export default function AppLayout({
                     href="/video"
                     className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter: ${
                       route().current('video')
-                        ? 'transform-effect text-cyan-400 font-bold icon-link'
+                        ? 'transform-effect text-cyan-400 font-bold icon-link bg-[#00395f]'
                         : ''
                     } `}
                   >
@@ -203,7 +204,7 @@ export default function AppLayout({
                     className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
             ${
               route().current('vozactiva')
-                ? 'transform-effect text-cyan-400 font-bold icon-link'
+                ? 'transform-effect text-cyan-400 font-bold icon-link bg-[#00395f]'
                 : ''
             }
             `}
@@ -224,7 +225,7 @@ export default function AppLayout({
                     className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
             ${
               route().current()?.includes('concursos')
-                ? 'transform-effect text-cyan-400 font-bold icon-link'
+                ? 'transform-effect text-cyan-400 font-bold icon-link bg-[#00395f]'
                 : ''
             }
             `}
@@ -246,7 +247,7 @@ export default function AppLayout({
                     className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
             ${
               route().current('arts')
-                ? 'transform-effect text-cyan-400 font-bold icon-link'
+                ? 'transform-effect text-cyan-400 font-bold icon-link bg-[#00395f]'
                 : ''
             }
             `}
@@ -267,7 +268,7 @@ export default function AppLayout({
                     className={` hidden flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
             ${
               route().current('gospel')
-                ? 'transform-effect text-cyan-400 font-bold icon-link'
+                ? 'transform-effect text-cyan-400 font-bold icon-link bg-[#00395f]'
                 : ''
             }
             `}
@@ -294,7 +295,6 @@ export default function AppLayout({
             <Container>{children}</Container>
           </main>
         </div>
-
       </motion.div>
       {}
       <Modal

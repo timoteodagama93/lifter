@@ -29,7 +29,7 @@ const ContactTeam = () => {
         </div>
         <div className="flex flex-row w-full gap-2 justify-start items-center">
           <MdCall />
-          +244 927 678 173
+          +244 945 771 822
         </div>
         <div className="flex flex-row w-full gap-2 justify-start items-center">
           <MdEmail />
@@ -37,7 +37,7 @@ const ContactTeam = () => {
         </div>
         <div className="flex flex-row w-full gap-2 justify-start items-center">
           <MdPlace />
-          São Paulo, Luanda, Angola
+          Angola
         </div>
         <div className="w-full  pt-5">
           <p>
@@ -53,7 +53,7 @@ const ContactTeam = () => {
             <textarea name="message" className="w-full " />
             <div className="w-full flex flex-row justify-end">
               <ButtonWraper>
-                <button className='text-xl'>Enviar a mensagem</button>
+                <button className="text-xl">Enviar a mensagem</button>
               </ButtonWraper>
             </div>
           </form>

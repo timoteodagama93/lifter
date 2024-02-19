@@ -42,7 +42,7 @@ const Welcome = ({}) => {
               <ButtonWraper>
                 <button onClick={() => setCurrentPage(<AddProfissional />)}>
                   <MdWork className="text-4xl mr-1" />
-                  Criar perfil profissional
+                  Juntar-se à rede Lifter
                 </button>
               </ButtonWraper>
               <ButtonWraper>
@@ -56,62 +56,68 @@ const Welcome = ({}) => {
         )}
 
       {page.props?.auth?.user?.is_artist &&
-        page.props?.auth?.user?.is_profissional && (
-          <>
-            <div className="flex gap-2 m-1 justify-center items-center">
-              <ButtonWraper className="flex justify-center items-center">
-                <button
-                  onClick={() => setCurrentPage(<Artist />)}
-                  className="flex flex-col justify-center items-center w-full"
-                >
-                  <BsSoundwave className="text-4xl mr-1" />
-                  Perfil artístico
-                </button>
-              </ButtonWraper>
-              <ButtonWraper>
-                <button
-                  onClick={() => setCurrentPage(<Profissional />)}
-                  className="flex flex-col justify-center items-center w-full"
-                >
-                  <MdWork className="text-4xl mr-1" />
-                  Perfil profissional
-                </button>
-              </ButtonWraper>
-            </div>
-          </>
-        )}
+      page.props?.auth?.user?.is_profissional ? (
+        <>
+          <div className="flex gap-2 m-1 justify-center items-center">
+            <ButtonWraper className="flex justify-center items-center">
+              <button
+                onClick={() => setCurrentPage(<Artist />)}
+                className="flex flex-col justify-center items-center w-full"
+              >
+                <BsSoundwave className="text-4xl mr-1" />
+                Perfil artístico
+              </button>
+            </ButtonWraper>
+            <ButtonWraper>
+              <button
+                onClick={() => setCurrentPage(<Profissional />)}
+                className="flex flex-col justify-center items-center w-full"
+              >
+                <MdWork className="text-4xl mr-1" />
+                Perfil profissional
+              </button>
+            </ButtonWraper>
+          </div>
+        </>
+      ) : (
+        ''
+      )}
       {page.props?.auth?.user?.is_artist &&
-        !page.props?.auth?.user?.is_profissional && (
-          <>
-            <div className="flex gap-2 m-1 justify-center items-center">
-              <ButtonWraper className="flex justify-center items-center">
-                <button
-                  onClick={() => setCurrentPage(<Artist />)}
-                  className="flex flex-col justify-center items-center w-full"
-                >
-                  <BsSoundwave className="text-4xl mr-1" />
-                  Perfil artístico
-                </button>
-              </ButtonWraper>
-            </div>
-          </>
-        )}
+      !page.props?.auth?.user?.is_profissional ? (
+        <>
+          <div className="flex gap-2 m-1 justify-center items-center">
+            <ButtonWraper className="flex justify-center items-center">
+              <button
+                onClick={() => setCurrentPage(<Artist />)}
+                className="flex flex-col justify-center items-center w-full"
+              >
+                <BsSoundwave className="text-4xl mr-1" />
+                Perfil artístico
+              </button>
+            </ButtonWraper>
+          </div>
+        </>
+      ) : (
+        ''
+      )}
       {!page.props?.auth?.user?.is_artist &&
-        page.props?.auth?.user?.is_profissional && (
-          <>
-            <div className="flex gap-2 m-1 justify-center items-center">
-              <ButtonWraper>
-                <button
-                  onClick={() => setCurrentPage(<Profissional />)}
-                  className="flex flex-col justify-center items-center w-full"
-                >
-                  <MdWork className="text-4xl mr-1" />
-                  Perfil profissional
-                </button>
-              </ButtonWraper>
-            </div>
-          </>
-        )}
+      page.props?.auth?.user?.is_profissional ? (
+        <>
+          <div className="flex gap-2 m-1 justify-center items-center">
+            <ButtonWraper>
+              <button
+                onClick={() => setCurrentPage(<Profissional />)}
+                className="flex flex-col justify-center items-center w-full"
+              >
+                <MdWork className="text-4xl mr-1" />
+                Perfil profissional
+              </button>
+            </ButtonWraper>
+          </div>
+        </>
+      ) : (
+        ''
+      )}
     </div>
   );
 };

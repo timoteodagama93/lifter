@@ -45,8 +45,8 @@ function Container({
   const page = useTypedPage();
   return (
     <motion.div
-      className="w-full h-full min-h-full min-w-full backdrop-blur-lg mb-16 "
-      style={{ background: `url({pageBG})` }}
+      className="w-full h-full min-h-full min-w-full backdrop-blur-lg mb-96 "
+      //style={{ background: `url({pageBG})` }}
     >
       <div
         className={`relative backdrop-blur w-full  h-full min-h-full
@@ -67,7 +67,7 @@ function Container({
           <div
             className={`w-full 
             ${isPlaying ? 'h-[15%] md:h-[30%] flex' : 'h-0 md:h-[15%] hidden '}
-               md:flex flex-col justify-center items-center  bg-gradient-to-br from-white/10 to-[#2a2a80] backdrop-blur-lg `}
+               md:flex flex-col justify-center items-center  bg-gradient-to-br from-[#0094f8] to-[#245575]  backdrop-blur-lg `}
           >
             {!isFullScreenPlayer && isPlaying && (
               <div

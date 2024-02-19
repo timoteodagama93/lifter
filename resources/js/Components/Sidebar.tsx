@@ -56,7 +56,7 @@ function Sidebar({}) {
       {/**sidebar telefones */}
       <div
         style={{ transition: '1s' }}
-        className={`absolute top-0 h-screen w-2/3 md:w-[240px] bg-gradient-to-tl from-white/10 to-[#245575] backdrop-blur z-10 p-3  smooth-transition ${
+        className={`absolute top-0 h-screen w-2/3 md:w-[240px] bg-gradient-to-tl from-[#245575] to-[#f6cc33] backdrop-blur z-10 p-3  smooth-transition ${
           openMobileMenu ? 'left-0' : '-left-full '
         }  `}
       >
@@ -66,6 +66,7 @@ function Sidebar({}) {
             src={smalLogo}
             alt="logo"
           />
+          
         </Link>
         <div className="w-full flex flex-row gap-1 justify-between items-center">
           <div className="w-full h full justify-center items-center flex">
@@ -133,6 +134,5 @@ function Links({ links, setOpenMobileMenu }) {
     </>
   );
 }
-
 
 export default Sidebar;

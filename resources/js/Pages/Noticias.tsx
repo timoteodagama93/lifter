@@ -37,7 +37,6 @@ import PostCard from '@/Components/PostCard';
 import CartaoNoticia from '@/Components/CartaoNoticia';
 import Comment from '@/Components/Comment';
 import AppLayout from '@/Layouts/AppLayout';
-import CardChakraUI from '@/Components/CardChakraUI';
 
 function Noticias({}) {
   const page = useTypedPage();
@@ -180,16 +179,6 @@ function DisplayNew({ posts }) {
           </div>
         </div>
       </Modal>
-      <div className="bg-white p-5">
-
-      {posts.map(post => (
-        <CardChakraUI
-        key={post?.id}
-        post={post}
-        setPostToComment={setPostToComment}
-        />
-        ))}
-        </div>
 
       <div className="w-full md:w-[60%] ">
         <div className="community-discussion">

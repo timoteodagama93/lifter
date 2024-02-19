@@ -17,6 +17,8 @@ import useTypedPage from '@/Hooks/useTypedPage';
 import { generos } from '@/assets/constants';
 
 import { countries } from 'countries-list';
+import route from 'ziggy-js';
+import Checkbox from '@/Components/Checkbox';
 const paises = [...Object.values(countries)];
 export default function AddArtist({}) {
   const page = useTypedPage();
@@ -272,6 +274,48 @@ export default function AddArtist({}) {
                   className="mt-2"
                   message={formArtist.errors.about}
                 />
+              </div>
+
+              <div className="mt-4">
+                <InputLabel htmlFor="terms">
+                  <div className="flex items-center">
+                    <Checkbox
+                      name="terms"
+                      id="terms"
+                      checked={formArtist.data.terms}
+                      onChange={e =>
+                        formArtist.setData(
+                          'terms',
+                          e.currentTarget.checked,
+                        )
+                      }
+                      required
+                    />
+
+                    <div className="ml-2  text-gray-100 rounded-md ">
+                      Concordo com os{' '}
+                      <a
+                        target="_blank"
+                        href={route('terms.show')}
+                        className="underline text-sm text-white hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                      >
+                        Termos de serviços
+                      </a>{' '}
+                      e{' '}
+                      <a
+                        target="_blank"
+                        href={route('policy.show')}
+                        className="underline text-sm text-white hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                      >
+                        Politicas de privacidade
+                      </a>
+                    </div>
+                  </div>
+                  <InputError
+                    className="mt-2"
+                    message={formArtist.errors.terms}
+                  />
+                </InputLabel>
               </div>
 
               <div className="flex items-center justify-end mt-4">

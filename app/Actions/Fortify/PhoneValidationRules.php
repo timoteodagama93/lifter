@@ -20,7 +20,7 @@ trait PhoneValidationRules
             (new Password)->requireUppercase(),
             (new Password)->requireNumeric(),
             (new Password)->requireSpecialCharacter(),
-            (new Password)->length(8),
+            (new Password)->length(4),
             'confirmed'];
     }
 }
