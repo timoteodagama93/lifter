@@ -110,23 +110,23 @@ class ArtistController extends Controller
 
         foreach ($songs as $song) {
             $comments = db::select(
-                "SELECT * FROM comments COUNT WHERE song_id = ? ",
+                "SELECT * FROM comments COUNT WHERE collection_id = ? ",
                 [$song->id]
             );
             $likes = db::select(
-                "SELECT * FROM likes COUNT WHERE song_id = ? ",
+                "SELECT * FROM likes COUNT WHERE collection_id = ? ",
                 [$song->id]
             );
             $valuations = db::select(
-                "SELECT * FROM valuations COUNT WHERE song_id = ? ",
+                "SELECT * FROM valuations COUNT WHERE collection_id = ? ",
                 [$song->id]
             );
             $collections = db::select(
-                "SELECT * FROM colletions COUNT WHERE song_id = ? ",
+                "SELECT * FROM colletions COUNT WHERE collection_id = ? ",
                 [$song->id]
             );
             $feedbacks = db::select(
-                "SELECT * FROM feedbacks COUNT WHERE song_id = ? ",
+                "SELECT * FROM feedbacks COUNT WHERE collection_id = ? ",
                 [$song->id]
             );
             $qtd_comentarios += sizeof($comments);
@@ -136,6 +136,7 @@ class ArtistController extends Controller
             $qtd_collections += sizeof($collections);
             $qtd_feedbacks += sizeof($comments);
         }
+
         return response()->json([
             'quantidade_musicas' =>  DB::select(
                 "SELECT id FROM `songs` COUNT WHERE artist_id = ? AND mime_type LIKE '%audio%'",

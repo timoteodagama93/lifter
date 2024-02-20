@@ -19,6 +19,7 @@ use App\Models\Contest;
 use App\Models\FestivalUser;
 use App\Models\Notification;
 use App\Models\Post;
+use App\Models\Profissional;
 use App\Models\ServicesRequest;
 use App\Models\Song;
 use App\Models\User;
@@ -43,13 +44,21 @@ use Inertia\Inertia;
 |
 */
 
+
 Route::get('/', function () {
     return Inertia::render('Home/Welcome', [
         'songs' => DB::select('SELECT * FROM songs ORDER BY created_at'),
         'posts' => DB::select('SELECT * FROM posts ORDER BY created_at DESC')
-    ]); 
+    ]);
 })->name('/');
 
+Route::get('/get-welcome-destaques-audios', function () {
+    return DB::select("SELECT * FROM `songs` WHERE active=true AND destaque=true and mime_type LIKE '%audio/%' ORDER BY reprodution_time DESC LIMIT 5");
+})->name('/get-welcome-destaques-audios');
+
+Route::get('/get-welcome-destaques-videos',  function () {
+    return DB::select("SELECT * FROM `songs` WHERE active=true AND destaque=true and mime_type LIKE '%video/%' ORDER BY reprodution_time DESC LIMIT 5");
+})->name('get-welcome-destaques-videos');
 
 Route::middleware([
     'auth:sanctum',
@@ -67,7 +76,6 @@ Route::middleware([
         ]);
     })->name('/home');
 
-
     Route::post('/participar-ascensao', function () {
         $user_id = auth()->id();
         $as = Request::get('as');
@@ -75,11 +83,9 @@ Route::middleware([
         return $inserted;
     })->name('/participar-ascensao');
 
-
     Route::get('/musicas', function () {
         return Inertia::render('Musicas/Musicas', []);
     })->name('musicas');
-
 
     Route::get('/gospel', function () {
         return Inertia::render('Gospel/Index', []);
@@ -88,8 +94,6 @@ Route::middleware([
     Route::get('/arts', function () {
         return Inertia::render('Arts/Index', []);
     })->name('arts');
-
-
 
     Route::get('/vozactiva', function () {
         $vozactiva = DB::select('SELECT * FROM artists WHERE active =' . true);
@@ -344,7 +348,7 @@ Route::middleware([
 
 
     Route::get('/perfis', function () {
-        return Inertia::render('PerfilProfissional/Index');
+        return Inertia::render('PerfilProfissional/Index', ["artist" => Artist::all()->where('user_id', auth()->id())->first(), 'profissional' => Profissional::all()->where('user_id', auth()->id())->first()]);
     })->name('perfis');
 
 

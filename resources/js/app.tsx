@@ -38,6 +38,7 @@ createInertiaApp({
   title: title => `${title} - ${appName}`,
   progress: {
     color: '#f6cc33',
+    
   },
   resolve: name =>
     resolvePageComponent(

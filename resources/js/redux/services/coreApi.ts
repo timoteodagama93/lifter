@@ -29,6 +29,8 @@ export const coreApi = createApi({
         getSongDetails: builder.query({ query: (songId) => `/tracks/details/${songId}` }),
         getSongRelated: builder.query({ query: (songId) => `/tracks/related/${songId}` }),
 
+        getWelcomeVideoDestaque: builder.query({ query: () => `/get-welcome-destaques-audios` }),
+        getWelcomeSongDestaque: builder.query({ query: () => `/get-welcome-destaques-videos` }),
 
         /**ACTIVE VOICE */
         getActiveVoice: builder.query({ query: (artistId) => artistId }),
@@ -93,6 +95,9 @@ export const {
 
     useGetEstantesQuery,
     useGetEstanteBooksQuery,
+
+    useGetWelcomeSongDestaqueQuery,
+    useGetWelcomeVideoDestaqueQuery,
 } = coreApi;
 
 

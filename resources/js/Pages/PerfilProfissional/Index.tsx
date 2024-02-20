@@ -5,15 +5,24 @@ import { useStateContext } from '@/contexts/PaginaActualContext';
 import Welcome from './Registers/Welcome';
 import Artist from './Artista/Index';
 import useTypedPage from '@/Hooks/useTypedPage';
+import Profissional from './Outros/Index';
 
-function Index({}) {
+function Index({ artist, profissional }) {
   const page = useTypedPage();
-
+  console.log(artist);
   const { currentPage, setCurrentPage } = useStateContext();
   useEffect(() => {
-    page.props.auth?.user?.is_artist && page?.props?.artist_account
-      ? setCurrentPage(<Artist />)
-      : setCurrentPage(<Welcome />);
+    artist == null && profissional == null ? (
+      setCurrentPage(<Welcome />)
+    ) : artist != null || artist != null ? (
+      <>
+        {artist != null
+          ? setCurrentPage(<Artist />)
+          : setCurrentPage(<Profissional />)}
+      </>
+    ) : (
+      ''
+    );
   }, []);
   return (
     <AppLayout title="Perfil">

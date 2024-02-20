@@ -222,7 +222,7 @@ class SongsController extends Controller
      */
     public function get_destaques_songs()
     {
-        return DB::select("SELECT * FROM `songs` WHERE active=true AND destaque=true ORDER BY reproddution_time DESC LIMIT 5"); // where('mime_type', `%audio/%`)->paginate(1);
+        return DB::select("SELECT * FROM `songs` WHERE active=true AND destaque=true ORDER BY reprodution_time DESC LIMIT 5"); // where('mime_type', `%audio/%`)->paginate(1);
     }
 
     /**

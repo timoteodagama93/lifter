@@ -132,7 +132,7 @@ function Songs({}) {
                   ></div>
 
                   <div
-                    class="fb-login-button"
+                    className="fb-login-button"
                     data-width=""
                     data-size=""
                     data-button-type=""
@@ -213,8 +213,6 @@ function Songs({}) {
                         song={song}
                         isPlaying={isPlaying}
                         activeSong={activeSong}
-                        activeVideo={activeVideo}
-                        isPlayingVideo={isPlayingVideo}
                         i={i}
                         key={song.id}
                       />
@@ -224,8 +222,6 @@ function Songs({}) {
                         song={song}
                         isPlaying={isPlaying}
                         activeSong={activeSong}
-                        activeVideo={activeVideo}
-                        isPlayingVideo={isPlayingVideo}
                         i={i}
                         key={song.id}
                       />

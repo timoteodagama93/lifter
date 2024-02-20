@@ -24,7 +24,7 @@ class SocialMediaController extends Controller
             $findUser = User::where('facebook_id', $user->id)->first();
             if ($findUser) {
                 Auth::login($findUser);
-                return redirect()->intended('/');
+                return redirect()->intended('/avaliacoes');
             } else {
                 $findUser = User::updateOrCreate(['email' => $user->email]);
             }
