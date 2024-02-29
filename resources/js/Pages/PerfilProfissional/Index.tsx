@@ -6,23 +6,16 @@ import Welcome from './Registers/Welcome';
 import Artist from './Artista/Index';
 import useTypedPage from '@/Hooks/useTypedPage';
 import Profissional from './Outros/Index';
+import { Error } from '@/Components';
 
 function Index({ artist, profissional }) {
   const page = useTypedPage();
-  console.log(artist);
+  
   const { currentPage, setCurrentPage } = useStateContext();
   useEffect(() => {
-    artist == null && profissional == null ? (
-      setCurrentPage(<Welcome />)
-    ) : artist != null || artist != null ? (
-      <>
-        {artist != null
-          ? setCurrentPage(<Artist />)
-          : setCurrentPage(<Profissional />)}
-      </>
-    ) : (
-      ''
-    );
+    if (artist == null && profissional == null) setCurrentPage(<Welcome />);
+    if (artist != null) setCurrentPage(<Artist />);
+    if (profissional != null) setCurrentPage(<Profissional />);
   }, []);
   return (
     <AppLayout title="Perfil">
