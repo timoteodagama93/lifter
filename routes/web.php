@@ -18,15 +18,11 @@ use App\Models\Artist;
 use App\Models\Contest;
 use App\Models\FestivalUser;
 use App\Models\Notification;
-use App\Models\Post;
 use App\Models\Profissional;
 use App\Models\ServicesRequest;
 use App\Models\Song;
 use App\Models\User;
 use App\Models\Valuation;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Env;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
@@ -52,6 +48,38 @@ Route::get('/', function () {
     ]);
 })->name('/');
 
+
+Route::get('/songs/{artist_id}/{nome_arquivo}', function ($artist_id, $nome_arquivo) {
+    // Verifique se o arquivo existe no diretório de armazenamento
+    if (Storage::exists("public/artists/{$artist_id}/songs/{$nome_arquivo}")) {
+        // Obtenha o caminho completo do arquivo
+        $caminho_arquivo = storage_path("app/public/artists/{$artist_id}/songs/{$nome_arquivo}");
+
+        // Retorne o arquivo como resposta HTTP
+        return response()->file($caminho_arquivo);
+    } else {
+        // Se o arquivo não existir, retorne uma resposta de erro 404
+        abort(404);
+    }
+});
+
+Route::get('/arts/{exposition_id}/{nome_arquivo}', function ($exposition_id, $nome_arquivo) {
+    // Verifique se o arquivo existe no diretório de armazenamento
+    //if (Storage::exists("public/users/expositions/{$exposition_id}/items/{$nome_arquivo}")) {
+    if (Storage::exists($nome_arquivo)) {
+        // Obtenha o caminho completo do arquivo
+        $caminho_arquivo = storage_path("app/public/users/expositions/{$exposition_id}/items/{$nome_arquivo}");
+
+        // Retorne o arquivo como resposta HTTP
+        return response()->file($caminho_arquivo);
+    } else {
+        // Se o arquivo não existir, retorne uma resposta de erro 404
+        abort(404);
+    }
+});
+
+
+
 Route::get('/get-welcome-destaques-audios', function () {
     return DB::select("SELECT * FROM `songs` WHERE active=true AND destaque=true and mime_type LIKE '%audio/%' ORDER BY reprodution_time DESC LIMIT 5");
 })->name('/get-welcome-destaques-audios');
@@ -60,6 +88,10 @@ Route::get('/get-welcome-destaques-videos',  function () {
     return DB::select("SELECT * FROM `songs` WHERE active=true AND destaque=true and mime_type LIKE '%video/%' ORDER BY reprodution_time DESC LIMIT 5");
 })->name('get-welcome-destaques-videos');
 
+/*
+Route::get('/email/verify', function () {
+})->middleware('auth')->name('verification.notice');
+*/
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

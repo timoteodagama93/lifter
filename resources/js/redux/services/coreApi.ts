@@ -17,7 +17,6 @@ export const coreApi = createApi({
         //baseUrl: 'http://127.0.0.1:8000/'
     }),
     endpoints: (builder) => ({
-
         /**SONGS */
         getSongs: builder.query({ query: (query) => '/get-songs' }),
         getSongsAudios: builder.query({ query: (query) => `/get-songs-audios/${query}` }),

@@ -37,17 +37,29 @@ class SongsController extends Controller
 
     public function store()
     {
+
         Validator::make(
             Request::all(),
             [
-                'song' => ['required', 'mimes:mp3,mp4'], //, 'max:50120'
+                'song' => ['required', 'file', 'mimes:mp3,mp4', 'max:51200'],
                 'title' => ['required'],
                 'genre' => ['required'],
             ]
         )->validate();
 
+
         $artist_id = Request::input('artist_id');
-        $song_url = Request::file("song")->store("public/artists/$artist_id/songs");
+
+        // Specify the directory path
+        $directory = 'public/artists/' . $artist_id . '/songs';
+
+        // Check if the directory exists, if not, create it
+        if (!Storage::exists($directory)) {
+            Storage::makeDirectory($directory, 0775, true); // 0775 is the directory permission, and true indicates recursive creation
+        }
+
+        $song_url = Request::file("song")->store($directory);
+       
 
         if ($song_url != false) {
 
@@ -142,7 +154,7 @@ class SongsController extends Controller
         $data = $d::all();
         $artist_id = $data['artist_id'];
         $song_id = $data['id'];
-        $cover = Request::file("cover")->store("public/artists/{$artist_id}/covers");
+        $cover = Request::file("cover")->store("public/artists/songs/covers");
 
         $song = Song::where('id', $song_id)->first();
 

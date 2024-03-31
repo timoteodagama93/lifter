@@ -46,7 +46,7 @@ import { HiOutlineMenu } from 'react-icons/hi';
 import { MdClose } from 'react-icons/md';
 import { Logo, smalLogo } from '../../../img';
 import VideoSinglePlayer from '../Videos/VideoSinglePlayer';
-import partners, { FI, FILuanda } from '@/assets/parceria';
+import  { FI, ngola, FILuanda } from '@/assets/parceria';
 import SectionBorder from '@/Components/SectionBorder';
 import Player from '@/Components/MusicPlayer/Player';
 import MusicPlayer from '@/Components/MusicPlayer';
@@ -252,8 +252,9 @@ export default function Welcome({ posts }: Props) {
               <h1 className="text-xl text-center text-[#29a5f9] text-bold ">
                 Parcerias & Suporte
               </h1>
-              <div className="w-full h-28 gap-1 flex my-10 justify-center items-center  object-contain bg-white">
+              <div className="w-full h-28 gap-2 flex my-10 justify-center items-center  object-contain bg-white">
                 <img src={FI} alt="" className="w-auto h-full" />
+                <img src={ngola} alt="" className="w-auto h-12" />
               </div>
             </div>
             <SectionBorder />
@@ -329,6 +330,7 @@ export default function Welcome({ posts }: Props) {
                     </div>
                   </div>
                 </div>
+
                 <div className="w-full flex flex-col gap-5 ">
                   <h1 className="text-2xl md:text-5xl text-bold">
                     Lifter, uma solução!
@@ -459,6 +461,7 @@ export default function Welcome({ posts }: Props) {
                     </div>
                   </div>
                 </div>
+
                 <div className="w-full flex flex-col gap-5 mb-20 ">
                   <h1 className="text-2xl md:text-5xl text-bold">
                     O que é a rede Lifter?

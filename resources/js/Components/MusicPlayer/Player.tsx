@@ -32,7 +32,7 @@ const Player = ({
     <>
       {activeSong.mime_type.includes('audio/') && (
         <audio
-          src={activeSong?.url}
+          src={`/songs/${activeSong.artist_id}/${activeSong.saved_name}`}
           ref={ref}
           loop={repeat}
           onEnded={onEnded}
@@ -49,7 +49,6 @@ const Player = ({
             onTimeUpdate={onTimeUpdate}
             onLoadedData={onLoadedData}
             className="w-14 h-14 hidden"
-            
           />
         </>
       )}

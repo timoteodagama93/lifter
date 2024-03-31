@@ -21,6 +21,7 @@ export default function AddSong({ artist, from = '' }) {
   const [successOnAdd, setSuccessOnAdd] = useState(false);
 
   const formSong = useForm({
+    forceFormData: true,
     artist_id: artist?.id,
     title: '',
     artist: artist?.name,
@@ -115,7 +116,7 @@ export default function AddSong({ artist, from = '' }) {
             </strong>
           </p>
           <SectionBorder></SectionBorder>
-          <form onSubmit={onSubmit} className="">
+          <form onSubmit={onSubmit} className=""  encType="multipart/form-data">
             {photoPreview ? (
               // <!-- New Profile Photo Preview -->
               <audio className="">

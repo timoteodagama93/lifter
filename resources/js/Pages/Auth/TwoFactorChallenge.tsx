@@ -52,7 +52,7 @@ export default function TwoFactorChallenge() {
       <form onSubmit={onSubmit}>
         {recovery ? (
           <div>
-            <InputLabel htmlFor="recovery_code">Recovery Code</InputLabel>
+            <InputLabel htmlFor="recovery_code">Recuperar código</InputLabel>
             <TextInput
               id="recovery_code"
               type="text"
@@ -68,7 +68,7 @@ export default function TwoFactorChallenge() {
           </div>
         ) : (
           <div>
-            <InputLabel htmlFor="code">Code</InputLabel>
+            <InputLabel htmlFor="code">Código</InputLabel>
             <TextInput
               id="code"
               type="text"
@@ -97,7 +97,7 @@ export default function TwoFactorChallenge() {
             className={classNames('ml-4', { 'opacity-25': form.processing })}
             disabled={form.processing}
           >
-            Log in
+            Entrar
           </PrimaryButton>
         </div>
       </form>

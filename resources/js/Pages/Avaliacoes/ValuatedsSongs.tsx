@@ -24,6 +24,7 @@ import { SongCard } from '@/Components';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import VideoCard from '@/Components/VideoCard';
 import { Navigation } from 'swiper/modules';
+import LifterPlayer from '@/Components/LifterPlayer';
 
 function ValuatedsSongs({
   valuatedSongs,
@@ -78,6 +79,7 @@ function ValuatedsSongs({
             </button>
           </div>
         </div>
+
         <div
           className="w-full flex flex-row justify-between
              items-center"
@@ -199,6 +201,8 @@ function ValuatedsSongs({
             setError={''}
           />
         </div>
+
+        {songs.length > 0 && <LifterPlayer songs={songs} />}
       </div>
     </>
   );
@@ -228,7 +232,7 @@ function FiltrarNoticias({ setPosts, setLoading, setError, setFilter }) {
       });
   }
   return (
-    <div className="w-full flex justify-center items-center  text-black ">
+    <div className="w-full px-24 pb-5 flex justify-center items-center  text-black ">
       <input
         placeholder="Filtrar músicas"
         className="transform-effect w-full p-3"

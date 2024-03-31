@@ -24,15 +24,15 @@ export default function VerifyEmail({ status }: Props) {
       <Head title="Email Verification" />
 
       <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        Before continuing, could you verify your email address by clicking on
-        the link we just emailed to you? If you didn't receive the email, we
-        will gladly send you another.
+        Antes de continuar, você precisa verificar seu endereço de email é só
+        clicar no link que acabámos de enviar para você no seu email! Se você
+        não recebeu o email, nós iremos enviar-lhe outro.
       </div>
 
       {verificationLinkSent && (
         <div className="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
-          A new verification link has been sent to the email address you
-          provided during registration.
+          Um novo link de verificação foi enviado para o endereço de email que
+          você digitou durante o registro.
         </div>
       )}
 
@@ -42,7 +42,7 @@ export default function VerifyEmail({ status }: Props) {
             className={classNames({ 'opacity-25': form.processing })}
             disabled={form.processing}
           >
-            Resend Verification Email
+            Reenviar email de verificação
           </PrimaryButton>
 
           <div>
@@ -50,7 +50,7 @@ export default function VerifyEmail({ status }: Props) {
               href={route('profile.show')}
               className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
             >
-              Edit Profile
+              Editar Perfil
             </Link>
           </div>
 
@@ -60,7 +60,7 @@ export default function VerifyEmail({ status }: Props) {
             as="button"
             className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800 ml-2"
           >
-            Log Out
+            Terminar Sessão
           </Link>
         </div>
       </form>

@@ -20,6 +20,10 @@ import {
 
 import ValuationReader from './ValuationReader';
 import ValuatedsSongs from './ValuatedsSongs';
+import PlayerLayout from '@/Layouts/PlayerLayout';
+import PlayerContainer from '@/Layouts/PlayerContainer';
+import { SongCard } from '@/Components';
+import TopChartCard from '@/Components/TopChartCard';
 
 const Avaliacoes = ({}) => {
   const { data: songs, isFetching, error } = useGetSongsAudiosQuery('destaque');
@@ -34,51 +38,64 @@ const Avaliacoes = ({}) => {
   }, [isPlaying]);
 
   return (
-    <AppLayout title="Avaliações">
+    <PlayerLayout title="Avaliações">
+      {songs?.length > 0 && (
+        <PlayerContainer songs={songs}>
+          <>
+            {' '}
+            {songs?.map((song, i) => (
+              <div className="w-full relative flex flex-col ">
+                <>
+                  {window.screen.width >= 768 ? (
+                    <TopChartCard
+                      songs={songs}
+                      song={song}
+                      isPlaying={isPlaying}
+                      activeSong={activeSong}
+                      i={i}
+                      key={song.id}
+                    />
+                  ) : (
+                    <SongCard
+                      songs={songs}
+                      song={song}
+                      isPlaying={isPlaying}
+                      activeSong={activeSong}
+                      i={i}
+                      key={song.id}
+                    />
+                  )}
+                </>
+              </div>
+            ))}
+          </>
+        </PlayerContainer>
+      )}
+
+      {/*}
       <div className="w-full h-full flex flex-col overflow-y-hidden max-h-full md:gap-1">
         <div
           className={`w-full flex flex-row ${
             isPlaying ? 'h-[100%] ' : 'h-[100%]'
           }`}
         >
-          {/**Lista de músicas avaliadas pelo usuário */}
           <ValuatedsSongs
             valuatedSongs={songs}
             songs={songs}
             selectedValuation={selectedValuation}
             setSelectedValuation={setSelectedValuation}
           />
-          {/**Área de leitura de mensagens */}
+          
           <div
             style={{ transition: '2s' }}
             className={`h-full hidden  flex-col overflow-hidden smooth-transition ${
               selectedValuation ? 'left-0' : '-rigth-full'
             } `}
-          >
-            {/*selectedValuation  ? (
-              <ValuationReader activeValuation={selectedValuation} />
-            ) : (
-              <>
-                <div className="my-1 w-full  text-base text-black  bg-[#fff] rounded relative flex flex-col  gap-1 p-5 shadow justify-center items-center">
-                  <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
-                    Nenhuma avaliação selecionada.
-                  </h1>
-                  <p>
-                    Selecione uma de suas avaliações na lista a esquerda, caso
-                    ainda não tenha avaliado nenhuma música, explore as várias
-                    coleções disponíveis e partilhe a sua opinião.{' '}
-                    <strong>
-                      Participe da comunidade, vamos criar conexões através da
-                      partilha, da paixão, do talento e do bom gosto musical.
-                    </strong>
-                  </p>
-                </div>
-              </>
-            )*/}
-          </div>
+          ></div>
         </div>
       </div>
-    </AppLayout>
+    {*/}
+    </PlayerLayout>
   );
 };
 

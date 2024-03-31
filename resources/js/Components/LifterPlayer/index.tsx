@@ -5,6 +5,7 @@ import {
   nextSong,
   prevSong,
   playPause,
+  setActiveSong,
 } from '../../redux/features/playerSlice';
 import Controls from './Controls';
 import Player from './Player';
@@ -13,8 +14,9 @@ import Track from './Track';
 import VolumeBar from './VolumeBar';
 import { BsStarFill, BsStar } from 'react-icons/bs';
 import axios from 'axios';
+import Interagir from '../Interagir';
 
-const MusicPlayer = () => {
+const LifterPlayer = ({ songs }) => {
   const { activeSong, currentSongs, currentIndex, isActive, isPlaying } =
     useSelector(state => state.player);
   const [duration, setDuration] = useState(0);
@@ -26,7 +28,11 @@ const MusicPlayer = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (currentSongs?.length) dispatch(playPause(true));
+    const song = songs[0];
+    const i = 0;
+    dispatch(setActiveSong({ song, songs, i }));
+
+    if (songs?.length) dispatch(playPause(true));
   }, [currentIndex]);
 
   const handlePlayPause = () => {
@@ -96,13 +102,23 @@ const MusicPlayer = () => {
   useEffect(getUserValuation, [activeSong]);
   return (
     <div className="w-full flex  flex-col md:flex-row justify-center items-center">
-      <div className="relative sm:px-12 px-8 w-full flex items-center justify-between">
-        <Track
-          isPlaying={isPlaying}
-          isActive={isActive}
-          activeSong={activeSong}
-        />
+      <div className="relative sm:px-12 px-8 w-full flex flex-col md:flex-row items-center justify-between">
+        {isPlaying && (
+          <Track
+            isPlaying={isPlaying}
+            isActive={isActive}
+            activeSong={activeSong}
+          />
+        )}
         <div className="flex-1 flex flex-col items-center justify-center">
+          <Seekbar
+            value={appTime}
+            min="0"
+            max={duration}
+            onInput={event => setSeekTime(event.target.value)}
+            setSeekTime={setSeekTime}
+            appTime={appTime}
+          />
           <Controls
             isPlaying={isPlaying}
             repeat={repeat}
@@ -114,42 +130,41 @@ const MusicPlayer = () => {
             handlePrevSong={handlePrevSong}
             handleNextSong={handleNextSong}
           />
-          <Seekbar
-            value={appTime}
+          {isPlaying && (
+            <>
+              <Player
+                activeSong={activeSong}
+                volume={volume}
+                isPlaying={isPlaying}
+                seekTime={seekTime}
+                repeat={repeat}
+                currentIndex={currentIndex}
+                onEnded={handleNextSong}
+                onTimeUpdate={event => setAppTime(event.target.currentTime)}
+                onLoadedData={event => setDuration(event.target.duration)}
+              />
+            </>
+          )}
+          <VolumeBar
+            value={volume}
             min="0"
-            max={duration}
-            onInput={event => setSeekTime(event.target.value)}
-            setSeekTime={setSeekTime}
-            appTime={appTime}
-          />
-          <Player
-            activeSong={activeSong}
-            volume={volume}
-            isPlaying={isPlaying}
-            seekTime={seekTime}
-            repeat={repeat}
-            currentIndex={currentIndex}
-            onEnded={handleNextSong}
-            onTimeUpdate={event => setAppTime(event.target.currentTime)}
-            onLoadedData={event => setDuration(event.target.duration)}
+            max="1"
+            onChange={event => setVolume(event.target.value)}
+            setVolume={setVolume}
           />
         </div>
-        <VolumeBar
-          value={volume}
-          min="0"
-          max="1"
-          onChange={event => setVolume(event.target.value)}
-          setVolume={setVolume}
-        />
+        <div className="w-full flex">
+          <Interagir song={activeSong} collectionType="song" />
+        </div>
       </div>
-      <div className=" flex flex-row items-center justify-center md:flex-col">
+      <div className="hidden flex flex-row items-center justify-center md:flex-col">
         <span className="text-xs animate-bounce">Avalie</span>
         <div className="justify-center items-center flex flex-row">
           {stars.map(stars => (
             <span key={stars} className="text-4xl ">
               <button key={stars} onClick={() => submitValuation(stars)}>
                 {selectedStar >= stars ? (
-                  //                    || (isHovering == false && hoverStar >= stars)
+                  //                    || (isHovering == false && hoverStar >=  stars)
                   <BsStarFill className="text-[#f6cc33]" />
                 ) : (
                   <BsStar />
@@ -163,4 +178,4 @@ const MusicPlayer = () => {
   );
 };
 
-export default MusicPlayer;
+export default LifterPlayer;

@@ -14,7 +14,7 @@ function CardObra({
             <div className="w-full h-full flex justify-center items-center rigth-0">
               <img
                 className="w-full h-full relative right-0"
-                src={obra?.item_url}
+                src={`/arts/${obra.exposition_id}/${obra.item_url}`}
               />
             </div>
             <div className="w-full flex flex-col gap-0">

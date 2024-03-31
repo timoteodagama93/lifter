@@ -16,7 +16,7 @@ class ExpositionsController extends Controller
     public function store()
     {
         Validator::make(Request::all(), [
-            'cover' => ['required', 'mimes:png,jpg,jpeg'],
+            'cover' => ['required', 'file', 'mimes:png,jpg,jpeg'],
             'title' => ['required'],
             'expositor' => ['required'],
             'category' => ['required'],
@@ -32,7 +32,7 @@ class ExpositionsController extends Controller
             'description' => Request::input('description'),
         ]);
 
-        $coverUrl = Request::file('cover')->store("public/users/$userId/expositions/$exposition->id/covers");
+        $coverUrl = Request::file('cover')->store("public/users/expositions/$exposition->id/items");
         if ($coverUrl) {
             $exposition->cover = Storage::url($coverUrl);
             $exposition->mime_type = Request::file('cover')->getClientMimeType();
@@ -53,7 +53,7 @@ class ExpositionsController extends Controller
         ])->validate();
         $userId = auth()->id();
         $room = Exposition::find(Request::input('room_id'));
-        $itemUrl = Request::file('item')->store("public/users/$userId/expositions/$room->id/items");
+        $itemUrl = Request::file('item')->store("public/users/expositions/$room->id/items");
 
         if ($itemUrl) {
             $mimeType = Request::file('item')->getClientMimeType();
