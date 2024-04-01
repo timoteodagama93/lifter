@@ -108,7 +108,7 @@ export default function AddBook({ estante }) {
             Novo livro ou item
           </p>
           <SectionBorder></SectionBorder>
-          <form onSubmit={onSubmit} className="">
+          <form onSubmit={onSubmit} className="" encType="multipart/form-data">
             {photoPreview ? (
               // <!-- New Profile Photo Preview -->
               <div className="">

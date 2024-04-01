@@ -26,16 +26,20 @@ import { HiUserGroup } from 'react-icons/hi';
 import { FaDirections } from 'react-icons/fa';
 import { BiDownload } from 'react-icons/bi';
 import Songs from './Songs';
+import PlayerLayout from '@/Layouts/PlayerLayout';
+import PlayerContainer from '@/Layouts/PlayerContainer';
 
 export default function Musicas() {
   const page = route().current();
   const { currentPage, setCurrentPage } = useStateContext();
 
   return (
-    <AppLayout title="Músicas">
-      <div className="w-full ">
-        <Songs />
-      </div>
-    </AppLayout>
+    <PlayerLayout title="Músicas">
+      <PlayerContainer>
+        <div className="w-full ">
+          <Songs />
+        </div>
+      </PlayerContainer>
+    </PlayerLayout>
   );
 }

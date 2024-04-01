@@ -113,7 +113,7 @@ export default function AddEstante({}) {
             Nova estante
           </p>
           <SectionBorder></SectionBorder>
-          <form onSubmit={onSubmit} className="">
+          <form onSubmit={onSubmit} className="" encType="multipart/form-data">
             {photoPreview ? (
               // <!-- New Profile Photo Preview -->
               <div className="">

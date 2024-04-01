@@ -39,62 +39,40 @@ const Avaliacoes = ({}) => {
 
   return (
     <PlayerLayout title="Avaliações">
-      {songs?.length > 0 && (
-        <PlayerContainer songs={songs}>
-          <>
-            {' '}
-            {songs?.map((song, i) => (
-              <div className="w-full relative flex flex-col ">
-                <>
-                  {window.screen.width >= 768 ? (
-                    <TopChartCard
-                      songs={songs}
-                      song={song}
-                      isPlaying={isPlaying}
-                      activeSong={activeSong}
-                      i={i}
-                      key={song.id}
-                    />
-                  ) : (
-                    <SongCard
-                      songs={songs}
-                      song={song}
-                      isPlaying={isPlaying}
-                      activeSong={activeSong}
-                      i={i}
-                      key={song.id}
-                    />
-                  )}
-                </>
-              </div>
-            ))}
-          </>
-        </PlayerContainer>
-      )}
-
-      {/*}
-      <div className="w-full h-full flex flex-col overflow-y-hidden max-h-full md:gap-1">
-        <div
-          className={`w-full flex flex-row ${
-            isPlaying ? 'h-[100%] ' : 'h-[100%]'
-          }`}
-        >
-          <ValuatedsSongs
-            valuatedSongs={songs}
-            songs={songs}
-            selectedValuation={selectedValuation}
-            setSelectedValuation={setSelectedValuation}
-          />
-          
-          <div
-            style={{ transition: '2s' }}
-            className={`h-full hidden  flex-col overflow-hidden smooth-transition ${
-              selectedValuation ? 'left-0' : '-rigth-full'
-            } `}
-          ></div>
-        </div>
-      </div>
-    {*/}
+      <PlayerContainer>
+        <>
+          {songs?.length > 0 && (
+            <>
+              {' '}
+              {songs?.map((song, i) => (
+                <div className="w-full relative flex flex-col ">
+                  <>
+                    {window.screen.width >= 768 ? (
+                      <TopChartCard
+                        songs={songs}
+                        song={song}
+                        isPlaying={isPlaying}
+                        activeSong={activeSong}
+                        i={i}
+                        key={song.id}
+                      />
+                    ) : (
+                      <SongCard
+                        songs={songs}
+                        song={song}
+                        isPlaying={isPlaying}
+                        activeSong={activeSong}
+                        i={i}
+                        key={song.id}
+                      />
+                    )}
+                  </>
+                </div>
+              ))}
+            </>
+          )}
+        </>
+      </PlayerContainer>
     </PlayerLayout>
   );
 };

@@ -7,7 +7,12 @@ import { Sidebar, SongCard } from '../Components';
 import MusicPlayer from '@/Components/MusicPlayer';
 import { useDispatch, useSelector } from 'react-redux';
 import { HiOutlineMenu } from 'react-icons/hi';
-import { MdArrowForward, MdClose, MdCloseFullscreen } from 'react-icons/md';
+import {
+  MdArrowForward,
+  MdClose,
+  MdCloseFullscreen,
+  MdNotifications,
+} from 'react-icons/md';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 
 //Style for swiper
@@ -15,7 +20,7 @@ import './style.css';
 import { Logo } from '../../img';
 import { smalLogo } from '../../img';
 import Container from './Container';
-import { BiMusic, BiSearch, BiVideo } from 'react-icons/bi';
+import { BiMessage, BiMusic, BiSearch, BiVideo } from 'react-icons/bi';
 import Player from '@/Components/VideoPlayer/Player';
 import VideoPlayer from '@/Components/VideoPlayer';
 import Modal from '@/Components/Modal';
@@ -36,9 +41,14 @@ import { FaArtstation, FaCross } from 'react-icons/fa';
 import VideoSinglePlayer from '@/Pages/Videos/VideoSinglePlayer';
 import { random } from 'lodash';
 import { motion } from 'framer-motion';
+import LifterPlayer from '@/Components/LifterPlayer';
+import SmalSidebar from '@/Components/SmalSidebar';
+import UserAvatar from '@/Components/UserAvatar';
+import { useGetSongsAudiosQuery } from '@/redux/services/coreApi';
 interface Props {
   title: string;
   bg?: string;
+  //songs: Array<Object>;
   renderHeader?(): JSX.Element;
   renderSidebarList?(): JSX.Element;
   renderBottom?(): JSX.Element;
@@ -47,6 +57,7 @@ interface Props {
 export default function PlayerLayout({
   title,
   bg,
+  //songs,
   renderHeader,
   renderSidebarList,
   renderBottom,
@@ -54,6 +65,9 @@ export default function PlayerLayout({
 }: PropsWithChildren<Props>) {
   const page = useTypedPage();
   const route = useRoute();
+
+  const { data: songs, isFetching, error } = useGetSongsAudiosQuery('destaque');
+
   const [showingNavigationDropdown, setShowingNavigationDropdown] =
     useState(false);
 
@@ -101,13 +115,28 @@ export default function PlayerLayout({
         {openSongRandom && <Search close={setOpenSongRandom} />}
         <Head title={title} />
         <Banner />
-        <div className="relative w-full h-full min-h-full min-w-full flex flex-col">
-          <header className="bg-gradient-to-br _from-[#f6cc33] _to-[#f6cc33]  relative w-full h-[12%] flex flex-col justify-center items-center  shadow-lg  rounded shadow-black mb-2 md:pb-1 px-0 md:px-5">
-            <div className="w-full h-12 border-[#2689ce] border-b md:border-b-0 md:h-full flex justify-between items-center px-1">
+
+        <div className="relative w-full h-full min-h-full min-w-full flex  flex-col">
+          <header className="bg-gradient-to-br _from-[#f6cc33] _to-[#f6cc33]  relative w-full h-28 md:h-[10%] flex hidden_ flex-col justify-center items-center  shadow-lg  rounded shadow-black mb-2 md:pb-1 px-0 md:px-5 ">
+            <div className="w-full h-12 border-[#5e84a0] border-b md:border-b-0 md:h-full flex justify-between items-center px-1">
+              {/** OPEN AND CLOSE SIDEBAR MENU */}
+              <div className=" hidden md:flex text-bold text-xl  justify-center items-center bg-[#0094f8] p-1 rounded-lg cursor-pointer transform-effect ">
+                {openMobileMenu ? (
+                  <MdClose
+                    className="text-3xl w-7 h-7 transition-all "
+                    onClick={() => setOpenMobileMenu(false)}
+                  />
+                ) : (
+                  <HiOutlineMenu
+                    className="w-7 h-7 text-3xl  transition-all "
+                    onClick={() => setOpenMobileMenu(true)}
+                  />
+                )}
+              </div>
               {/**LOGO */}
               <Link href="/">
                 <img
-                  className="w-auto h-12 md:h-20 object-contain flex"
+                  className="w-auto h-12 md:h-14 object-contain flex"
                   src={Logo}
                   alt="logo"
                 />
@@ -119,22 +148,196 @@ export default function PlayerLayout({
                 <BiSearch className="mx-1 text-3xl text-center" />
               </button>
 
-              <div className=" flex text-bold text-xl  justify-center items-center bg-[#0094f8] p-2 rounded-lg cursor-pointer transform-effect">
-                <Link href="/musicas">
-                  <MdArrowForward
-                    className="text-3xl w-7 h-7 transition-all "
-                    onClick={() => setOpenMobileMenu(false)}
-                  />
+              <div className=" flex flex-row gap-1 justify-between items-center text-[#0094f8]">
+                <div className="w-full h full justify-center items-center flex ">
+                  {/** USER AVATAR */}
+                  <UserAvatar />
+                </div>
+                <Link
+                  href="/comunicar"
+                  className="h-full flex flex-col justify-center items-center hover:"
+                >
+                  <MdNotifications className="w-7 h-7" />
+                </Link>
+                <Link
+                  href="/comunicar"
+                  className="h-full flex flex-col justify-center items-center hover:"
+                >
+                  <BiMessage className="w-7 h-7" />
                 </Link>
               </div>
             </div>
+            <div className="w-full h-14 flex md:hidden justify-between py-1 bg-gradient-to-br from-[#00395f] to-[#005792] ">
+              <div className="w-full h-full flex  flex-row justify-center items-center mb-1 text-[#fff] text-xl ">
+                <>
+                  <Link
+                    href="/avaliacoes"
+                    className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect
+                    
+            ${
+              route().current('avaliacoes')
+                ? 'transform-effect text-cyan-400 font-bold icon-link bg-[#00395f] '
+                : ''
+            }
+            `}
+                  >
+                    <BsStars className="icon w-10 h-10" />
+                    <span
+                      className={` ${
+                        route().current('avaliacoes')
+                          ? 'flex text-white font-bold uppercase'
+                          : 'hidden'
+                      }`}
+                    >
+                      Avaliações
+                    </span>
+                  </Link>
+                  <Link
+                    href="/musicas"
+                    className={`flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
+            ${
+              route().current('musicas')
+                ? 'transform-effect text-cyan-400 font-bold icon-link bg-[#00395f]'
+                : ''
+            }
+            `}
+                  >
+                    <BiMusic className={`icon w-10 h-10`} />
+                    <span
+                      className={` ${
+                        route().current('musicas')
+                          ? 'flex text-white font-bold uppercase'
+                          : 'hidden'
+                      }`}
+                    >
+                      Músicas
+                    </span>
+                  </Link>
+                  <Link
+                    href="/video"
+                    className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter: ${
+                      route().current('video')
+                        ? 'transform-effect text-cyan-400 font-bold icon-link bg-[#00395f]'
+                        : ''
+                    } `}
+                  >
+                    <BiVideo className="icon w-10 h-10" />
+                    <span
+                      className={` ${
+                        route().current('video')
+                          ? 'flex text-white font-bold uppercase'
+                          : 'hidden'
+                      }`}
+                    >
+                      Vídeos
+                    </span>
+                  </Link>
+                  <Link
+                    href="/vozactiva"
+                    className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
+            ${
+              route().current('vozactiva')
+                ? 'transform-effect text-cyan-400 font-bold icon-link bg-[#00395f]'
+                : ''
+            }
+            `}
+                  >
+                    <GiSoundWaves className="icon w-10 h-10" />
+                    <span
+                      className={` ${
+                        route().current('vozactiva')
+                          ? 'flex text-white font-bold uppercase'
+                          : 'hidden'
+                      }`}
+                    >
+                      VozActiva
+                    </span>
+                  </Link>
+                  <Link
+                    href="/concursos"
+                    className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
+            ${
+              route().current()?.includes('concursos')
+                ? 'transform-effect text-cyan-400 font-bold icon-link bg-[#00395f]'
+                : ''
+            }
+            `}
+                  >
+                    <BsTrophy className="icon w-10 h-10" />
+                    <span
+                      className={` ${
+                        route().current('concursos')
+                          ? 'flex text-white font-bold uppercase'
+                          : 'hidden'
+                      }`}
+                    >
+                      Concursos
+                    </span>
+                  </Link>
+
+                  <Link
+                    href="/arts"
+                    className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
+            ${
+              route().current('arts')
+                ? 'transform-effect text-cyan-400 font-bold icon-link bg-[#00395f]'
+                : ''
+            }
+            `}
+                  >
+                    <FaArtstation className="icon w-10 h-10" />
+                    <span
+                      className={` ${
+                        route().current('arts')
+                          ? 'flex text-white font-bold uppercase'
+                          : 'hidden'
+                      }`}
+                    >
+                      +Artes
+                    </span>
+                  </Link>
+                  <Link
+                    href="/gospel"
+                    className={` hidden flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
+            ${
+              route().current('gospel')
+                ? 'transform-effect text-cyan-400 font-bold icon-link bg-[#00395f]'
+                : ''
+            }
+            `}
+                  >
+                    <FaCross className={`icon w-10 h-10`} />
+                    <span
+                      className={` ${
+                        route().current('gospel')
+                          ? 'flex text-white font-bold uppercase'
+                          : 'hidden'
+                      }`}
+                    >
+                      Gospel
+                    </span>
+                  </Link>
+                </>
+              </div>
+
+              {renderHeader ? renderHeader() : null}
+            </div>
           </header>
-          {/* <!-- Page Content --> */}
-          <main className="relative h-[88%] md:h-[90%] w-full  flex mx-auto justify-start items-start  p-1 rounded overflow-y-hidden mb-0 pb-0  ">
-            {children}
-          </main>
+
+          <div className="w-full h-[75%] md:h-[72%] min-w-full flex  flex-row ">
+            <SmalSidebar />
+
+            {/* <!-- Page Content --> */}
+            <main className="relative h-full w-full  flex mx-auto justify-start items-start  p-5 rounded overflow-y-hidden mb-0 pb-0  ">
+              {children}
+            </main>
+          </div>
+          <div className="w-full h-[15%] flex flex-row justify-center items-center mb-1 text-white bg-[rgb(0,86,124)] text-xl absolute bottom-0 left-0">
+            <LifterPlayer songs={songs} />
+          </div>
         </div>
       </motion.div>
+
       {}
       <Modal
         isOpen={isPlayingVideo && false}
@@ -152,10 +355,6 @@ export default function PlayerLayout({
           <VideoPlayer />
         </div>
       </Modal>
-      {}
-      {isFullScreenPlayer && (
-        <PlayerFullScreen close={setFullScreenPlayer(false)} />
-      )}
     </>
   );
 }

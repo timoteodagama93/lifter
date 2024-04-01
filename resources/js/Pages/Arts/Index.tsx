@@ -35,6 +35,8 @@ import Arts from './Arts';
 import Exposicoes from './Exposicoes';
 import Estante from './Estante';
 import BibliotecaLiteraria from './BibliotecaLiteraria';
+import PlayerLayout from '@/Layouts/PlayerLayout';
+import PlayerContainer from '@/Layouts/PlayerContainer';
 
 export default function Index({ has }) {
   const page = route().current();
@@ -53,8 +55,10 @@ export default function Index({ has }) {
     }
   }, []);
   return (
-    <AppLayout title="Artes">
-      <div className="w-full ">{currentPage}</div>
-    </AppLayout>
+    <PlayerLayout title="Artes">
+      <PlayerContainer>
+        <div className="w-full ">{currentPage}</div>
+      </PlayerContainer>
+    </PlayerLayout>
   );
 }

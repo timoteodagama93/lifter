@@ -125,16 +125,17 @@ function UserAvatar() {
       </div>
 
       {/* <!-- Settings Dropdown --> */}
-      <div className="ml-3 relative">
+      <div className="mr-3 relative">
         <Dropdown
-          align="left"
+          align="rigth"
           width="48"
           renderTrigger={() =>
             page.props.jetstream.managesProfilePhotos ? (
               <button className="flex text-sm border-2 border-transparent rounded-full shadow-sm shadow-white focus:outline-none  focus:border-gray-300 transition">
                 <img
-                  className="h-12 w-12 rounded-full object-cover"
-                  src={page.props.auth.user?.profile_photo_url}
+                  className="h-10 w-10 rounded-full object-cover"
+                  src={`/users/${page.props.auth.user?.profile_photo_path}`}
+                  //src={page.props.auth.user?.profile_photo_url}
                   alt={page.props.auth.user?.name}
                 />
               </button>
@@ -167,23 +168,7 @@ function UserAvatar() {
           <div className="block px-4 py-2 text-xs text-gray-400">
             Gerir Conta
           </div>
-          <div onClick={() => setOpenMobileMenu(false)}>
-            <DropdownLink href={route('comunicar')}>
-              <div className="hidden relative ml-2 md:flex rounded-sm md:rounded-sm p-1 px-2 md:px-2 m-4 cursor-pointer hover:bg-[#f6cc33 shadow-xl shadow-black bg-[#2e2c2e] text-white min-h-10 justify-center items-center gap-1">
-                {/*unread > 0 ? (
-                  <span className="sticky top-1 p-2  shadow-lg bg-[#000] w-4 h-4 flex justify-center items-center rounded-full text-red-500 text-xs">
-                    {unread}
-                  </span>
-                ) : (
-                  <span className="bottom-1 p-2  shadow-lg  w-4 h-4 flex justify-center items-center rounded-full text-red-500 text-xs">
-                    {''}
-                  </span>
-                )*/}
-                <MdNotifications />
-                Notificar equipa
-              </div>
-            </DropdownLink>
-          </div>
+          
           <div onClick={() => setOpenMobileMenu(false)}>
             <DropdownLink href={route('jurados')}>Jurados</DropdownLink>
           </div>

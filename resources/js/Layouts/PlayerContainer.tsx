@@ -16,6 +16,7 @@ import route from 'ziggy-js';
 import RestCountries from '@/Components/RestCountries';
 import { motion } from 'framer-motion';
 import LifterPlayer from '@/Components/LifterPlayer';
+import { Sidebar } from '@/Components';
 
 /*
 interface Props {
@@ -23,12 +24,8 @@ interface Props {
   bg?: String;
 }*/
 
-function PlayerContainer({
-  children=<></>,
-  bg = loader,
-  songs,
-}) //: PropsWithChildren<Props>
-{
+function PlayerContainer({ children = <></>, bg = loader }) {
+  //: PropsWithChildren<Props>
   const { activeSong, isPlaying, isPlayingVideo, isFullScreenPlayer } =
     useSelector(state => state.player);
   const dispatch = useDispatch();
@@ -61,27 +58,9 @@ function PlayerContainer({
           h-full top-0 left-0 shadow-xl flex flex-col   bg-[#245575] `}
         >
           <div
-            className={`relative  text-white w-full ${
-              isPlaying ? 'h-[85%] lg:h-[70%]' : 'h-full md:h-[85%]'
-            }  md:px-5 overflow-y-auto top-0 left-0 shadow-xl flex flex-wrap shadow-black justify-center items-start`}
+            className={`relative  text-white w-full h-full  md:px-5 overflow-y-auto top-0 left-0 shadow-xl flex flex-wrap shadow-black justify-center items-start`}
           >
             <>{children}</>
-          </div>
-          <div
-            className={`w-full 
-            ${isPlaying ? 'h-[15%] md:h-[30%] flex' : 'h-0 md:h-[15%] hidden '}
-               md:flex flex-col justify-center items-center  bg-gradient-to-br from-[#0094f8] to-[#245575]  backdrop-blur-lg `}
-          >
-            {!isFullScreenPlayer && isPlaying && (
-              <div
-                className="relative w-full p-2 transition-5s "
-                style={{ transition: '5s' }}
-              ></div>
-            )}
-
-            <div className="w-full h-full flex flex-row justify-center items-center mb-1 text-white text-xl ">
-              <LifterPlayer songs={songs} />
-            </div>n
           </div>
         </div>
       </div>

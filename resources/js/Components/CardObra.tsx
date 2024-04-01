@@ -17,6 +17,9 @@ function CardObra({
                 src={`/arts/${obra.exposition_id}/${obra.item_url}`}
               />
             </div>
+
+
+
             <div className="w-full flex flex-col gap-0">
               <Interagir collectionType='arte_visual' song={obra} />
               <span className="border-t-2 relative text-2xl text-yellow-400 font-bold">

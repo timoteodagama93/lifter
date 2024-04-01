@@ -35,7 +35,7 @@ export default function ExpositionRoom({ room }) {
     isFetching,
     error,
   } = useGetExpositionItemsQuery(room.id);
-  if (isFetching) return <Loader title="Carregando salas de exposições" />;
+  if (isFetching) return <Loader title="Carregando artes da sala" />;
   return (
     <>
       <Modal isOpen={addExposicao} onClose={() => setAddExposicao(false)}>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Exposition;
 use App\Models\ExpositionsItems;
+use Faker\Provider\Lorem;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
@@ -34,7 +35,8 @@ class ExpositionsController extends Controller
 
         $coverUrl = Request::file('cover')->store("public/users/expositions/$exposition->id/items");
         if ($coverUrl) {
-            $exposition->cover = Storage::url($coverUrl);
+            //$exposition->cover = Storage::url($coverUrl);
+            $exposition->cover = Request::file('cover')->hashName();
             $exposition->mime_type = Request::file('cover')->getClientMimeType();
             $exposition->extension = Request::file('cover')->getClientOriginalExtension();
             $exposition->save();
@@ -64,7 +66,7 @@ class ExpositionsController extends Controller
                 'title' => Request::input('title'),
                 'category' => Request::input('category'),
                 'description' => Request::input('description'),
-                'item_url' => Storage::url($itemUrl),
+                'item_url' => Request::file('item')->hashName(),
                 'mime_type' => $mimeType,
                 'extension' => $extension,
             ]);

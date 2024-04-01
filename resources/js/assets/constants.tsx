@@ -5,7 +5,7 @@ import {
   HiOutlineUpload,
   HiUserGroup,
 } from 'react-icons/hi';
-import { FaHandshake } from 'react-icons/fa';
+import { FaArtstation, FaHandshake } from 'react-icons/fa';
 import {
   MdBusinessCenter,
   MdEvent,
@@ -16,13 +16,15 @@ import {
   MdOutlineExplore,
 } from 'react-icons/md';
 import { GiSoundWaves, GiTrophyCup } from 'react-icons/gi';
-import { BsInfoCircle, BsTrophy } from 'react-icons/bs';
+import { BsInfoCircle, BsStars, BsTrophy } from 'react-icons/bs';
 import {
   BiDisc,
   BiHome,
   BiLibrary,
   BiMicrophone,
+  BiMusic,
   BiUserVoice,
+  BiVideo,
 } from 'react-icons/bi';
 import {
   RiContactsBook2Fill,
@@ -223,6 +225,77 @@ export const links = [
     icon: MdBusinessCenter,
   },
 
+  /*{
+    name: 'Configurações',
+    href: '/configuracoes',
+    icon: FaCog,
+  },
+  {
+    name: 'Políticas',
+    href: '/politicas',
+    icon: FaHandshake,
+  },
+  */
+  /**
+  {
+    name: 'Imediações',
+    href: '/imediacoes',
+    icon: HiOutlinePhotograph,
+  },
+  {
+    name: 'Top artistas',
+    href: '/top-artists',
+    icon: HiUserGroup,
+  },
+  {
+    name: 'Top Charts',
+    href: '/top-charts',
+    icon: HiOutlineHashtag,
+  },
+  {
+    name: 'Vídeos',
+    href: '/videos',
+    icon: HiOutlineVideoCamera,
+  }, */
+];
+export const mainLinks = [
+  {
+    name: 'Home',
+    href: '/home',
+    icon: BiHome,
+  },
+
+  {
+    name: 'Avaliações',
+    href: '/avaliacoes',
+    icon: BsStars,
+  },
+  {
+    name: 'Músicas',
+    href: '/musicas',
+    icon: BiMusic,
+  },
+  {
+    name: 'Videos',
+    href: '/video',
+    icon: BiVideo,
+  },
+  {
+    name: 'Voz Activa',
+    href: '/vozactiva',
+    icon: GiSoundWaves,
+  },
+  {
+    name: 'Concursos',
+    href: '/concursos',
+    icon: BsTrophy,
+  },
+  {
+    name: '+Artes',
+    href: '/arts',
+    icon: FaArtstation,
+  },
+  
   /*{
     name: 'Configurações',
     href: '/configuracoes',

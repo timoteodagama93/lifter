@@ -6,6 +6,7 @@ use App\Http\Controllers\ComunicacaoController;
 use App\Http\Controllers\ContestController;
 use App\Http\Controllers\EstanteController;
 use App\Http\Controllers\ExpositionsController;
+use App\Http\Controllers\FileGetterController;
 use App\Http\Controllers\InteragirController;
 use App\Http\Controllers\JuradoController;
 use App\Http\Controllers\PostController;
@@ -48,36 +49,13 @@ Route::get('/', function () {
     ]);
 })->name('/');
 
+Route::controller(FileGetterController::class)->group(function () {
+    Route::get('/songs/{artist_id}/{nome_arquivo}', 'get_songs')->name('songs/{artist_id}/{nome_arquivo}');
 
-Route::get('/songs/{artist_id}/{nome_arquivo}', function ($artist_id, $nome_arquivo) {
-    // Verifique se o arquivo existe no diretório de armazenamento
-    if (Storage::exists("public/artists/{$artist_id}/songs/{$nome_arquivo}")) {
-        // Obtenha o caminho completo do arquivo
-        $caminho_arquivo = storage_path("app/public/artists/{$artist_id}/songs/{$nome_arquivo}");
+    Route::get('/users/profile-photos/{nome_arquivo}', 'get_profiles_pictures')->name('users/profile-photos/{nome_arquivo}');
 
-        // Retorne o arquivo como resposta HTTP
-        return response()->file($caminho_arquivo);
-    } else {
-        // Se o arquivo não existir, retorne uma resposta de erro 404
-        abort(404);
-    }
+    Route::get('/arts/{exposition_id}/{nome_arquivo}', 'get_arts_itens')->name('arts/{exposition_id}/{nome_arquivo}');
 });
-
-Route::get('/arts/{exposition_id}/{nome_arquivo}', function ($exposition_id, $nome_arquivo) {
-    // Verifique se o arquivo existe no diretório de armazenamento
-    //if (Storage::exists("public/users/expositions/{$exposition_id}/items/{$nome_arquivo}")) {
-    if (Storage::exists($nome_arquivo)) {
-        // Obtenha o caminho completo do arquivo
-        $caminho_arquivo = storage_path("app/public/users/expositions/{$exposition_id}/items/{$nome_arquivo}");
-
-        // Retorne o arquivo como resposta HTTP
-        return response()->file($caminho_arquivo);
-    } else {
-        // Se o arquivo não existir, retorne uma resposta de erro 404
-        abort(404);
-    }
-});
-
 
 
 Route::get('/get-welcome-destaques-audios', function () {

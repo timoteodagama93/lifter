@@ -8,13 +8,14 @@ axios.post('get-songs')
     .then((response) => {
         console.log(response)
     })
-    .catch(e => { console.error(e) })*/
+    .catch(e => { console.error(e) })
+    */
 
 export const coreApi = createApi({
     reducerPath: 'coreApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'https://lifter.ao/'
-        //baseUrl: 'http://127.0.0.1:8000/'
+        //baseUrl: 'https://lifter.ao/'
+        baseUrl: 'http://127.0.0.1:8000/'
     }),
     endpoints: (builder) => ({
         /**SONGS */

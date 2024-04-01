@@ -37,6 +37,8 @@ import PostCard from '@/Components/PostCard';
 import CartaoNoticia from '@/Components/CartaoNoticia';
 import Comment from '@/Components/Comment';
 import AppLayout from '@/Layouts/AppLayout';
+import PlayerLayout from '@/Layouts/PlayerLayout';
+import PlayerContainer from '@/Layouts/PlayerContainer';
 
 function Noticias({}) {
   const page = useTypedPage();
@@ -67,34 +69,36 @@ function Noticias({}) {
   const [detailsPost, setDetailsPost] = useState(false);
 
   return (
-    <AppLayout title="Notícias">
-      <div className="w-full h-full md:px-2 flex flex-col">
-        <div className="w-full flex flex-col-reverse md:flex-row  justify-center items-center">
-          <FiltrarNoticias
-            setPosts={setPosts}
-            setLoading={setLoading}
-            setError={setError}
-            setFilter={setFilter}
-          />
-        </div>
-
-        {loading && <Loader title="Carregando Posts & Notícias" />}
-        {error && <Error />}
-        {!loading && !error && posts && (
-          <div className="w-full h-[62vh] flex overflow-y-auto justify-center">
-            <div className="w-full flex justify-center">
-              {posts?.length > 0 ? (
-                <DisplayNew posts={posts} />
-              ) : (
-                <h1 className="w-full text-center text-xl uppercase">
-                  Nada publicado recentemente em {filter} ...
-                </h1>
-              )}
-            </div>
+    <PlayerLayout title="Notícias">
+      <PlayerContainer>
+        <div className="w-full h-full md:px-2 flex flex-col">
+          <div className="w-full flex flex-col-reverse md:flex-row  justify-center items-center">
+            <FiltrarNoticias
+              setPosts={setPosts}
+              setLoading={setLoading}
+              setError={setError}
+              setFilter={setFilter}
+            />
           </div>
-        )}
-      </div>
-    </AppLayout>
+
+          {loading && <Loader title="Carregando Posts & Notícias" />}
+          {error && <Error />}
+          {!loading && !error && posts && (
+            <div className="w-full h-[62vh] flex overflow-y-auto justify-center">
+              <div className="w-full flex justify-center">
+                {posts?.length > 0 ? (
+                  <DisplayNew posts={posts} />
+                ) : (
+                  <h1 className="w-full text-center text-xl uppercase">
+                    Nada publicado recentemente em {filter} ...
+                  </h1>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </PlayerContainer>
+    </PlayerLayout>
   );
 }
 

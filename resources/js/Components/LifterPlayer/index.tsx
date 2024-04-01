@@ -15,6 +15,7 @@ import VolumeBar from './VolumeBar';
 import { BsStarFill, BsStar } from 'react-icons/bs';
 import axios from 'axios';
 import Interagir from '../Interagir';
+import DotsMenu from '../DotsMenu';
 
 const LifterPlayer = ({ songs }) => {
   const { activeSong, currentSongs, currentIndex, isActive, isPlaying } =
@@ -28,11 +29,12 @@ const LifterPlayer = ({ songs }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (songs == undefined) return;
     const song = songs[0];
     const i = 0;
     dispatch(setActiveSong({ song, songs, i }));
 
-    if (songs?.length) dispatch(playPause(true));
+    //if (songs?.length) dispatch(playPause(true));
   }, [currentIndex]);
 
   const handlePlayPause = () => {
@@ -101,24 +103,32 @@ const LifterPlayer = ({ songs }) => {
 
   useEffect(getUserValuation, [activeSong]);
   return (
-    <div className="w-full flex  flex-col md:flex-row justify-center items-center">
+    <div className="w-full flex  flex-col justify-center items-center">
+      <div className="w-full flex flex-row">
+        <Seekbar
+          value={appTime}
+          min="0"
+          max={duration}
+          onInput={event => setSeekTime(event.target.value)}
+          setSeekTime={setSeekTime}
+          appTime={appTime}
+        />
+        <VolumeBar
+          value={volume}
+          min="0"
+          max="1"
+          onChange={event => setVolume(event.target.value)}
+          setVolume={setVolume}
+        />
+      </div>
       <div className="relative sm:px-12 px-8 w-full flex flex-col md:flex-row items-center justify-between">
-        {isPlaying && (
-          <Track
-            isPlaying={isPlaying}
-            isActive={isActive}
-            activeSong={activeSong}
-          />
-        )}
-        <div className="flex-1 flex flex-col items-center justify-center">
-          <Seekbar
-            value={appTime}
-            min="0"
-            max={duration}
-            onInput={event => setSeekTime(event.target.value)}
-            setSeekTime={setSeekTime}
-            appTime={appTime}
-          />
+        <Track
+          isPlaying={isPlaying}
+          isActive={isActive}
+          activeSong={activeSong}
+        />
+
+        <div className="w-full flex-1 flex flex-col items-center justify-center">
           <Controls
             isPlaying={isPlaying}
             repeat={repeat}
@@ -145,34 +155,11 @@ const LifterPlayer = ({ songs }) => {
               />
             </>
           )}
-          <VolumeBar
-            value={volume}
-            min="0"
-            max="1"
-            onChange={event => setVolume(event.target.value)}
-            setVolume={setVolume}
-          />
         </div>
         <div className="w-full flex">
           <Interagir song={activeSong} collectionType="song" />
         </div>
-      </div>
-      <div className="hidden flex flex-row items-center justify-center md:flex-col">
-        <span className="text-xs animate-bounce">Avalie</span>
-        <div className="justify-center items-center flex flex-row">
-          {stars.map(stars => (
-            <span key={stars} className="text-4xl ">
-              <button key={stars} onClick={() => submitValuation(stars)}>
-                {selectedStar >= stars ? (
-                  //                    || (isHovering == false && hoverStar >=  stars)
-                  <BsStarFill className="text-[#f6cc33]" />
-                ) : (
-                  <BsStar />
-                )}
-              </button>
-            </span>
-          ))}
-        </div>
+        <DotsMenu />
       </div>
     </div>
   );

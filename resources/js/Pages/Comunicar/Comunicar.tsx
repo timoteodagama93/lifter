@@ -14,6 +14,8 @@ import SectionBorder from '@/Components/SectionBorder';
 import { GrNotification } from 'react-icons/gr';
 import Feedbacks from './Feedbacks';
 import Swal from 'sweetalert2';
+import PlayerContainer from '@/Layouts/PlayerContainer';
+import PlayerLayout from '@/Layouts/PlayerLayout';
 //import Swal from 'sweetalert2'
 function Mensagens() {
   const [activar, setActivar] = useState('musicas');
@@ -28,48 +30,48 @@ function Mensagens() {
   const [swalProps, setSwalProps] = useState({});
 
   return (
-    <AppLayout title="Comunicações">
-      <div className="w-full h-full">
-        <div className="w-full mt-4 flex flex-row justify-center items-center gap-1 md:gap-5">
-          <button
-            onClick={() => setCurrentPage(<Feedbacks />)}
-            className="justify-center items-center flex p-2 gap-1 text-base md:text-xl shadow shadow-[#4c88c4] "
-          >
-            <MdFeedback /> Feedback
-          </button>
-          <button
-            onClick={() => {
-              Swal.fire({
-                title: 'Funcionalidade em desenvolvimento!',
-                text: 'A brevemente. Acompanhe as novidades e o cronograma de lançamentos.',
-                icon: 'info',
-                confirmButtonText: 'Legal'
-              })
-              
-            }}
-            className="justify-center items-center flex p-2 gap-1 text-base md:text-xl shadow shadow-[#4c88c4] "
-          >
-            <MdNotifications /> Notificações
-          </button>
-          <button
-            onClick={() => {
-              Swal.fire({
-                title: 'Funcionalidade em desenvolvimento!',
-                text: 'A troca de mensagens estará disponível brevemente. Acompanhe as novidades e o cronograma de lançamentos.',
-                icon: 'info',
-                confirmButtonText: 'Legal'
-              })
-              
-            }}
-            className="justify-center items-center flex p-2 gap-1 text-base md:text-xl shadow shadow-[#4c88c4]"
-          >
-            <BiConversation /> Mensagens
-          </button>
+    <PlayerLayout title="Comunicações">
+      <PlayerContainer>
+        <div className="w-full h-full">
+          <div className="w-full mt-4 flex flex-row justify-center items-center gap-1 md:gap-5">
+            <button
+              onClick={() => setCurrentPage(<Feedbacks />)}
+              className="justify-center items-center flex p-2 gap-1 text-base md:text-xl shadow shadow-[#4c88c4] "
+            >
+              <MdFeedback /> Feedback
+            </button>
+            <button
+              onClick={() => {
+                Swal.fire({
+                  title: 'Funcionalidade em desenvolvimento!',
+                  text: 'A brevemente. Acompanhe as novidades e o cronograma de lançamentos.',
+                  icon: 'info',
+                  confirmButtonText: 'Legal',
+                });
+              }}
+              className="justify-center items-center flex p-2 gap-1 text-base md:text-xl shadow shadow-[#4c88c4] "
+            >
+              <MdNotifications /> Notificações
+            </button>
+            <button
+              onClick={() => {
+                Swal.fire({
+                  title: 'Funcionalidade em desenvolvimento!',
+                  text: 'A troca de mensagens estará disponível brevemente. Acompanhe as novidades e o cronograma de lançamentos.',
+                  icon: 'info',
+                  confirmButtonText: 'Legal',
+                });
+              }}
+              className="justify-center items-center flex p-2 gap-1 text-base md:text-xl shadow shadow-[#4c88c4]"
+            >
+              <BiConversation /> Mensagens
+            </button>
+          </div>
+          <SectionBorder />
+          <div className="w-full">{currentPage}</div>
         </div>
-        <SectionBorder />
-        <div className="w-full">{currentPage}</div>
-      </div>
-    </AppLayout>
+      </PlayerContainer>
+    </PlayerLayout>
   );
 }
 

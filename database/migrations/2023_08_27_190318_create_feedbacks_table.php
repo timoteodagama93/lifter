@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('user_id');
             $table->integer('collection_id');
-            $table->integer('collection_type');
+            $table->string('collection_type');
             $table->string('message');
             $table->boolean('public')->default(false);
             $table->boolean('status_read')->default(false);

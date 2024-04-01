@@ -81,7 +81,8 @@ export default function Exposicoes({}) {
                     <div className="w-full h-full flex justify-center items-center rigth-0">
                       <img
                         className="w-full h-full relative right-0"
-                        src={room.cover}
+                        //src={room.cover}
+                        src={`/arts/${room?.id}/${room?.cover}`}
                       />
                     </div>
                     <div className="w-full flex flex-col gap-0">

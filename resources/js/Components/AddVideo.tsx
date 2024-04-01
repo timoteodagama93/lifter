@@ -109,7 +109,7 @@ export default function AddVideo({ default_category = '' }) {
             Novo vídeo
           </p>
           <SectionBorder></SectionBorder>
-          <form onSubmit={onSubmit} className="">
+          <form onSubmit={onSubmit} className="" encType="multipart/form-data">
             {photoPreview ? (
               // <!-- New Profile Photo Preview -->
               <audio className="">

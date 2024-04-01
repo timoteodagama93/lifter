@@ -107,7 +107,7 @@ export default function AddExposicao({}) {
             Nova sala de exposições
           </p>
           <SectionBorder></SectionBorder>
-          <form onSubmit={onSubmit} className="">
+          <form onSubmit={onSubmit} className="" encType="multipart/form-data">
             {photoPreview ? (
               // <!-- New Profile Photo Preview -->
               <div className="">

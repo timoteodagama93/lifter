@@ -17,6 +17,8 @@ import { useGetContestImagesQuery } from '@/redux/services/coreApi';
 import { Loader } from '@/Components';
 import Swal from 'sweetalert2';
 import Concursos from './Concursos';
+import PlayerLayout from '@/Layouts/PlayerLayout';
+import PlayerContainer from '@/Layouts/PlayerContainer';
 
 interface Props {
   contests: Array<Object>;
@@ -59,81 +61,85 @@ function Index({ contests, contest }: Props) {
     filterContest();
   }, [filter]);
   return (
-    <AppLayout title="Ascensão">
-      <div className="w-full h-full flex flex-col rounded-sm p-1">
-        <div className="w-full flex mx-2 justify-between items-center flex-col md:flex-row shadow-lg">
-          <div className="flexjustify-between">
-            <div className="flex flex-row justify-between gap-2">
-              <h2 className="font-bold text-base md:text-xl uppercase">
-                {' '}
-                Festivais e concursos
-              </h2>
-              <button
-                id="select_style2"
-                onChange={() => setShowAscensao(true)}
-                value={filter}
-                className="flex justify-center items-center px-2 bg-[#4c88c4] text-gray-50 font-bold text-sm rounded-lg outline-none p-2 transform-effect"
-              >
-                Ascensão
-              </button>
-              <select
-                id="select_style2"
-                onChange={e => setFilter(e.currentTarget.value)}
-                value={filter}
-                className="flex md:hidden bg-[#000] text-gray-50 font-bold p-1 text-sm rounded-lg outline-none sm:mt-0 mt-0 mr-10"
-              >
-                <option value="">Filtrar</option>
-                {generos.map(genero => (
-                  <option
-                    key={genero.value}
-                    id={genero.value}
-                    value={genero.value}
+    <PlayerLayout title="Ascensão">
+      <PlayerContainer>
+        <>
+          <div className="w-full h-full flex flex-col rounded-sm p-1">
+            <div className="w-full flex mx-2 justify-between items-center flex-col md:flex-row shadow-lg">
+              <div className="flexjustify-between">
+                <div className="flex flex-row justify-between gap-2">
+                  <h2 className="font-bold text-base md:text-xl uppercase">
+                    {' '}
+                    Festivais e concursos
+                  </h2>
+                  <button
+                    id="select_style2"
+                    onChange={() => setShowAscensao(true)}
+                    value={filter}
+                    className="flex justify-center items-center px-2 bg-[#4c88c4] text-gray-50 font-bold text-sm rounded-lg outline-none p-2 transform-effect"
                   >
-                    {genero.title}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="flex justify-center md:justify-between">
-            <select
-              id="select_style"
-              onChange={e => setFilter(e.currentTarget.value)}
-              value={filter}
-              className="hidden md:flex text-black font-bold p-1 text-sm rounded-lg outline-none sm:mt-0 mt-0 mr-10"
-            >
-              <option value="">Filtrar</option>
-              {generos.map(genero => (
-                <option
-                  key={genero.value + 1}
-                  id={genero.value + 2}
-                  value={genero.value}
+                    Ascensão
+                  </button>
+                  <select
+                    id="select_style2"
+                    onChange={e => setFilter(e.currentTarget.value)}
+                    value={filter}
+                    className="flex md:hidden bg-[#000] text-gray-50 font-bold p-1 text-sm rounded-lg outline-none sm:mt-0 mt-0 mr-10"
+                  >
+                    <option value="">Filtrar</option>
+                    {generos.map(genero => (
+                      <option
+                        key={genero.value}
+                        id={genero.value}
+                        value={genero.value}
+                      >
+                        {genero.title}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="flex justify-center md:justify-between">
+                <select
+                  id="select_style"
+                  onChange={e => setFilter(e.currentTarget.value)}
+                  value={filter}
+                  className="hidden md:flex text-black font-bold p-1 text-sm rounded-lg outline-none sm:mt-0 mt-0 mr-10"
                 >
-                  {genero.title}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        <div className="w-full mx-auto sm:px-1 lg:px-1 dark:bg-gray-800 rounded-lg p-1">
-          <div className="w-full flex flex-col">
-            <div
-              className="w-full flex flex-row flex-wrap"
-              style={{ transition: '5s' }}
-            >
-              {currentPage}
+                  <option value="">Filtrar</option>
+                  {generos.map(genero => (
+                    <option
+                      key={genero.value + 1}
+                      id={genero.value + 2}
+                      value={genero.value}
+                    >
+                      {genero.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="w-full mx-auto sm:px-1 lg:px-1 dark:bg-gray-800 rounded-lg p-1">
+              <div className="w-full flex flex-col">
+                <div
+                  className="w-full flex flex-row flex-wrap"
+                  style={{ transition: '5s' }}
+                >
+                  {currentPage}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      {detailsContest && displayDetails && (
-        <ContestDetails
-          key={detailsContest.id}
-          contest={detailsContest}
-          close={setDisplayDetails}
-        />
-      )}
-    </AppLayout>
+          {detailsContest && displayDetails && (
+            <ContestDetails
+              key={detailsContest?.id}
+              contest={detailsContest}
+              close={setDisplayDetails}
+            />
+          )}
+        </>
+      </PlayerContainer>
+    </PlayerLayout>
   );
 }
 
