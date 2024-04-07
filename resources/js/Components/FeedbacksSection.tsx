@@ -59,6 +59,7 @@ const FeedbacksSection = ({ collection, collectionType }) => {
       <form
         onSubmit={e => submit(e)}
         className="w-full flex flex-col justify-start text-base items-center p-5"
+        encType="multipart/form-data"
       >
         <div className="w-full p-2 rounded bg-black text-white flex-col ">
           <h1 className="text-xl">Deixe seu feedback</h1>

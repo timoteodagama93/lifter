@@ -113,7 +113,7 @@ export default function AddArtist({}) {
               Criar novo perfil de artista
             </p>
             <SectionBorder></SectionBorder>
-            <form onSubmit={onSubmit} className="">
+            <form onSubmit={onSubmit} className="" encType="multipart/form-data">
               {photoPreview ? (
                 // <!-- New Profile Photo Preview -->
                 <div className="w-full flex justify-center">

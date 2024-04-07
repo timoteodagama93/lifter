@@ -34,10 +34,10 @@ import PulseButton from '@/Components/PulseButton';
 import Swal from 'sweetalert2';
 import CommentsSection from '@/Components/CommentsSection';
 import PostCard from '@/Components/PostCard';
-import CartaoNoticia from '@/Components/CartaoNoticia';
 import Comment from '@/Components/Comment';
 import AppLayout from '@/Layouts/AppLayout';
 import Container from '@/Layouts/Container';
+import CartaoNoticia from '@/Components/CartaoNoticia';
 
 function Noticias({}) {
   const page = useTypedPage();
@@ -100,13 +100,6 @@ function DisplayNews({ posts }) {
   const [seeComments, setSeeComments] = useState(false);
   const [postToComment, setPostToComment] = useState(null);
 
-  const [comments, setComments] = useState([
-    { text: 'Great post!' },
-    {
-      text: 'I have a question about the second post. Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident veniam corrupti architecto nostrum nisi iusto, animi ad deserunt sed, accusamus aperiam minima suscipit eum numquam illo dolores inventore ex similique.',
-    },
-  ]);
-
   useEffect(() => {
     if (postToComment) {
       setSeeComments(true);
@@ -114,7 +107,7 @@ function DisplayNews({ posts }) {
   }, [postToComment]);
   return (
     <div className="w-full h-full flex justify-center">
-      <div className="w-full md:w-[60%] ">
+      <div className="w-full md:w-[85%] ">
         <div className="community-discussion">
           <div className="posts">
             {posts.map(post => (

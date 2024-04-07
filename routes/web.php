@@ -54,6 +54,8 @@ Route::controller(FileGetterController::class)->group(function () {
 
     Route::get('/videos/{user_id}/{nome_arquivo}', 'get_videos')->name('videos/{user_id}/{nome_arquivo}');
 
+    Route::get('/posts/{post_id}/{nome_arquivo}', 'get_post_files')->name('posts/{post_id}/{nome_arquivo}');
+
     Route::get('/users/profile-photos/{nome_arquivo}', 'get_profiles_pictures')->name('users/profile-photos/{nome_arquivo}');
 
     Route::get('/arts/{exposition_id}/{nome_arquivo}', 'get_arts_itens')->name('arts/{exposition_id}/{nome_arquivo}');

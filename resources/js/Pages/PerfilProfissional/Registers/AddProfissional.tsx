@@ -123,7 +123,7 @@ export default function AddProfissional({}) {
             </p>
 
             <SectionBorder></SectionBorder>
-            <form onSubmit={onSubmit} className="text-white">
+            <form onSubmit={onSubmit} className="text-white" encType="multipart/form-data">
               {photoPreview ? (
                 // <!-- New Profile Photo Preview -->
                 <div className="">

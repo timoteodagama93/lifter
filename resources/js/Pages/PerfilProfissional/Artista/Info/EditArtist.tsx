@@ -34,7 +34,7 @@ export default function EditArtist({ artist, setPagina }) {
           Actualizar dados do artista
         </p>
         <SectionBorder></SectionBorder>
-        <form onSubmit={onSubmit} className="">
+        <form onSubmit={onSubmit} className="" encType="multipart/form-data">
           {formArtist.progress && (
             <progress value={formArtist.progress.percentage} max={100}>
               {formArtist.progress.percentage}%

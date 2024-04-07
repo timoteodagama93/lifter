@@ -41,7 +41,7 @@ export default function AddYoutubeSong({ artist }) {
         Adicionar música de <strong> {artist.name}</strong>
       </p>
       <SectionBorder></SectionBorder>
-      <form onSubmit={onSubmit} className="">
+      <form onSubmit={onSubmit} className="" encType="multipart/form-data">
         {formSong.progress && (
           <progress value={formSong.progress.percentage} max={100}>
             {formSong.progress.percentage}%

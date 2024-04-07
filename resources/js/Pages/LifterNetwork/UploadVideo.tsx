@@ -26,7 +26,7 @@ function UploadVideo({}) {
       <h1 className="w-full text-xl md:text-2xl text-center py-2 ">
         Carregar Vídeo
       </h1>
-      <form className="flex flex-col" onSubmit={submit}>
+      <form className="flex flex-col" onSubmit={submit} encType="multipart/form-data">
         <div>
           <InputLabel htmlFor="title"></InputLabel>
           <input

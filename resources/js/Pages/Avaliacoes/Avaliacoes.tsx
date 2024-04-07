@@ -43,10 +43,18 @@ const Avaliacoes = ({}) => {
           {songs?.length > 0 && (
             <>
               {' '}
-              {songs?.map((song, i) => (
-                <div className="w-full relative flex flex-col ">
+              <div className="w-full h-full relative flex flex-col ">
+                {songs?.map((song, i) => (
                   <>
-                    {window.screen.width >= 768 ? (
+                    <TopChartCard
+                      songs={songs}
+                      song={song}
+                      isPlaying={isPlaying}
+                      activeSong={activeSong}
+                      i={i}
+                      key={song.id}
+                    />
+                    {/*window.screen.width >= 768 ? (
                       <TopChartCard
                         songs={songs}
                         song={song}
@@ -64,10 +72,10 @@ const Avaliacoes = ({}) => {
                         i={i}
                         key={song.id}
                       />
-                    )}
+                    )*/}
                   </>
-                </div>
-              ))}
+                ))}
+              </div>
             </>
           )}
         </>

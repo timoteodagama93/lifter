@@ -14,7 +14,7 @@ export default function Arts({}) {
   const { setCurrentPage } = useStateContext();
   return (
     <>
-      <div className="w-full flex flex-wrap relative h-full p-5 justifiy-center items-center ">
+      <div className="w-full flex flex-wrap relative h-full p-24 justifiy-center items-center ">
         <div className="w-full md:w-1/2 h-1/4  md:h-1/2 lg:h-1/3 p-2">
           <div
             onClick={() => setCurrentPage(<BibliotecaLiteraria />)}

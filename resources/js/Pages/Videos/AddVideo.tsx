@@ -100,7 +100,7 @@ export default function AddVideo({ from = '' }) {
             <strong>Adicionar vídeo</strong>
           </p>
           <SectionBorder></SectionBorder>
-          <form onSubmit={onSubmit} className="">
+          <form onSubmit={onSubmit} className="" encType="multipart/form-data">
             {photoPreview ? (
               // <!-- New Profile Photo Preview -->
               <audio className="">

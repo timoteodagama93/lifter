@@ -24,7 +24,8 @@ function Upload({ image, url }) {
   return (
     <>
       {image != '' && <img src={image} alt="Added Image" />}
-      <form className="flex flex-col" onSubmit={submit}>
+      <form className="flex flex-col" onSubmit={submit}
+      encType="multipart/form-data">
         <div>
           <InputLabel htmlFor="title"></InputLabel>
           <input

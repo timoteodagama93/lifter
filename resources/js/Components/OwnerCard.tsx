@@ -7,8 +7,8 @@ function OwnerCard({
   collectionId,
   collectionType,
   collectionScore = 0,
-  title,
-  category_or_style,
+  title = '',
+  category_or_style = '',
 }) {
   const [owner, setOwner] = useState(Object);
   const [loading, setLoading] = useState(true);
@@ -16,13 +16,11 @@ function OwnerCard({
   useEffect(() => {
     if (collectionType == 'normal') {
       axios.post('get-user', { user_id: ownerId }).then(response => {
-        console.log(response.data);
         setOwner(response.data);
         setLoading(false);
       });
     } else {
       axios.post('get-artist', { artist_id: ownerId }).then(response => {
-        console.log(response.data);
         setOwner(response.data);
         setLoading(false);
       });
@@ -35,8 +33,8 @@ function OwnerCard({
       <div className="h-12 w-12   rounded-lg">
         <img
           className="object-center object-cover h-full w-full rounded-lg"
-          src="https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80"
-          alt="photo"
+          src={`/users/${owner?.profile_photo_path}`}
+          alt={owner.name}
         />
       </div>
       <div className="w-full h-full text-start truncate">

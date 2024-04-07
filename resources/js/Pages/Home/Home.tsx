@@ -43,6 +43,9 @@ import Sobre from '../Concursos/Sobre';
 import {
   useGetDestaqueSongsQuery,
   useGetDestaqueVideosQuery,
+  useGetExpositionItemsQuery,
+  useGetExpositionsQuery,
+  useGetVideosQuery,
 } from '@/redux/services/coreApi';
 import { useSelector } from 'react-redux';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -117,8 +120,19 @@ export default function Home({ posts2 }: Props) {
     data: videos,
     isFetching: fetchV,
     error: errorV,
-  } = useGetDestaqueVideosQuery('');
-  const { activeVideo, isPlayingVideo } = useSelector(state => state.player);
+  } = useGetVideosQuery('all');
+
+  const {
+    data: videosDestaques,
+    isFetching: isGetingDes,
+    error: errorDest,
+  } = useGetDestaqueVideosQuery('all');
+
+  const {
+    data: rooms,
+    isFetching: fetchR,
+    error: errorR,
+  } = useGetExpositionsQuery('');
 
   const [posts, setPosts] = useState([]);
 
@@ -206,7 +220,7 @@ export default function Home({ posts2 }: Props) {
                 </div>
               </div>
 
-              <div className="">
+              <div className="w-full">
                 <Noticias />
               </div>
             </div>
