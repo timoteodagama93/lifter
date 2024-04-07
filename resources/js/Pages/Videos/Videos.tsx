@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from '@inertiajs/react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useSelector } from 'react-redux';
@@ -8,7 +8,7 @@ import {
 } from '@/redux/services/coreApi';
 import Loader from '../../Components/Loader';
 import Error from '../../Components/Error';
-import AppLayout from '@/Layouts/AppLayout';
+
 import { EffectCube, Navigation } from 'swiper/modules';
 import VideoCard from '@/Components/VideoCard';
 
@@ -30,8 +30,10 @@ import { AddSong } from '../PerfilProfissional/Artista/Song';
 import useTypedPage from '@/Hooks/useTypedPage';
 import { MdOutlineCloseFullscreen } from 'react-icons/md';
 import AddVideo from '@/Components/AddVideo';
-import PlayerContainer from '@/Layouts/PlayerContainer';
-import PlayerLayout from '@/Layouts/PlayerLayout';
+import AppLayout from '@/Layouts/AppLayout';
+import Container from '@/Layouts/Container';
+import CardVideo from '@/Components/CardVideo';
+import VideoSinglePlayer from './VideoSinglePlayer';
 
 function Videos({}) {
   const { data: videos, isFetching, error } = useGetVideosQuery('all');
@@ -43,14 +45,18 @@ function Videos({}) {
   const { activeVideo, isPlayingVideo } = useSelector(state => state.player);
 
   const [addVideo, setAddVideo] = useState(false);
+  const [playing, setPlaying] = useState(false);
   const page = useTypedPage();
 
+  useEffect(() => {
+    isPlayingVideo ? setPlaying(true) : setPlaying(false);
+  }, [isPlayingVideo]);
+
   return (
-    <PlayerLayout title="Vídeos">
-      <PlayerContainer>
+    <AppLayout title="Vídeos">
+      <Container>
         <>
           {isFetching && !error && <Loader title="Carregando vídeos..." />}
-
           <Modal isOpen={addVideo} onClose={() => setAddVideo(false)}>
             <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
               <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4] flex justify-between  ">
@@ -66,9 +72,8 @@ function Videos({}) {
               <AddVideo />
             </div>
           </Modal>
-
           <div className="w-full relative flex flex-row rounded">
-            <div className="w-full flex flex-col md:px-4 rounded-lg">
+            <div className="w-full flex flex-col md:px-4 rounded-lg mb-16">
               <div className="w-full flex justify-between items-center p-1 md:px-5 border-b">
                 <h1 className="text-center font-bold text-4xl">Vídeos</h1>
 
@@ -130,23 +135,33 @@ function Videos({}) {
                   </p>
                 </Link>
               </div>
+
               <div className="w-full relative flex flex-wrap ">
                 {videos?.map((video, i) => (
-                  <VideoCard
-                    videos={videos}
-                    video={video}
-                    isPlayingVideo={isPlayingVideo}
-                    activeVideo={activeVideo}
-                    i={i}
-                    key={video.id}
-                  />
+                  <div className="w-full md:w-1/2 lg:w-1/3 h-auto">
+                    <CardVideo
+                      videos={videos}
+                      video={video}
+                      isPlayingVideo={isPlayingVideo}
+                      activeVideo={activeVideo}
+                      i={i}
+                      key={video.id}
+                    />
+                  </div>
                 ))}
               </div>
             </div>
           </div>
         </>
-      </PlayerContainer>
-    </PlayerLayout>
+      </Container>
+      <Modal
+        maxWidth="w-screen h-screen"
+        isOpen={playing && isPlayingVideo}
+        onClose={() => setPlaying(false)}
+      >
+        <VideoSinglePlayer />
+      </Modal>{' '}
+    </AppLayout>
   );
 }
 

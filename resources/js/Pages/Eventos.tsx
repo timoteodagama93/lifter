@@ -1,10 +1,13 @@
 import AppLayout from '@/Layouts/AppLayout';
+import Container from '@/Layouts/Container';
 import React from 'react';
 
 function Eventos() {
   return (
     <AppLayout title="Eventos">
-      <h1 className="text-xl font-bold text-center">Eventos</h1>
+      <Container>
+        <h1 className="text-xl font-bold text-center">Eventos</h1>
+      </Container>
     </AppLayout>
   );
 }

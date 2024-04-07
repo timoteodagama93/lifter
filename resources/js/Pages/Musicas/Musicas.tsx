@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import AppLayout from '@/Layouts/AppLayout';
+
 import route from 'ziggy-js';
 
 // import Swiper core and required modules
@@ -26,20 +26,20 @@ import { HiUserGroup } from 'react-icons/hi';
 import { FaDirections } from 'react-icons/fa';
 import { BiDownload } from 'react-icons/bi';
 import Songs from './Songs';
-import PlayerLayout from '@/Layouts/PlayerLayout';
-import PlayerContainer from '@/Layouts/PlayerContainer';
+import AppLayout from '@/Layouts/AppLayout';
+import Container from '@/Layouts/Container';
 
 export default function Musicas() {
   const page = route().current();
   const { currentPage, setCurrentPage } = useStateContext();
 
   return (
-    <PlayerLayout title="Músicas">
-      <PlayerContainer>
+    <AppLayout title="Músicas">
+      <Container>
         <div className="w-full ">
           <Songs />
         </div>
-      </PlayerContainer>
-    </PlayerLayout>
+      </Container>
+    </AppLayout>
   );
 }

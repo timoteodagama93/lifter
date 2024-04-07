@@ -48,11 +48,11 @@ function TopChartCard({ song, i, isPlaying, activeSong, songs }) {
     <div
       className={`w-full flex ${
         isAudio ? 'flex-row' : 'flex-row'
-      }  items-center border shadow-lg bg-black transform-effect hover:text-white p-0 md:p-1 rounded-lg  mb-1 py-2 `}
+      }  items-center border shadow-lg bg-black transform-effect hover:text-white gap-1 p-0 md:p-1 rounded-lg  mb-1 py-2 `}
     >
       <h3 className="md:flex font-bold text-base hidden"> {i + 1}. </h3>
       <div
-        className={`flex flex-1  justify-between items-center flex-col md:flex-row`}
+        className={`flex flex-1  justify-start items-center flex-row`} 
       >
         {isAudio && song.cover && (
           <img
@@ -94,7 +94,7 @@ function TopChartCard({ song, i, isPlaying, activeSong, songs }) {
             </Link>
           </div>
         </div>
-        <div className="">
+        <div className="hidden">
           <Interagir song={song} />
         </div>
       </div>

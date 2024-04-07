@@ -16,6 +16,11 @@ import { BsStarFill, BsStar } from 'react-icons/bs';
 import axios from 'axios';
 import Interagir from '../Interagir';
 import DotsMenu from '../DotsMenu';
+import Dropup from '../Dropup';
+import { BiDotsHorizontalRounded } from 'react-icons/bi';
+import DropdownLink from '../DropdownLink';
+import route from 'ziggy-js';
+import Swal from 'sweetalert2';
 
 const LifterPlayer = ({ songs }) => {
   const { activeSong, currentSongs, currentIndex, isActive, isPlaying } =
@@ -27,14 +32,8 @@ const LifterPlayer = ({ songs }) => {
   const [repeat, setRepeat] = useState(false);
   const [shuffle, setShuffle] = useState(false);
   const dispatch = useDispatch();
-
   useEffect(() => {
-    if (songs == undefined) return;
-    const song = songs[0];
-    const i = 0;
-    dispatch(setActiveSong({ song, songs, i }));
-
-    //if (songs?.length) dispatch(playPause(true));
+    if (currentSongs?.length) dispatch(playPause(true));
   }, [currentIndex]);
 
   const handlePlayPause = () => {
@@ -46,17 +45,22 @@ const LifterPlayer = ({ songs }) => {
       dispatch(playPause(true));
     }
   };
-
+  
+    const handlePlayVideo = () => {
+      Swal.fire({
+        title: 'Vídeo desponível',
+        text: 'Para reproduzir o vídeo pause o aúdio actualmente em reprodução e clique no botão play desta música.',
+        icon: 'info',
+      });
+    };
+  
   const handleNextSong = () => {
-    dispatch(playPause(false));
-
     if (!shuffle) {
       dispatch(nextSong((currentIndex + 1) % currentSongs.length));
     } else {
       dispatch(nextSong(Math.floor(Math.random() * currentSongs.length)));
     }
   };
-
   const handlePrevSong = () => {
     if (currentIndex === 0) {
       dispatch(prevSong(currentSongs.length - 1));
@@ -104,7 +108,7 @@ const LifterPlayer = ({ songs }) => {
   useEffect(getUserValuation, [activeSong]);
   return (
     <div className="w-full flex  flex-col justify-center items-center">
-      <div className="w-full flex flex-row">
+      <div className="w-full flex flex-row justify-center md:justify-between">
         <Seekbar
           value={appTime}
           min="0"
@@ -122,47 +126,133 @@ const LifterPlayer = ({ songs }) => {
         />
       </div>
       <div className="relative sm:px-12 px-8 w-full flex flex-col md:flex-row items-center justify-between">
-        <Track
-          isPlaying={isPlaying}
-          isActive={isActive}
-          activeSong={activeSong}
-        />
-
-        <div className="w-full flex-1 flex flex-col items-center justify-center">
-          <Controls
+        <div className="relative sm:px-12 px-8 w-full flex flex-row items-center justify-between">
+          <Track
             isPlaying={isPlaying}
-            repeat={repeat}
-            setRepeat={setRepeat}
-            shuffle={shuffle}
-            setShuffle={setShuffle}
-            currentSongs={currentSongs}
-            handlePlayPause={handlePlayPause}
-            handlePrevSong={handlePrevSong}
-            handleNextSong={handleNextSong}
+            isActive={isActive}
+            activeSong={activeSong}
           />
-          {isPlaying && (
-            <>
-              <Player
-                activeSong={activeSong}
-                volume={volume}
-                isPlaying={isPlaying}
-                seekTime={seekTime}
-                repeat={repeat}
-                currentIndex={currentIndex}
-                onEnded={handleNextSong}
-                onTimeUpdate={event => setAppTime(event.target.currentTime)}
-                onLoadedData={event => setDuration(event.target.duration)}
-              />
-            </>
-          )}
+
+          <div className="w-full flex-1 flex flex-col items-center justify-center">
+            <Controls
+              isPlaying={isPlaying}
+              repeat={repeat}
+              setRepeat={setRepeat}
+              shuffle={shuffle}
+              setShuffle={setShuffle}
+              currentSongs={currentSongs}
+              handlePlayPause={handlePlayPause}
+              handlePrevSong={handlePrevSong}
+              handleNextSong={handleNextSong}
+            />
+            {isPlaying && (
+              <>
+                <Player
+                  activeSong={activeSong}
+                  volume={volume}
+                  isPlaying={isPlaying}
+                  seekTime={seekTime}
+                  repeat={repeat}
+                  currentIndex={currentIndex}
+                  onEnded={handleNextSong}
+                  onTimeUpdate={event => setAppTime(event.target.currentTime)}
+                  onLoadedData={event => setDuration(event.target.duration)}
+                />
+              </>
+            )}
+          </div>
         </div>
-        <div className="w-full flex">
-          <Interagir song={activeSong} collectionType="song" />
+        <div className="flex gap-1 justify-end items-center">
+          <span className="inline-flex rounded-md">
+            <div className="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150">
+              {activeSong?.title ? (
+                <Interagir song={activeSong} collectionType="song" />
+              ) : (
+                <>Nada activo</>
+              )}
+            </div>
+          </span>
+          <OptionsPopup song={activeSong} />
         </div>
-        <DotsMenu />
       </div>
     </div>
   );
 };
 
 export default LifterPlayer;
+
+function OptionsPopup({ song }) {
+  const [showMoreOptions, setShowMoreOptions] = useState(false);
+  return (
+    <div className="mr-3 relative">
+      <div>
+        <span className="inline-flex rounded-md">
+          <button
+            type="button"
+            onClick={() => {
+              showMoreOptions
+                ? setShowMoreOptions(false)
+                : setShowMoreOptions(true);
+            }}
+            className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150"
+          >
+            <BiDotsHorizontalRounded
+              size={30}
+              className=""
+              onClick={() => {}}
+            />
+          </button>
+        </span>
+        <div
+          className={`absolute z-50 bottom-12 -right-2 transition-all  text-xs text-gray-400 bg-white w-[200px] shadow-sm rounded ${
+            showMoreOptions ? 'block' : 'hidden'
+          } `}
+        >
+          {/* <!-- Account Management --> */}
+
+          {song?.title ? (
+            <>
+              <div className="block px-4 py-2 text-xs text-gray-400">
+                Mais opções
+              </div>
+
+              <div>
+                <DropdownLink href={route('jurados')}>Partilhar</DropdownLink>
+              </div>
+              <div>
+                <DropdownLink href={route('perfil')}>Colecionar</DropdownLink>
+              </div>
+              <div>
+                <DropdownLink href={route('profile.show')}>
+                  Comentários
+                </DropdownLink>
+              </div>
+              <div>
+                <DropdownLink href={route('profile.show')}>
+                  Feedbacks
+                </DropdownLink>
+              </div>
+              <div>
+                <DropdownLink href={route('profile.show')}>Baixar</DropdownLink>
+              </div>
+              <div>
+                <DropdownLink href={route('perfis')}>
+                  Detalhes da música
+                </DropdownLink>
+              </div>
+              <div>
+                <DropdownLink href={route('perfis')}>
+                  Denunciar conteúdo
+                </DropdownLink>
+              </div>
+            </>
+          ) : (
+            <>Sem música activa</>
+          )}
+
+          <div className="border-t border-gray-200 dark:border-gray-600"></div>
+        </div>
+      </div>
+    </div>
+  );
+}

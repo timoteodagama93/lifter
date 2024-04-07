@@ -1,5 +1,6 @@
 import ContestCard from './ContestCard';
 import AppLayout from '@/Layouts/AppLayout';
+import Container from '@/Layouts/Container';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import React, { useEffect, useState } from 'react';
 import { MdOutlineCloseFullscreen } from 'react-icons/md';
@@ -17,8 +18,6 @@ import { useGetContestImagesQuery } from '@/redux/services/coreApi';
 import { Loader } from '@/Components';
 import Swal from 'sweetalert2';
 import Concursos from './Concursos';
-import PlayerLayout from '@/Layouts/PlayerLayout';
-import PlayerContainer from '@/Layouts/PlayerContainer';
 
 interface Props {
   contests: Array<Object>;
@@ -61,8 +60,8 @@ function Index({ contests, contest }: Props) {
     filterContest();
   }, [filter]);
   return (
-    <PlayerLayout title="Ascensão">
-      <PlayerContainer>
+    <AppLayout title="Ascensão">
+      <Container>
         <>
           <div className="w-full h-full flex flex-col rounded-sm p-1">
             <div className="w-full flex mx-2 justify-between items-center flex-col md:flex-row shadow-lg">
@@ -138,8 +137,8 @@ function Index({ contests, contest }: Props) {
             />
           )}
         </>
-      </PlayerContainer>
-    </PlayerLayout>
+      </Container>
+    </AppLayout>
   );
 }
 

@@ -9,12 +9,27 @@ class FileGetterController extends Controller
 {
     //
 
-    public function get_songs($nome_arquivo, $artist_id)
+    public function get_songs($artist_id, $nome_arquivo)
     {
         // Verifique se o arquivo existe no diretório de armazenamento
         if (Storage::exists("public/artists/{$artist_id}/songs/{$nome_arquivo}")) {
             // Obtenha o caminho completo do arquivo
             $caminho_arquivo = storage_path("app/public/artists/{$artist_id}/songs/{$nome_arquivo}");
+
+            // Retorne o arquivo como resposta HTTP
+            return response()->file($caminho_arquivo);
+        } else {
+            // Se o arquivo não existir, retorne uma resposta de erro 404
+            abort(404);
+        }
+    }
+
+    public function get_videos($user_id, $nome_arquivo)
+    {
+        // Verifique se o arquivo existe no diretório de armazenamento
+        if (Storage::exists("public/users/{$user_id}/videos/{$nome_arquivo}")) {
+            // Obtenha o caminho completo do arquivo
+            $caminho_arquivo = storage_path("app/public/users/{$user_id}/videos/{$nome_arquivo}");
 
             // Retorne o arquivo como resposta HTTP
             return response()->file($caminho_arquivo);

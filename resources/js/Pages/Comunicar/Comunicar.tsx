@@ -1,5 +1,6 @@
 import SelectGenre from '@/Components/SelectGenre';
 import AppLayout from '@/Layouts/AppLayout';
+import Container from '@/Layouts/Container';
 import React, { useState, useEffect } from 'react';
 import { BiConversation, BiDotsHorizontal, BiSearch } from 'react-icons/bi';
 import { BsCameraVideo, BsPencilSquare } from 'react-icons/bs';
@@ -14,8 +15,6 @@ import SectionBorder from '@/Components/SectionBorder';
 import { GrNotification } from 'react-icons/gr';
 import Feedbacks from './Feedbacks';
 import Swal from 'sweetalert2';
-import PlayerContainer from '@/Layouts/PlayerContainer';
-import PlayerLayout from '@/Layouts/PlayerLayout';
 //import Swal from 'sweetalert2'
 function Mensagens() {
   const [activar, setActivar] = useState('musicas');
@@ -30,8 +29,8 @@ function Mensagens() {
   const [swalProps, setSwalProps] = useState({});
 
   return (
-    <PlayerLayout title="Comunicações">
-      <PlayerContainer>
+    <AppLayout title="Comunicações">
+      <Container>
         <div className="w-full h-full">
           <div className="w-full mt-4 flex flex-row justify-center items-center gap-1 md:gap-5">
             <button
@@ -70,8 +69,8 @@ function Mensagens() {
           <SectionBorder />
           <div className="w-full">{currentPage}</div>
         </div>
-      </PlayerContainer>
-    </PlayerLayout>
+      </Container>
+    </AppLayout>
   );
 }
 

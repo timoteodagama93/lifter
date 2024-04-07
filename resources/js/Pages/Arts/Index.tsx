@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import AppLayout from '@/Layouts/AppLayout';
+import Container from '@/Layouts/Container';
+
 import route from 'ziggy-js';
 
 import { useStateContext } from '@/contexts/PaginaActualContext';
@@ -35,8 +37,6 @@ import Arts from './Arts';
 import Exposicoes from './Exposicoes';
 import Estante from './Estante';
 import BibliotecaLiteraria from './BibliotecaLiteraria';
-import PlayerLayout from '@/Layouts/PlayerLayout';
-import PlayerContainer from '@/Layouts/PlayerContainer';
 
 export default function Index({ has }) {
   const page = route().current();
@@ -55,10 +55,10 @@ export default function Index({ has }) {
     }
   }, []);
   return (
-    <PlayerLayout title="Artes">
-      <PlayerContainer>
+    <AppLayout title="Artes">
+      <Container>
         <div className="w-full ">{currentPage}</div>
-      </PlayerContainer>
-    </PlayerLayout>
+      </Container>
+    </AppLayout>
   );
 }

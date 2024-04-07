@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from '@inertiajs/react';
 
 import {
@@ -7,13 +7,7 @@ import {
 } from '../redux/features/playerSlice.js';
 import { useDispatch } from 'react-redux';
 import PlayPauseVideo from './PlayPauseVideo.js';
-import VideoPlayer from './VideoPlayer/index.js';
-import { useStateContext } from '@/contexts/PaginaActualContext.js';
-import VideoShow from './PlayingVideo/Index.js';
-import Interagir from './Interagir.js';
-import { BiPlayCircle } from 'react-icons/bi';
-import VideoSinglePlayer from '@/Pages/Videos/VideoSinglePlayer.js';
-import { random } from 'lodash';
+import Modal from './Modal.js';
 
 function VideoCard({
   video,
@@ -84,9 +78,13 @@ function VideoCard({
             </Link>
           </p>
           <p className="font-bold text-xs  truncate"> {video.category}</p>
-          <Interagir collectionType='video' song={video} />
+          {/**
+           * <Interagir collectionType='video' song={video} />
+           */}
         </div>
       </div>
+
+
     </>
   );
 }

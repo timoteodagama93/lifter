@@ -6,6 +6,7 @@ import TopChartCard from '@/Components/TopChartCard';
 import VideoCard from '@/Components/VideoCard';
 import useTypedPage from '@/Hooks/useTypedPage';
 import AppLayout from '@/Layouts/AppLayout';
+import Container from '@/Layouts/Container';
 import {
   useGetActiveVoiceSongsQuery,
   useGetActiveVoiceVideosQuery,
@@ -71,125 +72,132 @@ function Jurados({ amIJury, jury }) {
 
   return (
     <AppLayout title="Jurados">
-      <Modal
-        isOpen={seeArtistDetails && artistTDetail ? true : false}
-        onClose={() => setSeeArtistDetails(false)}
-      >
-        <div className="w-full h-full flex flex-col bg-[#4c88c4] ">
-          <div className="w-full ">
-            <button
-              onClick={() => setSeeArtistDetails(false)}
-              className="p-5 transform-effect w-fit right-1 top-1 text-black"
-            >
-              <MdCloseFullscreen className="w-5 h-5 font-bold text-4xl" />
-            </button>
-          </div>
-          <div className="w-full flex float-right justify-end">
-            <Detalhar artist={artistTDetail} />
-          </div>
-        </div>
-      </Modal>
-      <Modal isOpen={joinJury} onClose={() => setJoinJury(false)}>
-        <JoinJury onClose={setJoinJury} concursos={concursos} />
-      </Modal>
-      <div className="w-full flex justify-between items-center p-1 md:px-5 border-b">
-        <h1 className="text-center font-bold text-4xl">Grande júri</h1>
-
-        <div className="flex flex-row justify-center items-center">
-          <button
-            onClick={() => setJoinJury(true)}
-            className="transform-effect p-1 justify-center items-center w-full flex flex-col"
-          >
-            {' '}
-            <GiTribunalJury className="w-10 h-auto font-bold" />{' '}
-            <span className="flex">Juntar-se ao júri</span>
-          </button>
-        </div>
-      </div>
-
-      {loadingContests ? (
-        <Loader title="Carregando concursos..." />
-      ) : (
+      <Container>
         <>
-          {concursos.length > 0 ? (
-            <div className="flex flex-col p-1">
-              <InputLabel htmlFor="contest_id">
-                Veja a lista de júris por festival ou competição
-              </InputLabel>
-              <select
-                name="contest_id"
-                id="contest_id"
-                className="text-black"
-                onChange={e => getJuryByContest(e.target.value)}
-              >
-                {concursos.map(concurso => (
-                  <option value={concurso.id}> {concurso.designacao} </option>
-                ))}
-              </select>
+          <Modal
+            isOpen={seeArtistDetails && artistTDetail ? true : false}
+            onClose={() => setSeeArtistDetails(false)}
+          >
+            <div className="w-full h-full flex flex-col bg-[#4c88c4] ">
+              <div className="w-full ">
+                <button
+                  onClick={() => setSeeArtistDetails(false)}
+                  className="p-5 transform-effect w-fit right-1 top-1 text-black"
+                >
+                  <MdCloseFullscreen className="w-5 h-5 font-bold text-4xl" />
+                </button>
+              </div>
+              <div className="w-full flex float-right justify-end">
+                <Detalhar artist={artistTDetail} />
+              </div>
             </div>
+          </Modal>
+          <Modal isOpen={joinJury} onClose={() => setJoinJury(false)}>
+            <JoinJury onClose={setJoinJury} concursos={concursos} />
+          </Modal>
+          <div className="w-full flex justify-between items-center p-1 md:px-5 border-b">
+            <h1 className="text-center font-bold text-4xl">Grande júri</h1>
+
+            <div className="flex flex-row justify-center items-center">
+              <button
+                onClick={() => setJoinJury(true)}
+                className="transform-effect p-1 justify-center items-center w-full flex flex-col"
+              >
+                {' '}
+                <GiTribunalJury className="w-10 h-auto font-bold" />{' '}
+                <span className="flex">Juntar-se ao júri</span>
+              </button>
+            </div>
+          </div>
+
+          {loadingContests ? (
+            <Loader title="Carregando concursos..." />
           ) : (
-            <h1 className="text-center font-bold text-xl">
-              Parece que não existe no momento nenhum festival ou concurso
-              activo.
-            </h1>
+            <>
+              {concursos.length > 0 ? (
+                <div className="flex flex-col p-1">
+                  <InputLabel htmlFor="contest_id">
+                    Veja a lista de júris por festival ou competição
+                  </InputLabel>
+                  <select
+                    name="contest_id"
+                    id="contest_id"
+                    className="text-black"
+                    onChange={e => getJuryByContest(e.target.value)}
+                  >
+                    {concursos.map(concurso => (
+                      <option value={concurso.id}>
+                        {' '}
+                        {concurso.designacao}{' '}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ) : (
+                <h1 className="text-center font-bold text-xl">
+                  Parece que não existe no momento nenhum festival ou concurso
+                  activo.
+                </h1>
+              )}
+            </>
+          )}
+
+          {loadingJury ? (
+            <Loader title="Carregando júris..." />
+          ) : (
+            <div className="w-full flex flex-col">
+              {jurados.length > 0 ? (
+                <>
+                  <h1 className="text-center font-bold text-xl">
+                    Histórico e jurados.
+                  </h1>
+                  <div className="w-full flex flex-wrap">
+                    {jurados?.map(jurado => (
+                      <>
+                        <div className="w-full md:w-1/2 xl:w-1/3 h-1/2 flex flex-col items-center overflow-hidden shadow-lg p-1">
+                          <div className="w-full h-[320px] object-contain ">
+                            <img
+                              src={jurado.profile_photo_path}
+                              alt="name artist"
+                              onClick={() => {
+                                setArtistTDetail(jurado);
+                                setSeeArtistDetails(true);
+                              }}
+                              className=" hover:cursor-pointer w-full h-full rounded-sm rounded-t-lg border-t-2  object-cover"
+                            />
+                          </div>
+                          <button
+                            onClick={() => {
+                              setArtistTDetail(jurado);
+                              setSeeArtistDetails(true);
+                            }}
+                            className="transform-effect w-full h-[10%] first-letter: rounded-lg flex-1 space-x-1 flex flex-col justify-start items-center mx-3 border-b-2 backdrop-blur-lg p-1 "
+                          >
+                            <p className="text-xl font-bold text-white">
+                              {' '}
+                              {jurado.name}{' '}
+                            </p>
+                            <p className="text-xs text-gray-300">
+                              {' '}
+                              {jurado.ocupation}
+                            </p>
+                          </button>
+                        </div>
+                      </>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h1 className="text-center font-bold text-xl">
+                    Nenhum júri encontrado para a seleção.
+                  </h1>
+                </>
+              )}
+            </div>
           )}
         </>
-      )}
-
-      {loadingJury ? (
-        <Loader title="Carregando júris..." />
-      ) : (
-        <div className="w-full flex flex-col">
-          {jurados.length > 0 ? (
-            <>
-              <h1 className="text-center font-bold text-xl">
-                Histórico e jurados.
-              </h1>
-              <div className="w-full flex flex-wrap">
-                {jurados?.map(jurado => (
-                  <>
-                    <div className="w-full md:w-1/2 xl:w-1/3 h-1/2 flex flex-col items-center overflow-hidden shadow-lg p-1">
-                      <div className="w-full h-[320px] object-contain ">
-                        <img
-                          src={jurado.profile_photo_path}
-                          alt="name artist"
-                          onClick={() => {
-                            setArtistTDetail(jurado);
-                            setSeeArtistDetails(true);
-                          }}
-                          className=" hover:cursor-pointer w-full h-full rounded-sm rounded-t-lg border-t-2  object-cover"
-                        />
-                      </div>
-                      <button
-                        onClick={() => {
-                          setArtistTDetail(jurado);
-                          setSeeArtistDetails(true);
-                        }}
-                        className="transform-effect w-full h-[10%] first-letter: rounded-lg flex-1 space-x-1 flex flex-col justify-start items-center mx-3 border-b-2 backdrop-blur-lg p-1 "
-                      >
-                        <p className="text-xl font-bold text-white">
-                          {' '}
-                          {jurado.name}{' '}
-                        </p>
-                        <p className="text-xs text-gray-300">
-                          {' '}
-                          {jurado.ocupation}
-                        </p>
-                      </button>
-                    </div>
-                  </>
-                ))}
-              </div>
-            </>
-          ) : (
-            <>
-              <h1 className="text-center font-bold text-xl">
-                Nenhum júri encontrado para a seleção.
-              </h1>
-            </>
-          )}
-        </div>
-      )}
+      </Container>
     </AppLayout>
   );
 }

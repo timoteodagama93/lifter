@@ -24,7 +24,7 @@ function SmalSidebar({}) {
       {/**sidebar telefones */}
       <div
         style={{ transition: '1s' }}
-        className={`hidden md:flex h-full py-12 rounded w-full md:w-[${
+        className={` flex h-full  rounded md:w-[${
           openMobileMenu ? '240px' : '50px'
         }]   bg-gradient-to-tl from-[#245575] to-[#f6cc33] backdrop-blur z-10 p-3  smooth-transition ${
           openMobileMenu ? 'left-0' : '-left-full '
@@ -78,7 +78,7 @@ function Links({ links, setOpenMobileMenu, openMobileMenu }) {
   return (
     <>
       <div className="mt-0">
-        <ul className="flex flex-row md:flex-col gap-1  justify-start text-sm font-medium ">
+        <ul className="flex flex-col gap-1  justify-start text-sm font-medium ">
           {links.map(item => (
             <Link
               href={item.href}

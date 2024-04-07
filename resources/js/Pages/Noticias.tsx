@@ -37,8 +37,7 @@ import PostCard from '@/Components/PostCard';
 import CartaoNoticia from '@/Components/CartaoNoticia';
 import Comment from '@/Components/Comment';
 import AppLayout from '@/Layouts/AppLayout';
-import PlayerLayout from '@/Layouts/PlayerLayout';
-import PlayerContainer from '@/Layouts/PlayerContainer';
+import Container from '@/Layouts/Container';
 
 function Noticias({}) {
   const page = useTypedPage();
@@ -66,43 +65,38 @@ function Noticias({}) {
   useEffect(loadPosts, []);
 
   const [displayPost, setDisplayPost] = useState();
-  const [detailsPost, setDetailsPost] = useState(false);
 
   return (
-    <PlayerLayout title="Notícias">
-      <PlayerContainer>
-        <div className="w-full h-full md:px-2 flex flex-col">
-          <div className="w-full flex flex-col-reverse md:flex-row  justify-center items-center">
-            <FiltrarNoticias
-              setPosts={setPosts}
-              setLoading={setLoading}
-              setError={setError}
-              setFilter={setFilter}
-            />
-          </div>
+    <div className="w-full h-full md:px-2 flex flex-col">
+      <div className="w-full flex flex-col-reverse md:flex-row  justify-center items-center">
+        <FiltrarNoticias
+          setPosts={setPosts}
+          setLoading={setLoading}
+          setError={setError}
+          setFilter={setFilter}
+        />
+      </div>
 
-          {loading && <Loader title="Carregando Posts & Notícias" />}
-          {error && <Error />}
-          {!loading && !error && posts && (
-            <div className="w-full h-[62vh] flex overflow-y-auto justify-center">
-              <div className="w-full flex justify-center">
-                {posts?.length > 0 ? (
-                  <DisplayNew posts={posts} />
-                ) : (
-                  <h1 className="w-full text-center text-xl uppercase">
-                    Nada publicado recentemente em {filter} ...
-                  </h1>
-                )}
-              </div>
-            </div>
-          )}
+      {loading && <Loader title="Carregando Posts & Notícias" />}
+      {error && <Error />}
+      {!loading && !error && posts && (
+        <div className="w-full h-full flex ">
+          <div className="w-full flex justify-center">
+            {posts?.length > 0 ? (
+              <DisplayNews posts={posts} />
+            ) : (
+              <h1 className="w-full text-center text-xl uppercase">
+                Nada publicado recentemente em {filter} ...
+              </h1>
+            )}
+          </div>
         </div>
-      </PlayerContainer>
-    </PlayerLayout>
+      )}
+    </div>
   );
 }
 
-function DisplayNew({ posts }) {
+function DisplayNews({ posts }) {
   const [seeComments, setSeeComments] = useState(false);
   const [postToComment, setPostToComment] = useState(null);
 
@@ -120,79 +114,11 @@ function DisplayNew({ posts }) {
   }, [postToComment]);
   return (
     <div className="w-full h-full flex justify-center">
-      <Modal
-        isOpen={seeComments && postToComment ? true : false}
-        onClose={() => setSeeComments(false)}
-      >
-        <div className="w-full h-full flex flex-col bg-[#4c88c4] ">
-          <div className="w-full flex float-right justify-end">
-            <button
-              onClick={() => setSeeComments(false)}
-              className="p-5 transform-effect w-fit right-1 text-black"
-            >
-              <MdCloseFullscreen className="w-5 h-5 font-bold text-4xl" />
-            </button>
-          </div>
-          <div className="w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg">
-            <div className="w-full  relative p-5">
-              <div className="flex w-full h-full flex-col relative">
-                <div
-                  className="w-full flex flex-row justify-between
-             items-center"
-                >
-                  <h2 className=" font-bold text-base md:text-4xl text-[#]">
-                    Preview
-                  </h2>
-                  <Link href="/videos">
-                    <p className="text-sm md:text-base cursor-pointer transform-effect p-2 text-white font-bold ">
-                      Ler publicação completa
-                    </p>
-                  </Link>
-                </div>
-                <div className="w-full relative flex flex-row px-5">
-                  <CartaoNoticia
-                    key={postToComment?.id}
-                    post={postToComment}
-                    setPostToComment={setPostToComment}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="w-full p-5">
-              <div className="flex w-full h-full flex-col relative  ">
-                <div
-                  className="w-full h-[10%] flex flex-row justify-between
-             items-center"
-                >
-                  <h2 className=" font-bold text-base md:text-2xl text-[#]">
-                    Comentários
-                  </h2>
-                  <Link href="top-charts">
-                    <p className="text-sm md:text-base cursor-pointer">
-                      Ver mais
-                    </p>
-                  </Link>
-                </div>
-                <CommentsSection
-                  key={postToComment?.id}
-                  item={postToComment}
-                  itemType="news"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </Modal>
-
       <div className="w-full md:w-[60%] ">
         <div className="community-discussion">
           <div className="posts">
             {posts.map(post => (
-              <CartaoNoticia
-                key={post.id}
-                post={post}
-                setPostToComment={setPostToComment}
-              />
+              <CartaoNoticia key={post.id} post={post} />
             ))}
           </div>
         </div>
@@ -224,11 +150,12 @@ function FiltrarNoticias({ setPosts, setLoading, setError, setFilter }) {
         setError(true);
       });
   }
+
   return (
     <div className="w-full flex justify-center items-center  text-black ">
       <select
         onChange={e => loadPostsByFilter(e)}
-        className="rounded-lg shadow-xl shadow-black"
+        className="rounded-lg shadow shadow-black"
       >
         <option value="tudo">Tudo</option>
         <option value="lifter">Redação Lifter</option>

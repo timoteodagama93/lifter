@@ -9,7 +9,7 @@ import {
   BiTrophy,
 } from 'react-icons/bi';
 import useTypedPage from '@/Hooks/useTypedPage';
-import AppLayout from '@/Layouts/AppLayout';
+
 import { MdPhoto } from 'react-icons/md';
 import { FaCoins } from 'react-icons/fa';
 import { RiContactsBook2Fill } from 'react-icons/ri';
@@ -24,6 +24,9 @@ import InputLabel from '@/Components/InputLabel';
 import Modal from '@/Components/Modal';
 import useRoute from '@/Hooks/useRoute';
 import { useForm } from '@inertiajs/react';
+import AppLayout from '@/Layouts/AppLayout';
+import Container from '@/Layouts/Container';
+import SectionBorder from '@/Components/SectionBorder';
 
 function UserFeed({ contest_edition, contest }) {
   const page = useTypedPage();
@@ -45,100 +48,62 @@ function UserFeed({ contest_edition, contest }) {
   }
   return (
     <AppLayout title="Perfil">
-      <div className="w-full flex flex-col">
-        <div
-          className="relative w-full flex flex-col rounded-lg shadow-lg shadow-black p-5 justify-center items-center"
-          style={{
-            backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center center',
-            backgroundImage: `url(${page.props.auth.user?.profile_photo_url_})`,
-          }}
-        >
-          <button className="absolute top-0 right-0 p-2 md:p-5 rounded-full bg-[#2e2c2e] text-sm md:text-2xl  ">
-            <MdPhoto />
-          </button>
-          <div className="w-20 m-2">
-            <img
-              src={page.props.auth.user?.profile_photo_url}
-              className=" rounded-full w-20 border border-black"
-            />
-          </div>
-          <div className="w-full flex flex-col justify-center items-center">
-            <h2 className="text-xl md:text-2xl text-bold">
-              {page.props.auth.user?.name}
-            </h2>
-            <div className="w-full flex flex-row justify-center items-center">
-              <span className="p-1 shadow-sm shadow-white gap-1 mb-2 justify-center items-center mr-2 flex">
-                {' '}
-                <BiLibrary /> 0{' '}
-              </span>
-              <span className="p-1 shadow-sm shadow-white gap-1 mb-2 justify-center items-center mr-2 flex">
-                {' '}
-                <FaCoins /> 0{' '}
-              </span>
-              <span className="p-1 shadow-sm shadow-white gap-1 mb-2 justify-center items-center flex">
-                {' '}
-                <RiContactsBook2Fill /> 0{' '}
-              </span>
+      <Container>
+        <>
+          <div className="flex flex-col justify-center items-center w-full h-full">
+            <div className="relative flex flex-col items-center rounded-[20px] w-full mx-auto px-4 bg-[#0094f8] bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none">
+              <div className="relative flex h-auto w-full justify-center rounded-xl bg-cover">
+                <img
+                  src={`/users/${page.props.auth.user?.profile_photo_path}`}
+                  className="relative flex hidden w-auto justify-center rounded-xl bg-cover"
+                />
+                <div className="absolute -bottom-12 flex h-[87px] w-[87px] items-center justify-center rounded-full border-[4px] border-white bg-pink-400 dark:!border-navy-700">
+                  <img
+                    className="h-full w-full rounded-full"
+                    src={`/users/${page.props.auth.user?.profile_photo_path}`}
+                    alt=""
+                  />
+                </div>
+              </div>
+              <div className="mt-12 flex flex-col items-center">
+                <h4 className="text-xl font-bold text-navy-700 dark:text-white">
+                  {page.props.auth.user?.name}
+                </h4>
+                <p className="text-base font-normal text-gray-600">
+                  {page.props.auth.user?.email}
+                </p>
+              </div>
+              <div className="mt-6 mb-3 flex gap-14 md:!gap-14">
+                <div className="flex flex-col items-center justify-center">
+                  <p className="text-2xl font-bold text-navy-700 dark:text-white">
+                    17
+                  </p>
+                  <p className="text-sm font-normal text-gray-600">Posts</p>
+                </div>
+                <div className="flex flex-col items-center justify-center">
+                  <p className="text-2xl font-bold text-navy-700 dark:text-white">
+                    9.7K
+                  </p>
+                  <p className="text-sm font-normal text-gray-600">
+                    Seguidores
+                  </p>
+                </div>
+                <div className="flex flex-col items-center justify-center">
+                  <p className="text-2xl font-bold text-navy-700 dark:text-white">
+                    434
+                  </p>
+                  <p className="text-sm font-normal text-gray-600">Seguindo</p>
+                </div>
+              </div>
             </div>
+            <p className="font-normal text-navy-700 mt-20 mx-auto w-max">
+              {page.props.auth.user?.about}
+            </p>
           </div>
-          <div className="w-full flex justify-center items-center gap-2 ">
-            <button className="border border-b-4 hover:bg-[#2e2c2e] border-[#4c88c4] rounded text-xs items-center justify-center flex flex-col md:flex-row p-1">
-              <BiInfoCircle className="text-xl mr-1" />
-              Informações
-            </button>
-            <button
-              onClick={() => setPagina(<NewContest />)}
-              className={`shadow-lg shadow-black border ${
-                page.props.auth.user?.is_manager ? 'flex' : 'hidden'
-              }  flex-col text-4xl  justify-start items-center p-1 rounded `}
-            >
-              <BiTrophy className="animate-bounce" />
-              <span className="text-xs">Criar concurso</span>
-            </button>
-            <button
-              onClick={() =>
-                setPagina(
-                  <MyContests
-                    setPagina={setPagina}
-                    userId={page.props.auth.user?.id}
-                  />,
-                )
-              }
-              className="border border-b-4 hover:bg-[#2e2c2e] border-[#4c88c4] rounded text-xs items-center justify-center flex flex-col md:flex-row p-1"
-            >
-              <BiInfoCircle className="text-xl mr-1" />
-              Concursos
-            </button>
-            <button className="border border-b-4 hover:bg-[#2e2c2e] border-[#4c88c4] rounded text-xs items-center justify-center flex flex-col md:flex-row p-1">
-              <BiInfoCircle className="text-xl mr-1" />
-              Contactos
-            </button>
-            <button
-              onClick={() => setOpenNewImagePost(true)}
-              className={`shadow-lg shadow-black border ${
-                page.props.auth.user?.is_editor ||
-                page.props.auth.user?.is_manager
-                  ? 'flex'
-                  : 'hidden'
-              }  flex-col text-4xl  justify-start items-center p-1 rounded `}
-            >
-              <BiNews className="animate-bounce" />
-              <span className="text-xs">Publicar</span>
-            </button>
-          </div>
-        </div>
 
-        <div className=" w-full relative flex flex-col p-5  rounded-lg ">
-          {pagina}
-        </div>
-        <NewPost
-          isOpen={openNewImagePost}
-          loadPosts={loadPosts}
-          onClose={setOpenNewImagePost}
-        />
-      </div>
+          <SectionBorder />
+        </>
+      </Container>
     </AppLayout>
   );
 }

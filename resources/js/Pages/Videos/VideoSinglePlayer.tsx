@@ -1,144 +1,157 @@
-import Interagir from '@/Components/Interagir';
-import PlayPauseVideo from '@/Components/PlayPauseVideo';
-import VideoPlayer from '@/Components/VideoPlayer';
-import { playPauseVideo, setActiveVideo } from '@/redux/features/playerSlice';
-import { Link } from '@inertiajs/react';
-import React, { useEffect, useRef, useState } from 'react';
-import { BiArrowBack } from 'react-icons/bi';
-import { useDispatch, useSelector } from 'react-redux';
-import { Logo } from '../../../img';
 import {
-  MdOutlineCloseFullscreen,
-  MdOutlineFullscreenExit,
-  MdOutlineOpenInFull,
-} from 'react-icons/md';
+  nextVideo,
+  playPauseVideo,
+  prevVideo,
+} from '@/redux/features/playerSlice';
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { BsPause, BsPauseBtn } from 'react-icons/bs';
+import { HiOutlinePlay, HiPlay } from 'react-icons/hi';
 
-function VideoSinglePlayer({}) {
-  const [fullscreen, setFullScreen] = useState(false);
-  const [ref, setRef] = useState(useRef(null));
+function VideoSinglePlayer({ type = 'normal' }) {
   const {
     activeVideo,
+    currentVideos,
+    currentVideoIndex,
+    isVideoActive,
     isPlayingVideo,
-
-    currentVideos: videos,
-    currentIndex: i,
   } = useSelector(state => state.player);
+
+  const [duration, setDuration] = useState(0);
+  const [seekTime, setSeekTime] = useState(0);
+  const [appTime, setAppTime] = useState(0);
+  const [volume, setVolume] = useState(0.3);
+  const [repeat, setRepeat] = useState(false);
+  const [shuffle, setShuffle] = useState(false);
+
+  const [fullscreen, setFullScreen] = useState(false);
+  const ref = useRef(null);
 
   const dispatch = useDispatch();
 
-  const handlePauseClick = () => {
-    dispatch(playPauseVideo(false));
+  const handleNextVideo = () => {
+    if (!shuffle) {
+      dispatch(nextVideo((currentVideoIndex + 1) % currentVideos.length));
+    } else {
+      dispatch(nextVideo(Math.floor(Math.random() * currentVideos.length)));
+    }
   };
 
-  const handlePlayClick = () => {
-    dispatch(setActiveVideo({ activeVideo, videos, i }));
-    dispatch(playPauseVideo(true));
+  const handlePrevVideo = () => {
+    if (currentVideoIndex === 0) {
+      dispatch(prevVideo(currentVideos.length - 1));
+    } else if (shuffle) {
+      dispatch(prevVideo(Math.floor(Math.random() * currentVideos.length)));
+    } else {
+      dispatch(prevVideo(currentVideoIndex - 1));
+    }
   };
 
-  const handleFull = () => {
-    console.log(ref);
-    fullscreen ? setFullScreen(false) : setFullScreen(true);
+  const handlePlayPause = () => {
+    if (!isVideoActive) return;
+
+    if (isPlayingVideo) {
+      dispatch(playPauseVideo(false));
+    } else {
+      dispatch(playPauseVideo(true));
+    }
   };
+
+  // converts the time to format 0:00
+  const getTime = time =>
+    `${Math.floor(time / 60)}:${`0${Math.floor(time % 60)}`.slice(-2)}`;
 
   return (
-    <div
-      className={`w-screen h-screen absolute flex flex-col justify-center items-center z-30 top-0 left-0 bottom-0 right-0 backdrop-blur-sm ${
-        fullscreen ? 'p-0' : ' p-5 md:p-12'
-      } `}
-    >
-      <div
-        className={`w-full h-full relative flex flex-col justify-center items-center ${
-          fullscreen ? 'p-0' : ' p-1 md:p-5'
-        }   rounded-md bg-black`}
-      >
-        <div
-          className={`w-full h-full flex flex-col  justify-center items-center p-1 bg-white/5 ng-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer shadow-lg my-1  mx-1`}
-        >
-          {!fullscreen && (
-            <button
-              onClick={handlePauseClick}
-              className="absolute top-0 left-0 flex transform-effect px-5 text-xl uppercase bg-blue-400 z-50 "
-            >
-              <MdOutlineCloseFullscreen className="w-10 h-10" />
-            </button>
+    <div className="flex w-screen h-screen bg-white shadow-md rounded-lg overflow-hidden mx-auto">
+      <div className="w-full h-full flex flex-col m-5">
+        <div className="relative w-full h-full ">
+          {activeVideo && isPlayingVideo ? (
+            <PlayerVideo
+              type={type}
+              activeVideo={activeVideo}
+              volume={volume}
+              isPlaying={isPlayingVideo}
+              seekTime={seekTime}
+              repeat={repeat}
+              //currentIndex={currentIndex}
+              onEnded={handleNextVideo}
+              onTimeUpdate={event => {
+                setAppTime(event.target.currentTime);
+                dispatch(setTotalTime(appTime));
+              }}
+              onLoadedData={event => setDuration(event.target.duration)}
+            />
+          ) : (
+            <></>
           )}
-          <button
-            onClick={handleFull}
-            className="absolute top-0 right-0 float-right  transform-effect px-5 text-xl uppercase bg-blue-400 z-50 "
-          >
-            {fullscreen ? (
-              <MdOutlineCloseFullscreen className="w-10 h-10" />
-            ) : (
-              <MdOutlineOpenInFull className="w-10 h-10" />
-            )}
-          </button>
-          <div
-            className={` relative ${
-              fullscreen ? 'w-screen h-screen' : ' w-full md:w-1/2'
-            }  group`}
-          >
-            <div
-              style={{ transition: '1s' }}
-              className={`absolute z-10 inset-0 justify-center items-center  bg-opacity-50 ${
-                isPlayingVideo && activeVideo?.id == activeVideo.id
-                  ? 'hidden'
-                  : 'flex'
-              } ${
-                activeVideo?.id === activeVideo.id
-                  ? 'flex'
-                  : ' flex bg-black bg-opacity-70'
-              } `}
-            >
-              <PlayPauseVideo
-                isPlayingVideo={isPlayingVideo}
-                activeVideo={activeVideo}
-                video={activeVideo}
-                handlePlay={handlePlayClick}
-                handlePause={handlePauseClick}
+
+          <div className="absolute bottom-0 w-full bg-gradient-to-r from-black">
+            <span className="text-white text-xs uppercase px-2"> {activeVideo.title} </span>
+          </div>
+        </div>
+        <div className="w-full">
+          <div className="w-full">
+            <div className="w-full relative h-1 bg-gray-200">
+              <input
+                type="range"
+                step="any"
+                value={appTime}
+                min={0}
+                max={duration}
+                onInput={event => setSeekTime(event.target.value)}
+                className="md:block w-full h-1 mx-4 2xl:mx-6 rounded-lg"
               />
             </div>
-
-            {!fullscreen && isPlayingVideo ? (
-              <VideoPlayer />
-            ) : (
-              <video className="w-full h-full">
-                <source src={activeVideo.url} type={activeVideo.mime_type} />
-              </video>
-            )}
-
-            {fullscreen && (
-              <div className="absolute z-40 min-h-screen w-screen h-screen top-0 left-0 bg-black">
-                <video autoPlay className=" min-h-screen w-screen h-screen">
-                  <source src={activeVideo.url} type={activeVideo.mime_type} />
-                </video>
-              </div>
-            )}
           </div>
+          <div className="z-50 flex justify-between text-xs font-medium  text-gray-500 py-1 mx-10">
+            <div> {appTime === 0 ? '0:00' : getTime(appTime)} </div>
+            <div className="flex space-x-3 pt-5">
+              <button onClick={handlePrevVideo} className="focus:outline-none">
+                <svg
+                  className="w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#10b981"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                  <line x1="5" y1="19" x2="5" y2="5"></line>
+                </svg>
+              </button>
+              {isPlayingVideo ? (
+                <button
+                  onClick={handlePlayPause}
+                  className="rounded-full w-8 h-8 flex items-center justify-center pl-0.5 ring-2 ring-green-500 focus:outline-none"
+                >
+                  <BsPause className="w-10 h-10" />
+                </button>
+              ) : (
+                <button
+                  onClick={handlePlayPause}
+                  className="rounded-full w-8 h-8 flex items-center justify-center pl-0.5 ring-2 ring-green-500 focus:outline-none"
+                >
+                  <HiPlay className="w-10 h-10" />
+                </button>
+              )}
 
-          <div className="w-full md:w-1/2 flex flex-col mt-2 md:mt-0 md:justify-center justify-start ">
-            <div className="w-full flex justify-center md:justify-start">
-              <Interagir collectionType="video" song={activeVideo} />
+              <button onClick={handleNextVideo} className="focus:outline-none">
+                <svg
+                  className="w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#10b981"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                  <line x1="19" y1="5" x2="19" y2="19"></line>
+                </svg>
+              </button>
             </div>
-            <p className="font-bold text-2xl  truncate">
-              <Link href={`/song-details/${activeVideo?.id}`}>
-                {activeVideo.title}
-              </Link>
-            </p>
-            <p className="text-xl truncate  mt-1">
-              <Link
-                href={
-                  activeVideo.artist
-                    ? `/artists/details/${activeVideo?.artist_id}`
-                    : 'top-artists'
-                }
-              >
-                {activeVideo.artist}{' '}
-                {activeVideo?.participacoes
-                  ? ' ft ' + activeVideo.participacoes
-                  : ''}
-              </Link>
-            </p>
-            <p className="font-bold text-xs  truncate"> {activeVideo.genre}</p>
+            <div> {duration === 0 ? '0:00' : getTime(duration)} </div>
           </div>
         </div>
       </div>
@@ -147,3 +160,64 @@ function VideoSinglePlayer({}) {
 }
 
 export default VideoSinglePlayer;
+
+function PlayerVideo({
+  activeVideo,
+  isPlaying,
+  volume,
+  seekTime,
+  onEnded,
+  onTimeUpdate,
+  onLoadedData,
+  repeat,
+  type,
+}) {
+  const src =
+    type == 'normal'
+      ? `/videos/${activeVideo.user_id}/${activeVideo.saved_name}`
+      : `/songs/${activeVideo.artist_id}/${activeVideo.saved_name}`;
+
+  const ref = useRef(null);
+  // eslint-disable-next-line no-unused-expressions
+  if (ref.current) {
+    if (isPlaying) {
+      ref.current.play();
+    } else {
+      ref.current.pause();
+    }
+  }
+
+  useEffect(() => {
+    ref.current.volume = volume;
+  }, [volume]);
+  // updates audio element only on seekTime change (and not on each rerender):
+  useEffect(() => {
+    ref.current.currentTime = seekTime;
+  }, [seekTime]);
+  return (
+    <>
+      {activeVideo?.mime_type?.includes('audio/') && (
+        <audio
+          src={src}
+          ref={ref}
+          loop={repeat}
+          onEnded={onEnded}
+          onTimeUpdate={onTimeUpdate}
+          onLoadedData={onLoadedData}
+        />
+      )}
+      {activeVideo?.mime_type?.includes('video/') && (
+        <>
+          <video
+            src={src}
+            ref={ref}
+            onEnded={onEnded}
+            onTimeUpdate={onTimeUpdate}
+            onLoadedData={onLoadedData}
+            className="w-full h-full"
+          />
+        </>
+      )}
+    </>
+  );
+}

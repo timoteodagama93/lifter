@@ -14,8 +14,7 @@ import { EffectCards, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/effect-cards';
 import AppLayout from '../Layouts/AppLayout';
-import PlayerContainer from '@/Layouts/PlayerContainer';
-import PlayerLayout from '@/Layouts/PlayerLayout';
+import Container from '@/Layouts/Container';
 
 function VozActiva({ activeVoiceArtist }) {
   const {
@@ -28,8 +27,8 @@ function VozActiva({ activeVoiceArtist }) {
   const { activeSong, isPlaying } = useSelector(state => state.player);
 
   return (
-    <PlayerLayout title="Voz Activa">
-      <PlayerContainer>
+    <AppLayout title="Voz Activa">
+      <Container>
         <div className="w-full h-full">
           <h2 className="w-full font-bold flex heading-text text-center space-x-2 text-white">
             <span> </span> <span> {activeVoiceArtist.name} </span>
@@ -138,8 +137,8 @@ function VozActiva({ activeVoiceArtist }) {
             </div>
           </div>
         </div>
-      </PlayerContainer>
-    </PlayerLayout>
+      </Container>
+    </AppLayout>
   );
 }
 

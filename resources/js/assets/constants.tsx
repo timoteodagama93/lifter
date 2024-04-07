@@ -14,15 +14,17 @@ import {
   MdMessage,
   MdNotifications,
   MdOutlineExplore,
+  MdOutlineShortcut,
 } from 'react-icons/md';
 import { GiSoundWaves, GiTrophyCup } from 'react-icons/gi';
-import { BsInfoCircle, BsStars, BsTrophy } from 'react-icons/bs';
+import { BsInfoCircle, BsStars, BsTools, BsTrophy } from 'react-icons/bs';
 import {
   BiDisc,
   BiHome,
   BiLibrary,
   BiMicrophone,
   BiMusic,
+  BiUpload,
   BiUserVoice,
   BiVideo,
 } from 'react-icons/bi';
@@ -266,6 +268,11 @@ export const mainLinks = [
   },
 
   {
+    name: 'Atalhos',
+    href: '/shortcuts',
+    icon: MdOutlineShortcut,
+  },
+  {
     name: 'Avaliações',
     href: '/avaliacoes',
     icon: BsStars,
@@ -295,7 +302,7 @@ export const mainLinks = [
     href: '/arts',
     icon: FaArtstation,
   },
-  
+
   /*{
     name: 'Configurações',
     href: '/configuracoes',

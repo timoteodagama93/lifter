@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import useRoute from '@/Hooks/useRoute';
 import useTypedPage from '@/Hooks/useTypedPage';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 
 // import Swiper core and required modules
 
@@ -21,9 +21,24 @@ import AppLayout from '@/Layouts/AppLayout';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import Avaliar from './Avaliar';
 import { Lifter } from './';
-import { BiHome } from 'react-icons/bi';
-import { BsNewspaper, BsTrophy } from 'react-icons/bs';
-import { FaMusic } from 'react-icons/fa';
+import {
+  BiBookOpen,
+  BiBrush,
+  BiHistory,
+  BiHome,
+  BiMicrophone,
+  BiSend,
+  BiShare,
+  BiVideo,
+} from 'react-icons/bi';
+import {
+  BsBag,
+  BsCameraVideo,
+  BsNewspaper,
+  BsPostage,
+  BsTrophy,
+} from 'react-icons/bs';
+import { FaMusic, FaUserFriends } from 'react-icons/fa';
 import Sobre from '../Concursos/Sobre';
 import {
   useGetDestaqueSongsQuery,
@@ -31,21 +46,48 @@ import {
 } from '@/redux/services/coreApi';
 import { useSelector } from 'react-redux';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectCoverflow, Navigation } from 'swiper/modules';
+import { EffectCoverflow, History, Navigation } from 'swiper/modules';
 import { SongCard } from '@/Components';
 import VideoCardGrelha from '@/Components/VideoCardGrelha';
-import PlayerContainer from '@/Layouts/PlayerContainer';
+import Container from '@/Layouts/Container';
 import Player from '@/Components/MusicPlayer/Player';
-import PlayerLayout from '@/Layouts/PlayerLayout';
+
+import { GiCrimeSceneTape, GiTribunalJury } from 'react-icons/gi';
+import {
+  MdEvent,
+  MdEventAvailable,
+  MdExplore,
+  MdFeed,
+  MdMusicNote,
+  MdOutlineMotionPhotosOn,
+  MdWork,
+} from 'react-icons/md';
+import ArtesMistas from '../Arts/ArtesMistas';
+import BibliotecaLiteraria from '../Arts/BibliotecaLiteraria';
+import Dance from '../Arts/Dance';
+import Exposicoes from '../Arts/Exposicoes';
+import {
+  RiCommunityFill,
+  RiCommunityLine,
+  RiOrganizationChart,
+} from 'react-icons/ri';
+import { HiUserGroup } from 'react-icons/hi';
+import { GrNetwork } from 'react-icons/gr';
+import Modal from '@/Components/Modal';
+import InputError from '@/Components/InputError';
+import InputLabel from '@/Components/InputLabel';
+import SecondaryButton from '@/Components/SecondaryButton';
+import axios from 'axios';
+import Noticias from '../Noticias';
 
 interface Props {
   pagina: string;
   songs: Array<Object>;
-  posts: Array<Object>;
+  posts2: Array<Object>;
   APP_URL: String;
 }
 
-export default function Home({ posts }: Props) {
+export default function Home({ posts2 }: Props) {
   const route = useRoute();
   const page = useTypedPage();
 
@@ -59,7 +101,7 @@ export default function Home({ posts }: Props) {
   */
 
   const { currentPage, setCurrentPage } = useStateContext();
-  const [bgPage, setBgPage] = useState(undefined);
+  const [createPost, setCreatePost] = useState(false);
 
   function setDefaultPage() {
     setCurrentPage(<Avaliar />);
@@ -78,267 +120,247 @@ export default function Home({ posts }: Props) {
   } = useGetDestaqueVideosQuery('');
   const { activeVideo, isPlayingVideo } = useSelector(state => state.player);
 
-  return (
-    <PlayerLayout
-      title="Home"
-      renderSidebarList={() => sidebarList}
-      bg={bgPage}
-    >
-      <Head title="Home" />
-      <PlayerContainer>
-        <div className="w-full relative sm:flex flex-col sm:justify-center sm:items-center  bg-dots-darker bg-center dark:bg-dots-lighter  selection:bg-red-500 selection:text-white">
-          <div className="w-full h-full overflow-y-hidden flex flex-col gap-1 justify-cebter items-center rounded-lg">
-            <div className="w-full flex justify-between items-center p-1 md:px-5 border-b">
-              <h1 className="text-center font-bold text-4xl"></h1>
+  const [posts, setPosts] = useState([]);
 
-              <div className="flex flex-row justify-center items-center">
-                <Link
-                  href="noticias"
-                  className="transform-effect p-1 justify-center items-center w-full flex flex-col"
-                >
-                  {' '}
-                  <BsNewspaper className="w-10 h-auto font-bold" />{' '}
-                  <span className="flex">Ver as notícias</span>
-                </Link>
-              </div>
-            </div>
-            {videos ? (
-              <div className="flex w-full h-full flex-col relative  ">
-                <div
-                  className="w-full flex flex-row justify-between
-             items-center"
-                >
-                  <h2 className=" font-bold text-base md:text-4xl text-[#]">
-                    Vídeos em Destaques{' '}
-                  </h2>
-                  <Link href="/video">
-                    <p className="text-sm md:text-base cursor-pointer">
-                      Ver mais
-                    </p>
-                  </Link>
+  function loadPosts() {
+    axios
+      .post('/posts')
+      .then(response => {
+        if (response.status === 200) {
+          setPosts(response.data);
+        }
+      })
+      .catch(error => {});
+  }
+
+  return (
+    <AppLayout title="Home" renderSidebarList={() => sidebarList}>
+      <Head title="Home" />
+      <Container>
+        <>
+          <div className="w-full relative sm:flex flex-col sm:justify-center sm:items-center  bg-dots-darker bg-center dark:bg-dots-lighter  selection:bg-red-500 selection:text-white">
+            <div className="w-full h-full  flex flex-col gap-1 justify-cebter items-center rounded-lg">
+              <div className="w-full flex justify-between items-center p-1 md:px-5 border-b">
+                <div className="w-4/5 mx-auto md:mx-6">
+                  <form className="flex items-center">
+                    <label htmlFor="simple-search" className="sr-only">
+                      Search
+                    </label>
+                    <div className="relative w-full">
+                      <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                        <svg
+                          className="w-5 h-5 text-gray-500 dark:text-gray-400"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                            clip-rule="evenodd"
+                          ></path>
+                        </svg>
+                      </div>
+                      <input
+                        type="text"
+                        id="simple-search"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Pesquisar"
+                        required
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      className="p-2.5 ml-2 text-sm font-medium text-white bg-[#0094f8] rounded-lg border border-[#0094f8] hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        ></path>
+                      </svg>
+                    </button>
+                  </form>
                 </div>
-                <div className="w-full relative flex flex-row">
-                  <Swiper
-                    spaceBetween={30}
-                    navigation={true}
-                    modules={[EffectCoverflow, Navigation]}
-                    slidesPerView="auto"
-                    effect={'coverflow'}
-                    coverflowEffect={{
-                      rotate: 50,
-                      stretch: 10,
-                      depth: 50,
-                      modifier: 1,
-                      slideShadows: true,
-                    }}
-                    centeredSlides
-                    centeredSlidesBounds
-                    loop={true}
-                    className="mySwiper"
+
+                <div className="w-1/5 flex flex-row justify-center items-center">
+                  <button
+                    onClick={() => setCreatePost(true)}
+                    className="transform-effect p-1 justify-center items-center w-full flex flex-col"
                   >
-                    {videos?.map((video, i) => (
-                      <SwiperSlide key={video.id + video.id + i}>
-                        <VideoCardGrelha
-                          w="w-full"
-                          video={video}
-                          i={i}
-                          key={video.id + i + video.id}
-                          activeVideo={activeVideo}
-                          isPlayingVideo={isPlayingVideo}
-                          videos={videos}
-                        />
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
+                    {' '}
+                    <BiShare className="w-10 h-auto font-bold" />{' '}
+                    <span className="flex">
+                      Publicar{' '}
+                      <span className="hidden md:flex ml-2">actualização</span>
+                    </span>
+                  </button>
                 </div>
               </div>
-            ) : (
-              <div className="w-full h-full flex flex-col">
-                <h1 className="text-xl text-center w-full">
-                  Nenhum destaque disponível momento..
-                </h1>
-              </div>
-            )}
-            {songs ? (
-              <div className="flex w-full h-full flex-col relative  ">
-                <div
-                  className="w-full flex flex-row justify-between
-             items-center"
-                >
-                  <h2 className=" font-bold text-base md:text-4xl text-[#]">
-                    Músicas em Destaques{' '}
-                  </h2>
-                  <Link href="musicas">
-                    <p className="text-sm md:text-base cursor-pointer">
-                      Ver mais
-                    </p>
-                  </Link>
-                </div>
-                <div className="w-full relative flex flex-row">
-                  <Swiper
-                    spaceBetween={30}
-                    navigation={true}
-                    modules={[EffectCoverflow, Navigation]}
-                    slidesPerView="auto"
-                    effect={'coverflow'}
-                    coverflowEffect={{
-                      rotate: 50,
-                      stretch: 10,
-                      depth: 50,
-                      modifier: 1,
-                      slideShadows: true,
-                    }}
-                    centeredSlides
-                    centeredSlidesBounds
-                    loop={true}
-                    className="mySwiper"
-                  >
-                    {songs?.map((song, i) => (
-                      <SwiperSlide>
-                        <SongCard
-                          w={'w-full'}
-                          song={song}
-                          i={i}
-                          key={song.id}
-                          activeSong={activeSong}
-                          isPlaying={isPlaying}
-                          songs={songs}
-                        />
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
-                </div>
-              </div>
-            ) : (
-              <div className="w-full h-full flex flex-col">
-                <h1 className="text-xl text-center w-full">
-                  Nenhum destaque disponível momento..
-                </h1>
-              </div>
-            )}
-            <div className="flex w-full h-full flex-col relative  p-5 shadow-inner shadow-black my-5">
-              <div
-                className="w-full flex flex-row justify-between
-             items-center"
-              >
-                <h2 className=" font-bold text-base md:text-4xl text-[#]">
-                  Sobre a Lifter{' '}
-                </h2>
-                <a target="_blank" href={route('policy.show')}>
-                  <p className="text-base cursor-pointer p-2 transform-effect">
-                    Políticas de privacidades
-                  </p>
-                </a>
-              </div>
-              <div className="my-1 w-full text-base text-black   bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
-                <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
-                  Lifter é uma plataforma de avaliação, sugestão e classificação
-                  musical.
-                </h1>
-                <p>
-                  Lifter existe para criar conexões através da partilha da
-                  paixão individual, do talento querendo emergir e do bom gosto
-                  musical.
-                </p>
-              </div>
-              <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
-                <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
-                  Missão.
-                </h1>
-                <p>
-                  <ul>
-                    <ol className="list-decimal">
-                      1. Valorizar artistas e culturas;
-                    </ol>
-                    <ol className="list-decimal">
-                      2. Originar emoções positivas nas pessoas através da
-                      música;
-                    </ol>
-                    <ol className="list-decimal">
-                      2. Conectar artistas e o público amante de boa música
-                      através da partilha.
-                    </ol>
-                  </ul>
-                </p>{' '}
-                <a href=""></a>
+
+              <div className="">
+                <Noticias />
               </div>
             </div>
-            <div className="flex w-full h-full flex-col relative p-5 shadow-inner shadow-black  ">
-              <div
-                className="w-full flex flex-row justify-between
-             items-center"
-              >
-                <h2 className=" font-bold text-base md:text-4xl text-[#]">
-                  Core Business{' '}
-                </h2>
-                <Link href="/services">
-                  <p className="text-base cursor-pointer transform-effect p-2 ">
-                    Veja todos os serviços
-                  </p>
-                </Link>
-              </div>
-              <div className="my-1 w-full text-base text-black   bg-[#fff] rounded relative flex flex-col gap-1 p-2 shadow">
-                <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
-                  Marketing e Publicidade.
-                </h1>
-                <p>
-                  A Lifter é uma resposta a necessidade de conectar-se pessoas e
-                  produtos que vai muito além de simplesmente querer-se vender
-                  uma mercadoria para uma pessoas sem entender-se as suas
-                  necessidades. Actuamos em Marketing pensando nas dores de
-                  cabeça local e desenvolvemos as soluções que se precisem.
-                  Finalmente através da publicidade levamos ao seu conhecimento
-                  soluções que resolvem e acabam com as necessidades.
-                </p>
-              </div>
-              <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-2 shadow">
-                <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
-                  Marketing Musical
-                </h1>
-                <p>
-                  O Marketing Musical é nosso principal foco, isso nos permite
-                  pensar em formas de conectar as pessoas e os artistas de modos
-                  que músicas se tornem emoções e as emoções experiências que
-                  mudem seu estado mental e de espírito e sua qualidade de vida.
-                </p>
-              </div>
-              <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-2 shadow">
-                <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
-                  Organização de feiras, congressos e eventos
-                </h1>
-                <p>
-                  Nosso lema é "CRIAR CONEXÕES ATRAVÉS DA PARTILHA", através de
-                  nossos eventos procuramos criar um ambiente de networking e
-                  colaboração que visam mudar a visão dos participantes.
-                </p>
-              </div>
-              <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-2 shadow">
-                <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
-                  Estudos de mercado e Sondagens{' '}
-                </h1>
-                <p>
-                  Condução de estudos de mercado e sondagens através de
-                  feedbacks do público com o objectivo de mensurar diferentes
-                  fenomenos sociais, culturais e económicos.
-                </p>
-              </div>
-              <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-2 shadow">
-                <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
-                  Formação Profissional
-                </h1>
-                <p>
-                  Nossas formações são um complemento aos nossos objectivos de
-                  impactar as comunidades locais. Como parte de nossa missão
-                  queremos que os artísticas e as comunidades sejam cada vez
-                  mais auto-suficientes e possam contribuir para o crescimento
-                  cultural local e não só.
-                </p>
-              </div>
-            </div>
-            <Lifter />
           </div>
-        </div>
-      </PlayerContainer>
-    </PlayerLayout>
+
+          <NewPost
+            isOpen={createPost}
+            onClose={setCreatePost}
+            loadPosts={loadPosts}
+          />
+        </>
+      </Container>
+    </AppLayout>
+  );
+}
+
+function NewPost({ isOpen, onClose, loadPosts }) {
+  const page = useTypedPage();
+  const route = useRoute();
+  const { data, setData, progress, post, errors } = useForm({
+    text: '',
+    community: 'musica',
+    file: null as File | null,
+  });
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const photoRef = useRef<HTMLInputElement>(null);
+  function saveNewPost(e) {
+    e.preventDefault();
+    post('/post', {
+      onSuccess: () => {
+        loadPosts();
+        setData('text', '');
+        clearPhotoFileInput();
+      },
+      onFinish: () => {},
+    });
+  }
+  function selectNewPhoto() {
+    photoRef.current?.click();
+  }
+
+  function updatePhotoPreview() {
+    const photo = photoRef.current?.files?.[0];
+
+    if (!photo) {
+      return;
+    }
+
+    setData('file', photo);
+
+    const reader = new FileReader();
+
+    reader.onload = e => {
+      setPhotoPreview(e.target?.result as string);
+    };
+
+    reader.readAsDataURL(photo);
+  }
+  function clearPhotoFileInput() {
+    if (photoRef.current?.value) {
+      photoRef.current.value = '';
+      setData('file', null);
+    }
+  }
+
+  return (
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <div className="w-full h-full flex flex-col text-xs justify-center bg-white border-[#2e2c2e] border shadow-lg shadow-black p-5 rounded-lg items-center">
+        <form
+          method="Post"
+          onSubmit={e => saveNewPost(e)}
+          className="w-full h-full justify-center items-center flex flex-col"
+          encType="multipart/form-data"
+        >
+          {photoPreview ? (
+            // <!-- New Profile Photo Preview -->
+            <div className="">
+              <span
+                className="block rounded-lg w-36 h-36 "
+                style={{
+                  backgroundSize: 'cover',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center center',
+                  backgroundImage: `url('${photoPreview}')`,
+                }}
+              ></span>
+            </div>
+          ) : (
+            ''
+          )}
+
+          {progress && (
+            <progress value={progress.percentage} max={100}>
+              {progress.percentage}%
+            </progress>
+          )}
+
+          <div className="col-span-6 sm:col-span-4">
+            {/* <!-- Profile Photo File Input --> */}
+            <input
+              type="file"
+              className="hidden"
+              ref={photoRef}
+              onChange={updatePhotoPreview}
+            />
+
+            <InputLabel htmlFor="file" value="Ficheiro" />
+
+            <SecondaryButton
+              className="m-2"
+              type="button"
+              onClick={selectNewPhoto}
+            >
+              Selecionar Ficheiro
+            </SecondaryButton>
+
+            <InputError message={errors.file} className="mt-2" />
+          </div>
+          <div>
+            <label>Escolha uma categoria</label>
+            <select
+              required
+              value={data.community}
+              onChange={e => setData('community', e.target.value)}
+              className="rounded"
+            >
+              <option value="musica">Universo musical</option>
+              <option value="gospel">Comunidade de Gospel</option>
+              <option value="figuras">Figuras públicas</option>
+              <option value="cinema">Universo Cinematográfico</option>
+              <option value="moda">Comunidade de Moda</option>
+              <option value="artes">Comunidade de Artes plásticas</option>
+            </select>
+            <InputError message={errors.community} className="mt-2" />
+          </div>
+
+          <textarea
+            value={data.text}
+            onChange={e => {
+              setData('text', e.currentTarget.value);
+            }}
+            required
+            maxLength={500}
+            minLength={5}
+            placeholder="Conte a história..."
+            className="w-full p-2 border border-[#2e2c2e] rounded shadow-sm"
+          ></textarea>
+          <InputError message={errors.text} className="mt-2" />
+          <button className="h-full text-2xl flex justify-center items-center gap-1 shadow-lg shadow-black rounded p-1  ">
+            <BiSend />
+            <span className="text-base">Partilhar poste</span>
+          </button>
+        </form>
+      </div>
+    </Modal>
   );
 }

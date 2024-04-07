@@ -106,7 +106,7 @@ function SongCard({
           </Link>
         </p>
       </div>
-      <div className="w-full flex">
+      <div className="w-full flex hidden">
         <Interagir
           collectionType="song"
           song={song}

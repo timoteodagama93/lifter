@@ -8,9 +8,11 @@ import useTypedPage from '@/Hooks/useTypedPage';
 import Profissional from './Outros/Index';
 import { Error } from '@/Components';
 
+import Container from '@/Layouts/Container';
+
 function Index({ artist, profissional }) {
   const page = useTypedPage();
-  
+
   const { currentPage, setCurrentPage } = useStateContext();
   useEffect(() => {
     if (artist == null && profissional == null) setCurrentPage(<Welcome />);
@@ -19,11 +21,13 @@ function Index({ artist, profissional }) {
   }, []);
   return (
     <AppLayout title="Perfil">
-      <div className="w-full h-full">
-        <div className="w-full h-full flex flex-col mb-96 pb-1">
-          {currentPage}
+      <Container>
+        <div className="w-full h-full">
+          <div className="w-full h-full flex flex-col mb-96 pb-1">
+            {currentPage}
+          </div>
         </div>
-      </div>
+      </Container>
     </AppLayout>
   );
 }

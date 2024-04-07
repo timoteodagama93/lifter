@@ -43,7 +43,7 @@ const Player = ({
       {activeSong.mime_type.includes('video/') && (
         <>
           <video
-            src={activeSong?.url}
+            src={`/songs/${activeSong.artist_id}/${activeSong.saved_name}`}
             ref={ref}
             onEnded={onEnded}
             onTimeUpdate={onTimeUpdate}

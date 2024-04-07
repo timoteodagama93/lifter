@@ -52,6 +52,8 @@ Route::get('/', function () {
 Route::controller(FileGetterController::class)->group(function () {
     Route::get('/songs/{artist_id}/{nome_arquivo}', 'get_songs')->name('songs/{artist_id}/{nome_arquivo}');
 
+    Route::get('/videos/{user_id}/{nome_arquivo}', 'get_videos')->name('videos/{user_id}/{nome_arquivo}');
+
     Route::get('/users/profile-photos/{nome_arquivo}', 'get_profiles_pictures')->name('users/profile-photos/{nome_arquivo}');
 
     Route::get('/arts/{exposition_id}/{nome_arquivo}', 'get_arts_itens')->name('arts/{exposition_id}/{nome_arquivo}');
@@ -76,6 +78,10 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
+
+    Route::get('/uploads', function () {
+        return Inertia::render('Uploads/Index');
+    })->name('uploads');
     /**
      * ROUTAS PRINCIPAIS
      */
@@ -84,7 +90,14 @@ Route::middleware([
             'songs' => DB::select('SELECT * FROM songs ORDER BY created_at'),
             'posts' => DB::select('SELECT * FROM posts ORDER BY created_at DESC')
         ]);
-    })->name('/home');
+    })->name('home');
+
+    Route::get('/shortcuts', function () {
+        return Inertia::render('Home/Shortcuts', [
+            'songs' => DB::select('SELECT * FROM songs ORDER BY created_at'),
+            'posts' => DB::select('SELECT * FROM posts ORDER BY created_at DESC')
+        ]);
+    })->name('shortcuts');
 
     Route::post('/participar-ascensao', function () {
         $user_id = auth()->id();
@@ -146,17 +159,9 @@ Route::middleware([
         return Inertia::render('LiveTV/LiverTV', []);
     })->name('livertv');
 
-    Route::get('/artistas', function () {
-        return Inertia::render('Artistas/Artistas', ['artists' => DB::select("SELECT * FROM artists")]);
-    })->name('artistas');
-
-    Route::get('/produtoras', function () {
-        return Inertia::render('Produtoras', ['produtoras' => DB::select("SELECT * FROM  profissionals WHERE category='Produtor'")]);
-    })->name('produtoras');
-
-    Route::get('/djs', function () {
-        return Inertia::render('DJs', ['djs' => DB::select("SELECT * FROM profissionals WHERE category='DJ'")]);
-    })->name('djs');
+    Route::get('/network', function () {
+        return Inertia::render('LifterNetwork/Network', ['artists' => DB::select("SELECT * FROM artists")]);
+    })->name('network');
 
     Route::get('/avaliacoes', function () {
         return Inertia::render('Avaliacoes/Avaliacoes', []);
@@ -418,9 +423,7 @@ Route::middleware([
         return Inertia::render('Profile/Musico');
     })->name('settings');
 
-    Route::get('/uploads', function () {
-        return Inertia::render('Profile/Musico');
-    })->name('uploads');
+
 
 
     Route::get('/contactos', function () {

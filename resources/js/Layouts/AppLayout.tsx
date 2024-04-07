@@ -7,7 +7,12 @@ import { Sidebar, SongCard } from '../Components';
 import MusicPlayer from '@/Components/MusicPlayer';
 import { useDispatch, useSelector } from 'react-redux';
 import { HiOutlineMenu } from 'react-icons/hi';
-import { MdClose, MdCloseFullscreen } from 'react-icons/md';
+import {
+  MdArrowForward,
+  MdClose,
+  MdCloseFullscreen,
+  MdNotifications,
+} from 'react-icons/md';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 
 //Style for swiper
@@ -15,7 +20,13 @@ import './style.css';
 import { Logo } from '../../img';
 import { smalLogo } from '../../img';
 import Container from './Container';
-import { BiMusic, BiSearch, BiVideo } from 'react-icons/bi';
+import {
+  BiDotsHorizontalRounded,
+  BiMessage,
+  BiMusic,
+  BiSearch,
+  BiVideo,
+} from 'react-icons/bi';
 import Player from '@/Components/VideoPlayer/Player';
 import VideoPlayer from '@/Components/VideoPlayer';
 import Modal from '@/Components/Modal';
@@ -36,9 +47,16 @@ import { FaArtstation, FaCross } from 'react-icons/fa';
 import VideoSinglePlayer from '@/Pages/Videos/VideoSinglePlayer';
 import { random } from 'lodash';
 import { motion } from 'framer-motion';
+import LifterPlayer from '@/Components/LifterPlayer';
+import SmalSidebar from '@/Components/SmalSidebar';
+import UserAvatar from '@/Components/UserAvatar';
+import { useGetSongsAudiosQuery } from '@/redux/services/coreApi';
+import DropdownLink from '@/Components/DropdownLink';
+import Dropup from '@/Components/Dropup';
 interface Props {
   title: string;
   bg?: string;
+  //songs: Array<Object>;
   renderHeader?(): JSX.Element;
   renderSidebarList?(): JSX.Element;
   renderBottom?(): JSX.Element;
@@ -47,6 +65,7 @@ interface Props {
 export default function AppLayout({
   title,
   bg,
+  //songs,
   renderHeader,
   renderSidebarList,
   renderBottom,
@@ -54,6 +73,9 @@ export default function AppLayout({
 }: PropsWithChildren<Props>) {
   const page = useTypedPage();
   const route = useRoute();
+
+  const { data: songs, isFetching, error } = useGetSongsAudiosQuery('destaque');
+
   const [showingNavigationDropdown, setShowingNavigationDropdown] =
     useState(false);
 
@@ -80,47 +102,23 @@ export default function AppLayout({
 
   return (
     <>
-      <div id="fb-root" />
-      <script
-        async
-        defer
-        crossorigin="anonymous"
-        src="https://connect.facebook.net/pt_PT/sdk.js#xfbml=1&version=v18.0&appId= 1588022325068116"
-        nonce="JTz0V4E4"
-      ></script>
       <motion.div
         animate={{ x: 0 }}
         transition={{ delay: 1 }}
         className="w-screen h-screen flex bg-gradient-to-br from-[#e6e6e6] to-[#fff] __dark:from-[#282728] __dark:to-[#2e2525w] fixed top-0 left-0 right-0 p-1 __bg-white text-white"
       >
-        {isPlayingVideo && (
+        {activeVideo && (
           <VideoSinglePlayer key={activeVideo.id + Math.floor(random() / 60)} />
         )}
 
-        {openSearch && <Search close={setOpenSearch} />}
-        {openSongRandom && <Search close={setOpenSongRandom} />}
         <Head title={title} />
         <Banner />
-        <Sidebar />
-        <div className="relative w-full h-full min-h-full min-w-full flex flex-col">
-          <header className="bg-gradient-to-br _from-[#f6cc33] _to-[#f6cc33]  relative w-full h-28 md:h-[12%] flex flex-col justify-center items-center  shadow-lg  rounded shadow-black mb-2 md:pb-1 px-0 md:px-5">
-            <div className="w-full h-12 border-[#2689ce] border-b md:border-b-0 md:h-full flex justify-between items-center px-1">
-              {/**LOGO */}
-              <Link href="/">
-                <img
-                  className="w-auto h-12 md:h-20 object-contain flex"
-                  src={Logo}
-                  alt="logo"
-                />
-              </Link>
-              <button
-                onClick={() => setOpenSearch(true)}
-                className=" md:flex text-bold text-xl  justify-center items-center bg-[#0094f8] p-2 rounded-lg hidden"
-              >
-                <BiSearch className="mx-1 text-3xl text-center" />
-              </button>
 
-              <div className=" flex text-bold text-xl  justify-center items-center bg-[#0094f8] p-2 rounded-lg cursor-pointer transform-effect">
+        <div className="relative w-full h-full min-h-full min-w-full flex  flex-col">
+          <header className="bg-gradient-to-br _from-[#f6cc33] _to-[#f6cc33]  relative w-full h-12 md:h-[10%] flex hidden_ flex-col justify-center items-center  shadow-lg  rounded shadow-black mb-2 md:pb-1 px-0 md:px-5 ">
+            <div className="w-full h-12 border-[#5e84a0] border-b md:border-b-0 md:h-full flex justify-between items-center px-1">
+              {/** OPEN AND CLOSE SIDEBAR MENU */}
+              <div className="  flex text-bold text-xl  justify-center items-center bg-[#0094f8] p-1 rounded-lg cursor-pointer transform-effect ">
                 {openMobileMenu ? (
                   <MdClose
                     className="text-3xl w-7 h-7 transition-all "
@@ -133,8 +131,41 @@ export default function AppLayout({
                   />
                 )}
               </div>
+              {/**LOGO */}
+              <Link href="/">
+                <img
+                  className="w-auto h-12 md:h-14 object-contain flex"
+                  src={Logo}
+                  alt="logo"
+                />
+              </Link>
+              <button
+                onClick={() => setOpenSearch(true)}
+                className=" md:flex_ text-bold text-xl  justify-center items-center bg-[#0094f8] p-2 rounded-lg hidden"
+              >
+                <BiSearch className="mx-1 text-3xl text-center" />
+              </button>
+
+              <div className=" flex flex-row gap-1 justify-between items-center text-[#0094f8]">
+                <div className="w-full h full justify-center items-center flex ">
+                  {/** USER AVATAR */}
+                  <UserAvatar />
+                </div>
+                <Link
+                  href="/comunicar"
+                  className="h-full flex flex-col justify-center items-center hover:"
+                >
+                  <MdNotifications className="w-7 h-7" />
+                </Link>
+                <Link
+                  href="/comunicar"
+                  className="h-full flex flex-col justify-center items-center hover:"
+                >
+                  <BiMessage className="w-7 h-7" />
+                </Link>
+              </div>
             </div>
-            <div className="w-full h-14 flex md:hidden justify-between py-1 bg-gradient-to-br from-[#00395f] to-[#005792] ">
+            <div className="w-full h-14  hidden justify-between py-1 bg-gradient-to-br from-[#00395f] to-[#005792] ">
               <div className="w-full h-full flex  flex-row justify-center items-center mb-1 text-[#fff] text-xl ">
                 <>
                   <Link
@@ -290,12 +321,22 @@ export default function AppLayout({
               {renderHeader ? renderHeader() : null}
             </div>
           </header>
-          {/* <!-- Page Content --> */}
-          <main className="relative h-[88%] md:h-[90%] w-full  flex mx-auto justify-start items-start  p-1 rounded overflow-y-hidden mb-0 pb-0  ">
-            <Container>{children}</Container>
-          </main>
+
+          <div className="w-full h-[73%] md:h-[72%] min-w-full flex  flex-row ">
+            <SmalSidebar />
+
+            {/* <!-- Page Content --> */}
+            <main className="relative h-full w-full  flex mx-auto justify-start items-start rounded overflow-y-hidden mb-0 pb-0">
+              {children}
+            </main>
+          </div>
+
+          <div className="w-full h-[17%] md:h-[15%] flex flex-row justify-center items-center mb-1 text-white bg-[rgb(0,86,124)] text-xl absolute bottom-0 left-0">
+            <LifterPlayer songs={songs} />
+          </div>
         </div>
       </motion.div>
+
       {}
       <Modal
         isOpen={isPlayingVideo && false}
@@ -313,10 +354,6 @@ export default function AppLayout({
           <VideoPlayer />
         </div>
       </Modal>
-      {}
-      {isFullScreenPlayer && (
-        <PlayerFullScreen close={setFullScreenPlayer(false)} />
-      )}
     </>
   );
 }

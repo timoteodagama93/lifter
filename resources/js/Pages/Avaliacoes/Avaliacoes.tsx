@@ -11,6 +11,7 @@ import 'swiper/css/thumbs';
 
 // import required modules
 import AppLayout from '@/Layouts/AppLayout';
+import Container from '@/Layouts/Container';
 
 import { useSelector } from 'react-redux';
 import {
@@ -20,8 +21,6 @@ import {
 
 import ValuationReader from './ValuationReader';
 import ValuatedsSongs from './ValuatedsSongs';
-import PlayerLayout from '@/Layouts/PlayerLayout';
-import PlayerContainer from '@/Layouts/PlayerContainer';
 import { SongCard } from '@/Components';
 import TopChartCard from '@/Components/TopChartCard';
 
@@ -38,8 +37,8 @@ const Avaliacoes = ({}) => {
   }, [isPlaying]);
 
   return (
-    <PlayerLayout title="Avaliações">
-      <PlayerContainer>
+    <AppLayout title="Avaliações">
+      <Container>
         <>
           {songs?.length > 0 && (
             <>
@@ -72,8 +71,8 @@ const Avaliacoes = ({}) => {
             </>
           )}
         </>
-      </PlayerContainer>
-    </PlayerLayout>
+      </Container>
+    </AppLayout>
   );
 };
 

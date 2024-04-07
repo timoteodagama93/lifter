@@ -32,6 +32,7 @@ import Modal from '@/Components/Modal';
 import useTypedPage from '@/Hooks/useTypedPage';
 import { MdOutlineCloseFullscreen } from 'react-icons/md';
 import { AddSong } from '../PerfilProfissional/Artista/Song';
+import CardVideo from '@/Components/CardVideo';
 
 function Songs({}) {
   const { data: songs, isFetching, error } = useGetSongsAudiosQuery('all');
@@ -152,39 +153,20 @@ function Songs({}) {
                   </p>
                 </Link>
               </div>
-              <div className="w-full relative flex">
-                <Swiper
-                  spaceBetween={0}
-                  navigation={true}
-                  modules={[Navigation]} //EffectCoverflow,
-                  slidesPerView={1}
-                  effect={''} //coverflow
-                  coverflowEffect={{
-                    rotate: 0,
-                    stretch: 0,
-                    depth: 0,
-                    modifier: 0, //1
-                    slideShadows: true,
-                  }}
-                  centeredSlides
-                  //centeredSlidesBounds
-                  loop={true}
-                  className="mySwiper flex justify-center items-center"
-                >
-                  {videos?.map((video, i) => (
-                    <SwiperSlide key={video.id + i + i}>
-                      <VideoCard
-                        w="w-full"
-                        video={video}
-                        i={i}
-                        key={video.id}
-                        activeVideo={activeSong}
-                        isPlayingVideo={isPlaying}
-                        videos={videos}
-                      />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
+              <div className="w-full relative flex flex-shrink">
+                {videos?.map((video, i) => (
+                  <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 h-auto">
+                    <CardVideo
+                      video={video}
+                      type='song'
+                      i={i}
+                      key={video.id}
+                      activeVideo={activeSong}
+                      isPlayingVideo={isPlaying}
+                      videos={videos}
+                    />
+                  </div>
+                ))}
               </div>
               <div
                 className="w-full flex flex-row justify-between
