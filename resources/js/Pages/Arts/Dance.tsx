@@ -33,6 +33,7 @@ import Arts from './Arts';
 import { MdOutlineCloseFullscreen } from 'react-icons/md';
 import AddVideo from '@/Components/AddVideo';
 import VideoCardGrelha from '@/Components/VideoCardGrelha';
+import CardVideo from '@/Components/CardVideo';
 
 function Dance({}) {
   const { currentPage, setCurrentPage } = useStateContext();
@@ -135,6 +136,7 @@ function Dance({}) {
                   ))}
                 </Swiper>
               </div>
+
               <div className="w-full flex flex-row justify-between items-center">
                 <h2 className=" font-bold text-base md:text-4xl text-[#]">
                   Populares{' '}
@@ -145,7 +147,7 @@ function Dance({}) {
                   </p>
                 </Link>
               </div>
-              <div className="w-full relative flex flex-wrap ">
+              <div className="hidden w-full relative flex flex-wrap ">
                 {videos?.map((video, i) => (
                   <VideoCard
                     videos={videos}
@@ -155,6 +157,20 @@ function Dance({}) {
                     i={i}
                     key={video.id}
                   />
+                ))}
+              </div>
+              <div className="w-full relative flex flex-wrap mb-16">
+                {videos?.map((video, i) => (
+                  <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
+                    <CardVideo
+                      videos={videos}
+                      video={video}
+                      isPlayingVideo={isPlayingVideo}
+                      activeVideo={activeVideo}
+                      i={i}
+                      key={video.id}
+                    />
+                  </div>
                 ))}
               </div>
             </>

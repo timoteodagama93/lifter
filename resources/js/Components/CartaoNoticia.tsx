@@ -46,7 +46,7 @@ const CartaoNoticia = ({ post }) => {
           )}
           {post?.mime_type?.includes('audio/') && (
             <>
-              <audio className="w-auto h-auto p-5">
+              <audio preload='none' controls className="w-auto h-auto p-5">
                 <source
                   src={`posts/${post.id}/${post.file_url.split('/')[3]}`}
                   type={post.mime_type}

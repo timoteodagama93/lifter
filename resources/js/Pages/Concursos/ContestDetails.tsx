@@ -15,11 +15,21 @@ import {
 import { Link, useForm } from '@inertiajs/react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { GiSing, GiTeacher, GiTribunalJury, GiVote } from 'react-icons/gi';
 import {
+  GiJoin,
+  GiSing,
+  GiTeacher,
+  GiTribunalJury,
+  GiVote,
+} from 'react-icons/gi';
+import {
+  MdAdd,
   MdCloseFullscreen,
+  MdDetails,
   MdGroups,
+  MdInfo,
   MdOutlineMotionPhotosOn,
+  MdRule,
 } from 'react-icons/md';
 import { useSelector } from 'react-redux';
 
@@ -32,12 +42,14 @@ import { FaPray } from 'react-icons/fa';
 import ArtistCard from '@/Components/ArtistCard';
 import ParticipantCard from '@/Components/ParticipantCard';
 import AddContestParticipant from './AddContestParticipant';
+import TermosCondicoes from './TermosCondicoes';
 
 function ContestDetails({ contest, contests }) {
   const [seeArtistDetails, setSeeArtistDetails] = useState(false);
 
   const [artistTDetail, setArtistTDetail] = useState(null);
   const [joinContest, setJoinContest] = useState(false);
+  const [showContestDetails, setShowContestDetails] = useState(false);
 
   const [dataToShow, setDataToShow] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -116,6 +128,37 @@ function ContestDetails({ contest, contests }) {
       <Modal isOpen={joinContest} onClose={() => setJoinContest(false)}>
         <AddContestParticipant contest={contest} />
       </Modal>
+      <Modal
+        maxWidth="w-screen h-screen"
+        isOpen={showContestDetails}
+        onClose={() => setShowContestDetails(false)}
+      >
+        <div className="w-full flex justify-between items-center p-1 md:px-5 border-b">
+          <button
+            onClick={() => setShowContestDetails(false)}
+            className="transform-effect p-2 justify-center items-center flex "
+          >
+            <MdCloseFullscreen />
+          </button>
+          <h1 className="text-center font-bold text-xl md:text-4xl">
+            {' '}
+            {contest.designacao}{' '}
+          </h1>
+
+          <div className="flex flex-row justify-center items-center gap-1">
+            <button
+              onClick={() => setShowContestDetails(true)}
+              className="transform-effect p-1 justify-center items-center w-full flex flex-col"
+            >
+              <MdRule className="w-10 h-auto font-bold" />{' '}
+              <span className="flex">Termos</span>
+            </button>
+          </div>
+        </div>
+        <>
+          <TermosCondicoes />
+        </>
+      </Modal>
       <div className="w-full flex justify-between items-center p-1 md:px-5 border-b">
         <button
           onClick={() => setCurrentPage(<Concursos concursos={contests} />)}
@@ -123,19 +166,27 @@ function ContestDetails({ contest, contests }) {
         >
           <BiArrowBack />
         </button>
-        <h1 className="text-center font-bold text-4xl">
+        <h1 className="text-center font-bold text-xl md:text-4xl">
           {' '}
           {contest.designacao}{' '}
         </h1>
 
-        <div className="flex flex-row justify-center items-center">
+        <div className="flex flex-row justify-center items-center gap-1">
+          <button
+            onClick={() => setShowContestDetails(true)}
+            className="transform-effect p-1 justify-center items-center w-full flex flex-col"
+          >
+            {' '}
+            <MdInfo className="w-10 h-auto font-bold" />{' '}
+            <span className="flex">Detalhes</span>
+          </button>
           <button
             onClick={() => setJoinContest(true)}
             className="transform-effect p-1 justify-center items-center w-full flex flex-col"
           >
             {' '}
-            <GiTribunalJury className="w-10 h-auto font-bold" />{' '}
-            <span className="flex">Inscrever-se</span>
+            <MdAdd className="w-10 h-auto font-bold" />{' '}
+            <span className="flex">Inscrição</span>
           </button>
         </div>
       </div>
@@ -256,11 +307,11 @@ function ContestDetails({ contest, contests }) {
                               }}
                               className="transform-effect w-full h-[10%] first-letter: rounded-lg flex-1 space-x-1 flex flex-col justify-start items-center mx-3 border-b-2 backdrop-blur-lg p-1 "
                             >
-                              <p className="text-xl font-bold text-white">
+                              <p className="text-xl font-bold text-gray-900">
                                 {' '}
                                 {jurado.name}{' '}
                               </p>
-                              <p className="text-xs text-gray-300">
+                              <p className="text-xs text-gray-900">
                                 {' '}
                                 {jurado.ocupation}
                               </p>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { BiDownload, BiLibrary, BiSend, BiShare, BiStar } from 'react-icons/bi';
+import { BiDownload, BiLibrary, BiStar } from 'react-icons/bi';
 import {
-  MdEmojiEmotions,
   MdOutlineCloseFullscreen,
   MdOutlineMessage,
 } from 'react-icons/md';
@@ -19,14 +18,10 @@ import {
   HiOutlineEmojiSad,
 } from 'react-icons/hi';
 import Modal from './Modal';
-import Checkbox from './Checkbox';
-import InputLabel from './InputLabel';
 import EnviarEstrelas from './EnviarEstrelas';
-import { Link, useForm } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import Loader from './Loader';
-import { comment } from 'postcss';
 import FeedbacksSection from './FeedbacksSection';
 import CommentsSection from './CommentsSection';
 
@@ -35,7 +30,6 @@ function Interagir({
   collectionType = 'song',
   orientation = 'flex-row',
 }) {
-  
   const [openModal, setOpenModal] = useState(false);
   const [valuateModal, setValuateModal] = useState(false);
   const [feedbackModal, setFeedbackModal] = useState(false);
@@ -155,8 +149,8 @@ function Interagir({
     } else {
       try {
         Swal.fire({
-          title: 'Baixando música',
-          text: 'A música está sendo baixada, mantenha a conexão a Internet, enquanto isso podes continuar a navegar, assim que o download for concluido você será notificado(a).',
+          title: 'Baixando aRQUIVO',
+          text: 'o arquivo está sendo baixado, mantenha a conexão a Internet, enquanto isso podes continuar a navegar, assim que o download for concluido você será notificado(a).',
           icon: 'info',
         });
         const response = await axios.get(
@@ -165,8 +159,6 @@ function Interagir({
             responseType: 'blob',
           },
         );
-
-        
 
         const blob = new Blob([response.data], {
           type: response.headers['Tontent-Type'],
@@ -181,15 +173,15 @@ function Interagir({
 
         Swal.fire({
           title: 'Download concluido',
-          text: 'A música foi salva no seu disopositivo.',
+          text: 'A o arquivo foi salvo no seu disopositivo.',
           icon: 'success',
         });
       } catch (error) {
         console.log('ERROR DE DOWNLOAD: ' + error);
         console.log(error);
         Swal.fire({
-          title: 'Erro de download da música',
-          text: 'Houve uma falha da tentativa de download da música, tente novamente se persistir o problema entre em contacto com a nossa equipa técnica.',
+          title: 'Erro de download de arquivo',
+          text: 'Houve uma falha da tentativa de download de um ficheiro, tente novamente se persistir o problema entre em contacto com a nossa equipa técnica.',
           icon: 'error',
         });
       }

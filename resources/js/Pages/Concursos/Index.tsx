@@ -118,10 +118,10 @@ function Index({ contests, contest }: Props) {
                 </select>
               </div>
             </div>
-            <div className="w-full mx-auto sm:px-1 lg:px-1 dark:bg-gray-800 rounded-lg p-1">
+            <div className="w-full mx-auto sm:px-1 lg:px-1 rounded-lg p-1">
               <div className="w-full flex flex-col">
                 <div
-                  className="w-full flex flex-row flex-wrap"
+                  className="w-full flex flex-row flex-wrap text-black"
                   style={{ transition: '5s' }}
                 >
                   {currentPage}

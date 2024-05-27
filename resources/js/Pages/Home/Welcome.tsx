@@ -21,9 +21,22 @@ import AppLayout from '@/Layouts/AppLayout';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import Avaliar from './Avaliar';
 import { Lifter } from '.';
-import { BiHome, BiMusic, BiSearch, BiVideo } from 'react-icons/bi';
+import {
+  BiChat,
+  BiHome,
+  BiMusic,
+  BiSearch,
+  BiSpeaker,
+  BiVideo,
+} from 'react-icons/bi';
 import { BsArrowDown, BsNewspaper, BsStars, BsTrophy } from 'react-icons/bs';
-import { FaArtstation, FaCross, FaMusic } from 'react-icons/fa';
+import {
+  FaArtstation,
+  FaCross,
+  FaMusic,
+  FaSadCry,
+  FaSadTear,
+} from 'react-icons/fa';
 import Sobre from '../Concursos/Sobre';
 
 import {
@@ -33,7 +46,7 @@ import {
   useGetWelcomeSongDestaqueQuery,
   useGetWelcomeVideoDestaqueQuery,
 } from '@/redux/services/coreApi';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Navigation } from 'swiper/modules';
 import { Sidebar, SongCard } from '@/Components';
@@ -42,17 +55,29 @@ import Banner from '@/Components/Banner';
 import { motion } from 'framer-motion';
 import { random } from 'lodash';
 import { GiSoundWaves } from 'react-icons/gi';
-import { HiOutlineMenu } from 'react-icons/hi';
-import { MdClose } from 'react-icons/md';
+import { HiEmojiSad, HiOutlineEmojiSad, HiOutlineMenu } from 'react-icons/hi';
+import {
+  MdClose,
+  MdCloseFullscreen,
+  MdEmojiEvents,
+  MdTask,
+} from 'react-icons/md';
 import { Logo, smalLogo } from '../../../img';
 import VideoSinglePlayer from '../Videos/VideoSinglePlayer';
-import  { FI, ngola, FILuanda } from '@/assets/parceria';
+import { FI, ngola, FILuanda } from '@/assets/parceria';
 import SectionBorder from '@/Components/SectionBorder';
 import Player from '@/Components/MusicPlayer/Player';
 import MusicPlayer from '@/Components/MusicPlayer';
 import TopChartCard from '@/Components/TopChartCard';
 import VideoCard from '@/Components/VideoCard';
 import axios from 'axios';
+import CardVideo from '@/Components/CardVideo';
+import { AiOutlineSound } from 'react-icons/ai';
+import { RiTodoLine } from 'react-icons/ri';
+import LifterPlayer from '@/Components/LifterPlayer';
+import Modal from '@/Components/Modal';
+import VideoPlayer from '@/Components/VideoPlayer';
+import { playPauseVideo } from '@/redux/features/playerSlice';
 
 interface Props {
   pagina: string;
@@ -79,13 +104,13 @@ export default function Welcome({ posts }: Props) {
     error: errorV,
   } = useGetWelcomeVideoDestaqueQuery('');
   const { activeVideo, isPlayingVideo } = useSelector(state => state.player);
-
+  const dispatch = useDispatch();
   return (
     <>
       <motion.div
         animate={{ x: 0 }}
         transition={{ delay: 1 }}
-        className="w-screen h-screen flex bg-gradient-to-br from-[#00395f] to-[#005792] __dark:from-[#282728] __dark:to-[#2e2525w] fixed top-0 left-0 right-0 py-5 md:px-10 __bg-white text-white overflow-y-auto"
+        className="w-screen h-screen flex bg-gradient-to-br from-[#000000] to-[#000000] __dark:from-[#282728] __dark:to-[#2e2525w] fixed top-0 left-0 right-0 py-5 md:px-10 __bg-white text-white overflow-y-auto"
       >
         {!isPlaying && isPlayingVideo && (
           <motion.div
@@ -110,7 +135,7 @@ export default function Welcome({ posts }: Props) {
         <Head title="Bem-vindo" />
         <Banner />
         <div className="relative w-full h-full min-h-full min-w-full flex flex-col">
-          <header className="bg-gradient-to-br from-[#f6cc33] to-[#f6cc33]  _from-[#f6cc33] _to-[#f6cc33]  relative w-full h-28 md:h-[12%] flex flex-col justify-center items-center  shadow-lg  rounded shadow-black mb-2 md:pb-1 px-0 md:px-5">
+          <header className="example  _from-[#f6cc33] _to-[#f6cc33]  relative w-full h-28 md:h-[12%] flex flex-col justify-center items-center  shadow-lg  rounded shadow-black mb-2 md:pb-1 px-0 md:px-5 ">
             <div className="w-full h-12 border-[#2689ce] border-b md:border-b-0 md:h-full flex justify-between items-center px-1">
               <div className="w-full h-12 border-[#2689ce] border-b md:border-b-0 md:h-full flex justify-between items-center px-1">
                 {/**LOGO */}
@@ -220,20 +245,28 @@ export default function Welcome({ posts }: Props) {
             <div className="w-full flex flex-col gap-1" id="home">
               <div className="w-full flex flex-col md:flex-row gap-1">
                 <div className="w-full md:w-[60%] flex flex-col gap-5 ">
-                  <h1 className="text-2xl md:text-5xl text-bold">
+                  <h1 className="text-2xl md:text-5xl text-bold text-gradient">
                     Lifter, comunidade de apoio e suporta para o talento e a
                     arte
                   </h1>
-                  <p className="tex-[#008ed2] text-base md:text-xl ">
+                  <p className=" tex-[#008ed2] text-base md:text-xl ">
                     Somos um ecossistema que conecta artistas ao publico
                     permitindo que haja partilha constante das artes e que o
                     talento e a criatividade possam criar emoões inesquecíveis.
                     Músicas são avaliadas e validadas pela rede Lifter e
                     tendencias são criadas.
                   </p>
-                  <div className="w-full hidden flex flex-row items-center justify-center">
-                    <form action="" className="w-full h-full flex flex-row">
-                      <input type="search" name="" id="" className="w-[80%]" />
+                  <div className="w-full  flex flex-row items-center justify-center">
+                    <form
+                      action=""
+                      className="w-full h-full flex flex-row hover:shadow-lg hover:shadow-black transition-all "
+                    >
+                      <input
+                        type="search"
+                        name=""
+                        id=""
+                        className="w-[80%] text-black"
+                      />
                       <button
                         type="submit"
                         className="rounded-r p-1 bg-[#0094f8] w-[20%] text-xl "
@@ -245,7 +278,11 @@ export default function Welcome({ posts }: Props) {
                 </div>
                 <div className="w-full md:w-[40%] p-5 .bg-[#f6cc33] rounded  ">
                   <div className="w-full rounded blur-0 ">
-                    <img src={smalLogo} alt="" className="blur-none" />
+                    <img
+                      src={smalLogo}
+                      alt=""
+                      className="transition-all blur-none hover:bg-[#f6cc33] hover:rounded-lg hover:shadow-xl shadow-black "
+                    />
                   </div>
                 </div>
               </div>
@@ -262,96 +299,118 @@ export default function Welcome({ posts }: Props) {
             <div className="w-full flex flex-col gap-1" id="lifter">
               <div className="w-full flex flex-col gap-1">
                 <div className="w-full flex flex-col gap-5 mb-20 ">
-                  <h1 className="text-2xl md:text-5xl text-bold">
-                    Os problemas dos artistas?
+                  <h1 className="text-2xl md:text-5xl text-bold text-gradient_ flex justify-center items-center gap-5">
+                    Qual problema você enfrenta como artista?
                   </h1>
-                  <div className="w-full flex flex-col md:flex-row">
-                    <div className="flex flex-row justify-between items-center">
-                      <h1 className="w-[40%] md:w-[50%] text-xl md:text-2xl md:text-bold">
-                        Interação, causa de desistência de muitos talentos.{' '}
-                      </h1>
-
-                      <p className="w-[60%]  md:w-[50%] tex-[#008ed2] text-base md:text-xl ">
-                        Os artistas, principalmente emergentes e não
-                        conceituados, enumeraram os principais problemas que
-                        enfrentam, os mais difíceis são os seguintes problemas:{' '}
-                      </p>
-                    </div>
-                  </div>
+                  <p className="text-xl md:text-2xl text-center">
+                    Muitos artistas que conhecemos que buscam reconhecimento e
+                    profissionalização listaram as barreiras que não conseguiram
+                    ultrapassar sozinhos:
+                  </p>
                   <div className="w-full flex flex-col md:flex-row items-center justify-center ">
-                    <div className="w-full  h-full flex flex-col transform-effect p-5">
-                      <span className="w-12 text-2xl text-bold border-2 rounded" />
-                      <h1 className="text-xl md:text-2xl text-bold">
-                        Promoção
+                    <div className="w-full grouped h-full flex flex-col transform-effect transite-left  p-5">
+                      <h1 className="text-xl md:text-2xl text-bold text-gradient_ flex justify-start items-center gap-2">
+                        <span>
+                          {' '}
+                          <AiOutlineSound className=" w-12 h-12" />{' '}
+                        </span>
+
+                        <div className="flex gap-2 justify-center items-center flex-row">
+                          <span className="h-12 text-2xl text-bold border-2 focus:border-black rounded" />
+                          <span>Promoção</span>
+                        </div>
                       </h1>
                       <p className="tex-base">
-                        Promover as músicas é um desafio comum a todos os
-                        artistas, nunca é fácil ter as músicas conhecidas e o
-                        trabalho reconhecido.
+                        Quais canais? Locais? Eventos? Como? Com quem? Aonde e
+                        como distribuir a música? Quais parcerias preciso?
                       </p>
                     </div>
-                    <div className="w-full  h-full flex flex-col transform-effect p-5">
-                      <span className="w-12 text-2xl text-bold border-2 rounded" />
-                      <h1 className="text-xl md:text-2xl text-bold">
-                        Feedbacks
+                    <div className="w-full grouped  h-full flex flex-col transform-effect p-1">
+                      <h1 className="text-xl md:text-2xl text-bold text-gradient_ flex justify-start items-center gap-2">
+                        <span>
+                          {' '}
+                          <BiChat className=" w-12 h-12" />{' '}
+                        </span>
+
+                        <div className="flex gap-2 justify-center items-center flex-row">
+                          <span className="h-12 text-2xl text-bold border-2 focus:border-black rounded" />
+                          <span>Feedbacks</span>
+                        </div>
                       </h1>
+                      <h1 className="text-xl md:text-2xl text-bold"></h1>
                       <p className="tex-base">
-                        Saber o que o público pensa a respeito da nossa pode ser
-                        a diferença entre ter um sucesso e continuar no
-                        anonimato. Pois os feedbacks ajudam a fazer criações que
-                        vão de encontro do público.
+                        Quem ouve minhas músicas? O que acham os ouvintes? O que
+                        posso melhorar? O que tenho de mellhor coteúdo,
+                        produção?
                       </p>
                     </div>
-                    <div className="w-full h-full flex flex-col transform-effect p-5">
-                      <span className="w-12 text-2xl text-bold border-2 rounded" />
-                      <h1 className="text-xl md:text-2xl text-bold">
-                        Oportunidades
+                    <div className="w-full grouped h-full flex flex-col transform-effect p-5">
+                      <h1 className="text-xl md:text-2xl text-bold text-gradient_ flex justify-start items-center gap-2">
+                        <span>
+                          {' '}
+                          <MdEmojiEvents className=" w-12 h-12" />{' '}
+                        </span>
+
+                        <div className="flex gap-2 justify-center items-center flex-row">
+                          <span className="h-12 text-2xl text-bold border-2 focus:border-black rounded" />
+                          <span>Oportunidades</span>
+                        </div>
                       </h1>
                       <p className="tex-base">
-                        É preciso ter uma forma de obter informações de
-                        oportunidades que podem ser um diferencial para a
-                        carreira. Eventos, empresários e empresas procuram e
-                        oferecem sempre colaborações que quase nunca chega aos
-                        ouvidos de quem ainda não é famoso.
+                        Aonde me apresentar? Que eventos estão acontecendo e
+                        aonde? Como actualizo-me sobre oportunidas por vir?
                       </p>
                     </div>
-                    <div className="w-full h-full flex flex-col transform-effect p-5">
-                      <span className="w-12 text-2xl text-bold border-2 rounded" />
-                      <h1 className="text-xl md:text-2xl text-bold">
-                        {' '}
-                        Planejamento{' '}
+                    <div className="w-full grouped h-full flex flex-col transform-effect p-5">
+                      <h1 className="text-xl md:text-2xl text-bold text-gradient_ flex justify-start items-center gap-2">
+                        <span>
+                          {' '}
+                          <RiTodoLine className=" w-12 h-12" />{' '}
+                        </span>
+
+                        <div className="flex gap-2 justify-center items-center flex-row">
+                          <span className="h-12 text-2xl text-bold border-2 focus:border-black rounded" />
+                          <span>Planejamento</span>
+                        </div>
                       </h1>
                       <p className="tex-base">
-                        A carreira no mundo artistico requer planejamento e
-                        disciplina, além de não dispor de meios de acompanhar e
-                        monitorar o progresso os artistas não fazem planos por
-                        exemplo de prmoção de suas músicas.
+                        Como construir uma carreira? Preciso de um agente? A
+                        quem me aliar? Como fazer marketing? Como planejar?
                       </p>
                     </div>
                   </div>
                 </div>
 
-                <div className="w-full flex flex-col gap-5 ">
-                  <h1 className="text-2xl md:text-5xl text-bold">
-                    Lifter, uma solução!
+                <SectionBorder />
+                <div className="w-full flex flex-col gap-5 mb-20 ">
+                  <h1 className="text-2xl md:text-5xl text-bold text-gradient_ flex justify-center items-center gap-5">
+                    Uma luz no final do túnel!
                   </h1>
-                  <div className="w-full flex flex-row">
-                    <div className="flex flex-row justify-between items-center gap-5">
-                      <h1 className="w-[40%] md:w-[50%] text-2xl md:text-bold">
-                        A Lifter ajuda artistas a divulgarem suas músicas e
-                        imagem{' '}
-                      </h1>
-
-                      <p className="w-[60%] md:w-[50%] tex-[#008ed2] text-xl ">
-                        A lifter é um processo simples e eficiente que
-                        possibilita dar visibilidade aos artistas através de
-                        quatro etapas.
-                      </p>
-                    </div>
+                  <p className="text-xl md:text-2xl text-center">
+                    A Lifter nasce portanto como o resultado de +100 sessões de
+                    entrevistas com artistas, público, organizadores de eventos,
+                    DJs, produtores, etc, discutindo os problemas acima.
+                  </p>
+                  <div className="w-full flex flex-col md:flex-row items-center justify-center ">
+                    <img src={Logo} className="w-auto h-auto" alt="" />
                   </div>
+                </div>
+                <div className="w-full flex flex-col gap-5 ">
+                  <div className="w-full text-center">
+                    <h1 className="text-2xl md:text-5xl text-bold">
+                      Como funciona?
+                    </h1>
+                    <p className="text-base">
+                      A lifter é um processo simples e eficiente que possibilita
+                      dar visibilidade aos artistas através de quatro etapas.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="w-full flex md:flex-col  gap-5  ">
                   <div className="w-full flex flex-col items-center justify-center my-5 ">
-                    <div className="w-full flex flex-col">
-                      <div className="w-full flex flex-col md:flex-row  items-center p-2 ">
+                    <div className="w-full flex flex-col md:flex-row gap-5 ">
+                      <div className="w-full grouped flex flex-col  items-center p-2  border-b-2 border-b-[#ccc] hover:border-b-[#045] hover:border-b-4 hover:cursor-pointer ">
                         <div className=" text-bold flex flex-row items-center  gap-5  ">
                           {' '}
                           <span className="border flex  justify-center items-center rounded-lg w-10 h-10 text-5xl">
@@ -359,27 +418,12 @@ export default function Welcome({ posts }: Props) {
                           </span>{' '}
                           <span className="text-3xl">Captação musical</span>
                         </div>
-                        <p className="w-full tex-base">
-                          Durante esta fase a lifter percorrerá Angola com o
-                          objetivo de procurar, atrair e captar artistas que
-                          tenham trabalhos bons e que procuram espaços de
-                          promoção e valorização. Os artistas são encaminhados
-                          para a plataforma onde deverão partilhar seus
-                          trabalhos com a rede lifter, dando inicio a segunda
-                          fase da nossa cadeia de valor.
+                        <p className="w-full tex-base hover:flex">
+                          Crie uma conta e envie a sua música na plataforma.
                         </p>
                       </div>
-                      <div
-                        className={` ${
-                          window?.screen?.width < 768
-                            ? 'w-full justify-center items-center'
-                            : 'justify-start'
-                        }   flex flex-col text-5xl`}
-                      >
-                        <BsArrowDown className="float-left" />
-                      </div>
 
-                      <div className="w-full flex  flex-col md:flex-row  items-center p-2 ">
+                      <div className="w-full flex grouped flex-col   items-center p-2  border-b-2 border-b-[#ccc] hover:border-b-[#045] hover:border-b-4 hover:cursor-pointer ">
                         <div className=" text-bold flex flex-row items-center  gap-5  ">
                           {' '}
                           <span className="border flex  justify-center items-center rounded-lg w-10 h-10 text-5xl">
@@ -387,30 +431,13 @@ export default function Welcome({ posts }: Props) {
                           </span>{' '}
                           <span className="text-3xl">Avaliação Musical</span>
                         </div>
-                        <p className="w-full tex-base">
-                          Durante a fase de avaliação e validação as músicas que
-                          forem submetidas a plataforma são colocadas em
-                          avaliação pela REDE LIFTER aonde os intervenientes
-                          deverão dar feedbacks e atribuir notas avaliativas
-                          para cada música. Diariamente deverão ser avaliadas
-                          até 5 músicas inicialmente. O resultado dessas
-                          avaliações é usado como validação que irá determinar a
-                          qualidade da música e medir a aceitação do conteúdo
-                          por parte do público. Com essas avaliações termina a
-                          validação dando lugar a fase do marketing.
+                        <p className="w-full tex-base hover:flex">
+                          A <strong>Rede Lifter</strong> vai ouvir, avaliar e
+                          partilhar a sua música.
                         </p>
                       </div>
-                      <div
-                        className={` ${
-                          window?.screen?.width < 768
-                            ? 'w-full justify-center items-center'
-                            : 'justify-start'
-                        }   flex flex-col text-5xl`}
-                      >
-                        <BsArrowDown className="float-left" />
-                      </div>
 
-                      <div className="w-full flex  flex-col md:flex-row  items-center p-2 ">
+                      <div className="w-full flex grouped  flex-col   items-center p-2 border-b-2 border-b-[#ccc] hover:border-b-[#045] hover:border-b-4 hover:cursor-pointer ">
                         <div className=" text-bold flex flex-row items-center  gap-5  ">
                           {' '}
                           <span className="border flex  justify-center items-center rounded-lg w-10 h-10 text-5xl">
@@ -418,25 +445,12 @@ export default function Welcome({ posts }: Props) {
                           </span>{' '}
                           <span className="text-3xl">Marketing Musical</span>
                         </div>
-                        <p className="w-full tex-base">
-                          Esta fase usa os dados de validação para criar
-                          relatórios detalhados contendo informações sobre o
-                          conteúdo sua aceitação. A partir desses dados cria-se
-                          um plano de divulgação desse conteúdo. Uma vez criado
-                          o plano de marketing específico da música prossegue-se
-                          para a fase de divulgação ou promoção.
+                        <p className="w-full tex-base hover:flex">
+                          A Lifter vai fazer-te um plano de marketing eficiente
                         </p>
                       </div>
-                      <div
-                        className={` ${
-                          window?.screen?.width < 768
-                            ? 'w-full justify-center items-center'
-                            : 'justify-start'
-                        }   flex flex-col text-5xl`}
-                      >
-                        <BsArrowDown className="float-left" />
-                      </div>
-                      <div className="w-full flex  flex-col md:flex-row  items-center p-2 ">
+
+                      <div className="w-full flex grouped flex-col  items-center p-2  border-b-2 border-b-[#ccc] hover:border-b-[#045] hover:border-b-4 hover:cursor-pointer ">
                         <div className=" text-bold flex flex-row items-center  gap-5  ">
                           {' '}
                           <span className="border flex  justify-center items-center rounded-lg w-10 h-10 text-5xl">
@@ -444,23 +458,16 @@ export default function Welcome({ posts }: Props) {
                           </span>{' '}
                           <span className="text-3xl">Divulgação musical</span>
                         </div>
-                        <p className="w-full tex-base">
-                          Nesta fase as musicas com as melhores avaliações são
-                          submetidas para os vários canais para efectivamente
-                          serem divulgadas.Servindo do estudo de marketing da
-                          música em causa, ela pode ser encaminhada para os
-                          seguintes canais de promoção:{' '}
-                          <strong>Rede lifter</strong> que tem agora o
-                          compromisso de veicular em diferentes plataformas a
-                          música; Promoção em eventos Promoção em televisão;
-                          Promoção em estações de radio; Promoção e destaque na
-                          plataforma; Promoção nas redes sociais próprias da
-                          empresa; Criação de conteúdo com influenciadores
+                        <p className="w-full tex-base hover:flex">
+                          Use a rede Lifter e seus parceiros para divulgar na
+                          Internet, televisão, rádio, etc.
                         </p>
                       </div>
                     </div>
                   </div>
                 </div>
+
+                <SectionBorder />
 
                 <div className="w-full flex flex-col gap-5 mb-20 ">
                   <h1 className="text-2xl md:text-5xl text-bold">
@@ -469,79 +476,46 @@ export default function Welcome({ posts }: Props) {
                   <div className="w-full flex flex-col md:flex-row">
                     <div className="flex flex-row justify-between items-center">
                       <h1 className="w-[40%] md:w-[50%] text-xl md:text-2xl md:text-bold">
-                        A rede lifter é um conjunto de pessoas e instituições
-                        com compromisso de avaliar e promover arte e a criar
+                        A Rede Lifter é o conjunto de pessoas e instituições
+                        comprometidas a avaliar, promover arte e a criar
                         oportunidades.{' '}
                       </h1>
 
-                      <p className="w-[60%]  md:w-[50%] tex-[#008ed2] text-base md:text-xl ">
-                        São muitos os intervenientes da rede Lifter cada um
-                        agrega valor e tem o objectivo de garantir que trabalhos
-                        bons não passem despercebidos e tenham o reconhecimento
-                        merecido. Confere o contributo de cada integrante:{' '}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="w-full flex flex-col md:flex-row items-center justify-center ">
-                    <div className="w-full  h-full flex flex-col transform-effect p-5">
-                      <span className="w-12 text-2xl text-bold border-2 rounded" />
-                      <h1 className="text-xl md:text-2xl text-bold">
-                        Produtores e DJs
-                      </h1>
-                      <p className="tex-base">
-                        Contamos com esses profissionais para fazerem uma
-                        análise crítica que desafie os músicos e os próprios
-                        produtores a fazerem produções cada vez mais melhores e
-                        que impressionem e cativem a audiência.
-                      </p>
-                    </div>
-                    <div className="w-full  h-full flex flex-col transform-effect p-5">
-                      <span className="w-12 text-2xl text-bold border-2 rounded" />
-                      <h1 className="text-xl md:text-2xl text-bold">
-                        Influenciadores
-                      </h1>
-                      <p className="tex-base">
-                        Os influenciadores são líderes de opinião sobre eles
-                        recai a responsabilidade de criar ou partilhar sua
-                        expertise com a comunidade de seguidores, contamos
-                        também com estes para que os melhores trabalhos recebem
-                        visibilidade.
-                      </p>
-                    </div>
-                    <div className="w-full h-full flex flex-col transform-effect p-5">
-                      <span className="w-12 text-2xl text-bold border-2 rounded" />
-                      <h1 className="text-xl md:text-2xl text-bold">
-                        Público & Músicos
-                      </h1>
-                      <p className="tex-base">
-                        No final de tudo todos nós consumimos e nos emocionamos
-                        com o resultado do talento dos artistas, estes presentes
-                        que deles recebemos passa a ser parte de nossa
-                        existência. Por isso contamos com o público para
-                        firmarem e comunicarem suas emoções com seus ciclos.
-                      </p>
-                    </div>
-                    <div className="w-full h-full flex flex-col transform-effect p-5">
-                      <span className="w-12 text-2xl text-bold border-2 rounded" />
-                      <h1 className="text-xl md:text-2xl text-bold">
-                        Empresas e Empresários
-                      </h1>
-                      <p className="tex-base">
-                        É preciso que as empresas e os empresários conheçam o
-                        que o mercado oferece e como se consomem os trabalhos
-                        diariamente desponibilizados, isso vai permitir criar
-                        uma relação mais estreita que deverá traduzir-se em
-                        oportunidades para os artistas e outros intervenientes
-                        da rede.
-                      </p>
+                      <div className="w-full flex flex-col md:flex-row items-center justify-center ">
+                        <div className="w-full grouped h-full flex flex-col transform-effect p-5">
+                          <span className="w-12 text-2xl text-bold border-2 rounded" />
+                          <h1 className="text-xl md:text-2xl text-bold">
+                            Produtores e DJs
+                          </h1>
+                        </div>
+                        <div className="w-full grouped h-full flex flex-col transform-effect p-5">
+                          <span className="w-12 text-2xl text-bold border-2 rounded" />
+                          <h1 className="text-xl md:text-2xl text-bold">
+                            Influenciadores e Parceiros diversos
+                          </h1>
+                        </div>
+                        <div className="w-full grouped h-full flex flex-col transform-effect p-5">
+                          <span className="w-12 text-2xl text-bold border-2 rounded" />
+                          <h1 className="text-xl md:text-2xl text-bold">
+                            Público e Músicos
+                          </h1>
+                        </div>
+                        <div className="w-full grouped h-full flex flex-col transform-effect p-5">
+                          <span className="w-12 text-2xl text-bold border-2 rounded" />
+                          <h1 className="text-xl md:text-2xl text-bold">
+                            Empresas e Empresários
+                          </h1>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+
             <SectionBorder />
 
-            <div className="w-full flex flex-col gap-1" id="biblioteca">
+            <div className="w-full flex flex-col gap-1 " id="biblioteca">
               <h1 className="text-5xl text-bold text-center">Biblioteca</h1>
               {videos ? (
                 <div className="flex w-full h-full flex-col relative  ">
@@ -558,39 +532,18 @@ export default function Welcome({ posts }: Props) {
                       </p>
                     </Link>
                   </div>
-                  <div className="w-full relative flex flex-row">
-                    <Swiper
-                      spaceBetween={0}
-                      navigation={true}
-                      modules={[Navigation]} //EffectCoverflow,
-                      slidesPerView={1}
-                      effect={''} //coverflow
-                      coverflowEffect={{
-                        rotate: 0,
-                        stretch: 0,
-                        depth: 0,
-                        modifier: 0, //1
-                        slideShadows: true,
-                      }}
-                      centeredSlides
-                      //centeredSlidesBounds
-                      loop={true}
-                      className="mySwiper flex justify-center items-center"
-                    >
-                      {videos?.map((video, i) => (
-                        <SwiperSlide key={video.id + i + i}>
-                          <VideoCard
-                            w="w-full"
-                            video={video}
-                            i={i}
-                            key={video.id}
-                            activeVideo={activeSong}
-                            isPlayingVideo={isPlaying}
-                            videos={videos}
-                          />
-                        </SwiperSlide>
-                      ))}
-                    </Swiper>
+                  <div className="w-full relative flex flex-row flex-shrink">
+                    {videos?.map((video, i) => (
+                      <CardVideo
+                        type="song"
+                        video={video}
+                        i={i}
+                        key={video.id}
+                        activeVideo={activeSong}
+                        isPlayingVideo={isPlaying}
+                        videos={videos}
+                      />
+                    ))}
                   </div>
                 </div>
               ) : (
@@ -659,8 +612,9 @@ export default function Welcome({ posts }: Props) {
                   <div className="w-full flex flex-row">
                     <div className="flex flex-row justify-between items-center gap-5">
                       <h1 className="w-full text-xl md:text-2xl md:text-bold">
-                        Somos um grupo altamente motivado e comprometido a criar
-                        oportunidades para artistas cujo talento é notável.
+                        Somos um grupo altamente motivado e comprometido a
+                        encontrar e criar oportunidades para artistas cujo
+                        talento é notável.
                       </h1>
 
                       <p className=".w-[50%] tex-[#008ed2] text-xl "></p>
@@ -718,14 +672,16 @@ export default function Welcome({ posts }: Props) {
                   </div>
                   <div className="w-full flex flex-col items-center justify-center  gap-y-16 ">
                     <div className="w-full flex flex-col gap-y-5">
-                      <div className="w-full flex flex-col md:flex-row  items-center p-5 gap-1 transform-effect">
+                      <div className="w-full grouped flex flex-col md:flex-row  items-center p-5 gap-1 transform-effect">
                         <div className=" text-bold flex flex-row items-center  gap-5  ">
                           {' '}
                           <span className="text-xl md:text-3xl">
                             Publicação musical
                           </span>
-                          <span className="rounded-full border p-1">KZ</span>
-                          <span className="border flex  justify-center items-center rounded-lg  text-5xl p-1">
+                          <span className="rounded-full border p-1 hidden">
+                            KZ
+                          </span>
+                          <span className="border flex  justify-center items-center rounded-lg  text-5xl p-1 hidden">
                             5000
                           </span>{' '}
                         </div>
@@ -735,14 +691,16 @@ export default function Welcome({ posts }: Props) {
                           música é propagada por toda a Internet.
                         </p>
                       </div>
-                      <div className="w-full flex  flex-col md:flex-row  items-center p-2 gap-5  transform-effect ">
+                      <div className="w-full grouped flex  flex-col md:flex-row  items-center p-2 gap-5  transform-effect ">
                         <div className=" text-bold flex flex-row items-center  gap-5 ">
                           {' '}
                           <span className="text-xl md:text-3xl">
                             Avaliação musical
                           </span>
-                          <span className="rounded-full border p-1">KZ</span>
-                          <span className="border flex  justify-center items-center rounded-lg  text-5xl p-1">
+                          <span className="rounded-full border p-1 hidden">
+                            KZ
+                          </span>
+                          <span className="border flex  justify-center items-center rounded-lg  text-5xl p-1 hidden">
                             15000
                           </span>{' '}
                         </div>
@@ -753,32 +711,38 @@ export default function Welcome({ posts }: Props) {
                         </p>
                       </div>
 
-                      <div className="w-full flex  flex-col md:flex-row  items-center p-2 gap-5  transform-effect ">
+                      <div className="w-full grouped flex  flex-col md:flex-row  items-center p-2 gap-5  transform-effect ">
                         <div className=" text-bold flex flex-row items-center  gap-5 ">
                           {' '}
                           <span className="text-xl md:text-3xl">
                             Marketing musical
                           </span>
-                          <span className="rounded-full border p-1">KZ</span>
-                          <span className="border flex  justify-center items-center rounded-lg  text-5xl p-1">
+                          <span className="rounded-full border p-1 hidden">
+                            KZ
+                          </span>
+                          <span className="border flex  justify-center items-center rounded-lg  text-5xl p-1 hidden">
                             35000
                           </span>{' '}
                         </div>
                         <p className="w-full tex-base">
-                          Este serviço permite aos artistas disponibilizar suas
-                          músicas na Lifter e através de suas integrações a
-                          música é propagada por toda a Internet.
+                          {' '}
+                          hidden Este serviço permite aos artistas
+                          disponibilizar suas músicas na Lifter e através de
+                          suas integrações a música é propagada por toda a
+                          Internet.
                         </p>
                       </div>
 
-                      <div className="w-full flex flex-col md:flex-row  items-center p-2 gap-5  transform-effect ">
+                      <div className="w-full grouped flex flex-col md:flex-row  items-center p-2 gap-5  transform-effect ">
                         <div className=" text-bold flex flex-row items-center  gap-5 ">
                           {' '}
                           <span className="text-xl md:text-3xl">
                             Divulgação musical
                           </span>
-                          <span className="rounded-full border p-1">KZ</span>
-                          <span className="border flex  justify-center items-center rounded-lg  text-5xl p-1">
+                          <span className="rounded-full border p-1 hidden">
+                            KZ
+                          </span>
+                          <span className="border flex  justify-center items-center rounded-lg  text-5xl p-1 hidden">
                             25000
                           </span>{' '}
                         </div>
@@ -789,14 +753,16 @@ export default function Welcome({ posts }: Props) {
                         </p>
                       </div>
 
-                      <div className="w-full flex flex-col md:flex-row  items-center p-2 gap-5  transform-effect ">
+                      <div className="w-full grouped flex flex-col md:flex-row  items-center p-2 gap-5  transform-effect ">
                         <div className=" text-bold flex flex-row items-center  gap-5 ">
                           {' '}
                           <span className="text-xl md:text-3xl">
                             Sondagem musical
                           </span>
-                          <span className="rounded-full border p-1">KZ</span>
-                          <span className="border flex  justify-center items-center rounded-lg  text-5xl p-1">
+                          <span className="rounded-full border p-1 hidden">
+                            KZ
+                          </span>
+                          <span className="border flex  justify-center items-center rounded-lg  text-5xl p-1 hidden">
                             35000
                           </span>{' '}
                         </div>
@@ -814,16 +780,37 @@ export default function Welcome({ posts }: Props) {
             <SectionBorder />
 
             <Footer />
+
+
+             
+
           </main>
         </div>
       </motion.div>
+
+      <Modal
+        isOpen={isPlayingVideo && false}
+        onClose={() => dispatch(playPauseVideo(false))}
+      >
+        <div className="flex flex-col animate-slideup bg-gradient-to-br from-white/10 to-[#2a2a80] backdrop-blur-lg rounded gap-1 ">
+          <div className="w-full flex float-right justify-end">
+            <button
+              onClick={() => dispatch(playPauseVideo(false))}
+              className="p-4 transform-effect w-fit right-1 text-black"
+            >
+              <MdCloseFullscreen className="w-5 h-5 font-bold text-4xl" />
+            </button>
+          </div>
+          <VideoPlayer />
+        </div>
+      </Modal>
     </>
   );
 }
 
 function Footer() {
   return (
-    <div className="w-full my-2 opacity-95 absolute bottom-0 left-10 justify-center items-center text-xl">
+    <div className="w-full my-2 opacity-95 absolute bottom-0 left-10 justify-center items-center text-2xl text-center">
       {' '}
       Lifter @ {new Date().getFullYear()}{' '}
     </div>

@@ -4,18 +4,20 @@ import {
   BiEdit,
   BiInfoCircle,
   BiLibrary,
+  BiMusic,
   BiNews,
   BiSend,
   BiTrophy,
+  BiVideo,
 } from 'react-icons/bi';
 import useTypedPage from '@/Hooks/useTypedPage';
 
-import { MdPhoto } from 'react-icons/md';
-import { FaCoins } from 'react-icons/fa';
+import { MdCreate, MdOutlineCloseFullscreen, MdPhoto } from 'react-icons/md';
+import { FaArtstation, FaCoins, FaCross } from 'react-icons/fa';
 import { RiContactsBook2Fill } from 'react-icons/ri';
 import axios from 'axios';
 import NewContest from '@/Components/Contest/NewContest';
-import { BsEye } from 'react-icons/bs';
+import { BsEye, BsStars, BsTrophy } from 'react-icons/bs';
 import EditContest from '@/Components/EditContest/Index';
 import PulseButton from '@/Components/PulseButton';
 import InputError from '@/Components/InputError';
@@ -23,10 +25,14 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import InputLabel from '@/Components/InputLabel';
 import Modal from '@/Components/Modal';
 import useRoute from '@/Hooks/useRoute';
-import { useForm } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import Container from '@/Layouts/Container';
 import SectionBorder from '@/Components/SectionBorder';
+import { GiSoundWaves } from 'react-icons/gi';
+import route from 'ziggy-js';
+import { useStateContext } from '@/contexts/PaginaActualContext';
+import { GrPrevious } from 'react-icons/gr';
 
 function UserFeed({ contest_edition, contest }) {
   const page = useTypedPage();
@@ -34,6 +40,7 @@ function UserFeed({ contest_edition, contest }) {
     contest_edition ? <NewContest contest={contest} /> : <></>,
   );
   const [posts, setPosts] = useState([]);
+  const [createContest, setCreateContest] = useState(false);
 
   const [openNewImagePost, setOpenNewImagePost] = useState(false);
   function loadPosts() {
@@ -46,69 +53,179 @@ function UserFeed({ contest_edition, contest }) {
       })
       .catch(error => {});
   }
+
+  const { currentPage, setCurrentPage } = useStateContext();
+  useEffect(() => {
+    setCurrentPage(<UserHeader />);
+  }, []);
   return (
     <AppLayout title="Perfil">
       <Container>
-        <>
-          <div className="flex flex-col justify-center items-center w-full h-full">
-            <div className="relative flex flex-col items-center rounded-[20px] w-full mx-auto px-4 bg-[#0094f8] bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none">
-              <div className="relative flex h-auto w-full justify-center rounded-xl bg-cover">
-                <img
-                  src={`/users/${page.props.auth.user?.profile_photo_path}`}
-                  className="relative flex hidden w-auto justify-center rounded-xl bg-cover"
-                />
-                <div className="absolute -bottom-12 flex h-[87px] w-[87px] items-center justify-center rounded-full border-[4px] border-white bg-pink-400 dark:!border-navy-700">
-                  <img
-                    className="h-full w-full rounded-full"
-                    src={`/users/${page.props.auth.user?.profile_photo_path}`}
-                    alt=""
-                  />
-                </div>
-              </div>
-              <div className="mt-12 flex flex-col items-center">
-                <h4 className="text-xl font-bold text-navy-700 dark:text-white">
-                  {page.props.auth.user?.name}
-                </h4>
-                <p className="text-base font-normal text-gray-600">
-                  {page.props.auth.user?.email}
-                </p>
-              </div>
-              <div className="mt-6 mb-3 flex gap-14 md:!gap-14">
-                <div className="flex flex-col items-center justify-center">
-                  <p className="text-2xl font-bold text-navy-700 dark:text-white">
-                    17
-                  </p>
-                  <p className="text-sm font-normal text-gray-600">Posts</p>
-                </div>
-                <div className="flex flex-col items-center justify-center">
-                  <p className="text-2xl font-bold text-navy-700 dark:text-white">
-                    9.7K
-                  </p>
-                  <p className="text-sm font-normal text-gray-600">
-                    Seguidores
-                  </p>
-                </div>
-                <div className="flex flex-col items-center justify-center">
-                  <p className="text-2xl font-bold text-navy-700 dark:text-white">
-                    434
-                  </p>
-                  <p className="text-sm font-normal text-gray-600">Seguindo</p>
-                </div>
-              </div>
-            </div>
-            <p className="font-normal text-navy-700 mt-20 mx-auto w-max">
-              {page.props.auth.user?.about}
-            </p>
-          </div>
-
+        <div className="w-full h-full py-8">
+          {currentPage}
           <SectionBorder />
-        </>
+        </div>
       </Container>
     </AppLayout>
   );
 }
 
+function UserHeader({}) {
+  const page = useTypedPage();
+  const { setCurrentPage } = useStateContext();
+
+  return (
+    <>
+      <div className="flex flex-col justify-center items-center w-full h-full pt-6">
+        <div className="relative flex flex-col items-center rounded-[20px] w-full mx-auto px-4_ bg-[#0094f8] bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 ">
+          <div className="relative flex h-auto w-full justify-center rounded-xl bg-cover">
+            <img
+              src={`/users/${page.props.auth.user?.profile_photo_path}`}
+              className="relative flex hidden w-auto justify-center rounded-xl bg-cover"
+            />
+            <div className="absolute -bottom-12 flex h-[87px] w-[87px] items-center justify-center rounded-full border-[4px] border-white bg-pink-400 dark:!border-navy-700">
+              <img
+                className="h-full w-full rounded-full"
+                src={`/users/${page.props.auth.user?.profile_photo_path}`}
+                alt=""
+              />
+            </div>
+          </div>
+          <div className="mt-12 flex flex-col items-center">
+            <h4 className="text-xl font-bold text-navy-700 dark:text-white">
+              {page.props.auth.user?.name}
+            </h4>
+            <p className="text-base font-normal text-gray-600">
+              {page.props.auth.user?.email}
+            </p>
+          </div>
+          <div className="mt-6 mb-3 flex gap-14 md:!gap-14">
+            <div className="flex flex-col items-center justify-center">
+              <p className="text-2xl font-bold text-navy-700 dark:text-white">
+                17
+              </p>
+              <p className="text-sm font-normal text-gray-600">Posts</p>
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <p className="text-2xl font-bold text-navy-700 dark:text-white">
+                9.7K
+              </p>
+              <p className="text-sm font-normal text-gray-600">Seguidores</p>
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <p className="text-2xl font-bold text-navy-700 dark:text-white">
+                434
+              </p>
+              <p className="text-sm font-normal text-gray-600">Seguindo</p>
+            </div>
+          </div>
+          <div className="w-full h-14 justify-between bg-gradient-to-br from-[#00395f] to-[#005792] ">
+            <div className="w-full h-full flex  flex-row justify-center items-center mb-1 text-[#fff] text-xl ">
+              <>
+                <Link
+                  href="/video"
+                  className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter: ${
+                    route().current('video')
+                      ? 'transform-effect text-cyan-400 font-bold icon-link bg-[#00395f]'
+                      : ''
+                  } `}
+                >
+                  <BiVideo className="icon w-10 h-10" />
+                  <span
+                    className={` ${
+                      route().current('video')
+                        ? 'flex text-white font-bold uppercase'
+                        : 'hidden'
+                    }`}
+                  >
+                    Vídeos
+                  </span>
+                </Link>
+                <Link
+                  href="/vozactiva"
+                  className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
+  ${
+    route().current('vozactiva')
+      ? 'transform-effect text-cyan-400 font-bold icon-link bg-[#00395f]'
+      : ''
+  }
+  `}
+                >
+                  <GiSoundWaves className="icon w-10 h-10" />
+                  <span
+                    className={` ${
+                      route().current('vozactiva')
+                        ? 'flex text-white font-bold uppercase'
+                        : 'hidden'
+                    }`}
+                  >
+                    VozActiva
+                  </span>
+                </Link>
+                <button
+                  onClick={() =>
+                    setCurrentPage(
+                      <MyContests
+                        userId={page.props.auth.user?.id}
+                        setPagina={setCurrentPage}
+                      />,
+                    )
+                  }
+                  className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
+  ${
+    route().current()?.includes('concursos')
+      ? 'transform-effect text-cyan-400 font-bold icon-link bg-[#00395f]'
+      : ''
+  }
+  `}
+                >
+                  <BsTrophy className="icon w-10 h-10" />
+                  <span
+                    className={`md:flex ${
+                      route().current('concursos')
+                        ? 'flex text-white font-bold uppercase'
+                        : 'hidden'
+                    }`}
+                  >
+                    Concursos
+                  </span>
+                </button>
+
+                <Link
+                  href="/arts"
+                  className={` flex flex-col w-full h-full justify-center items-center text-xs hover:transform-effect first-letter:
+  ${
+    route().current('arts')
+      ? 'transform-effect text-cyan-400 font-bold icon-link bg-[#00395f]'
+      : ''
+  }
+  `}
+                >
+                  <FaArtstation className="icon w-10 h-10" />
+                  <span
+                    className={` ${
+                      route().current('arts')
+                        ? 'flex text-white font-bold uppercase'
+                        : 'hidden'
+                    }`}
+                  >
+                    +Artes
+                  </span>
+                </Link>
+              </>
+            </div>
+          </div>
+        </div>
+        <p className="font-normal text-navy-700 mt-20 mx-auto w-max text-black">
+          {page.props.auth.user?.about}
+        </p>
+      </div>
+    </>
+  );
+}
+
 export default UserFeed;
+
 function NewPost({ isOpen, onClose, loadPosts }) {
   const page = useTypedPage();
   const route = useRoute();
@@ -270,10 +387,33 @@ function MyContests({ userId, setPagina }) {
   };
 
   useEffect(loadMyContests, []);
+  const [addSong, setAddSong] = useState(false);
+
   return (
-    <div className="w-full flex flex-row flex-wrap">
-      <h1 className="flex w-full text-center text-4xl  ">Meus concursos</h1>
-      <>
+    <>
+      <div className="w-full h-full flex flex-row flex-wrap text-black">
+        <div className="w-full flex justify-between items-center p-1 md:px-5 border-b">
+          <button
+            onClick={() => setAddSong(false)}
+            className="transform-effect p-1 justify-center items-center flex flex-col"
+          >
+            {' '}
+            <GrPrevious className="w-10 h-auto font-bold" />{' '}
+          </button>
+
+          <div className="flex flex-row justify-center items-center">
+            <button
+              onClick={() => setAddSong(true)}
+              className="transform-effect p-1 justify-center items-center w-full flex flex-col"
+            >
+              {' '}
+              <MdCreate className="w-10 h-auto font-bold" />{' '}
+              <span className="flex">Novo concurso</span>
+            </button>
+          </div>
+        </div>
+        <h1 className="flex w-full text-center text-4xl  ">Meus concursos</h1>
+
         <table className="w-full table">
           <thead className="thead-dark">
             <tr className="">
@@ -317,7 +457,27 @@ function MyContests({ userId, setPagina }) {
             ))}
           </tbody>
         </table>
-      </>
-    </div>
+        <Modal
+          maxWidth="w-full"
+          isOpen={addSong}
+          onClose={() => setAddSong(false)}
+        >
+          <div className="my-1 w-full text-base rounded relative flex flex-col gap-1 p-5 shadow">
+            <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4] flex justify-between  ">
+              <button
+                onClick={() => setAddSong(false)}
+                className="transform-effect p-1 justify-center items-center flex flex-col"
+              >
+                {' '}
+                <MdOutlineCloseFullscreen className="w-10 h-auto font-bold" />{' '}
+              </button>
+              <span>Novo concurso</span>
+            </h1>
+
+            <NewContest />
+          </div>
+        </Modal>
+      </div>
+    </>
   );
 }

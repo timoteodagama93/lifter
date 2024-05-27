@@ -154,7 +154,7 @@ export default function Home({ posts2 }: Props) {
         <>
           <div className="w-full relative sm:flex flex-col sm:justify-center sm:items-center  bg-dots-darker bg-center dark:bg-dots-lighter  selection:bg-red-500 selection:text-white">
             <div className="w-full h-full  flex flex-col gap-1 justify-cebter items-center rounded-lg">
-              <div className="w-full flex justify-between items-center p-1 md:px-5 border-b">
+              <div className="w-full flex justify-between items-center p-1 md:px-5 border-b ">
                 <div className="w-4/5 mx-auto md:mx-6">
                   <form className="flex items-center">
                     <label htmlFor="simple-search" className="sr-only">
@@ -208,7 +208,7 @@ export default function Home({ posts2 }: Props) {
                 <div className="w-1/5 flex flex-row justify-center items-center">
                   <button
                     onClick={() => setCreatePost(true)}
-                    className="transform-effect p-1 justify-center items-center w-full flex flex-col"
+                    className="transform-effect p-1 justify-center items-center w-full flex flex-col _bg-[#f6cc33] text-[#0094f8] "
                   >
                     {' '}
                     <BiShare className="w-10 h-auto font-bold" />{' '}

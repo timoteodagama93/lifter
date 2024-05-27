@@ -325,7 +325,93 @@
   */
 }
 
+@keyframes transite-left {
+  0% {
+    left: -10px
+  }
+}
 
-.shadow-inner {
-  
+.transite-left {
+  width: 100%;
+  left: 0;
+  animation-name: transite-left;
+}
+
+
+@keyframes example {
+  0% {
+    background-color: cyan;
+  }
+
+  12.5% {
+    background-color: red;
+  }
+
+  25% {
+    background-color: yellow;
+  }
+
+  37.5% {
+    background-color: peru;
+  }
+
+  50% {
+    background-color: black;
+  }
+
+  62.5% {
+    background-color: white;
+  }
+
+  75% {
+    background-color: rgb(123, 0, 115);
+  }
+
+  100% {
+    background-color: green;
+  }
+}
+
+/* The element to apply the animation to */
+.example {
+
+  background-color: #ccc;
+
+  animation-name: example;
+  animation-duration: 1s;
+
+}
+
+
+/**
+*TEXT GRADIENT
+*/
+
+h1 {
+  font-size: 72px;
+  background: -webkit-linear-gradient(#eee, #333);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient {
+  font-size: 72px;
+  background: -webkit-linear-gradient(#0094f8, #f6cc33);
+  -webkit-text-fill-color: transparent;
+  color: white;
+  opacity: .7;
+  transition: all;
+  transition-delay: 5s;
+}
+
+.text-gradient:hover {
+  background-image: linear-gradient(to left, #0094f8, #f6cc33);
+  color: white;
+  opacity: .7;
+}
+
+.grouped:hover {
+  background: #f6cc33;
+  color: #3498db;
+
 }

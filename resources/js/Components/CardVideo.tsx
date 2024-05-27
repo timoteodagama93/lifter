@@ -7,6 +7,10 @@ import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import route from 'ziggy-js';
 import DropdownLink from './DropdownLink';
 import OwnerCard from './OwnerCard';
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import CommentsSection from './CommentsSection';
+import FeedbacksSection from './FeedbacksSection';
 
 function CardVideo({
   type = 'normal',
@@ -73,7 +77,7 @@ function CardVideo({
             >
               <MdOutlineCloseFullscreen className="w-7 h-7" />
             </button>
-            <OptionsPopup song={video} />
+            <OptionsPopup collection={video} collectionType="video" />
           </div>
         </div>
         <div className="w-full h-1/5  mx-5 justify-start">
@@ -93,8 +97,110 @@ function CardVideo({
 
 export default CardVideo;
 
-function OptionsPopup({ song }) {
+function OptionsPopup({ collection, collectionType = 'song' }) {
   const [showMoreOptions, setShowMoreOptions] = useState(false);
+
+  function colecionar() {
+    axios
+      .post('collect-song', {
+        song_id: collection.id,
+        collection_type: collectionType,
+      })
+      .then(response => {
+        Swal.fire({
+          title: 'Música colecionada',
+          text: 'A música foi adicionada à sua coleção, podes gerir sua playlist no seu perfil. ',
+          icon: 'success',
+        });
+      })
+      .catch(error => {
+        Swal.fire({
+          title: 'Erro',
+          text: 'Alguma coisa correu mal, reenvie o seu feedback, nós os amantes de músicas agradecemos sua paciência.',
+          icon: 'error',
+        });
+      });
+  }
+
+  const handleDownload = async () => {
+    if (collectionType == 'song') {
+      try {
+        Swal.fire({
+          title: 'Baixando música',
+          text: 'A música está sendo baixada, mantenha a conexão a Internet, enquanto isso podes continuar a navegar, assim que o download for concluido você será notificado(a).',
+          icon: 'info',
+        });
+        const response = await axios.get(`/download/song/${collection.id}`, {
+          responseType: 'blob',
+        });
+
+        const blob = new Blob([response.data], {
+          type: response.headers['Tontent-Type'],
+        });
+
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = collection.original_name;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        Swal.fire({
+          title: 'Download concluido',
+          text: 'A música foi salva no seu disopositivo.',
+          icon: 'success',
+        });
+      } catch (error) {
+        console.log('ERROR DE DOWNLOAD: ' + error);
+        console.log(error);
+        Swal.fire({
+          title: 'Erro de download da música',
+          text: 'Houve uma falha da tentativa de download da música, tente novamente se persistir o problema entre em contacto com a nossa equipa técnica.',
+          icon: 'error',
+        });
+      }
+    } else {
+      try {
+        Swal.fire({
+          title: 'Baixando Arquivo',
+          text: 'o arquivo está sendo baixado, mantenha a conexão a Internet, enquanto isso podes continuar a navegar, assim que o download for concluido você será notificado(a).',
+          icon: 'info',
+        });
+        const response = await axios.get(
+          `/download-collection/${collection.id}/${collectionType}`,
+          {
+            responseType: 'blob',
+          },
+        );
+
+        const blob = new Blob([response.data], {
+          type: response.headers['Tontent-Type'],
+        });
+
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = collection.original_name;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        Swal.fire({
+          title: 'Download concluido',
+          text: 'A o arquivo foi salvo no seu disopositivo.',
+          icon: 'success',
+        });
+      } catch (error) {
+        console.log('ERROR DE DOWNLOAD: ' + error);
+        console.log(error);
+        Swal.fire({
+          title: 'Erro de download de arquivo',
+          text: 'Houve uma falha da tentativa de download de um ficheiro, tente novamente se persistir o problema entre em contacto com a nossa equipa técnica.',
+          icon: 'error',
+        });
+      }
+    }
+  };
+
   return (
     <div className="mr-3 relative">
       <div>
@@ -122,17 +228,28 @@ function OptionsPopup({ song }) {
         >
           {/* <!-- Account Management --> */}
 
-          {song?.title ? (
+          {collection?.title ? (
             <>
               <div className="block px-4 py-2 text-xs text-gray-400">
                 Mais opções
               </div>
 
               <div>
-                <DropdownLink href={route('jurados')}>Partilhar</DropdownLink>
+                <button
+                  onClick={handleDownload}
+                  disabled
+                  className="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
+                >
+                  Baixar
+                </button>{' '}
               </div>
               <div>
-                <DropdownLink href={route('perfil')}>Colecionar</DropdownLink>
+                <button
+                  onClick={colecionar}
+                  className="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
+                >
+                  Baixar
+                </button>{' '}
               </div>
               <div>
                 <DropdownLink href={route('profile.show')}>
@@ -145,7 +262,12 @@ function OptionsPopup({ song }) {
                 </DropdownLink>
               </div>
               <div>
-                <DropdownLink href={route('profile.show')}>Baixar</DropdownLink>
+                <button
+                  onClick={handleDownload}
+                  className="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
+                >
+                  Baixar
+                </button>
               </div>
               <div>
                 <DropdownLink href={route('perfis')}>
@@ -165,6 +287,60 @@ function OptionsPopup({ song }) {
           <div className="border-t border-gray-200 dark:border-gray-600"></div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function Feedback({ song: collection, setOpenModal, collectionType }) {
+  return (
+    <div className="w-full justify-start p-2 flex flex-col bg-[#4c88c4] ">
+      <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
+        <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
+          Feedback: que dicas, sugestões e opiniões
+        </h1>
+        <span className="text-xs">
+          Só é possóvel deixar um feedback por cada coleção (música, arte,
+          vídeo, etc. )podes reenviar um feedback, o anterior será substituido.
+        </span>
+      </div>
+      <div className="my-1 hidden w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
+        <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
+          Deixe seu comentário, o artista, a comunidade e o globo agradecem.
+        </h1>
+        <p className="justify w-full text-xl mb-2">
+          O artista precisar possuir como parte de sua criatividade empatia e a
+          experiência que os possibilitam nos entender em nossas complexidades e
+          finalmente nos emocionar. Agora temos a oportunidade de contribuir
+          nessa jornada e acelerar o progresso.
+        </p>
+      </div>
+      <FeedbacksSection
+        collection={collection}
+        collectionType={collectionType}
+      />
+    </div>
+  );
+}
+
+function Comentarios({
+  song: collection,
+  setOpenModal,
+  setComments,
+  collectionType,
+}) {
+  return (
+    <div className="w-full justify-start p-2 flex flex-col">
+      <h1 className="text-center text-base md:text-2xl">
+        Comentários da comunidade a coleção <strong>{collection.title}</strong>
+      </h1>
+      <p className="justify w-full text-xl my-1">
+        Partilhe a sua opinião com a comunidade
+      </p>
+
+      <CommentsSection
+        collection={collection}
+        collectionType={collectionType}
+      />
     </div>
   );
 }

@@ -331,7 +331,7 @@ export default function AppLayout({
             </main>
           </div>
 
-          <div className="w-full h-[17%] md:h-[15%] flex flex-row justify-center items-center mb-1 text-white bg-[rgb(0,86,124)] text-xl absolute bottom-0 left-0">
+          <div className="w-full h-[17%] md:h-[15%] flex flex-row justify-center items-center mb-1 text-white bg-[#f5f5f5] _bg-[rgb(0,86,124)] text-xl absolute bottom-0 left-0"  >
             <LifterPlayer songs={songs} />
           </div>
         </div>

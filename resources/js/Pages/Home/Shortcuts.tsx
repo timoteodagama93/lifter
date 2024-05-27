@@ -143,7 +143,7 @@ export default function Shortcuts({ posts }: Props) {
                 </form>
               </div>
 
-              <div className="w-1/5 flex flex-row justify-center items-center">
+              <div className="w-1/5 flex flex-row justify-center items-center hidden ">
                 <Link
                   href="noticias"
                   className="transform-effect p-1 justify-center items-center w-full flex flex-col"
@@ -172,16 +172,16 @@ export default function Shortcuts({ posts }: Props) {
                 </a>
               </div>
               <div className="w-full flex flex-wrap relative h-full justifiy-center items-center px-5 md:px-12 ">
-                <div className="w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 h-1/4  md:h-1/2 lg:h-1/5 p-1 md:p-5">
+                <div className="w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 h-1/4  md:h-1/2 lg:h-1/5 p-1 md:p-5 ">
                   <div
                     onClick={() => setCurrentPage(<Dance />)}
                     className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
                   >
-                    <div className="flex justify-center items-center w-full h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-black ">
-                      <MdMusicNote className="w-full h-full relative right-0" />
+                    <div className="flex justify-center items-center w-full h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[#f6cc33] ">
+                      <MdMusicNote className="w-full h-full relative right-0 text-[#0094f8]  " />
                     </div>
                     <div className="w-full h-1/6 px-2 flex truncate">
-                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-50 font-bold truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-[#0094f8] font-bold truncate">
                         Músicas
                       </span>
                     </div>

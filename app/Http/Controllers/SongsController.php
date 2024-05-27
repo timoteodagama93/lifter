@@ -35,8 +35,12 @@ class SongsController extends Controller
         ]);
     }
 
+
     public function store()
     {
+
+        ini_set('upload_max_filesize', '256M');
+        ini_set('post_max_size', '256M');
 
         Validator::make(
             Request::all(),
@@ -59,7 +63,7 @@ class SongsController extends Controller
         }
 
         $song_url = Request::file("song")->store($directory);
-       
+
 
         if ($song_url != false) {
 
@@ -92,6 +96,7 @@ class SongsController extends Controller
             return response()->json(['Alguma coisa correu mal, não se preocupe que deve ser nossa culpa. Recarregue a página, se persistir reporte o problema. ']);
         }
     }
+
 
     public function store_from_youtube()
     {

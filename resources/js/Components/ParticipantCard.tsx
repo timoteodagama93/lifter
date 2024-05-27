@@ -168,7 +168,7 @@ const ParticipantCard = ({ song: participant, songs, i, contest }) => {
               Sobre
             </button>
           </div>
-          <div className="w-full flex flex-row m-1 justify-center items-center gap-1 ">
+          <div className="w-full flex flex-row m-1 justify-center items-center gap-1  ">
             <PlayPause
               isPlaying={isPlaying}
               activeSong={activeSong}
@@ -196,8 +196,8 @@ const ParticipantCard = ({ song: participant, songs, i, contest }) => {
               }}
               className=" w-full h-[10%]  rounded-lg flex-1 space-x-1 flex flex-row justify-start items-center mx-3  p-1 gap-2 "
             >
-              <p className="text-xl font-bold text-white"> {owner?.name} </p>|
-              <p className="text-xs text-gray-300">
+              <p className="text-xl font-bold "> {owner?.name} </p>|
+              <p className="text-xs text-gray-400">
                 {' '}
                 {contest.categoria == 'Música' ? owner?.genres : ''}
               </p>
