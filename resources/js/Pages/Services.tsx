@@ -12,40 +12,10 @@ import classNames from 'classnames';
 import route from 'ziggy-js';
 import Swal from 'sweetalert2';
 import SecondaryButton from '@/Components/SecondaryButton';
+import { services } from '@/assets/constants';
 
 function Services() {
-  const services = [
-    {
-      title: 'Marketing',
-      description:
-        'Pestamos serviços de consultoria em Marketing, podemos actuar em diferentes etapas de marketing desde o planejamento à execução de campanhas.',
-      price: 'Variavel',
-    },
-    {
-      title: 'Publicidade',
-      description:
-        'Publicitamos diversos serviços e produtos através de diferentes canais, nossa plataforma, medias socais e canais de parceiros.',
-      price: 'Variável',
-    },
-    {
-      title: 'Marketing Musical',
-      description:
-        'A Lifter é uma ferramenta desenhada a pensar principalmente na necessidade de um marketing musical efectivo. Fora isso, planejamos e executamos diversas campanhas de Marketing musical com o objectivo sempre de conectar e aproximar o artista ao seu público. ',
-      price: 'Variável',
-    },
-    {
-      title: 'Divulgação Musical',
-      description:
-        'Realizamos divulgação musical, recorrendo a vários meios e plataformas que permitem a descoberta e o consumo musical pelo usuário',
-      price: '15 000,00 KZ',
-    },
-    {
-      title: 'Avaliação Musical',
-      description:
-        'Submeta a sua músicaa à plataforma para receber feedbacks e avaliações de profissionais e usuários. Sendo bom o trabalho e os convencendo estes farão a divulgação por si partilhando-o em suas redes.',
-      price: '5 000,00 KZ',
-    },
-  ];
+
 
   const [solicitar, setSolicitar] = useState(false);
   const [serviceSelected, setServiceSelected] = useState('');

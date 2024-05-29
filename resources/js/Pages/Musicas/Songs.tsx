@@ -191,7 +191,7 @@ function Songs({}) {
               </div>
             </>
           ) : (
-            <Error />
+            <ErrFor />
           )}
         </div>
       </div>

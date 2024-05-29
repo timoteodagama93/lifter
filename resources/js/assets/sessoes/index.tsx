@@ -1,0 +1,16 @@
+export { default as a1 } from './1.jpg';
+export { default as a2 } from './2.jpg';
+export { default as a3 } from './3.jpg';
+export { default as a4 } from './4.jpg';
+export { default as a5 } from './5.jpg';
+export { default as a6 } from './6.jpg';
+export { default as a7 } from './7.jpg';
+export { default as a8 } from './8.jpg';
+export { default as a9 } from './9.jpg';
+export { default as a10 } from './10.jpg';
+export { default as a11 } from './11.jpg';
+export { default as a12 } from './12.jpg';
+export { default as a13 } from './13.jpg';
+export { default as a14 } from './14.jpg';
+export { default as a15 } from './15.jpg';
+export { default as a16 } from './16.jpg';
