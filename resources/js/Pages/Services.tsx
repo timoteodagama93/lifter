@@ -13,35 +13,37 @@ import route from 'ziggy-js';
 import Swal from 'sweetalert2';
 import SecondaryButton from '@/Components/SecondaryButton';
 import { services } from '@/assets/constants';
+import Container from '@/Layouts/Container';
 
 function Services() {
-
-
   const [solicitar, setSolicitar] = useState(false);
   const [serviceSelected, setServiceSelected] = useState('');
 
   const onSubmit = () => 1;
   return (
     <AppLayout title="Serviços">
-      <div className="services-page">
-        <h1 className="text-2xl">Nossos Serviços</h1>
-        {services.map((service, index) => (
-          <div key={index} className="service text-gray-700">
-            <h2>{service.title}</h2>
-            <p>{service.description}</p>
-            <p>Preço: {service.price}</p>
-            <button
-              onClick={() => {
-                setServiceSelected(service.title);
-                setSolicitar(true);
-              }}
-              className="request-button"
-            >
-              Solicitar Serviço
-            </button>
-          </div>
-        ))}
-      </div>
+      <Container>
+        <div className="services-page">
+          <h1 className="text-2xl">Nossos Serviços</h1>
+          {services.map((service, index) => (
+            <div key={index} className="service text-gray-700">
+              <h2>{service.title}</h2>
+              <p>{service.description}</p>
+              <p>Preço: {service.price}</p>
+              <button
+                onClick={() => {
+                  setServiceSelected(service.title);
+                  setSolicitar(true);
+                }}
+                className="request-button"
+              >
+                Solicitar Serviço
+              </button>
+            </div>
+          ))}
+        </div>
+      </Container>
+
       <Modal isOpen={solicitar} onClose={() => setSolicitar(false)}>
         <SolicitarServico service={serviceSelected} onClose={setSolicitar} />
       </Modal>
