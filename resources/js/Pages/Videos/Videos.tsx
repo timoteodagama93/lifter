@@ -162,6 +162,7 @@ function Videos({}) {
         <VideoSinglePlayer />
       </Modal>{' '}
     </AppLayout>
+    
   );
 }
 

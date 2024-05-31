@@ -144,7 +144,7 @@ const CartaoNoticia = ({ post }) => {
                     Preview
                   </h2>
                   <Link href="/videos">
-                    <p className="text-sm md:text-base cursor-pointer transform-effect p-2 text-white font-bold ">
+                    <p className="text-sm md:text-base cursor-pointer transform-effect p-2 font-bold ">
                       Ler publicação completa
                     </p>
                   </Link>
@@ -296,7 +296,7 @@ function DetailsNew({ post }) {
                     Preview
                   </h2>
                   <Link href="/videos">
-                    <p className="text-sm md:text-base cursor-pointer transform-effect p-2 text-white font-bold ">
+                    <p className="text-sm md:text-base cursor-pointer transform-effect p-2 font-bold ">
                       Ler publicação completa
                     </p>
                   </Link>

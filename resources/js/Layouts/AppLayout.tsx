@@ -105,7 +105,7 @@ export default function AppLayout({
       <motion.div
         animate={{ x: 0 }}
         transition={{ delay: 1 }}
-        className="w-screen h-screen flex bg-gradient-to-br from-[#e6e6e6] to-[#fff] __dark:from-[#282728] __dark:to-[#2e2525w] fixed top-0 left-0 right-0 p-1 __bg-white text-white"
+        className="w-screen h-screen flex bg-gradient-to-br from-[#e6e6e6] to-[#fff] __dark:from-[#282728] __dark:to-[#2e2525w] fixed top-0 left-0 right-0 p-1 __bg-white "
       >
         {activeVideo && (
           <VideoSinglePlayer key={activeVideo.id + Math.floor(random() / 60)} />
@@ -166,7 +166,7 @@ export default function AppLayout({
               </div>
             </div>
             <div className="w-full h-14  hidden justify-between py-1 bg-gradient-to-br from-[#00395f] to-[#005792] ">
-              <div className="w-full h-full flex  flex-row justify-center items-center mb-1 text-[#fff] text-xl ">
+              <div className="w-full h-full flex  flex-row justify-center items-center mb-1 text-xl ">
                 <>
                   <Link
                     href="/avaliacoes"
@@ -326,12 +326,12 @@ export default function AppLayout({
             <SmalSidebar />
 
             {/* <!-- Page Content --> */}
-            <main className="relative h-full w-full  flex mx-auto justify-start items-start rounded overflow-y-hidden mb-0 pb-0">
+            <main className="relative h-full w-full  flex mx-auto justify-start text-black items-start rounded overflow-y-hidden mb-0 pb-0">
               {children}
             </main>
           </div>
 
-          <div className="w-full h-[17%] md:h-[15%] flex flex-row justify-center items-center mb-1 text-white bg-[#f5f5f5] _bg-[rgb(0,86,124)] text-xl absolute bottom-0 left-0"  >
+          <div className="w-full h-[17%] md:h-[15%] flex flex-row justify-center items-center mb-1  bg-[#f5f5f5] _bg-[rgb(0,86,124)] text-xl absolute bottom-0 left-0"  >
             <LifterPlayer songs={songs} />
           </div>
         </div>

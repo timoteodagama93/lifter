@@ -90,7 +90,7 @@ export default function Shortcuts({ posts }: Props) {
     <AppLayout title="Home" renderSidebarList={() => sidebarList} bg={bgPage}>
       <Head title="Home" />
       <Container>
-        <div className="w-full relative sm:flex flex-col sm:justify-center sm:items-center  bg-dots-darker bg-center dark:bg-dots-lighter  selection:bg-red-500 selection:text-white">
+        <div className="w-full relative sm:flex flex-col sm:justify-center sm:items-center  bg-dots-darker bg-center dark:bg-dots-lighter  selection:bg-red-500 ">
           <div className="w-full h-full overflow-y-hidden flex flex-col gap-1 justify-cebter items-center rounded-lg">
             <div className="w-full flex justify-between items-center p-1 md:px-5 border-b">
               <div className="w-4/5 mx-auto md:mx-6">
@@ -101,7 +101,7 @@ export default function Shortcuts({ posts }: Props) {
                   <div className="relative w-full">
                     <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                       <svg
-                        className="w-5 h-5 text-gray-500 dark:text-gray-400"
+                        className="w-5 h-5 text-gray-5000 dark:text-gray-400"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg"
@@ -192,11 +192,11 @@ export default function Shortcuts({ posts }: Props) {
                     onClick={() => setCurrentPage(<Dance />)}
                     className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
                   >
-                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-black ">
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime] ">
                       <BiVideo className="w-full h-full relative right-0" />
                     </div>
                     <div className="w-full h-1/6 px-2 flex truncate">
-                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-50 font-bold truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-5000 font-bold truncate">
                         Vídeos
                       </span>
                     </div>
@@ -207,11 +207,11 @@ export default function Shortcuts({ posts }: Props) {
                     onClick={() => setCurrentPage(<Dance />)}
                     className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
                   >
-                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-black ">
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime] ">
                       <BiMicrophone className="w-full h-full relative right-0" />
                     </div>
                     <div className="w-full h-1/6 px-2 flex truncate">
-                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-50 font-bold truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-5000 font-bold truncate">
                         Artistas
                       </span>
                     </div>
@@ -222,11 +222,11 @@ export default function Shortcuts({ posts }: Props) {
                     onClick={() => setCurrentPage(<Dance />)}
                     className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
                   >
-                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-black ">
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime] ">
                       <BiShare className="w-full h-full relative right-0" />
                     </div>
                     <div className="w-full h-1/6 px-2 flex truncate">
-                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-50 font-bold truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-5000 font-bold truncate">
                         Rede Lifter
                       </span>
                     </div>
@@ -260,11 +260,11 @@ export default function Shortcuts({ posts }: Props) {
                     href={route('discover')}
                     className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
                   >
-                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-black">
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
                       <MdExplore className="w-full h-full relative right-0" />
                     </div>
                     <div className="w-full h-1/6 px-2 flex truncate">
-                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-50 font-bold truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
                         Descobrir
                       </span>
                     </div>
@@ -275,14 +275,14 @@ export default function Shortcuts({ posts }: Props) {
                     href={route('noticias')}
                     className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
                   >
-                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-black">
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
                       <BsNewspaper className="w-full h-full relative right-0" />
                     </div>
                     <div className="w-full h-1/6 flex-col px-2 flex truncate">
-                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-50 font-bold truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
                         Notícias
                       </span>
-                      <span className="w-full relative  left-0 bottom-0 text-xs md:text-base text-gray-500 font-bold truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-xs md:text-base text-gray-5000 font-bold truncate">
                         23 actualizações
                       </span>
                     </div>
@@ -294,11 +294,11 @@ export default function Shortcuts({ posts }: Props) {
                     href={route('perfil')}
                     className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
                   >
-                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-black">
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
                       <BiHistory className="w-full h-full relative right-0" />
                     </div>
                     <div className="w-full h-1/6 px-2 flex truncate">
-                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-50 font-bold truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
                         Meu feed
                       </span>
                     </div>
@@ -310,11 +310,11 @@ export default function Shortcuts({ posts }: Props) {
                     href={route('comunidade')}
                     className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
                   >
-                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-black">
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
                       <HiUserGroup className="w-full h-full relative right-0" />
                     </div>
                     <div className="w-full h-1/6 px-2 flex truncate">
-                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-50 font-bold truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
                         Comunidade
                       </span>
                     </div>
@@ -326,11 +326,11 @@ export default function Shortcuts({ posts }: Props) {
                     href={route('eventos')}
                     className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
                   >
-                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-black">
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
                       <MdEvent className="w-full h-full relative right-0" />
                     </div>
                     <div className="w-full h-1/6 px-2 flex truncate">
-                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-50 font-bold truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
                         Eventos
                       </span>
                     </div>
@@ -363,11 +363,11 @@ export default function Shortcuts({ posts }: Props) {
                     onClick={() => setCurrentPage(<Dance />)}
                     className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
                   >
-                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-black">
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
                       <BiMicrophone className="w-full h-full relative right-0" />
                     </div>
                     <div className="w-full h-1/6 px-2 flex truncate">
-                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-50 font-bold truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
                         Artística
                       </span>
                     </div>
@@ -379,11 +379,11 @@ export default function Shortcuts({ posts }: Props) {
                     onClick={() => setCurrentPage(<Dance />)}
                     className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
                   >
-                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-black">
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
                       <MdWork className="w-full h-full relative right-0" />
                     </div>
                     <div className="w-full h-1/6 px-2 flex truncate">
-                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-50 font-bold truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
                         Profissional
                       </span>
                     </div>
@@ -395,11 +395,11 @@ export default function Shortcuts({ posts }: Props) {
                     onClick={() => setCurrentPage(<Dance />)}
                     className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
                   >
-                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-black">
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
                       <FaUserFriends className="w-full h-full relative right-0" />
                     </div>
                     <div className="w-full h-1/6 px-2 flex truncate">
-                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-50 font-bold truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
                         Grupos
                       </span>
                     </div>
@@ -411,11 +411,11 @@ export default function Shortcuts({ posts }: Props) {
                     href={route('uploads')}
                     className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
                   >
-                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-black">
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
                       <BsUpload className="w-full h-full relative right-0" />
                     </div>
                     <div className="w-full h-1/6 px-2 flex truncate">
-                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-50 font-bold truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
                         Carregamentos
                       </span>
                     </div>
@@ -444,11 +444,11 @@ export default function Shortcuts({ posts }: Props) {
                     href={route('network')}
                     className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
                   >
-                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-black">
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
                       <BiMicrophone className="w-full h-full relative right-0" />
                     </div>
                     <div className="w-full h-1/6 px-2 flex truncate">
-                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-50 font-bold truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
                         Produtores
                       </span>
                     </div>
@@ -460,11 +460,11 @@ export default function Shortcuts({ posts }: Props) {
                     href={route('network')}
                     className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
                   >
-                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-black">
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
                       <MdWork className="w-full h-full relative right-0" />
                     </div>
                     <div className="w-full h-1/6 px-2 flex truncate">
-                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-50 font-bold truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
                         DJs
                       </span>
                     </div>
@@ -476,11 +476,11 @@ export default function Shortcuts({ posts }: Props) {
                     href={route('network')}
                     className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
                   >
-                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-black">
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
                       <FaUserFriends className="w-full h-full relative right-0" />
                     </div>
                     <div className="w-full h-1/6 px-2 flex truncate">
-                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-50 font-bold truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
                         Influencers
                       </span>
                     </div>
@@ -492,11 +492,11 @@ export default function Shortcuts({ posts }: Props) {
                     href={route('network')}
                     className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
                   >
-                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-black">
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
                       <FaUserFriends className="w-full h-full relative right-0" />
                     </div>
                     <div className="w-full h-1/6 px-2 flex truncate">
-                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-50 font-bold truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
                         Artistas
                       </span>
                     </div>
@@ -508,11 +508,11 @@ export default function Shortcuts({ posts }: Props) {
                     href={route('network')}
                     className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
                   >
-                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-black">
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
                       <MdEventAvailable className="w-full h-full relative right-0" />
                     </div>
                     <div className="w-full h-1/6 px-2 flex truncate">
-                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-50 font-bold truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
                         Casas de eventos
                       </span>
                     </div>
@@ -525,11 +525,11 @@ export default function Shortcuts({ posts }: Props) {
                     onClick={() => setCurrentPage(<Dance />)}
                     className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
                   >
-                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-black">
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
                       <GiTribunalJury className="w-full h-full relative right-0" />
                     </div>
                     <div className="w-full h-1/6 px-2 flex truncate">
-                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-50 font-bold truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
                         Jurados
                       </span>
                     </div>
@@ -541,11 +541,11 @@ export default function Shortcuts({ posts }: Props) {
                     href={route('network')}
                     className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
                   >
-                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-black">
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
                       <RiOrganizationChart className="w-full h-full relative right-0" />
                     </div>
                     <div className="w-full h-1/6 px-2 flex truncate">
-                      <span className="relative  left-0 bottom-0 text-base md:text-xl text-gray-50 font-bold truncate">
+                      <span className="relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
                         Org. de eventos
                       </span>
                     </div>

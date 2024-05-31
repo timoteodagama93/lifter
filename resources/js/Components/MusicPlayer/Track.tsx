@@ -42,10 +42,10 @@ const Track = ({ isPlaying, isActive, activeSong, handleePlayVideo: handlePlayVi
       </div>
     )}
     <div className="w-[50%]">
-      <p className="truncate text-white font-bold text-lg">
+      <p className="truncate  font-bold text-lg">
         {activeSong?.title ? activeSong?.title : 'No active Song'}
       </p>
-      <p className="truncate text-gray-300">
+      <p className="truncate text-gray-500">
         {activeSong?.artist ? activeSong?.artist : 'No active Song'}
       </p>
     </div>

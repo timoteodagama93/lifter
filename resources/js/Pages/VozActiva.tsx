@@ -30,7 +30,7 @@ function VozActiva({ activeVoiceArtist }) {
     <AppLayout title="Voz Activa">
       <Container>
         <div className="w-full h-full">
-          <h2 className="w-full font-bold flex heading-text text-center space-x-2 text-white">
+          <h2 className="w-full font-bold flex heading-text text-center space-x-2 ">
             <span> </span> <span> {activeVoiceArtist.name} </span>
           </h2>
           <div className="w-full h-full flex flex-col">
