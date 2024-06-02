@@ -20,7 +20,13 @@ import AppLayout from '@/Layouts/AppLayout';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import Avaliar from './Avaliar';
 import { Lifter } from '.';
-import { BiHistory, BiMicrophone, BiShare, BiVideo } from 'react-icons/bi';
+import {
+  BiHistory,
+  BiMicrophone,
+  BiSearch,
+  BiShare,
+  BiVideo,
+} from 'react-icons/bi';
 import { BsNewspaper, BsUpload } from 'react-icons/bs';
 import { FaUserFriends } from 'react-icons/fa';
 import {
@@ -270,6 +276,7 @@ export default function Shortcuts({ posts }: Props) {
                     </div>
                   </Link>
                 </div>
+
                 <div className="w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 h-1/4  md:h-1/2 lg:h-1/5 p-1 md:p-5 hover:bg-[#006bb78a] rounded ">
                   <Link
                     href={route('noticias')}
@@ -289,6 +296,25 @@ export default function Shortcuts({ posts }: Props) {
                   </Link>
                 </div>
 
+                <div className="w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 h-1/4  md:h-1/2 lg:h-1/5 p-1 md:p-5 hover:bg-[#006bb78a] rounded ">
+                  <Link
+                    href={route('articles')}
+                    className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
+                  >
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
+                      <BiSearch className="w-full h-full relative right-0" />
+                    </div>
+                    <div className="w-full h-1/6 flex-col px-2 flex truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
+                        Artigos
+                      </span>
+                      <span className="w-full relative  left-0 bottom-0 text-xs md:text-base text-gray-5000 font-bold truncate">
+                        50 actualizações
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+
                 <div className="w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 h-1/4  md:h-1/2 lg:h-1/5 p-1 md:p-5">
                   <Link
                     href={route('perfil')}
@@ -299,7 +325,7 @@ export default function Shortcuts({ posts }: Props) {
                     </div>
                     <div className="w-full h-1/6 px-2 flex truncate">
                       <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
-                        Meu feed
+                        Meu Feed
                       </span>
                     </div>
                   </Link>
@@ -547,6 +573,266 @@ export default function Shortcuts({ posts }: Props) {
                     <div className="w-full h-1/6 px-2 flex truncate">
                       <span className="relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
                         Org. de eventos
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex w-full h-full flex-col relative my-1">
+              <div
+                className="w-full flex flex-row justify-between
+             items-center p-5 shadow-inner_ _shadow-black"
+              >
+                <h2 className=" font-bold text-base md:text-4xl text-[#]">
+                  Artes
+                </h2>
+                <a className="hidden md:flex" href={route('network')}>
+                  <p className="text-base cursor-pointer p-2 transform-effect">
+                    Ver tudo
+                  </p>
+                </a>
+              </div>
+              <div className="w-full flex flex-wrap relative h-full justifiy-center items-center px-5 md:px-12 ">
+                <div className="w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 h-1/4  md:h-1/2 lg:h-1/5 p-1 md:p-5">
+                  <Link
+                    href={route('network')}
+                    className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
+                  >
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
+                      <BiMicrophone className="w-full h-full relative right-0" />
+                    </div>
+                    <div className="w-full h-1/6 px-2 flex truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
+                        Literatura
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+
+                <div className="w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 h-1/4  md:h-1/2 lg:h-1/5 p-1 md:p-5">
+                  <Link
+                    href={route('network')}
+                    className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
+                  >
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
+                      <MdWork className="w-full h-full relative right-0" />
+                    </div>
+                    <div className="w-full h-1/6 px-2 flex truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
+                        Música
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+
+                <div className="w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 h-1/4  md:h-1/2 lg:h-1/5 p-1 md:p-5">
+                  <Link
+                    href={route('network')}
+                    className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
+                  >
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
+                      <FaUserFriends className="w-full h-full relative right-0" />
+                    </div>
+                    <div className="w-full h-1/6 px-2 flex truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
+                        Teatro
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+
+                <div className="w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 h-1/4  md:h-1/2 lg:h-1/5 p-1 md:p-5">
+                  <Link
+                    href={route('network')}
+                    className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
+                  >
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
+                      <FaUserFriends className="w-full h-full relative right-0" />
+                    </div>
+                    <div className="w-full h-1/6 px-2 flex truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
+                        Artesanato
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+
+                <div className="w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 h-1/4  md:h-1/2 lg:h-1/5 p-1 md:p-5">
+                  <Link
+                    href={route('network')}
+                    className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
+                  >
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
+                      <MdEventAvailable className="w-full h-full relative right-0" />
+                    </div>
+                    <div className="w-full h-1/6 px-2 flex truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
+                        Pintura
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+
+                <div className="w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 h-1/4  md:h-1/2 lg:h-1/5 p-1 md:p-5">
+                  <Link
+                    href={route('network')}
+                    onClick={() => setCurrentPage(<Dance />)}
+                    className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
+                  >
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
+                      <GiTribunalJury className="w-full h-full relative right-0" />
+                    </div>
+                    <div className="w-full h-1/6 px-2 flex truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
+                        Fotografia
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+
+                <div className="w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 h-1/4  md:h-1/2 lg:h-1/5 p-1 md:p-5">
+                  <Link
+                    href={route('network')}
+                    className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
+                  >
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
+                      <RiOrganizationChart className="w-full h-full relative right-0" />
+                    </div>
+                    <div className="w-full h-1/6 px-2 flex truncate">
+                      <span className="relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
+                        Cinema
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex w-full h-full flex-col relative my-1">
+              <div
+                className="w-full flex flex-row justify-between
+             items-center p-5 shadow-inner_ _shadow-black"
+              >
+                <h2 className=" font-bold text-base md:text-4xl text-[#]">
+                  Cultura
+                </h2>
+                <a className="hidden md:flex" href={route('network')}>
+                  <p className="text-base cursor-pointer p-2 transform-effect">
+                    Ver tudo
+                  </p>
+                </a>
+              </div>
+              <div className="w-full flex flex-wrap relative h-full justifiy-center items-center px-5 md:px-12 ">
+                <div className="w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 h-1/4  md:h-1/2 lg:h-1/5 p-1 md:p-5">
+                  <Link
+                    href={route('network')}
+                    className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
+                  >
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
+                      <BiMicrophone className="w-full h-full relative right-0" />
+                    </div>
+                    <div className="w-full h-1/6 px-2 flex truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
+                        Dança
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+
+                <div className="w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 h-1/4  md:h-1/2 lg:h-1/5 p-1 md:p-5">
+                  <Link
+                    href={route('network')}
+                    className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
+                  >
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
+                      <MdWork className="w-full h-full relative right-0" />
+                    </div>
+                    <div className="w-full h-1/6 px-2 flex truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
+                        Música
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+
+                <div className="w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 h-1/4  md:h-1/2 lg:h-1/5 p-1 md:p-5">
+                  <Link
+                    href={route('network')}
+                    className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
+                  >
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
+                      <FaUserFriends className="w-full h-full relative right-0" />
+                    </div>
+                    <div className="w-full h-1/6 px-2 flex truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
+                        História
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+
+                <div className="w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 h-1/4  md:h-1/2 lg:h-1/5 p-1 md:p-5">
+                  <Link
+                    href={route('network')}
+                    className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
+                  >
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
+                      <FaUserFriends className="w-full h-full relative right-0" />
+                    </div>
+                    <div className="w-full h-1/6 px-2 flex truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
+                        Jogos
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+
+                <div className="w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 h-1/4  md:h-1/2 lg:h-1/5 p-1 md:p-5">
+                  <Link
+                    href={route('network')}
+                    className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
+                  >
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
+                      <MdEventAvailable className="w-full h-full relative right-0" />
+                    </div>
+                    <div className="w-full h-1/6 px-2 flex truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
+                        Sítios e Monumentos
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+
+                <div className="w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 h-1/4  md:h-1/2 lg:h-1/5 p-1 md:p-5">
+                  <Link
+                    href={route('network')}
+                    onClick={() => setCurrentPage(<Dance />)}
+                    className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
+                  >
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
+                      <GiTribunalJury className="w-full h-full relative right-0" />
+                    </div>
+                    <div className="w-full h-1/6 px-2 flex truncate">
+                      <span className="w-full relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
+                        Culinária
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+
+                <div className="w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 h-1/4  md:h-1/2 lg:h-1/5 p-1 md:p-5">
+                  <Link
+                    href={route('network')}
+                    className="w-full h-full  flex flex-col relative justify-center item-center p-1  _transform-effect hover:cursor-pointer"
+                  >
+                    <div className="flex justify-center items-center w-full  h-5/6 p-2 md:p-5 rigth-0 border shadow shadow-black rounded-xl bg-[lime]">
+                      <RiOrganizationChart className="w-full h-full relative right-0" />
+                    </div>
+                    <div className="w-full h-1/6 px-2 flex truncate">
+                      <span className="relative  left-0 bottom-0 text-base md:text-xl text-gray-500 font-bold truncate">
+                        Costumes
                       </span>
                     </div>
                   </Link>

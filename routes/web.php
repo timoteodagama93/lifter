@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Article;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\ComunicacaoController;
@@ -120,6 +122,10 @@ Route::middleware([
         return Inertia::render('Arts/Index', []);
     })->name('arts');
 
+    Route::get('/cultura', function () {
+        return Inertia::render('Cultura/Index', []);
+    })->name('cultura');
+
     Route::get('/vozactiva', function () {
         $vozactiva = DB::select('SELECT * FROM artists WHERE active =' . true);
         if (sizeof($vozactiva) > 0)
@@ -145,8 +151,12 @@ Route::middleware([
     })->name('comunidade');
 
     Route::get('/noticias', function () {
-        return Inertia::render('Noticias', []);
+        return Inertia::render('Noticias/Index', []);
     })->name('noticias');
+
+    Route::get('/articles', function () {
+        return Inertia::render('Articles/Index', []);
+    })->name('articles');
 
     //ROUTAS DO SIDEBAR
     Route::get('/eventos', function () {
@@ -436,6 +446,15 @@ Route::middleware([
         return Inertia::render('ChatsNotificacoes');
     })->name('chats');
 
+
+    /**
+     * ARTICLE CONTROLLER
+     */
+
+    Route::controller(ArticleController::class)->group(function () {
+        Route::post('/create-article', 'store');
+        Route::post('/get-articles', 'articles');
+    });
 
     /**
      * POST CONTROLLER

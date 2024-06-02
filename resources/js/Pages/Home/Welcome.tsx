@@ -54,6 +54,7 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
 import classNames from 'classnames';
 import Swal from 'sweetalert2';
+import PartnerCard from '@/Components/PartnerCard';
 
 interface Props {
   pagina: string;
@@ -332,12 +333,12 @@ export default function Welcome({ posts }: Props) {
             </div>
 
             <div className="w-full flex flex-col fader-in my-28 " id="partners">
-              <h1 className="text-xl fader-in text-center text-[#29a5f9] text-bold ">
+              <h1 className="text-2xl md:text-5xl fader-in text-center text-[#29a5f9] text-bold ">
                 Parcerias & Suporte
               </h1>
-              <div className="w-full h-28 gap-2 flex my-10 justify-center items-center  object-contain bg-white">
-                <img src={FI} alt="" className="w-auto h-full" />
-                <img src={ngola} alt="" className="w-auto h-12" />
+              <div className="w-full flex flex-wrap h-48 gap-2 justify-center items-center  object-contain bg-white">
+                <PartnerCard src={FI} nome="Founder Institute" />
+                <PartnerCard src={ngola} nome="Ngola Pro Arte" />
               </div>
             </div>
             <SectionBorder />

@@ -16,12 +16,13 @@ import {
   MdOutlineExplore,
   MdOutlineShortcut,
 } from 'react-icons/md';
-import { GiSoundWaves, GiTrophyCup } from 'react-icons/gi';
+import { GiSoundWaves, GiTribalMask, GiTrophyCup } from 'react-icons/gi';
 import { BsInfoCircle, BsStars, BsTools, BsTrophy } from 'react-icons/bs';
 import {
   BiDisc,
   BiHome,
   BiLibrary,
+  BiMask,
   BiMicrophone,
   BiMusic,
   BiUpload,
@@ -227,11 +228,12 @@ export const links = [
     icon: MdBusinessCenter,
   },
 
-  /*{
-    name: 'Configurações',
-    href: '/configuracoes',
-    icon: FaCog,
+  {
+    name: 'Cultural',
+    href: '/cultura',
+    icon: BiMask,
   },
+  /*
   {
     name: 'Políticas',
     href: '/politicas',
@@ -301,6 +303,11 @@ export const mainLinks = [
     name: '+Artes',
     href: '/arts',
     icon: FaArtstation,
+  },
+  {
+    name: 'Cultura',
+    href: '/cultura',
+    icon: GiTribalMask,
   },
 
   /*{

@@ -55,7 +55,7 @@ const TopPlay = ({}) => {
           ))}
         </div>
       </div>
-      <div className="w-full flex flex-col mt-8">
+      <div className="w-full flex flex-col mt-1">
         <div className="w-full flex flex-row justify-between items-center">
           <h1 className="text-white font-bold text-2xl">Top Artists</h1>
           <Link href="/top-artists">
@@ -70,35 +70,37 @@ const TopPlay = ({}) => {
           slidesPerView="auto"
           centeredSlides
           centeredSlidesBounds
-          className=" "
+          height={15}
+          className="w-full h-[10rem] flex items-start justify-start "
         >
-          {topPlays?.map((song, i) => (
-            <SwiperSlide
-              key={song.key}
-              className=" w-24 h-24 shadow-lg rounded-full animate-sliderrigth"
-            >
-              <Link
-                href={`/artists/${song?.artist_id}`}
-                className=" w-full h-full shadow-lg rounded-full animate-sliderrigth"
-              >
-                <div className=" w-full h-full shadow-lg rounded-full animate-sliderrigth">
-                  {song.cover ? (
-                    <img
-                      src={song.cover}
-                      alt="name"
-                      className="rounded-full w-full h-full object-cover"
-                    />
-                  ) : (
-                    <img
-                      src={smalLogo}
-                      alt="name"
-                      className="rounded-full w-full object-cover"
-                    />
-                  )}
+          <SwiperSlide className="w-24 h-[10rem] shadow-lg rounded-full animate-sliderrigth">
+            <div className="w-full h-24  flex flex-row">
+              {topPlays?.map((song, i) => (
+                <div className="w-24 h-24  flex flex-row">
+                  <Link
+                    href={`/artists/${song?.artist_id}`}
+                    className=" w-full h-full shadow-lg rounded-full animate-sliderrigth"
+                  >
+                    <div className=" w-full h-full shadow-lg rounded-full animate-sliderrigth">
+                      {song.cover ? (
+                        <img
+                          src={song.cover}
+                          alt="name"
+                          className="rounded-full w-full h-full object-cover"
+                        />
+                      ) : (
+                        <img
+                          src={smalLogo}
+                          alt="name"
+                          className="rounded-full w-full object-cover"
+                        />
+                      )}
+                    </div>
+                  </Link>
                 </div>
-              </Link>
-            </SwiperSlide>
-          ))}
+              ))}
+            </div>
+          </SwiperSlide>
         </Swiper>
       </div>
     </div>

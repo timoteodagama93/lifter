@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import useRoute from '@/Hooks/useRoute';
 import useTypedPage from '@/Hooks/useTypedPage';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 
 // import Swiper core and required modules
 
@@ -16,81 +16,36 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 
 import './style.css';
-import Destaques from './Destaques';
 import AppLayout from '@/Layouts/AppLayout';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import Avaliar from './Avaliar';
-import { Lifter } from './';
-import {
-  BiBookOpen,
-  BiBrush,
-  BiHistory,
-  BiHome,
-  BiMicrophone,
-  BiSend,
-  BiShare,
-  BiVideo,
-} from 'react-icons/bi';
-import {
-  BsBag,
-  BsCameraVideo,
-  BsNewspaper,
-  BsPostage,
-  BsTrophy,
-} from 'react-icons/bs';
-import { FaMusic, FaUserFriends } from 'react-icons/fa';
-import Sobre from '../Concursos/Sobre';
+import { BiSend, BiShare } from 'react-icons/bi';
 import {
   useGetDestaqueSongsQuery,
   useGetDestaqueVideosQuery,
-  useGetExpositionItemsQuery,
   useGetExpositionsQuery,
   useGetVideosQuery,
 } from '@/redux/services/coreApi';
 import { useSelector } from 'react-redux';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectCoverflow, History, Navigation } from 'swiper/modules';
-import { SongCard } from '@/Components';
-import VideoCardGrelha from '@/Components/VideoCardGrelha';
 import Container from '@/Layouts/Container';
-import Player from '@/Components/MusicPlayer/Player';
 
-import { GiCrimeSceneTape, GiTribunalJury } from 'react-icons/gi';
-import {
-  MdEvent,
-  MdEventAvailable,
-  MdExplore,
-  MdFeed,
-  MdMusicNote,
-  MdOutlineMotionPhotosOn,
-  MdWork,
-} from 'react-icons/md';
-import ArtesMistas from '../Arts/ArtesMistas';
-import BibliotecaLiteraria from '../Arts/BibliotecaLiteraria';
-import Dance from '../Arts/Dance';
-import Exposicoes from '../Arts/Exposicoes';
-import {
-  RiCommunityFill,
-  RiCommunityLine,
-  RiOrganizationChart,
-} from 'react-icons/ri';
-import { HiUserGroup } from 'react-icons/hi';
-import { GrNetwork } from 'react-icons/gr';
 import Modal from '@/Components/Modal';
+import RichTextEditor from '@/Components/Editor/RichTextEditor';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import SecondaryButton from '@/Components/SecondaryButton';
 import axios from 'axios';
-import Noticias from '../Noticias';
+import Noticias from '../Noticias/Noticias';
 
 interface Props {
   pagina: string;
   songs: Array<Object>;
   posts2: Array<Object>;
+  articles2: Array<Object>;
   APP_URL: String;
 }
 
-export default function Home({ posts2 }: Props) {
+export default function Home({ posts2, articles2 }: Props) {
   const route = useRoute();
   const page = useTypedPage();
 
@@ -134,9 +89,11 @@ export default function Home({ posts2 }: Props) {
     error: errorR,
   } = useGetExpositionsQuery('');
 
-  const [posts, setPosts] = useState([]);
+  const [updates, setUpdates] = useState([]);
 
   function loadPosts() {
+    const [posts, setPosts] = useState([]);
+    const [articles, setArticles] = useState([]);
     axios
       .post('/posts')
       .then(response => {
@@ -145,6 +102,17 @@ export default function Home({ posts2 }: Props) {
         }
       })
       .catch(error => {});
+    axios
+      .post('/get-articles')
+      .then(response => {
+        if (response.status === 200) {
+          setArticles(response.data);
+        }
+      })
+      .catch(error => {});
+
+    setUpdates(posts.concat(articles));
+    console.log(updates);
   }
 
   return (
@@ -152,6 +120,7 @@ export default function Home({ posts2 }: Props) {
       <Head title="Home" />
       <Container>
         <>
+      
           <div className="w-full relative sm:flex flex-col sm:justify-center sm:items-center  bg-dots-darker bg-center dark:bg-dots-lighter  selection:bg-red-500 selection:text-white">
             <div className="w-full h-full  flex flex-col gap-1 justify-cebter items-center rounded-lg">
               <div className="w-full flex justify-between items-center p-1 md:px-5 border-b ">
@@ -286,95 +255,131 @@ function NewPost({ isOpen, onClose, loadPosts }) {
     }
   }
 
+  const [type, setType] = useState('post');
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="w-full h-full flex flex-col text-xs justify-center bg-white border-[#2e2c2e] border shadow-lg shadow-black p-5 rounded-lg items-center">
-        <form
-          method="Post"
-          onSubmit={e => saveNewPost(e)}
-          className="w-full h-full justify-center items-center flex flex-col"
-          encType="multipart/form-data"
-        >
-          {photoPreview ? (
-            // <!-- New Profile Photo Preview -->
-            <div className="">
-              <span
-                className="block rounded-lg w-36 h-36 "
-                style={{
-                  backgroundSize: 'cover',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center center',
-                  backgroundImage: `url('${photoPreview}')`,
+      <>
+        <div className="w-full flex justify-end items-center p-1 md:px-5 border-b ">
+          <div className="w-1/5 flex flex-row justify-center items-center">
+            {type !== 'article' ? (
+              <button
+                onClick={() => setType('article')}
+                className="transform-effect p-1 justify-center items-center w-full flex flex-col _bg-[#f6cc33] text-[#0094f8] "
+              >
+                {' '}
+                <BiShare className="w-10 h-auto font-bold" />{' '}
+                <span className="flex">
+                  Escrever <span className="hidden md:flex ml-2">Artigo</span>
+                </span>
+              </button>
+            ) : (
+              <button
+                onClick={() => setType('post')}
+                className="transform-effect p-1 justify-center items-center w-full flex flex-col _bg-[#f6cc33] text-[#0094f8] "
+              >
+                {' '}
+                <BiShare className="w-10 h-auto font-bold" />{' '}
+                <span className="flex">
+                  Postar{' '}
+                  <span className="hidden md:flex ml-2">actualização</span>
+                </span>
+              </button>
+            )}
+          </div>
+        </div>
+        {type === 'article' ? (
+          <RichTextEditor />
+        ) : (
+          <div className="w-full h-full flex flex-col text-xs justify-center bg-white border-[#2e2c2e] border shadow-lg shadow-black p-5 rounded-lg items-center">
+            <form
+              method="Post"
+              onSubmit={e => saveNewPost(e)}
+              className="w-full h-full justify-center items-center flex flex-col"
+              encType="multipart/form-data"
+            >
+              {photoPreview ? (
+                // <!-- New Profile Photo Preview -->
+                <div className="">
+                  <span
+                    className="block rounded-lg w-36 h-36 "
+                    style={{
+                      backgroundSize: 'cover',
+                      backgroundRepeat: 'no-repeat',
+                      backgroundPosition: 'center center',
+                      backgroundImage: `url('${photoPreview}')`,
+                    }}
+                  ></span>
+                </div>
+              ) : (
+                ''
+              )}
+
+              {progress && (
+                <progress value={progress.percentage} max={100}>
+                  {progress.percentage}%
+                </progress>
+              )}
+
+              <div className="col-span-6 sm:col-span-4">
+                {/* <!-- Profile Photo File Input --> */}
+                <input
+                  type="file"
+                  className="hidden"
+                  ref={photoRef}
+                  onChange={updatePhotoPreview}
+                />
+
+                <InputLabel htmlFor="file" value="Ficheiro" />
+
+                <SecondaryButton
+                  className="m-2"
+                  type="button"
+                  onClick={selectNewPhoto}
+                >
+                  Selecionar Ficheiro
+                </SecondaryButton>
+
+                <InputError message={errors.file} className="mt-2" />
+              </div>
+              <div>
+                <label>Escolha uma categoria</label>
+                <select
+                  required
+                  value={data.community}
+                  onChange={e => setData('community', e.target.value)}
+                  className="rounded"
+                >
+                  <option value="musica">Universo musical</option>
+                  <option value="gospel">Comunidade de Gospel</option>
+                  <option value="figuras">Figuras públicas</option>
+                  <option value="cinema">Universo Cinematográfico</option>
+                  <option value="moda">Comunidade de Moda</option>
+                  <option value="artes">Comunidade de Artes plásticas</option>
+                </select>
+                <InputError message={errors.community} className="mt-2" />
+              </div>
+
+              <textarea
+                value={data.text}
+                onChange={e => {
+                  setData('text', e.currentTarget.value);
                 }}
-              ></span>
-            </div>
-          ) : (
-            ''
-          )}
-
-          {progress && (
-            <progress value={progress.percentage} max={100}>
-              {progress.percentage}%
-            </progress>
-          )}
-
-          <div className="col-span-6 sm:col-span-4">
-            {/* <!-- Profile Photo File Input --> */}
-            <input
-              type="file"
-              className="hidden"
-              ref={photoRef}
-              onChange={updatePhotoPreview}
-            />
-
-            <InputLabel htmlFor="file" value="Ficheiro" />
-
-            <SecondaryButton
-              className="m-2"
-              type="button"
-              onClick={selectNewPhoto}
-            >
-              Selecionar Ficheiro
-            </SecondaryButton>
-
-            <InputError message={errors.file} className="mt-2" />
+                required
+                maxLength={500}
+                minLength={5}
+                placeholder="Conte a história..."
+                className="w-full p-2 border border-[#2e2c2e] rounded shadow-sm"
+              ></textarea>
+              <InputError message={errors.text} className="mt-2" />
+              <button className="h-full text-2xl flex justify-center items-center gap-1 shadow-lg shadow-black rounded p-1  ">
+                <BiSend />
+                <span className="text-base">Partilhar poste</span>
+              </button>
+            </form>
           </div>
-          <div>
-            <label>Escolha uma categoria</label>
-            <select
-              required
-              value={data.community}
-              onChange={e => setData('community', e.target.value)}
-              className="rounded"
-            >
-              <option value="musica">Universo musical</option>
-              <option value="gospel">Comunidade de Gospel</option>
-              <option value="figuras">Figuras públicas</option>
-              <option value="cinema">Universo Cinematográfico</option>
-              <option value="moda">Comunidade de Moda</option>
-              <option value="artes">Comunidade de Artes plásticas</option>
-            </select>
-            <InputError message={errors.community} className="mt-2" />
-          </div>
-
-          <textarea
-            value={data.text}
-            onChange={e => {
-              setData('text', e.currentTarget.value);
-            }}
-            required
-            maxLength={500}
-            minLength={5}
-            placeholder="Conte a história..."
-            className="w-full p-2 border border-[#2e2c2e] rounded shadow-sm"
-          ></textarea>
-          <InputError message={errors.text} className="mt-2" />
-          <button className="h-full text-2xl flex justify-center items-center gap-1 shadow-lg shadow-black rounded p-1  ">
-            <BiSend />
-            <span className="text-base">Partilhar poste</span>
-          </button>
-        </form>
-      </div>
+        )}
+      </>
     </Modal>
   );
 }

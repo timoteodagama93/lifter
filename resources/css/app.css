@@ -426,6 +426,7 @@
 .fader-in {
   animation: fader-in linear;
   animation-timeline: view();
+  animation-range-end: 500px;
 }
 
 @keyframes fader-in {

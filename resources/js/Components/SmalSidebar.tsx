@@ -4,14 +4,7 @@ import useTypedPage from '@/Hooks/useTypedPage';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import { Link } from '@inertiajs/react';
 import { Logo, smalLogo } from '../../img';
-import SectionBorder from './SectionBorder';
-import { BiHome, BiMessage, BiMusic } from 'react-icons/bi';
-import { BsTrophy } from 'react-icons/bs';
-import { FaPray } from 'react-icons/fa';
-import UserAvatar from './UserAvatar';
-import { MdClose, MdNotifications } from 'react-icons/md';
 import route from 'ziggy-js';
-import { HiOutlineMenu } from 'react-icons/hi';
 
 interface Props {}
 

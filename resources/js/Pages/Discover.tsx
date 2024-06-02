@@ -43,7 +43,7 @@ function Descover() {
   return (
     <AppLayout title="Descobrir">
       <Container>
-        <div className="w-full flex flex-col-reverse md:flex-row relative ">
+        <div className='w-full h-full flex flex-col md:flex-row'>
           <div className="w-full flex flex-col rounded-lg">
             <div className="w-full flex justify-between items-center flex-row shadow-lg mb-5 pb-1">
               <h2 className="flex font-bold text-3xl  text-left ">Descobrir</h2>
@@ -69,11 +69,11 @@ function Descover() {
                 ))}
               </select>
             </div>
-            <div className="w-full h-fit bg-green-400 flex flex-col relative max-h-screen mx-auto  dark:bg-gray-800 shadow-xl sm:rounded-lg flex-wrap justify-start">
-              <div className="w-full h-full border">
+            <div className="w-full h-fit bg-green-400 flex flex-col relative mx-auto  dark:bg-gray-800 shadow-xl sm:rounded-lg flex-wrap justify-start">
+              <div className="w-full h-full p-1 border flex flex-row flex-wrap">
                 {data.map((song, i) => (
                   <SongCard
-                    w="w-full"
+                    w="w-full md:w-1/2  xl:w-1/3 "
                     song={song}
                     i={i}
                     key={i}
@@ -82,10 +82,9 @@ function Descover() {
                     songs={data}
                   />
                 ))}
-              </div>
-              <div className="w-full border">
+
                 {results?.map((result, i) => (
-                  <div className=" w-full h-auto shadow rounded object-contain">
+                  <div className=" w-full md:w-1/2 xl:w-1/3 h-auto shadow rounded object-contain">
                     <img
                       className="object-cover w-full h-auto p-5"
                       src={result.snippet.thumbnails.default.url}
