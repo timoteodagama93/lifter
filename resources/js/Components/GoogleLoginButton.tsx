@@ -3,7 +3,7 @@ import React from 'react';
 
 const GoogleLoginButton = () => {
   const handleSuccess = response => {
-    fetch('/auth/callback', {
+    fetch('/auth/google/callback', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -13,7 +13,7 @@ const GoogleLoginButton = () => {
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          window.location.href = '/';
+          window.location.href = '/avaliacoes';
         } else {
           console.error('Login failed');
         }

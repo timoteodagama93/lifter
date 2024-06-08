@@ -46,9 +46,18 @@ use Inertia\Inertia;
 */
 
 
+/**
+ * Social Medias COntroller: Facebook, Google, TikTok
+ */
+/**
+ * Social Medias COntroller: Facebook, Google, TikTok
+ */
 Route::controller(LoginController::class)->group(function () {
-    Route::get('auth/redirect', 'redirectToGoogle')->name("");
-    Route::get('auth/callback', 'handleGoogleCallback')->name("");
+    Route::get('auth/google', 'redirectToGoogle')->name("auth/google");
+    Route::get('auth/google/callback', 'handleGoogleCallback')->name("auth/google/callback");
+
+    Route::get('auth/facebook', 'facebookpage')->name('auth/facebook');
+    Route::get('auth/facebook/callback', 'facebookredirect')->name('auth/facebook/callback');
 })->middleware("auth.google");
 
 

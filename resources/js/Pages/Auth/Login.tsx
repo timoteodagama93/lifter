@@ -46,20 +46,19 @@ export default function Login({ canResetPassword, status }: Props) {
         </div>
       )}
 
-      <p id="profile"></p>
+      <div className="my-4 w-full flex flex-row justify-center items-center gap-2">
+        <div
+          className="fb-login-button "
+          data-width=""
+          data-size=""
+          data-button-type=""
+          data-layout=""
+          data-auto-logout-link="false"
+          data-use-continue-as="false"
+        ></div>
 
-      <div
-        className="fb-login-button"
-        data-width=""
-        data-size=""
-        data-button-type=""
-        data-layout=""
-        data-auto-logout-link="false"
-        data-use-continue-as="false"
-      ></div>
-
-      <GoogleLoginButton />
-
+        <GoogleLoginButton />
+      </div>
       <form onSubmit={onSubmit}>
         <div>
           <InputLabel htmlFor="email">Email</InputLabel>
