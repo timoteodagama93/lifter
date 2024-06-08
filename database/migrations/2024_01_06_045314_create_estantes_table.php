@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('author');
             $table->string('category');
             $table->text('description');
+            $table->string('saved_name')->nullable();
+            $table->string('original_name')->nullable();
             $table->text('mime_type')->nullable();
             $table->text('extension')->nullable();
             $table->string('cover')->nullable();

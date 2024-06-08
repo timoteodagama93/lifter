@@ -170,7 +170,7 @@ function UserAvatar() {
           </div>
           
           <div onClick={() => setOpenMobileMenu(false)}>
-            <DropdownLink href={route('jurados')}>Jurados</DropdownLink>
+            <DropdownLink href={route('popularity')}>Popularidade</DropdownLink>
           </div>
           <div onClick={() => setOpenMobileMenu(false)}>
             <DropdownLink href={route('perfil')}>Meu Feed</DropdownLink>

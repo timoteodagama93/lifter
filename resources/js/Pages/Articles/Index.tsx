@@ -2,7 +2,7 @@ import AppLayout from '@/Layouts/AppLayout';
 import React, { useEffect, useState } from 'react';
 import Article from './Article';
 import Container from '@/Layouts/Container';
-import RichTextEditor from '@/Components/Editor/RichTextEditor.jsx';
+import RichTextEditor from '@/Components/Editor/RichTextEditor.js';
 import DisplayContent from '@/Components/Editor/DisplayContent';
 import axios from 'axios';
 import { Loader } from '@/Components';

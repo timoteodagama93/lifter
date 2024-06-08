@@ -123,7 +123,7 @@ export default function AddProfissional({}) {
             </p>
 
             <SectionBorder></SectionBorder>
-            <form onSubmit={onSubmit} className="text-white" encType="multipart/form-data">
+            <form onSubmit={onSubmit} className="" encType="multipart/form-data">
               {photoPreview ? (
                 // <!-- New Profile Photo Preview -->
                 <div className="">
@@ -328,12 +328,12 @@ export default function AddProfissional({}) {
                       required
                     />
 
-                    <div className="ml-2  text-gray-100 rounded-md ">
+                    <div className="ml-2   rounded-md ">
                       Concordo com os{' '}
                       <a
                         target="_blank"
                         href={route('terms.show')}
-                        className="underline text-sm text-white hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                        className="underline text-sm  hover:text-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                       >
                         Termos de serviços
                       </a>{' '}
@@ -341,7 +341,7 @@ export default function AddProfissional({}) {
                       <a
                         target="_blank"
                         href={route('policy.show')}
-                        className="underline text-sm text-white hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                        className="underline text-sm  hover:text-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                       >
                         Politicas de privacidade
                       </a>

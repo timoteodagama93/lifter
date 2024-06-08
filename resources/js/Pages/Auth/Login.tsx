@@ -8,6 +8,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import InputError from '@/Components/InputError';
+import GoogleLoginButton from '@/Components/GoogleLoginButton';
 
 interface Props {
   canResetPassword: boolean;
@@ -25,7 +26,13 @@ export default function Login({ canResetPassword, status }: Props) {
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     form.post(route('login'), {
-      onFinish: () => form.reset('password'),
+      onSuccess: response => {
+        console.log(response);
+        document.location.reload();
+      },
+      onFinish: () => {
+        form.reset('password');
+      },
     });
   }
 
@@ -38,6 +45,20 @@ export default function Login({ canResetPassword, status }: Props) {
           {status}
         </div>
       )}
+
+      <p id="profile"></p>
+
+      <div
+        className="fb-login-button"
+        data-width=""
+        data-size=""
+        data-button-type=""
+        data-layout=""
+        data-auto-logout-link="false"
+        data-use-continue-as="false"
+      ></div>
+
+      <GoogleLoginButton />
 
       <form onSubmit={onSubmit}>
         <div>

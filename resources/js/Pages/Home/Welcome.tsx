@@ -332,6 +332,13 @@ export default function Welcome({ posts }: Props) {
               </div>
             </div>
 
+            <div
+              class="fb-like"
+              data-share="true"
+              data-width="450"
+              data-show-faces="true"
+            ></div>
+
             <div className="w-full flex flex-col fader-in my-28 " id="partners">
               <h1 className="text-2xl md:text-5xl fader-in text-center text-[#29a5f9] text-bold ">
                 Parcerias & Suporte
@@ -463,7 +470,7 @@ export default function Welcome({ posts }: Props) {
                           <span className="border flex  justify-center items-center rounded-lg w-10 h-10 text-5xl">
                             1
                           </span>{' '}
-                          <span className="text-3xl">Captação musical</span>
+                          <span className="text-3xl">Publicação musical</span>
                         </div>
                         <p className="w-full tex-base hover:flex">
                           Crie uma conta e envie a sua música na plataforma.
@@ -568,9 +575,10 @@ export default function Welcome({ posts }: Props) {
                   <div className="w-full flex flex-row">
                     <div className="flex flex-row justify-between items-center gap-5">
                       <h1 className="w-full fader-in text-xl md:text-2xl md:text-bold">
-                        Somos um grupo altamente motivado e comprometido a
-                        encontrar e criar oportunidades para artistas cujo
-                        talento é notável. Trabalhamos principalmente com:
+                        Somos LIFTER - PRESTAÇÃO DE SERVIÇOS, LDA. um grupo
+                        altamente motivado e comprometido a encontrar e criar
+                        oportunidades para artistas cujo talento é notável.
+                        Trabalhamos principalmente com:
                       </h1>
 
                       <p className=".w-[50%] tex-[#008ed2] text-xl "></p>
@@ -696,7 +704,7 @@ function Footer() {
           Testemunhos e criticas
         </a>
       </div>{' '}
-      Lifter @ {new Date().getFullYear()}{' '}
+      LIFTER - PRESTAÇÃO DE SERVIÇOS, LDA. @ {new Date().getFullYear()}{' '}
     </div>
   );
 }

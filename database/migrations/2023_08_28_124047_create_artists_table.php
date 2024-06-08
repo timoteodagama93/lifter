@@ -19,6 +19,7 @@ return new class extends Migration
                 ->onUpdate('cascade');
 
             $table->string('name');
+            $table->string('category')->default("musico");
             $table->string('genres');
             $table->boolean('active')->default(false);
             $table->string('contact');

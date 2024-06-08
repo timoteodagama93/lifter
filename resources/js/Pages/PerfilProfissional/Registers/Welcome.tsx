@@ -2,7 +2,7 @@ import ButtonWraper from '@/Components/Button';
 import useTypedPage from '@/Hooks/useTypedPage';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import React, { useState } from 'react';
-import { BiPhone, BiVoicemail } from 'react-icons/bi';
+import { BiMicrophone, BiPhone, BiVoicemail } from 'react-icons/bi';
 import { BsForward, BsSoundwave } from 'react-icons/bs';
 import { GiSpearFeather } from 'react-icons/gi';
 import { MdWork } from 'react-icons/md';
@@ -11,6 +11,7 @@ import AddProfissional from './AddProfissional';
 import ContactTeam from './ContactTeam';
 import Artist from '../Artista/Index';
 import Profissional from '../Outros/Index';
+import { FaArtstation } from 'react-icons/fa';
 
 const Welcome = ({}) => {
   const page = useTypedPage();
@@ -33,8 +34,8 @@ const Welcome = ({}) => {
         <div className="flex gap-2 m-1">
           <ButtonWraper>
             <button onClick={() => setCurrentPage(<AddArtist />)}>
-              <GiSpearFeather className="text-4xl mr-1" />
-              Criar perfil artístico
+              <FaArtstation className="text-4xl mr-1" />
+              Criar perfil de artista
             </button>
           </ButtonWraper>
           <ButtonWraper>

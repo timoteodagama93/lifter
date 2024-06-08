@@ -4,8 +4,10 @@ import {
   HiArrowDown,
   HiOutlineUpload,
   HiUserGroup,
+  HiOutlineHashtag,
+  HiOutlinePhotograph,
 } from 'react-icons/hi';
-import { FaArtstation, FaHandshake } from 'react-icons/fa';
+import { FaArtstation, FaCrosshairs, FaHandshake, FaLocationArrow } from 'react-icons/fa';
 import {
   MdBusinessCenter,
   MdEvent,
@@ -17,7 +19,14 @@ import {
   MdOutlineShortcut,
 } from 'react-icons/md';
 import { GiSoundWaves, GiTribalMask, GiTrophyCup } from 'react-icons/gi';
-import { BsInfoCircle, BsStars, BsTools, BsTrophy } from 'react-icons/bs';
+import {
+  BsFire,
+  BsInfo,
+  BsInfoCircle,
+  BsStars,
+  BsTools,
+  BsTrophy,
+} from 'react-icons/bs';
 import {
   BiDisc,
   BiHome,
@@ -31,6 +40,7 @@ import {
 } from 'react-icons/bi';
 import {
   RiContactsBook2Fill,
+  RiFocus2Fill,
   RiProfileLine,
   RiTeamLine,
   RiUserStarFill,
@@ -290,10 +300,15 @@ export const mainLinks = [
     icon: BiVideo,
   },
   {
-    name: 'Voz Activa',
-    href: '/vozactiva',
-    icon: GiSoundWaves,
+    name: 'Destaque',
+    href: '/destaque',
+    icon: BsFire,
   },
+
+  /**
+   * Estás actualizações apesar de prontas
+   *  deixam-nos sem foco
+   *  portanto ficam para um segundo momento.
   {
     name: 'Concursos',
     href: '/concursos',
@@ -309,23 +324,12 @@ export const mainLinks = [
     href: '/cultura',
     icon: GiTribalMask,
   },
-
-  /*{
-    name: 'Configurações',
-    href: '/configuracoes',
-    icon: FaCog,
-  },
-  {
-    name: 'Políticas',
-    href: '/politicas',
-    icon: FaHandshake,
-  },
   */
-  /**
+
   {
     name: 'Imediações',
     href: '/imediacoes',
-    icon: HiOutlinePhotograph,
+    icon: FaLocationArrow,
   },
   {
     name: 'Top artistas',
@@ -337,11 +341,6 @@ export const mainLinks = [
     href: '/top-charts',
     icon: HiOutlineHashtag,
   },
-  {
-    name: 'Vídeos',
-    href: '/videos',
-    icon: HiOutlineVideoCamera,
-  }, */
 ];
 
 /**

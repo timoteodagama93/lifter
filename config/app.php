@@ -171,6 +171,7 @@ return [
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
         \SocialiteProviders\Manager\ServiceProvider::class,
+        \Laravel\Socialite\SocialiteServiceProvider::class,
     ])->toArray(),
 
     /*

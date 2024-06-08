@@ -76,7 +76,7 @@ export default function BibliotecaLiteraria({}) {
           </div>
 
           <div className="w-full flex flex-wrap p-5 relative h-full p-5 justifiy-center items-center ">
-            {estantes?.map(estante => (
+            {estantes?.map((estante) => (
               <div className="w-full md:w-1/2 h-1/4 md:h-1/2 lg:h-1/3 p-2">
                 <div
                   onClick={() =>
@@ -88,7 +88,7 @@ export default function BibliotecaLiteraria({}) {
                     <div className="w-full h-full flex justify-center items-center rigth-0">
                       <img
                         className="w-full h-full relative right-0"
-                        src={estante.cover}
+                        src={`/estantes/${estante.id}/${estante.saved_name}`}
                       />
                     </div>
                     <div className="w-full flex flex-col gap-0">

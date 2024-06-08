@@ -3,6 +3,7 @@
 use App\Http\Controllers\Article;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\ComunicacaoController;
 use App\Http\Controllers\ContestController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\ExpositionsController;
 use App\Http\Controllers\FileGetterController;
 use App\Http\Controllers\InteragirController;
 use App\Http\Controllers\JuradoController;
+use App\Http\Controllers\PopularityController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfissionalController;
 use App\Http\Controllers\SocialMediaController;
@@ -44,6 +46,13 @@ use Inertia\Inertia;
 */
 
 
+Route::controller(LoginController::class)->group(function () {
+    Route::get('auth/redirect', 'redirectToGoogle')->name("");
+    Route::get('auth/callback', 'handleGoogleCallback')->name("");
+})->middleware("auth.google");
+
+
+
 Route::get('/', function () {
     return Inertia::render('Home/Welcome', [
         'songs' => DB::select('SELECT * FROM songs ORDER BY created_at'),
@@ -61,6 +70,10 @@ Route::controller(FileGetterController::class)->group(function () {
     Route::get('/users/profile-photos/{nome_arquivo}', 'get_profiles_pictures')->name('users/profile-photos/{nome_arquivo}');
 
     Route::get('/arts/{exposition_id}/{nome_arquivo}', 'get_arts_itens')->name('arts/{exposition_id}/{nome_arquivo}');
+
+    Route::get('/estantes/{estante_id}/{nome_arquivo}', 'get_estante_cover')->name('estantes/{estante_id}/{nome_arquivo}');
+
+    Route::get('/books/{estante_id}/{nome_arquivo}', 'get_book')->name('books/{estante_id}/{nome_arquivo}');
 });
 
 
@@ -71,6 +84,13 @@ Route::get('/get-welcome-destaques-audios', function () {
 Route::get('/get-welcome-destaques-videos',  function () {
     return DB::select("SELECT * FROM `songs` WHERE active=true AND destaque=true and mime_type LIKE '%video/%' ORDER BY reprodution_time DESC LIMIT 5");
 })->name('get-welcome-destaques-videos');
+
+// routes/web.php
+Route::controller(PopularityController::class)->group(function () {
+    Route::get('/popularity', [PopularityController::class, 'index'])->name('popularity');
+    Route::post('/api/popularity', [PopularityController::class, 'check'])->name('api/popularity');
+});
+
 
 /*
 Route::get('/email/verify', function () {
@@ -126,7 +146,7 @@ Route::middleware([
         return Inertia::render('Cultura/Index', []);
     })->name('cultura');
 
-    Route::get('/vozactiva', function () {
+    Route::get('/destaque', function () {
         $vozactiva = DB::select('SELECT * FROM artists WHERE active =' . true);
         if (sizeof($vozactiva) > 0)
             return Inertia::render('VozActiva', [
@@ -135,7 +155,7 @@ Route::middleware([
         return Inertia::render('VozActiva', [
             'activeVoiceArtist' => []
         ]);
-    })->name('vozactiva');
+    })->name('destaque');
 
     Route::get('/concursos', function () {
         return Inertia::render('Concursos/Index', [
@@ -414,8 +434,8 @@ Route::middleware([
 
 
     Route::controller(EstanteController::class)->group(function () {
-        Route::post('save-estante', 'store')->name('save-estante');
-        Route::post('save-estante-book', 'store_book')->name('save-estante-book');
+        Route::post('/save-estante', 'store')->name('save-estante');
+        Route::post('/save-estante-book', 'store_book')->name('save-estante-book');
 
         Route::get('get-estantes', 'get_estantes')->name('get-estantes');
         Route::get('get-estante-books/{estanteId}', 'get_estante_books')->name('get-estante-books/{estanteId}');

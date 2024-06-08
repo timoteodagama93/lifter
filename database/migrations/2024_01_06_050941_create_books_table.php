@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignId('estante_id')->nullable()->constrained(table: 'estantes', column: 'id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('title');
             $table->string('category');
+            $table->boolean('html')->default(false);
+            $table->string('saved_name')->default(false);
+            $table->string('original_name')->default(false);
             $table->text('resume')->nullable();
             $table->integer('likes')->default(0);
             $table->integer('shares')->default(0);
@@ -25,6 +28,10 @@ return new class extends Migration
             $table->integer('views')->default(0);
             $table->string('mime_type')->nullable();
             $table->string('extension')->nullable();
+            $table->string('cover')->nullable();
+            $table->string('has_cover')->nullable();
+            $table->string('cover_mime_type')->nullable();
+            $table->string('cover_saved_name')->nullable();
             $table->text('book_url')->nullable();
             $table->timestamps();
         });

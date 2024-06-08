@@ -18,6 +18,7 @@ class Estante extends Model
         'mime_type',
         'extension',
         'cover',
-
+        'saved_name',
+        'original_name',
     ];
 }

@@ -82,4 +82,34 @@ class FileGetterController extends Controller
             abort(404);
         }
     }
+
+    public function get_estante_cover($estante_id, $nome_arquivo)
+    {
+        // Verifique se o arquivo existe no diretório de armazenamento
+        if (Storage::exists("public/users/estantes/{$estante_id}/covers/{$nome_arquivo}")) {
+            // Obtenha o caminho completo do arquivo
+            $caminho_arquivo = storage_path("app/public/users/estantes/{$estante_id}/covers/{$nome_arquivo}");
+            // Retorne o arquivo como resposta HTTP
+            return response()->file($caminho_arquivo);
+        } else {
+            // Se o arquivo não existir, retorne uma resposta de erro 404
+            abort(404);
+        }
+    }
+
+
+
+    public function get_book($estante_id, $nome_arquivo)
+    {
+        // Verifique se o arquivo existe no diretório de armazenamento
+        if (Storage::exists("public/users/estantes/{$estante_id}/books/{$nome_arquivo}")) {
+            // Obtenha o caminho completo do arquivo
+            $caminho_arquivo = storage_path("app/public/users/estantes/{$estante_id}/books/{$nome_arquivo}");
+            // Retorne o arquivo como resposta HTTP
+            return response()->file($caminho_arquivo);
+        } else {
+            // Se o arquivo não existir, retorne uma resposta de erro 404
+            abort(404);
+        }
+    }
 }

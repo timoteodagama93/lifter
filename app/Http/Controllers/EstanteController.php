@@ -21,9 +21,9 @@ class EstanteController extends Controller
             'author' => ['required'],
             'category' => ['required'],
             'description' => ['required'],
-            ])->validate();
-            $userId = auth()->id();
-            
+        ])->validate();
+        $userId = auth()->id();
+
         //    dd(Request::all());
         $estante = Estante::updateOrCreate(
             [
@@ -37,11 +37,17 @@ class EstanteController extends Controller
             ]
         );
 
-        $coverUrl = Request::file('cover')->store("public/users/$userId/estantes/$estante->id/covers");
+        $coverUrl = Request::file('cover')->store("public/users/estantes/$estante->id/covers");
+
+
         if ($coverUrl) {
+            $saved_name = Request::file('cover')->hashName();
+            $original_name = Request::file('cover')->getClientOriginalName();
             $estante->cover = Storage::url($coverUrl);
             $estante->mime_type = Request::file('cover')->getClientMimeType();
             $estante->extension = Request::file('cover')->getClientOriginalExtension();
+            $estante->saved_name = $saved_name;
+            $estante->original_name = $original_name;
             $estante->save();
         }
 
@@ -50,39 +56,62 @@ class EstanteController extends Controller
 
     public function store_book()
     {
+
+        var_dump(Request::all());
+
+
         Validator::make(Request::all(), [
-            'book' => ['mimes:png,jpg,jpeg'],
+            'pdf' => ['mimes:pdf,doc,docx, epub, html'],
             'title' => ['required'],
             'category' => ['required'],
-            'description' => ['required'],
+            'resume' => ['required'],
         ])->validate();
         $userId = auth()->id();
         $estante = Estante::find(Request::input('estante_id'));
 
-        if (Request::file('item')) {
-            $itemUrl = Request::file('item')->store("public/users/$userId/estantes/$estante->id/books");
-            $mimeType = Request::file('item')->getClientMimeType();
-            $extension = Request::file('item')->getClientOriginalExtension();
+        if (Request::file('pdf')) {
+            $itemUrl = Request::file('pdf')->store("public/users/estantes/$estante->id/books");
+            $mimeType = Request::file('pdf')->getClientMimeType();
+            $extension = Request::file('pdf')->getClientOriginalExtension();
+
+            $saved_name = Request::file('pdf')->hashName();
+            $original_name = Request::file('pdf')->getClientOriginalName();
 
             $book = Book::create([
                 'estante_id' => $estante->id,
                 'title' => Request::input('title'),
                 'category' => Request::input('category'),
-                'description' => Request::input('description'),
-                'item_url' => Storage::url($itemUrl),
+                'resume' => Request::input('resume'),
+                'book_url' => Storage::url($itemUrl),
                 'mime_type' => $mimeType,
+                'saved_name' => $saved_name,
+                'original_name' => $original_name,
                 'extension' => $extension,
             ]);
+
+            if (Request::file('cover')) {
+                $coverUrl = Request::file('cover')->store("public/users/estantes/$estante->id/books/covers");
+                $mimeType = Request::file('cover')->getClientMimeType();
+                $cover_saved_name = Request::file('cover')->hashName();
+
+                $book->cover = $coverUrl;
+                $book->cover_mime_type = $mimeType;
+                $book->cover_saved_name = $cover_saved_name;
+                $book->has_cover = true;
+                $book->save();
+            }
+            return 1;
         } else {
             $book = Book::create([
                 'estante_id' => $estante->id,
                 'title' => Request::input('title'),
                 'category' => Request::input('category'),
-                'description' => Request::input('description'),
+                'resume' => Request::input('resume'),
+                'html' => true,
             ]);
-        }
 
-        return to_route('arts', ['has' => 'estante']);
+            return;
+        }
     }
 
     public function get_estantes()

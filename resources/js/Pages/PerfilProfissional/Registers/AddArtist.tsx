@@ -29,7 +29,8 @@ export default function AddArtist({}) {
 
   const formArtist = useForm({
     name: page.props.auth.user?.name,
-    genre: 'Kuduro',
+    category: 'musico',
+    genre: 'House',
     contact: '',
     about: '',
     country: paises[indicePais].name,
@@ -113,7 +114,11 @@ export default function AddArtist({}) {
               Criar novo perfil de artista
             </p>
             <SectionBorder></SectionBorder>
-            <form onSubmit={onSubmit} className="" encType="multipart/form-data">
+            <form
+              onSubmit={onSubmit}
+              className=""
+              encType="multipart/form-data"
+            >
               {photoPreview ? (
                 // <!-- New Profile Photo Preview -->
                 <div className="w-full flex justify-center">
@@ -179,25 +184,49 @@ export default function AddArtist({}) {
               </div>
 
               <div className="mt-4">
-                <InputLabel htmlFor="genre">Estilo Musical</InputLabel>
+                <InputLabel htmlFor="category">Tipo de conta</InputLabel>
                 <select
-                  id="genre"
+                  id="category"
                   className="mt-1 block w-full text-black"
-                  value={formArtist.data.genre}
+                  value={formArtist.data.category}
                   onChange={e =>
-                    formArtist.setData('genre', e.currentTarget.value)
+                    formArtist.setData('category', e.currentTarget.value)
                   }
                   required
                 >
-                  {generos.map(genre => (
-                    <option value={genre.value}> {genre.title} </option>
-                  ))}
+                  <option value="musico"> Músico </option>
+                  <option value="musico"> Artista plástico </option>
                 </select>
                 <InputError
                   className="mt-2"
-                  message={formArtist.errors.genre}
+                  message={formArtist.errors.category}
                 />
               </div>
+
+              {formArtist.data.category === 'musico' ? (
+                <div className="mt-4">
+                  <InputLabel htmlFor="genre">Estilo Musical</InputLabel>
+                  <select
+                    id="genre"
+                    className="mt-1 block w-full text-black"
+                    value={formArtist.data.genre}
+                    onChange={e =>
+                      formArtist.setData('genre', e.currentTarget.value)
+                    }
+                    required
+                  >
+                    {generos.map(genre => (
+                      <option value={genre.value}> {genre.title} </option>
+                    ))}
+                  </select>
+                  <InputError
+                    className="mt-2"
+                    message={formArtist.errors.genre}
+                  />
+                </div>
+              ) : (
+                ''
+              )}
 
               <div className="mt-4">
                 <InputLabel htmlFor="contact">Contacto para shows</InputLabel>
@@ -284,20 +313,17 @@ export default function AddArtist({}) {
                       id="terms"
                       checked={formArtist.data.terms}
                       onChange={e =>
-                        formArtist.setData(
-                          'terms',
-                          e.currentTarget.checked,
-                        )
+                        formArtist.setData('terms', e.currentTarget.checked)
                       }
                       required
                     />
 
-                    <div className="ml-2  text-gray-100 rounded-md ">
+                    <div className="ml-2  text-gray-500 rounded-md ">
                       Concordo com os{' '}
                       <a
                         target="_blank"
                         href={route('terms.show')}
-                        className="underline text-sm text-white hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                        className="underline text-sm hover:text-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                       >
                         Termos de serviços
                       </a>{' '}
@@ -305,7 +331,7 @@ export default function AddArtist({}) {
                       <a
                         target="_blank"
                         href={route('policy.show')}
-                        className="underline text-sm text-white hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                        className="underline text-sm hover:text-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                       >
                         Politicas de privacidade
                       </a>
