@@ -7,21 +7,26 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
     public function redirectToGoogle()
     {
+
         return Socialite::driver('google')->redirect();
     }
 
     public function handleGoogleCallback()
     {
-        $googleUser = Socialite::driver('google')->stateless()->user();
+        $googleUser = Socialite::driver('google')->user();
+
         $user = User::firstOrCreate(
             ['email' => $googleUser->getEmail()],
             [
-                'name' => $googleUser->getName(), 'google_id' => $googleUser->getId(),
+                'name' => $googleUser->getName(),
+                'google_id' => $googleUser->getId(),
+                'password' => Hash::make($googleUser->getId()),
             ]
         );
 
@@ -29,23 +34,27 @@ class LoginController extends Controller
 
         return redirect()->intended('/avaliacoes');
     }
-    public function facebookpage()
+    public function redirectToFacebook()
     {
 
         return Socialite::driver('facebook')->redirect();
     }
-    public function facebookredirect()
+
+    public function handleFacebookCallback()
     {
-        try {
-            $user = Socialite::driver('facebook')->user();
-            $findUser = User::where('facebook_id', $user->id)->first();
-            if ($findUser) {
-                Auth::login($findUser);
-                return redirect()->intended('/avaliacoes');
-            } else {
-                $findUser = User::updateOrCreate(['email' => $user->email]);
-            }
-        } catch (Exception) {
-        }
+
+        $userF = Socialite::driver('facebook')->user();
+        $user = User::firstOrCreate(
+            ['email' => $userF->getEmail()],
+            [
+                'name' => $userF->getName(),
+                'facebook_id' => $userF->getId(),
+                'password' => Hash::make($userF->getId()),
+            ]
+        );
+
+        Auth::login($user);
+
+        return redirect()->intended('/avaliacoes');
     }
 }

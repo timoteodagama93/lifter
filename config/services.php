@@ -32,15 +32,21 @@ return [
     ],
 
     'facebook' => [
-        'client_id' => env('FACEBOOK_CLIENT_ID'),
-        'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
-        'redirect' => env('FACEBOOK_REDIRECT_URI'),
+        'client_id' => '1588022325068116',
+        'client_secret' => '098cccaf26575fd1eb35674039ae78ea',
+        'redirect' => 'https://lifter.ao/auth/facebook/callback',
     ],
+
     'google' => [
+        'client_id' => '25634857848-og7fntsgnhe06le8nfi4de2uenmgbi1t.apps.googleusercontent.com',
+        'client_secret' => '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',
+        'redirect' => 'https://lifter.ao/auth/google/callback',
+    ],
+    'linkedin-openid' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT_URL'),
     ],
-    
+
 
 ];

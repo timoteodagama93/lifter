@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Article;
-use App\Http\Controllers\ArticleController;
+use App\Http\Contrgoogleollers\ArticleController;
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CampaignController;
@@ -56,9 +56,9 @@ Route::controller(LoginController::class)->group(function () {
     Route::get('auth/google', 'redirectToGoogle')->name("auth/google");
     Route::get('auth/google/callback', 'handleGoogleCallback')->name("auth/google/callback");
 
-    Route::get('auth/facebook', 'facebookpage')->name('auth/facebook');
-    Route::get('auth/facebook/callback', 'facebookredirect')->name('auth/facebook/callback');
-})->middleware("auth.google");
+    Route::get('auth/facebook', 'redirectToFacebook')->name('auth/facebook');
+    Route::get('auth/facebook/callback', 'handleFacebookCallback')->name('auth/facebook/callback');
+})->middleware("auth.social");
 
 
 

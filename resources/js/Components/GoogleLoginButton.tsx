@@ -3,6 +3,7 @@ import React from 'react';
 
 const GoogleLoginButton = () => {
   const handleSuccess = response => {
+    console.log(response);
     fetch('/auth/google/callback', {
       method: 'POST',
       headers: {
