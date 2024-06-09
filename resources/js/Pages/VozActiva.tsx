@@ -15,6 +15,7 @@ import 'swiper/css';
 import 'swiper/css/effect-cards';
 import AppLayout from '../Layouts/AppLayout';
 import Container from '@/Layouts/Container';
+import VideoCardGrelha from '@/Components/VideoCardGrelha';
 
 function VozActiva({ activeVoiceArtist }) {
   const {
@@ -29,12 +30,14 @@ function VozActiva({ activeVoiceArtist }) {
   return (
     <AppLayout title="Voz Activa">
       <Container>
-        <div className="w-full h-full">
+        <div className="w-full h-full dark:text-gray-400 ">
           <h2 className="w-full font-bold flex heading-text text-center space-x-2 ">
-            <span> </span> <span> {activeVoiceArtist.name} </span>
+            <Link href={`artist-feed/${activeVoiceArtist.id}`}>
+              <span> </span> <span> {activeVoiceArtist.name} </span>
+            </Link>
           </h2>
-          <div className="w-full h-full flex flex-col">
-            <div className="w-full flex flex-col md:flex-row justify-center items-center md:gap-2  px-2 md:px-5">
+          <div className="w-fullh-[100vh] flex flex-col">
+            <div className="w-full h-[100vh] flex flex-col md:flex-row justify-center items-center md:gap-2  px-2 md:px-5">
               <div className="w-full">
                 <div className="w-[320px]">
                   <div className="effectsCardSwiper h-full w-full">
@@ -71,7 +74,7 @@ function VozActiva({ activeVoiceArtist }) {
                 <p className="text-justify"> {activeVoiceArtist.about} </p>
               </div>
             </div>
-            <div className="w-full">
+            <div className="w-full flex flex-col">
               <div
                 className="w-full flex flex-row justify-between
              items-center"
@@ -95,7 +98,7 @@ function VozActiva({ activeVoiceArtist }) {
                 >
                   {videos?.map((video, i) => (
                     <SwiperSlide key={video.id + i + i}>
-                      <VideoCard
+                      <VideoCardGrelha
                         w="w-full"
                         video={video}
                         i={i}

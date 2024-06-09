@@ -26,12 +26,12 @@ export default function Login({ canResetPassword, status }: Props) {
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    form.post(route('login'), {
+    form.post('login', {
       onSuccess: response => {
         console.log(response);
-        document.location.reload();
       },
       onFinish: () => {
+        console.log('response');
         form.reset('password');
       },
     });

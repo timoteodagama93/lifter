@@ -105,7 +105,7 @@ export default function AppLayout({
       <motion.div
         animate={{ x: 0 }}
         transition={{ delay: 1 }}
-        className="w-screen h-screen flex bg-gradient-to-br from-[#e6e6e6] to-[#fff] __dark:from-[#282728] __dark:to-[#2e2525w] fixed top-0 left-0 right-0 p-1 __bg-white "
+        className="w-screen h-screen flex bg-gradient-to-br from-[#e6e6e6] to-[#fff] dark:from-black dark:to-[#191919] fixed top-0 left-0 right-0 p-1 __bg-white "
       >
         {activeVideo && (
           <VideoSinglePlayer key={activeVideo.id + Math.floor(random() / 60)} />
@@ -331,7 +331,7 @@ export default function AppLayout({
             </main>
           </div>
 
-          <div className="w-full h-[17%] md:h-[15%] flex flex-row justify-center items-center mb-1  bg-[#f5f5f5] _bg-[rgb(0,86,124)] text-xl absolute bottom-0 left-0"  >
+          <div className="w-full h-[17%] md:h-[15%] flex flex-row justify-center items-center mb-1  from-[#f5f5f5] to-[#e6e6e6] dark:from-black dark:to-[#191919] _bg-[rgb(0,86,124)] text-xl absolute bottom-0 left-0">
             <LifterPlayer songs={songs} />
           </div>
         </div>

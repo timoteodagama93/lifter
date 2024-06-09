@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
-use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
@@ -42,19 +42,27 @@ class LoginController extends Controller
 
     public function handleFacebookCallback()
     {
+        Log::info('Facebook callback initiated.');
+        try {
+            $userFb = Socialite::driver('facebook')->user();
+            Log::info('User retrieved from Facebook.', ['user' => $userFb]);
 
-        $userF = Socialite::driver('facebook')->user();
-        $user = User::firstOrCreate(
-            ['email' => $userF->getEmail()],
-            [
-                'name' => $userF->getName(),
-                'facebook_id' => $userF->getId(),
-                'password' => Hash::make($userF->getId()),
-            ]
-        );
+            $user = User::firstOrCreate(
+                ['email' => $userFb->getEmail()],
+                [
+                    'name' => $userFb->getName(),
+                    'facebook_id' => $userFb->getId(),
+                    'password' => Hash::make($userFb->getId()),
+                ]
+            );
 
-        Auth::login($user);
+            Auth::login($user);
+            Log::info('User logged in.', ['user' => $user]);
 
-        return redirect()->intended('/avaliacoes');
+            return redirect()->intended('/avaliacoes');
+        } catch (\Exception $e) {
+            Log::error('Error during Facebook callback.', ['error' => $e->getMessage()]);
+            return redirect('/login')->with('error', 'Unable to login using Facebook. Please try again.');
+        }
     }
 }

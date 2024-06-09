@@ -96,9 +96,7 @@ function SongCard({
         <p className="text-sm truncate  mt-1">
           <Link
             href={
-              song.artist
-                ? `/artists/details/${song?.artist_id}`
-                : 'top-artists'
+              song.artist ? `/artist-feed/${song?.artist_id}` : 'top-artists'
             }
           >
             {song.artist}{' '}
@@ -106,7 +104,7 @@ function SongCard({
           </Link>
         </p>
       </div>
-      <div className="w-full flex hidden">
+      <div className="w-full  hidden">
         <Interagir
           collectionType="song"
           song={song}

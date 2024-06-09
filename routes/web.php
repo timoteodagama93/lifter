@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Article;
-use App\Http\Contrgoogleollers\ArticleController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CampaignController;
@@ -58,7 +58,7 @@ Route::controller(LoginController::class)->group(function () {
 
     Route::get('auth/facebook', 'redirectToFacebook')->name('auth/facebook');
     Route::get('auth/facebook/callback', 'handleFacebookCallback')->name('auth/facebook/callback');
-})->middleware("auth.social");
+});
 
 
 
@@ -68,6 +68,8 @@ Route::get('/', function () {
         'posts' => DB::select('SELECT * FROM posts ORDER BY created_at DESC')
     ]);
 })->name('/');
+
+
 
 Route::controller(FileGetterController::class)->group(function () {
     Route::get('/songs/{artist_id}/{nome_arquivo}', 'get_songs')->name('songs/{artist_id}/{nome_arquivo}');
@@ -196,6 +198,10 @@ Route::middleware([
         return Inertia::render('Discover', []);
     })->name('discover');
 
+    Route::get('/em-alta', function () {
+        return Inertia::render('EmAlta', []);
+    })->name('em-alta');
+
     Route::get('/livertv', function () {
         return Inertia::render('LiveTV/LiverTV', []);
     })->name('livertv');
@@ -207,6 +213,14 @@ Route::middleware([
     Route::get('/avaliacoes', function () {
         return Inertia::render('Avaliacoes/Avaliacoes', []);
     })->name('avaliacoes');
+
+    Route::get('/avaliacoes', function () {
+        return Inertia::render('Avaliacoes/Avaliacoes', []);
+    })->name('avaliacoes');
+
+    Route::get('/{id}', function () {
+        return redirect()->intended("/avaliacoes");
+    })->name('/{id}');
 
     Route::get('/ranking', function () {
         return Inertia::render('Ranking', []);
@@ -288,6 +302,9 @@ Route::middleware([
         Route::post('/get-comment-user', 'get_comments')->name('get-comment-user');
         Route::post('/save-to-collection', 'save_to_collection')->name('save-to-collection');
         Route::post('/valuate-colletion', 'valuate_colletion')->name('valuate-colletion');
+
+        Route::post('/song-valuations', 'song_valuations')->name('song-valuations');
+
         Route::post('/share-feedback', 'share_feedback')->name('share-feedback');
         Route::post('/share-comment', 'share_comment')->name('share-comment');
 
@@ -581,12 +598,12 @@ Route::middleware([
         Route::post('/add-cover',  'save_cover')->name('add-cover');
         Route::post('/update-artist',  'update_info')->name('update-artist');
     });
-    Route::get('/artist-details/{id}', function ($id) {
-        return Inertia::render('Artistas/Detalhar', [
-            'artist' =>
-            Artist::where('id', $id)->first()
+    Route::get('/artist-feed/{id}', function ($id) {
+        return Inertia::render('PerfilProfissional/Artista/Profile/ArtistFeed', [
+            'artist' => Artist::where('id', $id)->first(),
+            'songs' => DB::select("SELECT * FROM `songs` WHERE active=true AND   artist_id='$id'  ORDER BY reprodution_time DESC"),
         ]);
-    })->name('artist-details');
+    })->name('artist-feed/{id}');
     Route::get('/get-top-artists', function () {
         return response()->json(Artist::paginate(5));
     })->name('get-top-artists');
@@ -601,13 +618,4 @@ Route::middleware([
 Route::controller(CampaignController::class)->group(function () {
     Route::post('new-campaign', 'store')->name('new-campaign');
     Route::post('get-campaigns', 'get_mines')->name('get-campaigns');
-});
-
-
-/**
- * Social Medias COntroller: Facebook, Google, TikTok
- */
-Route::controller(SocialMediaController::class)->group(function () {
-    Route::get('auth/facebook', 'facebookpage')->name('auth/facebook');
-    Route::get('auth/facebook/callback', 'facebookredirect')->name('auth/facebook/callback');
 });

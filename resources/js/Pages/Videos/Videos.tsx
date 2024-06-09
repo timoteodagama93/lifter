@@ -58,8 +58,8 @@ function Videos({}) {
         <>
           {isFetching && !error && <Loader title="Carregando vídeos..." />}
           <Modal isOpen={addVideo} onClose={() => setAddVideo(false)}>
-            <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
-              <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4] flex justify-between  ">
+            <div className="my-1 w-full text-base text-black dark:text-gray-400  bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
+              <h1 className="text-xl md:text-2xl font-bold flex justify-between  ">
                 <button
                   onClick={() => setAddVideo(false)}
                   className="transform-effect p-1 justify-center items-center flex flex-col"
@@ -72,7 +72,7 @@ function Videos({}) {
               <AddVideo />
             </div>
           </Modal>
-          <div className="w-full relative flex flex-row rounded">
+          <div className="w-full relative flex flex-row rounded dark:text-gray-500">
             <div className="w-full flex flex-col md:px-4 rounded-lg mb-16">
               <div className="w-full flex justify-between items-center p-1 md:px-5 border-b">
                 <h1 className="text-center font-bold text-4xl">Vídeos</h1>
@@ -162,7 +162,6 @@ function Videos({}) {
         <VideoSinglePlayer />
       </Modal>{' '}
     </AppLayout>
-    
   );
 }
 

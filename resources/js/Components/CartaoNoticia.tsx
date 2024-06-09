@@ -46,7 +46,7 @@ const CartaoNoticia = ({ post }) => {
           )}
           {post?.mime_type?.includes('audio/') && (
             <>
-              <audio preload='none' controls className="w-auto h-auto p-5">
+              <audio preload="none" controls className="w-auto h-auto p-5">
                 <source
                   src={`posts/${post.id}/${post.file_url.split('/')[3]}`}
                   type={post.mime_type}
@@ -57,17 +57,17 @@ const CartaoNoticia = ({ post }) => {
         </div>
         <div className="post-details">
           <h3>{post.title}</h3>
-          <div className="w-full  flex flex-row text-gray-300 gap-1">
+          <div className="w-full  flex flex-row dark:text-gray-300 gap-1">
             <button
               onClick={() => Like(post?.id)}
-              className=" mt-1 p-2 flex gap-1 items-center transform-effect"
+              className=" mt-1 p-2 flex gap-1 items-center dark:shadow-white dark:shadow dark:border-white transform-effect"
             >
               {' '}
               <BiLike /> {post?.likes}{' '}
             </button>
             <button
               onClick={() => Like(post?.id)}
-              className=" mt-1 p-2 flex gap-1 items-center transform-effect"
+              className=" mt-1 p-2 flex gap-1 items-center dark:shadow-white dark:shadow dark:border-white transform-effect"
             >
               {' '}
               <BiDislike /> {post?.dislikes}{' '}
@@ -76,21 +76,21 @@ const CartaoNoticia = ({ post }) => {
               onClick={() => {
                 setSeeComments(true);
               }}
-              className=" mt-1 p-2 flex gap-1 items-center transform-effect"
+              className=" mt-1 p-2 flex gap-1 items-center dark:shadow-white dark:shadow dark:border-white transform-effect"
             >
               {' '}
               <FaComments /> {}{' '}
             </button>
             <button
               onClick={() => {}}
-              className=" mt-1 p-2 flex gap-1 items-center transform-effect"
+              className=" mt-1 p-2 flex gap-1 items-center dark:shadow-white dark:shadow dark:border-white transform-effect"
             >
               {' '}
               <BiShare /> {}{' '}
             </button>
             <button
               onClick={() => setSeeComments(true)}
-              className=" mt-1 p-2 flex gap-1 items-center transform-effect"
+              className=" mt-1 p-2 flex gap-1 items-center dark:shadow-white dark:shadow dark:border-white transform-effect"
             >
               {' '}
               <BsEye /> {}{' '}

@@ -51,9 +51,7 @@ function TopChartCard({ song, i, isPlaying, activeSong, songs }) {
       }  items-center border shadow-lg bg-black transform-effect text-white gap-1 p-0 md:p-1 rounded-lg  mb-1 py-2 `}
     >
       <h3 className="md:flex font-bold text-base hidden"> {i + 1}. </h3>
-      <div
-        className={`flex flex-1  justify-start items-center flex-row`} 
-      >
+      <div className={`flex flex-1  justify-start items-center flex-row`}>
         {isAudio && song.cover && (
           <img
             className="flex w-10 h-10 rounded-lg"
@@ -89,8 +87,12 @@ function TopChartCard({ song, i, isPlaying, activeSong, songs }) {
             <Link href={`song-details/${song.id}`} className="">
               <p className="text-sm md:text-xl font-bold"> {song.title} </p>
             </Link>
-            <Link href={`artists-details/${song.artist_id}`} className="">
-              <p className="text-xs md:text-base text-"> {song.artist} </p>
+            <Link
+              href={`artist-feed/${song.artist_id}`}
+              className="text-xs md:text-base"
+            >
+              {' '}
+              {song.artist}
             </Link>
           </div>
         </div>

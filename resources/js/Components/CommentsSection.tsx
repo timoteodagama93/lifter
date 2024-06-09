@@ -60,17 +60,15 @@ const CommentsSection = ({ collection, collectionType }) => {
         className="w-full flex flex-col justify-start text-base items-center p-5"
         encType="multipart/form-data"
       >
-        <div className="w-full p-2 rounded bg-black text-white flex-col ">
+        <div className="w-full p-2 rounded bg-black dark:bg-[#191919] text-white dark:text-gray-500 flex-col ">
           <h1 className="text-xl">Comentário</h1>
           <label className="mx-5" htmlFor="comment">
             Comente ou inicie uma discussão!.
           </label>
-          <progress>
-            <> {form.progress}</>{' '}
-          </progress>
+
           <div className="w-full flex flex-row">
             <textarea
-              className="text-black w-full"
+              className="text-black dark:text-gray-600 w-full"
               value={form.data.comment}
               onChange={e => form.setData('comment', e.target.value)}
               rows={2}

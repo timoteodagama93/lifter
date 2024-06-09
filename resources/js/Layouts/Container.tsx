@@ -55,7 +55,7 @@ function Container({ children = <></>, bg = loader }) {
         <div
           className={`relative text-gray-900 w-full
           lg:w-[95%]
-          h-full top-0 left-0 shadow-xl flex flex-col  bg-white _bg-[#245575] `}
+          h-full top-0 left-0 shadow-xl flex flex-col  bg-white dark:bg-[#191919] _bg-[#245575] `}
         >
           <div
             className={`relative w-full h-full  md:px-5 overflow-y-auto top-0 left-0 shadow-xl flex flex-wrap shadow-black justify-center items-start`}

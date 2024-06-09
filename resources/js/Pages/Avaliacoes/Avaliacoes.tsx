@@ -16,18 +16,16 @@ import Container from '@/Layouts/Container';
 import { useSelector } from 'react-redux';
 import {
   useGetSongsAudiosQuery,
-  useGetSongsQuery,
 } from '@/redux/services/coreApi';
 
-import ValuationReader from './ValuationReader';
-import ValuatedsSongs from './ValuatedsSongs';
-import { SongCard } from '@/Components';
-import TopChartCard from '@/Components/TopChartCard';
+import SongsDetaiOneByOne from '@/Components/SongsDetaiOneByOne';
 
 const Avaliacoes = ({}) => {
   const { data: songs, isFetching, error } = useGetSongsAudiosQuery('destaque');
 
   const { activeSong, isPlaying } = useSelector(state => state.player);
+  const [x, setX] = useState(0);
+
   const [selectedValuation, setSelectedValuation] = useState(
     isPlaying ? activeSong : null,
   );
@@ -36,46 +34,35 @@ const Avaliacoes = ({}) => {
     if (!isPlaying) setSelectedValuation(null);
   }, [isPlaying]);
 
+  useEffect(() => {
+    if (songs?.length > 0) setSelectedValuation(songs[x]);
+  }, [songs]);
+
+  const handlePrevious = () => {
+    if (x < 0) {
+      setX(0);
+    } else {
+      setX(x - 1);
+    }
+    setSelectedValuation(songs[x]);
+  };
+
+  const handleNext = () => {
+    if (x == songs.length) {
+      setX(0);
+    } else {
+      setX(x + 1);
+    }
+    setSelectedValuation(songs[x]);
+  };
+
   return (
     <AppLayout title="Avaliações">
       <Container>
         <>
           {songs?.length > 0 && (
             <>
-              {' '}
-              <div className="w-full h-full relative flex flex-col ">
-                {songs?.map((song, i) => (
-                  <>
-                    <TopChartCard
-                      songs={songs}
-                      song={song}
-                      isPlaying={isPlaying}
-                      activeSong={activeSong}
-                      i={i}
-                      key={song.id}
-                    />
-                    {/*window.screen.width >= 768 ? (
-                      <TopChartCard
-                        songs={songs}
-                        song={song}
-                        isPlaying={isPlaying}
-                        activeSong={activeSong}
-                        i={i}
-                        key={song.id}
-                      />
-                    ) : (
-                      <SongCard
-                        songs={songs}
-                        song={song}
-                        isPlaying={isPlaying}
-                        activeSong={activeSong}
-                        i={i}
-                        key={song.id}
-                      />
-                    )*/}
-                  </>
-                ))}
-              </div>
+              <SongsDetaiOneByOne songs={songs} />
             </>
           )}
         </>

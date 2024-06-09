@@ -21,8 +21,6 @@ use Illuminate\Support\Facades\Request;
 class InteragirController extends Controller
 {
     //
-
-
     /**
      * CURTIR UMA COLEÇÂO, Músca, Vídeo, Livro, fotografia, etc.
      */
@@ -95,7 +93,6 @@ class InteragirController extends Controller
         return response()->json($like);
     }
 
-
     /**
      * Obtém a avaliação do usuário em uma música
      */
@@ -111,8 +108,6 @@ class InteragirController extends Controller
             return response()->json($stars);
         }
 
-
-
         //Obtém a quantidade de estrelas que o usuário deu a música.
         $stars = Valuation::where(
             [
@@ -123,6 +118,25 @@ class InteragirController extends Controller
         )->first()->stars;
 
         return response()->json($stars);
+    }
+    /**
+     * Obtém a avaliação do usuário em uma música
+     */
+    public function song_valuations()
+    {
+        $totalStars = 0;
+        $collectionId = Request::get('collection_id');
+        $collectionType = Request::get('collection_type');
+
+        //Obtém a quantidade de estrelas que o usuário deu a música.
+        $vals = DB::select("SELECT * FROM valuations COUNT WHERE     
+            collection_id =?  AND
+            collection_type =?", [$collectionId, $collectionType]);
+
+        foreach ($vals as $val) {
+            $totalStars += $val->stars;
+        }
+        return response()->json($totalStars);
     }
 
 
@@ -234,7 +248,6 @@ class InteragirController extends Controller
      */
     public function share_comment()
     {
-
         $comment = Comment::create(
             [
                 'user_id' => '' . auth()->id(),
@@ -246,7 +259,6 @@ class InteragirController extends Controller
         );
         return  response('');
     }
-
 
     /**
      * Avalia o conteúdo: Pontos, emojis, positivo ou negativo.

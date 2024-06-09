@@ -15,6 +15,7 @@ import {
   useGetVideosQuery,
   useGetActiveVoiceImagesQuery,
 } from '@/redux/services/coreApi';
+import AppLayout from '@/Layouts/AppLayout';
 
 
 function Detalhes({ artist }) {

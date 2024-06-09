@@ -32,7 +32,7 @@ function Noticias({}) {
   const [displayPost, setDisplayPost] = useState();
 
   return (
-    <div className="w-full h-full md:px-2 flex flex-col text-black">
+    <div className="w-full h-full md:px-2 flex flex-col dark:bg-black text-black dark:text-gray-500">
       <div className="w-full flex flex-col-reverse md:flex-row  justify-center items-center">
         <FiltrarNoticias
           setPosts={setPosts}
@@ -58,7 +58,6 @@ function Noticias({}) {
         </div>
       )}
     </div>
-
   );
 }
 

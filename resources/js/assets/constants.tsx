@@ -7,7 +7,12 @@ import {
   HiOutlineHashtag,
   HiOutlinePhotograph,
 } from 'react-icons/hi';
-import { FaArtstation, FaCrosshairs, FaHandshake, FaLocationArrow } from 'react-icons/fa';
+import {
+  FaArtstation,
+  FaCrosshairs,
+  FaHandshake,
+  FaLocationArrow,
+} from 'react-icons/fa';
 import {
   MdBusinessCenter,
   MdEvent,
@@ -34,6 +39,8 @@ import {
   BiMask,
   BiMicrophone,
   BiMusic,
+  BiSearch,
+  BiStar,
   BiUpload,
   BiUserVoice,
   BiVideo,
@@ -327,19 +334,14 @@ export const mainLinks = [
   */
 
   {
-    name: 'Imediações',
-    href: '/imediacoes',
-    icon: FaLocationArrow,
+    name: 'Descobrir',
+    href: '/discover',
+    icon: BiSearch,
   },
   {
-    name: 'Top artistas',
-    href: '/top-artists',
-    icon: HiUserGroup,
-  },
-  {
-    name: 'Top Charts',
-    href: '/top-charts',
-    icon: HiOutlineHashtag,
+    name: 'Em ALta',
+    href: '/em-alta',
+    icon: BiStar,
   },
 ];
 

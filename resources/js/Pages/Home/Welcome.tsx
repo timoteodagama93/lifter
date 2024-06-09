@@ -333,7 +333,7 @@ export default function Welcome({ posts }: Props) {
             </div>
 
             <div
-              class="fb-like"
+              className="fb-share"
               data-share="true"
               data-width="450"
               data-show-faces="true"

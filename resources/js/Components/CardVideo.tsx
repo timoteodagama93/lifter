@@ -49,7 +49,7 @@ function CardVideo({
 
   return (
     <>
-      <div className="w-full h-full p-1 flex flex-col items-center justify-center  hover:bg-[#0094f8] opacity-90 rounded-lg ">
+      <div className="w-full h-full p-1 flex flex-col items-center justify-center bg-white dark:bg-black dark:hover:bg-[#484848] text-black shadow-black shadow   opacity-90 rounded-lg ">
         <div className="relative w-full h-4/5  border rounded-lg group ">
           <div
             style={{ transition: '1s' }}
@@ -202,7 +202,7 @@ function OptionsPopup({ collection, collectionType = 'song' }) {
   };
 
   return (
-    <div className="mr-3 relative">
+    <div className="mr-3 relative z-[100] dark:bg-black dark:text-white ">
       <div>
         <span className="inline-flex rounded-md">
           <button
@@ -222,7 +222,7 @@ function OptionsPopup({ collection, collectionType = 'song' }) {
           </button>
         </span>
         <div
-          className={`absolute z-50 bottom-12 -right-2 transition-all  text-xs text-gray-400 bg-white w-[200px] shadow-sm rounded ${
+          className={`absolute z-50 bottom-12 -right-2 transition-all  text-xs w-[200px] text-gray-700 bg-white shadow-2xl shadow-black rounded ${
             showMoreOptions ? 'block' : 'hidden'
           } `}
         >
@@ -230,9 +230,7 @@ function OptionsPopup({ collection, collectionType = 'song' }) {
 
           {collection?.title ? (
             <>
-              <div className="block px-4 py-2 text-xs text-gray-400">
-                Mais opções
-              </div>
+              <div className="block px-4 py-2 text-xs">Mais opções</div>
 
               <div>
                 <button

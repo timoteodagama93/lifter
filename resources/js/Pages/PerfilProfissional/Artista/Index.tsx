@@ -131,9 +131,8 @@ function HeaderArtist({ artist, setPagina }) {
 
 function Stats({ artist }) {
   const { data: stats, isFetching, error } = useGetArtistStatsQuery(artist?.id);
-  useEffect(() => {
-    console.log(stats?.quantidade_musicas?.length);
-  }, [stats]);
+
+  
   return (
     <div className="relative w-full flex flex-col rounded-lg shadow-lg shadow-black p-5 justify-between items-center mb-5">
       <div className="w-full flex flex-col items-center">

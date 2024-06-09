@@ -13,6 +13,7 @@ import TopPlay from '@/Components/TopPlay';
 import axios from 'axios';
 import { generos } from '@/assets/constants';
 import Container from '@/Layouts/Container';
+import { filter } from 'lodash';
 
 function Descover() {
   //const { data, isFetching, error } = useGetTopChartsQuery('');
@@ -20,7 +21,7 @@ function Descover() {
   const { activeSong, isPlaying } = useSelector(state => state.player);
 
   const [results, setResults] = useState();
-  const [query, setFilter] = useState('Angola Top Artists Video Songs');
+  const [query, setQuery] = useState('Angola Top Artists Video Songs');
 
   useEffect(() => {
     const apiKey = 'AIzaSyA45maJSYR-JSsZfNFroy-NZ2ozmsaGiiw';
@@ -37,29 +38,53 @@ function Descover() {
       .catch(error => {
         console.error('Erro na pesquisa do YouTube:', error);
       });
-  }, [query]);
+  }, []);
+
+  const handleSearch = e => {
+    e.preventDefault();
+    const apiKey = 'AIzaSyA45maJSYR-JSsZfNFroy-NZ2ozmsaGiiw';
+    axios
+      .get(
+        `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&type=video&part=snippet&maxResults=10&q=${query}`,
+      )
+      .then(response => {
+        setResults(response.data.items);
+        console.log(results);
+
+        // Faça algo com os resultados, como renderizá-los em seu site.
+      })
+      .catch(error => {
+        console.error('Erro na pesquisa do YouTube:', error);
+      });
+  };
+
   if (isFetching) return <Loader title="" />;
   if (error) return <Error />;
   return (
     <AppLayout title="Descobrir">
       <Container>
-        <div className='w-full h-full flex flex-col md:flex-row'>
+        <div className="w-full h-full flex flex-col md:flex-row dark:text-gray-400 ">
           <div className="w-full flex flex-col rounded-lg">
             <div className="w-full flex justify-between items-center flex-row shadow-lg mb-5 pb-1">
               <h2 className="flex font-bold text-3xl  text-left ">Descobrir</h2>
-              <form className="w-full flex ">
+              <form onSubmit={handleSearch} className="w-full flex ">
                 <input
-                  onChange={e => setFilter(e.target.value)}
+                  onChange={e => setQuery(e.target.value)}
                   className="w-3/4 mx-5 rounded-lg text-black"
                   type="search"
+                  value={query}
                   placeholder="Descobrir música"
                 />
+                <button type="submit">
+                  {' '}
+                  <BiSearch />{' '}
+                </button>
               </form>
               <button className="md:hidden flex text-bold text-2xl  justify-center items-center bg-gray-400 p-1 rounded-lg text-black">
                 <BiSearch className="mr-2 text-3xl text-center" />
               </button>
               <select
-                onChange={e => setFilter(e.target.value)}
+                onChange={e => setQuery(e.target.value)}
                 className="p-1 text-sm rounded-lg outline-none text-black "
               >
                 {generos.map(genero => (

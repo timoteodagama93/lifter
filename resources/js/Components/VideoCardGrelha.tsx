@@ -31,9 +31,9 @@ function VideoCardGrelha({
 
   return (
     <div
-      className={`flex flex-col ${w} p-4 bg-white/5 ng-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer shadow-lg border`}
+      className={` w-full md:w-1/2 xxl:w-1/3 h-full md:[70vh]  flex flex-col ${w} p-4 bg-white/5 ng-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer shadow-lg border`}
     >
-      <div className=" relative w-2/3 h-full group">
+      <div className=" relative w-full h-full group">
         <div
           style={{ transition: '1s' }}
           className={`absolute z-10 inset-0 justify-center items-center bg-black bg-opacity-50 ${

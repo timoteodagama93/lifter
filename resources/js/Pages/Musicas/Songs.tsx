@@ -104,7 +104,7 @@ function Songs({}) {
             )}
           </div>
         </Modal>
-      <div className="w-full relative flex flex-row rounded">
+      <div className="w-full relative flex flex-row rounded dark:text-gray-500 ">
         <div className="w-full flex flex-col px-4 rounded-lg">
           <div className="w-full flex justify-between items-center p-1 md:px-5 border-b">
             <h1 className="text-center font-bold text-4xl">Ranking musical</h1>
@@ -138,7 +138,7 @@ function Songs({}) {
               </div>
               <div className="w-full relative flex flex-shrink">
                 {videos?.map((video, i) => (
-                  <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 h-auto">
+                  <div className="w-full md:w-1/2 xl:w-1/3 h-[24rem]">
                     <CardVideo
                       video={video}
                       type="song"
@@ -164,7 +164,7 @@ function Songs({}) {
                   </p>
                 </Link>
               </div>
-              <div className="w-full relative flex flex-col ">
+              <div className="w-full relative flex flex-col px-5 ">
                 {songs?.map((song, i) => (
                   <>
                     {window.screen.width >= 768 ? (
