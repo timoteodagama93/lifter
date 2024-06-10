@@ -719,7 +719,7 @@ function SolicitarServico({ service, onClose }) {
     problem: '',
   });
 
-  function onSubmit(e: React.FormEvent) {
+  function onSubmit(e: React.FormEvent) { 
     e.preventDefault();
     form.post('/request-services', {
       onSuccess: () =>

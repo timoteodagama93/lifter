@@ -3,6 +3,7 @@ import axios from 'axios';
 const initialState = {
   currentSongs: [],
   currentIndex: 0,
+  currentTime: 0,
   totalTime: 0,
   isActive: false,
   isPlaying: false,
@@ -23,8 +24,9 @@ const playerSlice = createSlice({
   name: 'player',
   initialState,
   reducers: {
-
-
+    setCurrentTime: (state, action) => {
+      state.currentTime = action.payload;
+    },
     setActiveSong: (state, action) => {
 
       if (action.payload.song.mime_type.includes('audio/')) {
@@ -144,10 +146,6 @@ const playerSlice = createSlice({
     },
 
     playPause: (state, action) => {
-
-
-
-
       if (action.payload == true) {
         //Actualizar a quantidade de reproduções de uma música
         axios
@@ -204,6 +202,6 @@ const playerSlice = createSlice({
   },
 });
 
-export const { setActiveSong, setActiveVideo, setTotalTime, nextSong, nextVideo, prevSong, prevVideo, playPause, playPauseVideo, selectGenreListId, setFullScreenPlayer } = playerSlice.actions;
+export const { setCurrentTime, setActiveSong, setActiveVideo, setTotalTime, nextSong, nextVideo, prevSong, prevVideo, playPause, playPauseVideo, selectGenreListId, setFullScreenPlayer } = playerSlice.actions;
 
 export default playerSlice.reducer;

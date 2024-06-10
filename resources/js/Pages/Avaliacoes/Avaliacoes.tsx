@@ -14,11 +14,10 @@ import AppLayout from '@/Layouts/AppLayout';
 import Container from '@/Layouts/Container';
 
 import { useSelector } from 'react-redux';
-import {
-  useGetSongsAudiosQuery,
-} from '@/redux/services/coreApi';
+import { useGetSongsAudiosQuery } from '@/redux/services/coreApi';
 
 import SongsDetaiOneByOne from '@/Components/SongsDetaiOneByOne';
+import { Error } from '@/Components';
 
 const Avaliacoes = ({}) => {
   const { data: songs, isFetching, error } = useGetSongsAudiosQuery('destaque');
@@ -60,9 +59,16 @@ const Avaliacoes = ({}) => {
     <AppLayout title="Avaliações">
       <Container>
         <>
-          {songs?.length > 0 && (
+          {error ? (
+            <Error />
+          ) : (
             <>
-              <SongsDetaiOneByOne songs={songs} />
+              {' '}
+              {songs?.length > 0 && (
+                <>
+                  <SongsDetaiOneByOne songs={songs} />
+                </>
+              )}
             </>
           )}
         </>

@@ -254,7 +254,7 @@ class InteragirController extends Controller
                 'collection_id' => Request::get('collection_id'),
                 'collection_type' => Request::get('collection_type'),
                 'comment' => Request::get('comment'),
-                'public' => Request::get('public'),
+                'public' => true,
             ]
         );
         return  response('');

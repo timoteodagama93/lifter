@@ -64,7 +64,7 @@ export default function ResetPassword({ token, email }: Props) {
 
         <div className="mt-4">
           <InputLabel htmlFor="password_confirmation">
-            Confirm Password
+            Confirmar Password
           </InputLabel>
           <TextInput
             id="password_confirmation"
@@ -88,7 +88,7 @@ export default function ResetPassword({ token, email }: Props) {
             className={classNames({ 'opacity-25': form.processing })}
             disabled={form.processing}
           >
-            Reset Password
+            Mudar Password
           </PrimaryButton>
         </div>
       </form>

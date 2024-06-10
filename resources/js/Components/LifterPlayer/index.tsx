@@ -6,6 +6,7 @@ import {
   prevSong,
   playPause,
   setActiveSong,
+  setCurrentTime,
 } from '../../redux/features/playerSlice';
 import Controls from './Controls';
 import Player from './Player';
@@ -23,15 +24,22 @@ import route from 'ziggy-js';
 import Swal from 'sweetalert2';
 
 const LifterPlayer = ({ songs }) => {
-  const { activeSong, currentSongs, currentIndex, isActive, isPlaying } =
-    useSelector(state => state.player);
+  const {
+    activeSong,
+    currentSongs,
+    currentIndex,
+    currentTime,
+    isActive,
+    isPlaying,
+  } = useSelector(state => state.player);
   const [duration, setDuration] = useState(0);
   const [seekTime, setSeekTime] = useState(0);
-  const [appTime, setAppTime] = useState(0);
+  const [appTime, setAppTime] = useState(isActive ? currentTime : 0);
   const [volume, setVolume] = useState(0.3);
   const [repeat, setRepeat] = useState(false);
   const [shuffle, setShuffle] = useState(false);
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (currentSongs?.length) dispatch(playPause(true));
   }, [currentIndex]);
@@ -45,15 +53,19 @@ const LifterPlayer = ({ songs }) => {
       dispatch(playPause(true));
     }
   };
-  
-    const handlePlayVideo = () => {
-      Swal.fire({
-        title: 'Vídeo desponível',
-        text: 'Para reproduzir o vídeo pause o aúdio actualmente em reprodução e clique no botão play desta música.',
-        icon: 'info',
-      });
-    };
-  
+
+  const handleTimeUpdate = () => {
+    dispatch(setCurrentTime(appTime));
+  };
+
+  const handlePlayVideo = () => {
+    Swal.fire({
+      title: 'Vídeo desponível',
+      text: 'Para reproduzir o vídeo pause o aúdio actualmente em reprodução e clique no botão play desta música.',
+      icon: 'info',
+    });
+  };
+
   const handleNextSong = () => {
     if (!shuffle) {
       dispatch(nextSong((currentIndex + 1) % currentSongs.length));
@@ -71,41 +83,9 @@ const LifterPlayer = ({ songs }) => {
     }
   };
 
-  const stars = [1, 2, 3, 4, 5];
-  const [selectedStar, setSelectedStar] = useState(0);
-
-  function submitValuation(stars) {
-    setSelectedStar(stars);
-    const data = new FormData();
-    data.append('song_id', activeSong?.id);
-    data.append('stars', stars);
-    console.log(data);
-
-    axios
-      .post('/avaliar', data)
-      .then(response => {
-        setSelectedStar(response.data.stars);
-      })
-      .catch(errors => {
-        console.log(errors);
-      });
-  }
-  /**GET USER VALUATION TO SELECTED SONG */
-  function getUserValuation() {
-    const data = new FormData();
-    data.append('song_id', activeSong?.id);
-
-    axios
-      .post('/get-my-valluation', data)
-      .then(response => {
-        setSelectedStar(response.data);
-      })
-      .catch(errors => {
-        console.log(errors);
-      });
-  }
-
-  useEffect(getUserValuation, [activeSong]);
+  useEffect(() => {
+    handleTimeUpdate();
+  }, [appTime]);
   return (
     <div className="w-full flex  flex-col justify-center items-center">
       <div className="w-full flex flex-row justify-center md:justify-between">

@@ -588,7 +588,7 @@ export default function Shortcuts({ posts }: Props) {
                 <h2 className=" font-bold text-base md:text-4xl text-[#]">
                   Artes
                 </h2>
-                <a className="hidden md:flex" href={route('network')}>
+                <a className="hidden md:flex" href={route('arts')}>
                   <p className="text-base cursor-pointer p-2 transform-effect">
                     Ver tudo
                   </p>
@@ -718,7 +718,7 @@ export default function Shortcuts({ posts }: Props) {
                 <h2 className=" font-bold text-base md:text-4xl text-[#]">
                   Cultura
                 </h2>
-                <a className="hidden md:flex" href={route('network')}>
+                <a className="hidden md:flex" href={route('cultura')}>
                   <p className="text-base cursor-pointer p-2 transform-effect">
                     Ver tudo
                   </p>

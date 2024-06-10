@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { useForm } from '@inertiajs/react';
 import PrimaryButton from './PrimaryButton';
 import { BiSend } from 'react-icons/bi';
+import { BsSend } from 'react-icons/bs';
 
 const CommentsSection = ({ collection, collectionType }) => {
   const [errorLoadingComments, setErrorLoadingComments] = useState(false);
@@ -36,22 +37,28 @@ const CommentsSection = ({ collection, collectionType }) => {
 
   function submit(e) {
     e.preventDefault();
-    form.post('share-comment', {
-      onSuccess: response => {
+
+    const data = new FormData();
+    data.append('collection_id', collection.id);
+    data.append('collection_type', collectionType);
+    data.append('comment', form.data.comment);
+    axios
+      .post('share-comment', data)
+      .then(response => {
         form.setData('comment', '');
         getComments();
-      },
-      onError: error => {
+      })
+      .catch(error => {
         Swal.fire({
           title: 'Erro',
           text: 'Alguma coisa correu mal, reenvie o seu feedback, nós os amantes de músicas agradecemos sua paciência. Se persistir, relate o problema.',
           icon: 'error',
         });
-      },
-    });
+        setErrorLoadingComments(true);
+      });
   }
 
-  useEffect(getComments, []);
+  useEffect(getComments, [collection]);
 
   return (
     <>
@@ -60,31 +67,27 @@ const CommentsSection = ({ collection, collectionType }) => {
         className="w-full flex flex-col justify-start text-base items-center p-5"
         encType="multipart/form-data"
       >
-        <div className="w-full p-2 rounded bg-black dark:bg-[#191919] text-white dark:text-gray-500 flex-col ">
-          <h1 className="text-xl">Comentário</h1>
-          <label className="mx-5" htmlFor="comment">
-            Comente ou inicie uma discussão!.
-          </label>
-
+        <div className="w-full p-2 rounded shadow shadow-black dark:shadow-white dark:bg-[#191919] dark:text-gray-500 flex-col ">
           <div className="w-full flex flex-row">
             <textarea
-              className="text-black dark:text-gray-600 w-full"
+              className="text-black dark:text-gray-600 w-full rounded "
               value={form.data.comment}
               onChange={e => form.setData('comment', e.target.value)}
               rows={2}
               required
+              placeholder="Comentar"
               disabled={form.processing}
             ></textarea>
-            <PrimaryButton disabled={form.processing}>
-              <BiSend className="w-10 h-10" />
-            </PrimaryButton>
+            <button disabled={form.processing} className=''  >
+              <BsSend className="w-10 h-10 " />
+            </button>
           </div>
         </div>
       </form>
       <div className="comments-section">
         <div className="comments">
           {comments?.map(comment => (
-            <Comment key={comment.id} {...comment} />
+            <Comment key={comment.id} comment={comment} />
           ))}
         </div>
       </div>

@@ -10,6 +10,7 @@ import TextInput from '@/Components/TextInput';
 import InputError from '@/Components/InputError';
 import GoogleLoginButton from '@/Components/GoogleLoginButton';
 import SectionBorder from '@/Components/SectionBorder';
+import { FaFacebook, FaGoogle } from 'react-icons/fa';
 
 interface Props {
   canResetPassword: boolean;
@@ -50,8 +51,9 @@ export default function Login({ canResetPassword, status }: Props) {
       <div className="my-4 w-full flex flex-row justify-center items-center gap-2">
         <a
           href="auth/facebook"
-          className="w-full p-1 justify-center inline-flex items-center px-4 py-2 bg-blue-700 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-red-900 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 my-2"
+          className="w-full p-1 justify-center inline-flex items-center px-4 py-2 bg-blue-700 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-red-900 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 my-1 gap-2"
         >
+          <FaFacebook className="w-7 h-7" />
           Entrar com o Facebook
         </a>
       </div>
@@ -59,8 +61,9 @@ export default function Login({ canResetPassword, status }: Props) {
       <div className="my-4 w-full flex flex-row justify-center items-center gap-2">
         <a
           href="auth/google"
-          className="w-full p-1 justify-center inline-flex items-center px-4 py-2 bg-blue-700 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-red-900 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 my-2"
+          className="w-full p-1 justify-center inline-flex items-center px-4 py-2 bg-blue-700 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-red-900 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 my-1 gap-2  "
         >
+          <FaGoogle className="w-7 h-7" />
           Entrar com o Google
         </a>
       </div>

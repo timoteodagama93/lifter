@@ -58,71 +58,79 @@ function Descover() {
       });
   };
 
-  if (isFetching) return <Loader title="" />;
-  if (error) return <Error />;
   return (
     <AppLayout title="Descobrir">
       <Container>
-        <div className="w-full h-full flex flex-col md:flex-row dark:text-gray-400 ">
-          <div className="w-full flex flex-col rounded-lg">
-            <div className="w-full flex justify-between items-center flex-row shadow-lg mb-5 pb-1">
-              <h2 className="flex font-bold text-3xl  text-left ">Descobrir</h2>
-              <form onSubmit={handleSearch} className="w-full flex ">
-                <input
-                  onChange={e => setQuery(e.target.value)}
-                  className="w-3/4 mx-5 rounded-lg text-black"
-                  type="search"
-                  value={query}
-                  placeholder="Descobrir música"
-                />
-                <button type="submit">
-                  {' '}
-                  <BiSearch />{' '}
-                </button>
-              </form>
-              <button className="md:hidden flex text-bold text-2xl  justify-center items-center bg-gray-400 p-1 rounded-lg text-black">
-                <BiSearch className="mr-2 text-3xl text-center" />
-              </button>
-              <select
-                onChange={e => setQuery(e.target.value)}
-                className="p-1 text-sm rounded-lg outline-none text-black "
-              >
-                {generos.map(genero => (
-                  <option key={genero.value} value={genero.value}>
-                    {genero.title}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="w-full h-fit bg-green-400 flex flex-col relative mx-auto  dark:bg-gray-800 shadow-xl sm:rounded-lg flex-wrap justify-start">
-              <div className="w-full h-full p-1 border flex flex-row flex-wrap">
-                {data.map((song, i) => (
-                  <SongCard
-                    w="w-full md:w-1/2  xl:w-1/3 "
-                    song={song}
-                    i={i}
-                    key={i}
-                    activeSong={activeSong}
-                    isPlaying={isPlaying}
-                    songs={data}
-                  />
-                ))}
+        <>
+          {isFetching && <Loader title="" />}
 
-                {results?.map((result, i) => (
-                  <div className=" w-full md:w-1/2 xl:w-1/3 h-auto shadow rounded object-contain">
-                    <img
-                      className="object-cover w-full h-auto p-5"
-                      src={result.snippet.thumbnails.default.url}
+          {error ? (
+            <Error />
+          ) : (
+            <div className="w-full h-full flex flex-col md:flex-row dark:text-gray-400 ">
+              <div className="w-full flex flex-col rounded-lg">
+                <div className="w-full flex justify-between items-center flex-row shadow-lg mb-5 pb-1">
+                  <h2 className="flex font-bold text-3xl  text-left ">
+                    Descobrir
+                  </h2>
+                  <form onSubmit={handleSearch} className="w-full flex ">
+                    <input
+                      onChange={e => setQuery(e.target.value)}
+                      className="w-3/4 mx-5 rounded-lg text-black"
+                      type="search"
+                      value={query}
+                      placeholder="Descobrir música"
                     />
+                    <button type="submit">
+                      {' '}
+                      <BiSearch />{' '}
+                    </button>
+                  </form>
+                  <button className="md:hidden flex text-bold text-2xl  justify-center items-center bg-gray-400 p-1 rounded-lg text-black">
+                    <BiSearch className="mr-2 text-3xl text-center" />
+                  </button>
+                  <select
+                    onChange={e => setQuery(e.target.value)}
+                    className="p-1 text-sm rounded-lg outline-none text-black "
+                  >
+                    {generos.map(genero => (
+                      <option key={genero.value} value={genero.value}>
+                        {genero.title}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="w-full h-fit bg-green-400 flex flex-col relative mx-auto  dark:bg-gray-800 shadow-xl sm:rounded-lg flex-wrap justify-start">
+                  <div className="w-full h-full p-1 border flex flex-row flex-wrap">
+                    {data?.map((song, i) => (
+                      <SongCard
+                        w="w-full md:w-1/2  xl:w-1/3 "
+                        song={song}
+                        i={i}
+                        key={i}
+                        activeSong={activeSong}
+                        isPlaying={isPlaying}
+                        songs={data}
+                      />
+                    ))}
+
+                    {results?.map((result, i) => (
+                      <div className=" w-full md:w-1/2 xl:w-1/3 h-auto shadow rounded object-contain">
+                        <img
+                          className="object-cover w-full h-auto p-5"
+                          src={result.snippet.thumbnails.default.url}
+                        />
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+              </div>
+              <div className="xl:stick relative h-fit">
+                <TopPlay />
               </div>
             </div>
-          </div>
-          <div className="xl:stick relative h-fit">
-            <TopPlay />
-          </div>
-        </div>
+          )}
+        </>
       </Container>
     </AppLayout>
   );

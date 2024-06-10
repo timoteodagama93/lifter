@@ -125,7 +125,7 @@ function VozActiva({ activeVoiceArtist }) {
                   </p>
                 </Link>
               </div>
-              <div className="w-full relative flex flex-col ">
+              <div className="w-full relative flex flex-col px-5 ">
                 {songs?.map((song, i) => (
                   <TopChartCard
                     songs={songs}
