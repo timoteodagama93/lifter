@@ -59,8 +59,6 @@ function SongStars({ song }) {
         </>,
       );
     }
-
-    console.log(stars);
   }, []);
 
   return <div className="flex flex-row gap-1 ">{ss}</div>;

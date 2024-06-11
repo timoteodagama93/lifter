@@ -23,13 +23,10 @@
 
 <body class="font-sans antialiased">
    
-    <!--<script async defer crossorigin="anonymous"
+    <!--
+        <script async defer crossorigin="anonymous"
         src="https://connect.facebook.net/pt_PT/sdk.js#xfbml=1&version=v20.0&appId=1588022325068116" nonce="sLLYLydU">
     </script> -->
-
-
-
-
     <!--
     <script async src="https://cse.google.com/cse.js?cx=f629749d2e908476b"></script>
 -->

@@ -45,7 +45,6 @@ use Inertia\Inertia;
 |
 */
 
-
 /**
  * Social Medias COntroller: Facebook, Google, TikTok
  */
@@ -60,16 +59,12 @@ Route::controller(LoginController::class)->group(function () {
     Route::get('auth/facebook/callback', 'handleFacebookCallback')->name('auth/facebook/callback');
 });
 
-
-
 Route::get('/', function () {
     return Inertia::render('Home/Welcome', [
         'songs' => DB::select('SELECT * FROM songs ORDER BY created_at'),
         'posts' => DB::select('SELECT * FROM posts ORDER BY created_at DESC')
     ]);
 })->name('/');
-
-
 
 Route::controller(FileGetterController::class)->group(function () {
     Route::get('/songs/{artist_id}/{nome_arquivo}', 'get_songs')->name('songs/{artist_id}/{nome_arquivo}');
@@ -86,7 +81,6 @@ Route::controller(FileGetterController::class)->group(function () {
 
     Route::get('/books/{estante_id}/{nome_arquivo}', 'get_book')->name('books/{estante_id}/{nome_arquivo}');
 });
-
 
 Route::get('/get-welcome-destaques-audios', function () {
     return DB::select("SELECT * FROM `songs` WHERE active=true AND destaque=true and mime_type LIKE '%audio/%' ORDER BY reprodution_time DESC LIMIT 5");
@@ -113,10 +107,10 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-
     Route::get('/uploads', function () {
         return Inertia::render('Uploads/Index');
     })->name('uploads');
+    
     /**
      * ROUTAS PRINCIPAIS
      */
@@ -421,7 +415,7 @@ Route::middleware([
 
 
     Route::get('/perfis', function () {
-        return Inertia::render('PerfilProfissional/Index', ["artist" => Artist::all()->where('user_id', auth()->id())->first(), 'profissional' => Profissional::all()->where('user_id', auth()->id())->first()]);
+        return Inertia::render('PerfilProfissional/Index');
     })->name('perfis');
 
 
@@ -607,15 +601,12 @@ Route::middleware([
     Route::get('/get-top-artists', function () {
         return response()->json(Artist::paginate(5));
     })->name('get-top-artists');
-});
 
-
-
-
-/**
- * CAMPAIGN ROUTES
- */
-Route::controller(CampaignController::class)->group(function () {
-    Route::post('new-campaign', 'store')->name('new-campaign');
-    Route::post('get-campaigns', 'get_mines')->name('get-campaigns');
+    /**
+     * CAMPAIGN ROUTES
+     */
+    Route::controller(CampaignController::class)->group(function () {
+        Route::post('new-campaign', 'store')->name('new-campaign');
+        Route::post('get-campaigns', 'get_mines')->name('get-campaigns');
+    });
 });
