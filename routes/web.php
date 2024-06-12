@@ -82,6 +82,10 @@ Route::controller(FileGetterController::class)->group(function () {
     Route::get('/books/{estante_id}/{nome_arquivo}', 'get_book')->name('books/{estante_id}/{nome_arquivo}');
 });
 
+
+//Obter destaques mesmo sem estar logado. Guest users on welcome page.
+Route::get('/get-destaques/{genre}',  [SongsController::class, 'get_destaques'])->name('get-destaques/{genre}');
+
 Route::get('/get-welcome-destaques-audios', function () {
     return DB::select("SELECT * FROM `songs` WHERE active=true AND destaque=true and mime_type LIKE '%audio/%' ORDER BY reprodution_time DESC LIMIT 5");
 })->name('/get-welcome-destaques-audios');
@@ -110,7 +114,7 @@ Route::middleware([
     Route::get('/uploads', function () {
         return Inertia::render('Uploads/Index');
     })->name('uploads');
-    
+
     /**
      * ROUTAS PRINCIPAIS
      */
@@ -207,14 +211,6 @@ Route::middleware([
     Route::get('/avaliacoes', function () {
         return Inertia::render('Avaliacoes/Avaliacoes', []);
     })->name('avaliacoes');
-
-    Route::get('/avaliacoes', function () {
-        return Inertia::render('Avaliacoes/Avaliacoes', []);
-    })->name('avaliacoes');
-
-    Route::get('/{id}', function () {
-        return redirect()->intended("/avaliacoes");
-    })->name('/{id}');
 
     Route::get('/ranking', function () {
         return Inertia::render('Ranking', []);
@@ -322,6 +318,7 @@ Route::middleware([
 
         Route::get('/get-songs',  'get_songs')->name('get-songs');
         Route::get('/get-songs-audios/{query}',  'get_audios')->name('get-songs-audios/{query}');
+
         Route::get('/get-songs-videos/{query}',  'get_videos')->name('get-songs-videos/{query}');
 
         Route::get('/get-songs-destaques',  'get_destaques_songs')->name('get-songs-destaques');

@@ -14,8 +14,8 @@ axios.post('get-songs')
 export const coreApi = createApi({
     reducerPath: 'coreApi',
     baseQuery: fetchBaseQuery({
-        //baseUrl: 'https://lifter.ao/'
-        baseUrl: 'http://127.0.0.1:8000/'
+        baseUrl: 'https://lifter.ao/'
+        //baseUrl: 'http://127.0.0.1:8000/'
     }),
     endpoints: (builder) => ({
         /**SONGS */
@@ -23,7 +23,10 @@ export const coreApi = createApi({
         getSongsAudios: builder.query({ query: (query) => `/get-songs-audios/${query}` }),
         getSongsVideos: builder.query({ query: (query) => `/get-songs-videos/${query}` }),
         getVideos: builder.query({ query: (category) => `/get-videos/${category}` }),
+
         getDestaqueSongs: builder.query({ query: (category) => `/get-songs-destaques/${category}` }),
+
+        getDestaques: builder.query({ query: (genre) => `/get-destaques/${genre}` }),
         getDestaqueVideos: builder.query({ query: (query) => '/get-videos-destaques' }),
 
         getSongDetails: builder.query({ query: (songId) => `/tracks/details/${songId}` }),
@@ -69,6 +72,7 @@ export const {
     useGetSongRelatedQuery,
     useGetArtistStatsQuery,
     useGetDestaqueSongsQuery,
+    useGetDestaquesQuery,
     useGetDestaqueVideosQuery,
     useGetSongsAudiosQuery,
     useGetSongsVideosQuery,

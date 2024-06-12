@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 // Import Swiper React components
 
 // Import Swiper styles
@@ -13,64 +13,36 @@ import 'swiper/css/thumbs';
 import AppLayout from '@/Layouts/AppLayout';
 import Container from '@/Layouts/Container';
 
-import { useSelector } from 'react-redux';
-import { useGetSongsAudiosQuery } from '@/redux/services/coreApi';
-
-import SongsDetaiOneByOne from '@/Components/SongsDetaiOneByOne';
-import { Error } from '@/Components';
+import SongsDetailsOneByOne from '@/Components/SongsDetailsOneByOne';
+import { generos } from '@/assets/constants';
+import { useGetDestaquesQuery } from '@/redux/services/coreApi';
+import axios from 'axios';
 
 const Avaliacoes = ({}) => {
-  const { data: songs, isFetching, error } = useGetSongsAudiosQuery('destaque');
+  let genrePosition = Math.floor(Math.random() * generos?.length - 1);
 
-  const { activeSong, isPlaying } = useSelector(state => state.player);
-  const [x, setX] = useState(0);
+  const [category, setCategory] = useState(generos[genrePosition]?.value);
 
-  const [selectedValuation, setSelectedValuation] = useState(
-    isPlaying ? activeSong : null,
-  );
+  const [songs, setSongs] = useState([]);
 
   useEffect(() => {
-    if (!isPlaying) setSelectedValuation(null);
-  }, [isPlaying]);
-
-  useEffect(() => {
-    if (songs?.length > 0) setSelectedValuation(songs[x]);
-  }, [songs]);
-
-  const handlePrevious = () => {
-    if (x < 0) {
-      setX(0);
-    } else {
-      setX(x - 1);
-    }
-    setSelectedValuation(songs[x]);
-  };
-
-  const handleNext = () => {
-    if (x == songs.length) {
-      setX(0);
-    } else {
-      setX(x + 1);
-    }
-    setSelectedValuation(songs[x]);
-  };
+    axios
+      .get(`/get-destaques/${category}`)
+      .then(response => {
+        setSongs(response.data);
+      })
+      .catch();
+  }, [category]);
 
   return (
     <AppLayout title="Avaliações">
       <Container>
         <>
-          {error ? (
-            <Error />
-          ) : (
-            <>
-              {' '}
-              {songs?.length > 0 && (
-                <>
-                  <SongsDetaiOneByOne songs={songs} />
-                </>
-              )}
-            </>
-          )}
+          <SongsDetailsOneByOne
+            songs={songs}
+            category={category}
+            setCategory={setCategory}
+          />
         </>
       </Container>
     </AppLayout>

@@ -13,7 +13,7 @@ const Popularity = ({}) => {
     axios.post('/api/popularity', { artist }).then(response => {
       console.log(response.data);
       setData(response.data);
-      console.log(response.data.facebook);
+      console.log(response.data);
     });
   };
 

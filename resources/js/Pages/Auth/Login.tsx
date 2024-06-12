@@ -11,6 +11,7 @@ import InputError from '@/Components/InputError';
 import GoogleLoginButton from '@/Components/GoogleLoginButton';
 import SectionBorder from '@/Components/SectionBorder';
 import { FaFacebook, FaGoogle } from 'react-icons/fa';
+import useTypedPage from '@/Hooks/useTypedPage';
 
 interface Props {
   canResetPassword: boolean;
@@ -34,6 +35,7 @@ export default function Login({ canResetPassword, status }: Props) {
       onFinish: () => {
         console.log('response');
         form.reset('password');
+        document.location.reload();
       },
     });
   }

@@ -223,6 +223,20 @@ class SongsController extends Controller
     /**
      * Obté as músicas
      */
+    public function get_destaques($genre)
+    {
+        if ($genre == 'all' || $genre == '' || !$genre) {
+
+            return DB::select("SELECT * FROM `songs` WHERE active=true AND mime_type LIKE '%audio/%'  ORDER BY reprodution_time DESC"); // `mime_type` LIKE '%audio%' AND where('mime_type', `%audio/%`)->paginate(1);
+        } else {
+            return DB::select("SELECT * FROM `songs` WHERE active=true AND destaque=true AND mime_type LIKE '%audio/%' AND genre='$genre'  ORDER BY reprodution_time DESC"); // `mime_type` LIKE '%audio%' AND where('mime_type', `%audio/%`)->paginate(1);
+
+        }
+    }
+
+    /**
+     * Obté as músicas por categoria
+     */
     public function get_videos($query)
     {
         if ($query == 'all' || $query == '' || !$query) {

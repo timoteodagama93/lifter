@@ -45,7 +45,7 @@ import { GiSoundWaves } from 'react-icons/gi';
 import route from 'ziggy-js';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import { GrPrevious } from 'react-icons/gr';
-import SongsDetaiOneByOne from '@/Components/SongsDetaiOneByOne';
+import SongsDetailsOneByOne from '@/Components/SongsDetailsOneByOne';
 import { useGetArtistStatsQuery } from '@/redux/services/coreApi';
 
 function ArtistFeed({ artist, songs }) {
@@ -75,7 +75,7 @@ function ArtistFeed({ artist, songs }) {
         <div className="w-full h-full py-8">
           {currentPage}
           <SectionBorder />
-          <SongsDetaiOneByOne songs={songs} />
+          <SongsDetailsOneByOne songs={songs} />
         </div>
       </Container>
     </AppLayout>

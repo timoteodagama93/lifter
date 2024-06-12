@@ -1,13 +1,11 @@
 import { Link } from '@inertiajs/react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { GiPreviousButton, GiNextButton } from 'react-icons/gi';
 import { useDispatch, useSelector } from 'react-redux';
 import { smalLogo } from '../../img';
 import CommentsSection from './CommentsSection';
-import Interagir from './Interagir';
 import SongStars from './SongStars';
-import { BsCaretLeft, BsCaretLeftFill, BsCaretRightFill } from 'react-icons/bs';
+import { BsCaretLeftFill, BsCaretRightFill } from 'react-icons/bs';
 import {
   nextSong,
   playPause,
@@ -17,8 +15,11 @@ import {
   setCurrentTime,
 } from '@/redux/features/playerSlice';
 import PlayPause from './PlayPause';
+import { generos } from '@/assets/constants';
+import { useGetDestaquesQuery } from '@/redux/services/coreApi';
+import Loader from './Loader';
 
-function SongsDetaiOneByOne({ songs }) {
+function SongsDetailsOneByOne({ songs, category, setCategory }) {
   const { activeSong, currentSongs, currentIndex, isActive, isPlaying } =
     useSelector(state => state.player);
 
@@ -41,9 +42,9 @@ function SongsDetaiOneByOne({ songs }) {
   const handleNextSong = () => {
     if (!activeSong) return;
     if (!shuffle) {
-      dispatch(nextSong((currentIndex + 1) % currentSongs.length));
+      dispatch(nextSong((currentIndex + 1) % currentSongs?.length));
     } else {
-      dispatch(nextSong(Math.floor(Math.random() * currentSongs.length)));
+      dispatch(nextSong(Math.floor(Math.random() * currentSongs?.length)));
     }
   };
 
@@ -51,9 +52,9 @@ function SongsDetaiOneByOne({ songs }) {
   const handlePrevSong = () => {
     if (!activeSong) return;
     if (currentIndex === 0) {
-      dispatch(prevSong(currentSongs.length - 1));
+      dispatch(prevSong(currentSongs?.length - 1));
     } else if (shuffle) {
-      dispatch(prevSong(Math.floor(Math.random() * currentSongs.length)));
+      dispatch(prevSong(Math.floor(Math.random() * currentSongs?.length)));
     } else {
       dispatch(prevSong(currentIndex - 1));
     }
@@ -63,6 +64,7 @@ function SongsDetaiOneByOne({ songs }) {
     dispatch(playPause(false));
   };
   const handlePlayClick = () => {
+    if (songs?.length < 0) return;
     let song = songs[0];
     const i = 0;
     dispatch(setActiveSong({ song, songs, i }));
@@ -75,8 +77,8 @@ function SongsDetaiOneByOne({ songs }) {
   };
 
   useEffect(() => {
-    if (songs.length > 0) handlePlayClick();
-  }, []);
+    handlePauseClick();
+  }, [category]);
 
   return (
     <div className="w-full flex flex-col md:flex-row relative dark:bg-black dark:text-gray-500 ">
@@ -90,9 +92,28 @@ function SongsDetaiOneByOne({ songs }) {
           <BsCaretLeftFill className="w-12 h-12" />{' '}
         </button>
         <div className="w-full h-full justify-center items-center flex flex-col p-1">
-          <div className="w-full h-[88%] ">
+          <div className="w-full h-[13%] shadow-black dark:shadow-white shadow flex gap-2 items-center justify-center  ">
+            <h1 className="text-xl">Selecione a categoria a avaliar:</h1>
+            <select
+              className="border-none"
+              defaultValue={category}
+              name="cat"
+              id="cat"
+              onChange={e => setCategory(e.currentTarget.value)}
+            >
+              {generos.map(g => (
+                <>
+                  <option value={g.value}> {g.title} </option>
+                </>
+              ))}
+            </select>
+
+            {/*isPlaying && <Interagir song={activeSong} collectionType="song" />*/}
+          </div>
+
+          <div className="w-full h-[87%] ">
             <div className="w-full h-full justify-center items-center relative ">
-              {activeSong.artist != undefined ? (
+              {isPlaying && activeSong?.artist != undefined ? (
                 <>
                   <Displayer
                     i={0}
@@ -103,10 +124,11 @@ function SongsDetaiOneByOne({ songs }) {
                     isPlaying={isPlaying}
                     songs={songs}
                   />
+                  ,
                 </>
               ) : (
                 <>
-                  {songs.length > 0 ? (
+                  {songs?.length > 0 ? (
                     <>
                       <div
                         className={`absolute z-20 inset-0 justify-center items-center bg-black bg-opacity-50  flex flex-col `}
@@ -124,14 +146,24 @@ function SongsDetaiOneByOne({ songs }) {
                       </div>
                     </>
                   ) : (
-                    <>Não temos nenhuma música para avaliação agora.</>
+                    <>
+                      <div
+                        className={`absolute z-20 inset-0 justify-center items-center p-5  flex flex-col `}
+                      >
+                        <h1 className="text-center text-xl md:text-2xl">
+                          {' '}
+                          Nenhuma música em avaliação na categoria: {category} .
+                        </h1>
+                        <p className="text-base md:text-xl">
+                          Sugerimos que selecione outra categoria na listagem
+                          acima.
+                        </p>
+                      </div>
+                    </>
                   )}
                 </>
               )}
             </div>
-          </div>
-          <div className="w-full h-[12%] items-end shadow-black dark:shadow-white shadow ">
-            {isPlaying && <Interagir song={activeSong} collectionType="song" />}
           </div>
         </div>
         <button
@@ -143,8 +175,11 @@ function SongsDetaiOneByOne({ songs }) {
           <BsCaretRightFill className="w-12 h-12" />{' '}
         </button>
       </div>
-      <div className="w-screen h-full md:h-[70vh] md:w-1/3 overflow-y-auto">
-        {activeSong && (
+      <div className="w-screen h-full flex flex-col md:h-[70vh] md:w-1/3 overflow-y-auto">
+        <h1 className="text-center text-base md:text-xl uppercase">
+          Comentários
+        </h1>
+        {activeSong && isPlaying && (
           <CommentsSection collection={activeSong} collectionType="song" />
         )}
       </div>
@@ -152,7 +187,7 @@ function SongsDetaiOneByOne({ songs }) {
   );
 }
 
-export default SongsDetaiOneByOne;
+export default SongsDetailsOneByOne;
 
 function Displayer({
   song,
@@ -184,7 +219,7 @@ function Displayer({
     axios
       .post('get-comments', data)
       .then(response => {
-        setCommentsNumber(response.data.length);
+        setCommentsNumber(response?.data?.length);
       })
       .catch(error => {});
   }
