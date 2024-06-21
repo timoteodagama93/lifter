@@ -19,6 +19,8 @@ class Valuation extends Model
         'negative',
         'why_negative',
         'emotion',
+        'colaborate',
+        'feedback',
     ];
 
 

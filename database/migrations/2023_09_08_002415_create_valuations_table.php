@@ -21,6 +21,8 @@ return new class extends Migration
             $table->boolean('negative')->default(false);
             $table->string('why_negative')->nullable();
             $table->string('emotion')->nullable();
+            $table->string('colaborate')->nullable();
+            $table->text('feedback')->nullable();
             $table->timestamps();
         });
     }

@@ -42,11 +42,9 @@ function EnviarEstrelas({ collection, wich_flex, collectionType }) {
     axios
       .post('/get-my-valluation', data)
       .then(response => {
-        console.log(response);
         setSelectedStar(response.data);
       })
       .catch(errors => {
-        console.log(errors);
       });
   }
   useEffect(getUserValuation, []);

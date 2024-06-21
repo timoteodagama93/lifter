@@ -31,11 +31,10 @@ export default function Login({ canResetPassword, status }: Props) {
     form.post('login', {
       onSuccess: response => {
         console.log(response);
+        document.location.reload();
       },
       onFinish: () => {
-        console.log('response');
         form.reset('password');
-        document.location.reload();
       },
     });
   }

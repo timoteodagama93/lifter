@@ -34,6 +34,7 @@ import {
   a3,
   a4,
   a5,
+  a6,
   a7,
   a8,
   a9,
@@ -56,6 +57,11 @@ import classNames from 'classnames';
 import Swal from 'sweetalert2';
 import PartnerCard from '@/Components/PartnerCard';
 
+import Slider from 'react-slick';
+
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
 interface Props {
   pagina: string;
   songs: Array<Object>;
@@ -64,6 +70,55 @@ interface Props {
 }
 
 export default function Welcome({ posts }: Props) {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
+
+  const images = [
+    a1,
+    a2,
+    a3,
+    a4,
+    a5,
+    a6,
+    a7,
+    a8,
+    a9,
+    a10,
+    a11,
+    a12,
+    a13,
+    a14,
+    a15,
+    a16,
+  ];
+
   const route = useRoute();
   const page = useTypedPage();
 
@@ -225,113 +280,54 @@ export default function Welcome({ posts }: Props) {
               </div>
             </div>
           </header>
-          {/* <!-- Page Content --> */}
-          <main className="relative w-full  flex flex-col mx-auto justify-start items-start  p-1 rounded mt-12 pb-28  ">
-            <div className="w-full h-screen_ flex flex-col" id="home">
-              <div className="w-full flex flex-col  ">
-                <div className="w-full h-auto flex flex-col md:flex-row justify-center items-center ">
-                  <div className="w-full md:w-[60%] flex flex-col gap-1 ">
-                    <h1 className="text-2xl md:text-5xl text-bold text-gradient_">
-                      Lifter, comunidade de apoio e suporte para o talento e a
-                      arte
-                    </h1>
-                    <p className=" tex-[#008ed2] text-base md:text-xl ">
-                      Somos um ecossistema que conecta artistas ao publico
-                      permitindo que haja partilha constante das artes e que o
-                      talento e a criatividade possam criar emoões
-                      inesquecíveis. Músicas são avaliadas e validadas pela rede
-                      Lifter e tendencias são criadas.
-                    </p>
-                    <div className="w-full  flex flex-row items-center justify-center">
-                      <form
-                        action=""
-                        className="w-full h-full flex flex-row hover:shadow-lg hover:shadow-black transition-all "
+
+          <section
+            className="relative w-full h-screen min-h-screen bg-cover bg-center"
+            style={{ backgroundImage: `url("${artistas}")` }}
+          >
+            <div className="absolute inset-0 bg-black opacity-80"></div>
+            <div className="relative flex items-center justify-center h-full text-center text-white">
+              <div className="px-5">
+                <h1 className="text-4xl md:text-6xl font-bold mb-4">
+                  Lifter, comunidade de apoio e suporte para o talento e a arte.
+                </h1>
+                <p className="mb-8 text-lg md:text-xl">
+                  A Lifter é uma plataforma desenvolvida para ajudar artistas
+                  que buscam reconhecimento e sucesso na sua carreira musical a
+                  promoverem as músicas com avaliações que permitem aumentar a
+                  audiência do artista, obter feedbacks e principalmente
+                  conseguir pessoas para ajudar o artista a promover a música.
+                </p>
+                <div className="flex justify-center">
+                  <Link
+                    href="/login"
+                    className="inline-flex text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded text-lg"
+                  >
+                    Comece Agora
+                  </Link>
+                </div>
+                <div className="w-full h-32 absolute justify-between bottom-0 left-0 right-0 p-1 pb-1">
+                  <Slider {...settings}>
+                    {images.map((img, index) => (
+                      <div
+                        className="w-32 h-32 flex relative justify-center object-cover"
+                        key={index}
                       >
-                        <input
-                          type="search"
-                          name=""
-                          id=""
-                          className="w-[80%] text-black"
+                        <img
+                          src={img}
+                          alt={`Slide ${index}`}
+                          className="w-32 relative h-32 object-cover"
                         />
-                        <button
-                          type="submit"
-                          className="rounded-r p-1 bg-[#0094f8] w-[20%] text-xl "
-                        >
-                          Saber mais
-                        </button>
-                      </form>
-                    </div>
-                    <div className="w-ful flex">
-                      <p className="text-base md:text-xl">
-                        Alguns artistas com quem já trabalhamos
-                      </p>
-                    </div>
-                    <div className="w-full gap-5 rounded flex flex-row shrink-0">
-                      <div className="w-full flex gap-1">
-                        <div className="w-1/6 h-[8rem] flex flex-col justify-center items-center bg-[#045]">
-                          <img
-                            src={a1}
-                            alt=""
-                            className="w-24 h-24 rounded transition-all blur-none hover:rounded-lg hover:shadow-xl shadow-black "
-                          />
-                          <span>Man Chic</span>
-                        </div>
-                        <div className="w-1/6 h-[8rem] flex flex-col justify-center items-center bg-[#045]">
-                          <img
-                            src={a2}
-                            alt=""
-                            className="w-24 h-24 rounded transition-all blur-none hover:rounded-lg hover:shadow-xl shadow-black "
-                          />
-                          <span>Cacusso Viana</span>
-                        </div>
-                        <div className="w-1/6 h-[8rem] flex flex-col justify-center items-center bg-[#045]">
-                          <img
-                            src={a5}
-                            alt=""
-                            className="w-24 h-24 rounded transition-all blur-none hover:rounded-lg hover:shadow-xl shadow-black "
-                          />
-                          <span>DKG</span>
-                        </div>
-                        <div className="w-1/6 h-[8rem] flex flex-col justify-center items-center bg-[#045]">
-                          <img
-                            src={a9}
-                            alt=""
-                            className="w-24 h-24 rounded transition-all blur-none hover:rounded-lg hover:shadow-xl shadow-black "
-                          />
-                          <span>Bênção e Luz</span>
-                        </div>
-                        <div className="w-1/6 h-[8rem] flex flex-col justify-center items-center bg-[#045]">
-                          <img
-                            src={a7}
-                            alt=""
-                            className="w-24 h-24 rounded transition-all blur-none hover:rounded-lg hover:shadow-xl shadow-black "
-                          />
-                          <span>Os Delavegas</span>
-                        </div>
-                        <div className="w-1/6 h-[8rem] flex flex-col justify-center items-center bg-[#045]">
-                          <img
-                            src={a10}
-                            alt=""
-                            className="w-auto h-[80%] relative rounded transition-all blur-none hover:rounded-lg hover:shadow-xl shadow-black "
-                          />
-                          <span>Sampaio Txitxi</span>
-                        </div>
                       </div>
-                    </div>
-                  </div>
-                  <div className="w-full md:w-[40%] p-1 rounded  ">
-                    <div className="w-full rounded blur-0 ">
-                      <img
-                        src={artistas}
-                        alt=""
-                        className="transition-all blur-none hover:rounded-lg hover:shadow-xl shadow-black "
-                      />
-                    </div>
-                  </div>
+                    ))}
+                  </Slider>
                 </div>
               </div>
             </div>
+          </section>
 
+          {/* <!-- Page Content --> */}
+          <main className="relative w-full  flex flex-col mx-auto justify-start items-start  p-1 rounded mt-12 pb-28  ">
             <div
               className="fb-share"
               data-share="true"
@@ -562,6 +558,70 @@ export default function Welcome({ posts }: Props) {
                     </div>
                   </div>
                 </div>
+                <div className="w-full flex flex-col gap-5 ">
+                  <div className="w-full text-center">
+                    <h1 className="text-2xl fader-in md:text-5xl text-bold">
+                      O que fazemos de diferente?
+                    </h1>
+                    <p className="text-base md:text-xl fader-in">
+                      Na Lifter os músicos recebem ajuda na divulgação não
+                      apenas nossa mas da Rede Lifter, feedbacks valiosos e
+                      planos de marketing detalhados a serem executados com
+                      nosso suporte contínuo.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="w-full flex md:flex-col  gap-5  ">
+                  <div className="w-full flex flex-col items-center justify-center my-5 ">
+                    <div className="w-full flex flex-col md:flex-row gap-5 fader-in ">
+                      <div className="w-full grouped flex flex-col  items-center p-2  border-b-2 border-b-[#ccc] hover:border-b-[#045] hover:border-b-4 hover:cursor-pointer ">
+                        <div className="w-full text-bold flex flex-col items-center text-start  gap-0  ">
+                          {' '}
+                          <span className="w-full text-3xl">Divulgação</span>
+                        </div>
+                        <p className="w-full tex-base hover:flex">
+                          <ol className="list-disc">
+                            <li>Avaliações contínuas</li>
+                            <li>Divulgação colaborativa</li>
+                            <li>Feedbacks profissionais</li>
+                            <li>Feedbacks da audiência</li>
+                          </ol>
+                        </p>
+                      </div>
+
+                      <div className="w-full grouped flex flex-col  items-center p-2  border-b-2 border-b-[#ccc] hover:border-b-[#045] hover:border-b-4 hover:cursor-pointer ">
+                        <div className="w-full text-bold flex flex-col items-center text-start  gap-0  ">
+                          {' '}
+                          <span className="w-full text-3xl">Planejamento</span>
+                        </div>
+                        <p className="w-full tex-base hover:flex">
+                          <ol className="list-disc">
+                            <li>Similaridades;</li>
+                            <li>Público ideal;</li>
+                            <li>Canais de acesso; Tipo de conteúdo;</li>
+                            <li>Métricas relevantes</li>
+                          </ol>
+                        </p>
+                      </div>
+
+                      <div className="w-full grouped flex flex-col  items-center p-2  border-b-2 border-b-[#ccc] hover:border-b-[#045] hover:border-b-4 hover:cursor-pointer ">
+                        <div className="w-full text-bold flex flex-col items-center text-start  gap-0  ">
+                          {' '}
+                          <span className="w-full text-3xl">Marketing</span>
+                        </div>
+                        <p className="w-full tex-base hover:flex">
+                          <ul className="list-disc">
+                            <li>Canais ideais</li>
+                            <li>Público ideal</li>
+                            <li>Controlar Métricas</li>
+                            <li>Projectar o crescimento</li>
+                          </ul>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -685,22 +745,25 @@ export default function Welcome({ posts }: Props) {
 function Footer() {
   return (
     <div className="w-full my-2 opacity-95 absolute bottom-0 left-0 justify-center items-center text-2xl text-center border-t border-t-white ">
-      <div className="w-full flex flex-row flex-shrink justify-between  p-5  hidden ">
-        <a className="p-2 border hover:bg-slate-400 rounded " href="http://">
-          Termos e condições
+      <div className="w-full flex flex-row flex-shrink justify-between  p-5 ">
+        <a className="p-2 hover:bg-slate-400 rounded " href="http://">
+          Termos
         </a>
         <a
-          className="p-2 border hover:bg-slate-400 rounded "
+          className="p-2 hover:bg-slate-400 rounded "
           target="blank"
           rel="noopener noreferrer"
           href="https://cultura.lifter.ao"
         >
-          Cultura e artes
+          Politicas
         </a>
-        <a className="p-2 border hover:bg-slate-400 rounded " href="http://">
+        <a className="p-2 hover:bg-slate-400 rounded " href="http://">
           Contactos
         </a>
-        <a className="p-2 border hover:bg-slate-400 rounded " href="http://">
+        <a className="p-2 hover:bg-slate-400 rounded " href="http://">
+          Ajuda e suporte
+        </a>
+        <a className="p-2 hover:bg-slate-400 rounded " href="http://">
           Testemunhos e criticas
         </a>
       </div>{' '}
@@ -719,7 +782,7 @@ function SolicitarServico({ service, onClose }) {
     problem: '',
   });
 
-  function onSubmit(e: React.FormEvent) { 
+  function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     form.post('/request-services', {
       onSuccess: () =>

@@ -77,7 +77,7 @@ const Popularity = ({}) => {
             <div>
               {data && (
                 <div>
-                  <h3>Google Results</h3>
+                  <h3 className="text-xl text-center">Google Results</h3>
                   {/* Render Google data */}
                   <ul>
                     {data?.google?.items?.map((item, index) => (
@@ -93,7 +93,7 @@ const Popularity = ({}) => {
                       </li>
                     ))}
                   </ul>
-                  <h3>YouTube Results</h3>
+                  <h3 className="text-xl text-center">YouTube Results</h3>
                   {/* Render YouTube data */}
                   <ul>
                     {data?.youtube?.items?.map((item, index) => (
@@ -109,14 +109,14 @@ const Popularity = ({}) => {
                       </li>
                     ))}
                   </ul>
-                  <h3>Twitter Results</h3>
+                  <h3 className="text-xl text-center">Twitter Results</h3>
                   {/* Render Twitter data */}
                   <ul>
                     {data?.twitter?.data?.map((tweet, index) => (
                       <li key={index}>{tweet.text}</li>
                     ))}
                   </ul>
-                  <h3>Facebook Results</h3>
+                  <h3 className="text-xl text-center">Facebook Results</h3>
                   {/* Render Facebook data */}
                   <ul>
                     {data?.facebook?.posts?.data?.map((post, index) => (
@@ -130,14 +130,14 @@ const Popularity = ({}) => {
                       <li key={index}>{post.caption}</li>
                     ))}
                   </ul>
-                  <h3>TikTok Results</h3>
+                  <h3 className="text-xl text-center">TikTok Results</h3>
                   {/* Render TikTok data */}
                   <ul>
                     {data?.tiktok?.data?.map((item, index) => (
                       <li key={index}>{item.title}</li>
                     ))}
                   </ul>
-                  <h3>Spotify Results</h3>
+                  <h3 className="text-xl text-center">Spotify Results</h3>
                   {/* Render Spotify data */}
                   <ul>
                     {data?.spotify?.artists?.items?.map((artist, index) => (

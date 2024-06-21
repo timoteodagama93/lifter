@@ -171,10 +171,18 @@ class InteragirController extends Controller
         $collection->save();
         $collection->stars = $collection->stars + $stars;
 
-        $val = DB::update("UPDATE valuations SET collection_id='$collection->id', user_id=$userId, collection_type='$collectionType', stars=$stars WHERE collection_id='$collection->id' AND user_id=$userId AND collection_type='$collectionType' ");
+        $val = DB::select(
+            "SELECT * FROM valuations WHERE
+                collection_id = '$collectionId' AND
+                user_id = $userId AND
+                collection_type = '$collectionType'AND
+                stars = $stars"
+        );
+
         if ($val <= 0) {
             $val = DB::insert("INSERT INTO valuations (collection_id,user_id,collection_type,stars) VALUES ('$collection->id', $userId, '$collectionType', $stars)");
-            return response()->json($val);
+        } else {
+            $val = DB::update("UPDATE valuations SET stars=$stars WHERE collection_id='$collection->id' AND user_id=$userId AND collection_type='$collectionType'");
         }
         return response()->json($val);
     }
@@ -187,26 +195,38 @@ class InteragirController extends Controller
         $userId = Auth::user()->id;
         $collectionId = Request::input('collection_id');
         $collectionType = Request::input('collection_type');
-        $emotions = Request::input('emotions');
+        $emotion = Request::input('emotions');
+        $colaborate = Request::input('colaborate');
+        $feedback = Request::input('feedback');
         $points = Request::input('points');
         $negative = Request::input('negative') == true ? 1 : 0;
-        $why_negative = Request::input('why_negative');
+        $why_negative = NULL;
+        if (Request::input('why_negative'))
+            $why_negative = Request::input('why_negative');
 
-        //Obter a coleção
-        $collection = null;
-        if ($collectionType == 'song') {
-            $collection = Song::where('id', $collectionId)->first();
-        } else if ($collectionType == 'video') {
-            $collection = Video::where('id', $collectionId)->first();
-        } else if ($collectionType == 'literatura') {
-            $collection = Book::where('id', $collectionId)->first();
-        } else if ($collectionType == '') {
-            $collection = Video::where('id', $collectionId)->first();
-        }
+        $val = Valuation::updateOrCreate(
+            [
+                "user_id" => $userId,
+                "collection_id" => "$collectionId",
+                "collection_type" => "$collectionType",
+            ],
+            [
+                "emotion" => "$emotion",
+                "points" => $points,
+                "negative" => $negative,
+                "why_negative" => "$why_negative",
+                "colaborate" => "$colaborate",
+                "feedback" => "$feedback",
+            ]
+        );
 
-        $val = DB::update("UPDATE valuations SET collection_id='$collection->id', user_id=$userId, collection_type='$collectionType', emotion='$emotions',
-        points=$points, negative=$negative, why_negative='$why_negative' WHERE collection_id='$collection->id' AND user_id=$userId AND collection_type='$collectionType' ");
-        if ($val <= 0) {
+        /*
+
+        $sel = DB::select("SELECT * FROM valuations WHERE  collection_id='$collectionId' AND user_id=$userId AND collection_type='$collectionType'");
+
+
+
+        if (sizeof($sel) < 0) {
             $val =
                 DB::insert("INSERT INTO valuations (
                 collection_id,user_id,collection_type, emotion,
@@ -214,13 +234,19 @@ class InteragirController extends Controller
                 negative,
                 why_negative
             ) VALUES (
-                '$collection->id', $userId, '$collectionType', '$emotions',
+                '$collectionId', $userId, '$collectionType', '$emotion',
                 $points,
                 $negative,
                 '$why_negative' )");
-            return response('');
+            return response($val, 200);
+        } else {
+            $val = DB::update("UPDATE valuations SET collection_id='$collectionId', user_id=$userId, collection_type='$collectionType', emotion='$emotion',
+        points=$points, negative=$negative, why_negative='$why_negative' WHERE collection_id='$collectionId' AND user_id=$userId AND collection_type='$collectionType' ");
+            return response($val, 200);
         }
-        return response('');
+
+*/
+        return;
     }
 
 

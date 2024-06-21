@@ -2,24 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import {
   BiEdit,
-  BiInfoCircle,
-  BiLibrary,
-  BiMusic,
-  BiNews,
   BiSend,
-  BiTrophy,
-  BiVideo,
 } from 'react-icons/bi';
 import useTypedPage from '@/Hooks/useTypedPage';
 
 import {
   MdCreate,
   MdOutlineCloseFullscreen,
-  MdPhoto,
   MdWork,
 } from 'react-icons/md';
-import { FaArtstation, FaCoins, FaCross, FaUserFriends } from 'react-icons/fa';
-import { RiChatFollowUpLine, RiContactsBook2Fill } from 'react-icons/ri';
+import { FaUserFriends } from 'react-icons/fa';
 import axios from 'axios';
 import NewContest from '@/Components/Contest/NewContest';
 import {
@@ -27,11 +19,8 @@ import {
   BsMusicNote,
   BsPostage,
   BsStar,
-  BsStars,
-  BsTrophy,
 } from 'react-icons/bs';
 import EditContest from '@/Components/EditContest/Index';
-import PulseButton from '@/Components/PulseButton';
 import InputError from '@/Components/InputError';
 import SecondaryButton from '@/Components/SecondaryButton';
 import InputLabel from '@/Components/InputLabel';
@@ -41,12 +30,12 @@ import { Link, useForm } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import Container from '@/Layouts/Container';
 import SectionBorder from '@/Components/SectionBorder';
-import { GiSoundWaves } from 'react-icons/gi';
-import route from 'ziggy-js';
 import { useStateContext } from '@/contexts/PaginaActualContext';
 import { GrPrevious } from 'react-icons/gr';
-import SongsDetailsOneByOne from '@/Components/SongsDetailsOneByOne';
+
+
 import { useGetArtistStatsQuery } from '@/redux/services/coreApi';
+import ValuateCard from '@/Components/ValuateCard';
 
 function ArtistFeed({ artist, songs }) {
   const page = useTypedPage();
@@ -75,7 +64,7 @@ function ArtistFeed({ artist, songs }) {
         <div className="w-full h-full py-8">
           {currentPage}
           <SectionBorder />
-          <SongsDetailsOneByOne songs={songs} />
+          <ValuateCard songs={songs} category={artist.genre} setCategory={()=>{}} />
         </div>
       </Container>
     </AppLayout>

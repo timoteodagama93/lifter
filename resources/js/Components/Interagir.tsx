@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BiDownload, BiLibrary, BiStar } from 'react-icons/bi';
-import {
-  MdOutlineCloseFullscreen,
-  MdOutlineMessage,
-} from 'react-icons/md';
+import { MdOutlineCloseFullscreen, MdOutlineMessage } from 'react-icons/md';
 import { TiMessages } from 'react-icons/ti';
 import PrimaryButton from './PrimaryButton';
 import {
@@ -24,6 +21,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import FeedbacksSection from './FeedbacksSection';
 import CommentsSection from './CommentsSection';
+import Valuate from './Valuate';
 
 function Interagir({
   song: Collection,
@@ -188,6 +186,8 @@ function Interagir({
     }
   };
 
+  const [openValuate, setOpenValuation] = useState(false);
+
   return (
     <div>
       <div
@@ -195,24 +195,18 @@ function Interagir({
       >
         <button
           className="text-lg md:text-3xl transform-effect p-1"
-          onClick={handleDownload}
-        >
-          <BiDownload />
-        </button>
-        <button
-          className="text-lg md:text-3xl transform-effect p-1"
           onClick={() => {
-            setOpenModal(false);
-            setShareModal(false);
-            setCommentsModal(false);
-            setFeedbackModal(false);
-
-            setValuateModal(true);
-            setOpenModal(true);
+            setOpenValuation(true);
           }}
         >
           {' '}
           <BiStar />{' '}
+        </button>
+        <button
+          className="text-lg md:text-3xl transform-effect p-1"
+          onClick={handleDownload}
+        >
+          <BiDownload />
         </button>
         <button
           onClick={() => curtir()}
@@ -263,22 +257,7 @@ function Interagir({
             setShareModal(false);
             setOpenModal(false);
           }}
-        >
-          <div
-            className="fb-share-button text-lg md:text-3xl"
-            data-href="https://developers.facebook.com/docs/plugins/"
-            data-layout=""
-            data-size=""
-          >
-            <a
-              target="_blank"
-              href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse"
-              className="fb-xfbml-parse-ignore"
-            >
-              <BsShare />
-            </a>
-          </div>
-        </button>
+        ></button>
         <button
           className="text-lg md:text-3xl transform-effect p-1"
           onClick={() => colecionar()}
@@ -286,6 +265,13 @@ function Interagir({
           <BiLibrary />
         </button>
       </div>
+
+      <Valuate
+        collectionType="song"
+        collection={Collection}
+        isOpen={openValuate}
+        onClose={setOpenValuation}
+      />
       <Modal
         isOpen={openModal}
         onClose={() => {
@@ -308,13 +294,6 @@ function Interagir({
             <span>Interagir com conteúdo</span>
           </h1>
 
-          {valuateModal && (
-            <Avaliar
-              collectionType={collectionType}
-              setOpenModal={setOpenModal}
-              song={Collection}
-            />
-          )}
           {feedbackModal && (
             <Feedback
               collectionType={collectionType}
@@ -368,139 +347,7 @@ function Avaliar({ song: collection, setOpenModal, collectionType }) {
       },
     });
   }
-  return (
-    <div className="w-full justify-start p-2 flex flex-col">
-      <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
-        <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
-          Como avalia isto?
-        </h1>
-        <p>
-          Faça uma avaliação com base no conteúdo que ouviu. Avalie em termos
-          emocionais, qualidade na produção, conteúdo, etc. E claro, se gostou,
-          não se esqueça de partilhar e recomendar.
-        </p>
-      </div>
-
-      <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
-        <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
-          Quantas estrelas merece?
-        </h1>
-        <EnviarEstrelas
-          collection={collection}
-          collectionType={collectionType}
-          wich_flex="flex-row "
-        />
-      </div>
-      <form
-        onSubmit={e => submit(e)}
-        className="w-full flex flex-col justify-start text-base items-center p-5 space-y-2"
-      >
-        <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
-          <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
-            Qual é a pontuação?
-          </h1>
-          <label className="mx-5" htmlFor="nota">
-            {form.data.points + ' '}pontos
-          </label>
-          <input
-            value={form.data.points}
-            onChange={e =>
-              form.setData('points', Number.parseInt(e.target.value))
-            }
-            type="range"
-          />
-        </div>
-        <div className="my-1 w-full text-base text-black  bg-[#fff] rounded relative flex flex-col gap-1 p-5 shadow">
-          <h1 className="text-xl md:text-2xl font-bold text-[#4c88c4]  ">
-            Gerou-lhe alguma emoção?
-          </h1>
-          <div className="w-full gap-1 flex flex-row justify-center">
-            <span
-              className={`cursor-pointer ${
-                form.data.emotions === 'HiOutlineEmojiHappy'
-                  ? 'text-[#f6cc33]'
-                  : ''
-              } `}
-              onClick={() => form.setData('emotions', 'HiOutlineEmojiHappy')}
-            >
-              <HiOutlineEmojiHappy className="w-16 h-16" /> Felicidade
-            </span>
-            <span
-              className={`cursor-pointer ${
-                form.data.emotions === 'HiOutlineEmojiSad'
-                  ? 'text-[#f6cc33]'
-                  : ''
-              } `}
-              onClick={() => form.setData('emotions', 'HiOutlineEmojiSad')}
-            >
-              <HiOutlineEmojiSad className="w-16 h-16" /> Tristeza
-            </span>
-            <span
-              className={`cursor-pointer ${
-                form.data.emotions === 'BsEmojiAngry' ? 'text-[#f6cc33]' : ''
-              } `}
-              onClick={() => form.setData('emotions', 'BsEmojiAngry')}
-            >
-              <BsEmojiAngry className="w-14 h-14" /> Raíva
-            </span>
-            <span
-              className={`cursor-pointer ${
-                form.data.emotions === 'BsEmojiKiss' ? 'text-[#f6cc33]' : ''
-              } `}
-              onClick={() => form.setData('emotions', 'BsEmojiKiss')}
-            >
-              <BsEmojiKiss className="w-14 h-14" />
-              Paixão
-            </span>
-            <span
-              className={`cursor-pointer ${
-                form.data.emotions === 'BsEmojiHeartEyes'
-                  ? 'text-[#f6cc33]'
-                  : ''
-              } `}
-              onClick={() => form.setData('emotions', 'BsEmojiHeartEyes')}
-            >
-              {' '}
-              <BsEmojiHeartEyes className="w-14 h-14" />
-              Amor
-            </span>
-          </div>
-        </div>
-        <div>
-          <div className="my-4 bg-black text-white w-full rounded p-2">
-            <input
-              value={form.data.negative}
-              onChange={e => {
-                if (form.data.negative == false) {
-                  form.setData('negative', true);
-                } else {
-                  form.setData('negative', false);
-                }
-              }}
-              type="checkbox"
-              className="bg-white text-black p-2"
-            />{' '}
-            <label>
-              Selecione está opção se considerar o conteúdo como negativo e
-              impróprio
-            </label>
-            {form.data.negative === true && (
-              <div className="w-full flex text-black">
-                <input
-                  value={form.data.why_negative}
-                  onChange={e => form.setData('why_negative', e.target.value)}
-                  className="w-full"
-                  type="text"
-                  placeholder="Justifique por qual razão o conteúdo é negativo."
-                />
-              </div>
-            )}
-          </div>
-        </div>
-        <PrimaryButton>Concluir avaliação</PrimaryButton>
-      </form>
-    </div>
-  );
+  return <></>;
 }
 
 function Feedback({ song: collection, setOpenModal, collectionType }) {

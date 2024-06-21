@@ -17,6 +17,7 @@ import SongsDetailsOneByOne from '@/Components/SongsDetailsOneByOne';
 import { generos } from '@/assets/constants';
 import { useGetDestaquesQuery } from '@/redux/services/coreApi';
 import axios from 'axios';
+import ValuateCard from '@/Components/ValuateCard';
 
 const Avaliacoes = ({}) => {
   let genrePosition = Math.floor(Math.random() * generos?.length - 1);
@@ -38,7 +39,7 @@ const Avaliacoes = ({}) => {
     <AppLayout title="Avaliações">
       <Container>
         <>
-          <SongsDetailsOneByOne
+          <ValuateCard
             songs={songs}
             category={category}
             setCategory={setCategory}
